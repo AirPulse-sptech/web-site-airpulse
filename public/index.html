@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <script src="js/index.js"></script>
+    <title>AirPulse</title>
+</head>
+
+<body>
+    <div class="header" id="siteHeader">
+        <img class="Logo" src="assets/AirPulse_Logo_Pack/Fundo transparente/04_Reduzida_Sem_Tagline.png">
+
+        <div class="navbar" id="navbar">
+            <a class="nav" href="#bannerIndex">
+                <div>Início</div>
+            </a>
+            <a class="nav" href="#nosso-servico">
+                <div>Serviço</div>
+            </a>
+            <a class="nav" href="#como-funciona">
+                <div>Como Funciona</div>
+            </a>
+            <a class="nav" href="#sobre-nos">
+                <div>Sobre Nós</div>
+            </a>
+
+
+        </div>
+
+        <div class="acesso">
+            <a href="login.html">
+                <button class="btn-cadastro">Login</button>
+            </a>
+            <a href="#secao-cta">
+                <button class="btn-cadastro">Entrar em contato</button>
+            </a>
+        </div>
+
+        <button class="btn-sanduiche" onclick="abrirMenuLaterar()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+    </div>
+
+    <div id="bannerIndex">
+        <div id="slogan">O impulso que eleva
+            o controle da sua <span class="destaque-banner">operação ao topo</span></div>
+        <div class="subtituloBanner">Monitoramento inteligente
+            dos recursos computacionais e componentes eletrônicos
+            do Flight Management Computer, identificando anomalias,
+            antecipando falhas e garantindo decisões mais seguras.</div>
+
+        <div class="cadastro-pelo-banner">
+            <a href="#secao-cta">
+                <button class="btn-cadastro">Comece agora -></button>
+            </a>
+        </div>
+    </div>
+
+    <!--Beneficios-->
+    <div class="grade-pilares-beneficios">
+        <div class="posicao-grade-beneficios">
+            <div class=" icone-pilar-beneficios">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-laptop-minimal-check-icon lucide-laptop-minimal-check">
+                    <path d="M2 20h20" />
+                    <path d="m9 10 2 2 4-4" />
+                    <rect x="3" y="4" width="18" height="12" rx="2" />
+                </svg>
+            </div>
+            <div>
+                <h4 class="nome-pilar">Controle Total</h4>
+                <p class="descricao-pilar">
+                    Visão completa da sua operação em tempo real.
+                </p>
+            </div>
+        </div>
+
+        <div class="posicao-grade-beneficios">
+            <div class="icone-pilar-beneficios">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-trending-up-icon lucide-trending-up">
+                    <path d="M16 7h6v6" />
+                    <path d="m22 7-8.5 8.5-5-5L2 17" />
+                </svg>
+            </div>
+            <div>
+                <h4 class="nome-pilar">Mais Eficiência</h4>
+                <p class="descricao-pilar">
+                    Processos otimizados para resultados melhores.
+                </p>
+            </div>
+        </div>
+
+        <div class="posicao-grade-beneficios">
+            <div class="icone-pilar-beneficios">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-shield-check-icon lucide-shield-check">
+                    <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17
+                  1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+                    <path d="m9 12 2 2 4-4" />
+                </svg>
+            </div>
+            <div>
+                <h4 class="nome-pilar">Segurança Garantida</h4>
+                <p class="descricao-pilar">
+                    Conformidade e proteção em cada etapa.
+                </p>
+            </div>
+        </div>
+
+        <div class="posicao-grade-beneficios">
+            <div class="icone-pilar-beneficios">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                    class="lucide lucide-headphones-icon lucide-headphones">
+                    <path d="M3 14h3a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H5a2 2 0 0
+                   1-2-2v-7a9 9 0 0 1 18 0v7a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3" />
+                </svg>
+            </div>
+            <div>
+                <h4 class="nome-pilar">Suporte Dedicado</h4>
+                <p class="descricao-pilar">
+                    Time especializado pronto para te ajudar.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!--Nosso serviço-->
+
+    <section class="secao-nosso-servico" id="nosso-servico">
+
+        <div class="rotulo-secao">
+            <span class="linha-rotulo"></span>
+            <span class="texto-rotulo">NOSSO SERVIÇO</span>
+            <span class="linha-rotulo"></span>
+        </div>
+
+        <div class="cabecalhos-principais">
+            <h2 class="titulos-principais">
+                Monitoramento que <span class="destaque-azul">protege</span> o que é crítico
+            </h2>
+            <p class="descricao-principal">
+                A AirPulse coleta, processa e apresenta métricas dos computadores
+                de gerenciamento de voo em tempo real.
+            </p>
+        </div>
+
+        <div class="margem-bloco-servicos">
+            <div class="grade-pilares">
+
+                <div class="cartao-pilar">
+                    <div class="icone-pilar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-cpu-icon lucide-cpu">
+                            <path d="M12 20v2" />
+                            <path d="M12 2v2" />
+                            <path d="M17 20v2" />
+                            <path d="M17 2v2" />
+                            <path d="M2 12h2" />
+                            <path d="M2 17h2" />
+                            <path d="M2 7h2" />
+                            <path d="M20 12h2" />
+                            <path d="M20 17h2" />
+                            <path d="M20 7h2" />
+                            <path d="M7 20v2" />
+                            <path d="M7 2v2" />
+                            <rect x="4" y="4" width="16" height="16" rx="2" />
+                            <rect x="8" y="8" width="8" height="8" rx="1" />
+                        </svg>
+                    </div>
+                    <h4 class="nome-pilar">CPU Em tempo real</h4>
+                    <p class="descricao-pilar">
+                        Acompanhe a utilização do processador, identifique
+                        picos e receba alertas antes que a sobrecarga afete o desempenho.
+                    </p>
+                </div>
+
+                <div class="cartao-pilar">
+                    <div class="icone-pilar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-memory-stick-icon lucide-memory-stick">
+                            <path d="M12 12v-2" />
+                            <path d="M12 18v-2" />
+                            <path d="M16 12v-2" />
+                            <path d="M16 18v-2" />
+                            <path d="M2 11h1.5" />
+                            <path d="M20 18v-2" />
+                            <path d="M20.5 11H22" />
+                            <path d="M4 18v-2" />
+                            <path d="M8 12v-2" />
+                            <path d="M8 18v-2" />
+                            <rect x="2" y="6" width="20" height="10" rx="2" />
+                        </svg>
+                    </div>
+                    <h4 class="nome-pilar">Memória RAM</h4>
+                    <p class="descricao-pilar">
+                        Monitore o consumo de memória, tendências de uso e disponibilidade.
+                        Previna falhas por falta de memória.
+                    </p>
+                </div>
+
+                <div class="cartao-pilar">
+                    <div class="icone-pilar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-hard-drive-icon lucide-hard-drive">
+                            <path d="M10 16h.01" />
+                            <path d="M2.212 11.577a2 2 0 0 0-.212.896V18a2 2 0 0 0 2
+                           2h16a2 2 0 0 0 2-2v-5.527a2 2 0 0 0-.212-.896L18.55 5.11A2 2 0 0 0 16.76 4H7.24a2
+                            2 0 0 0-1.79 1.11z" />
+                            <path d="M21.946 12.013H2.054" />
+                            <path d="M6 16h.01" />
+                        </svg>
+                    </div>
+                    <h4 class="nome-pilar">Armazenamento</h4>
+                    <p class="descricao-pilar">
+                        Controle o espaço em disco, taxa de crescimento e integridade.
+                        Saiba com antecedência quando agir.
+                    </p>
+                </div>
+            </div>
+            <div class="grade-pilares">
+                <div class="cartao-pilar">
+                    <div class="icone-pilar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-siren-icon lucide-siren">
+                            <path d="M7 18v-6a5 5 0 1 1 10 0v6" />
+                            <path d="M5 21a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-1a2 2 0 0 0-2-2H7a2 2 0 0 0-2 2z" />
+                            <path d="M21 12h1" />
+                            <path d="M18.5 4.5 18 5" />
+                            <path d="M2 12h1" />
+                            <path d="M12 2v1" />
+                            <path d="m4.929 4.929.707.707" />
+                            <path d="M12 12v6" />
+                        </svg>
+                    </div>
+                    <h4 class="nome-pilar">Alertas proativos</h4>
+                    <p class="descricao-pilar">
+                        Receba notificações automáticas quando qualquer métrica ultrapassar
+                        os limites configurados.
+                    </p>
+                </div>
+
+                <div class="cartao-pilar">
+                    <div class="icone-pilar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-layout-dashboard-icon lucide-layout-dashboard">
+                            <rect width="7" height="9" x="3" y="3" rx="1" />
+                            <rect width="7" height="5" x="14" y="3" rx="1" />
+                            <rect width="7" height="9" x="14" y="12" rx="1" />
+                            <rect width="7" height="5" x="3" y="16" rx="1" />
+                        </svg>
+                    </div>
+                    <h4 class="nome-pilar">Dashboard unificada</h4>
+                    <p class="descricao-pilar">
+                        Visualize todos os computadores embarcados em uma única tela. Filtre,
+                        compare e decida com agilidade.
+                    </p>
+                </div>
+
+                <div class="cartao-pilar">
+                    <div class="icone-pilar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="lucide lucide-triangle-alert-icon lucide-triangle-alert">
+                            <path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0
+                             0 0 4 21h16a2 2 0 0 0 1.73-3" />
+                            <path d="M12 9v4" />
+                            <path d="M12 17h.01" />
+                        </svg>
+                    </div>
+                    <h4 class="nome-pilar">Prevenção de erros</h4>
+                    <p class="descricao-pilar">
+                        O sistema garante a análise contínua dos dados dos componentes
+                        proporcionando a prevenção de erro..
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </section>
+
+    <section class="secao-como-funciona" id="como-funciona">
+
+        <div class="rotulo-secao">
+            <span class="linha-rotulo"></span>
+            <span class="texto-rotulo">COMO FUNCIONA</span>
+            <span class="linha-rotulo"></span>
+        </div>
+        <div class="cabecalhos-principais">
+            <h2 class="titulos-principais">
+                Entenda o <span class="destaque-azul">Fluxo</span> do nosso serviço
+                através do nosso diagrama de visão de negócio.
+            </h2>
+        </div>
+
+        <div class="ajuste-diagrama-negocio">
+            <img class="diagrama-negocio" src="assets/imgs/diagrama-negocio.png" alt="">
+            <img class="diagrama-negocio-vertical" src="assets/imgs/Diagrama-negocio-vertical.png" alt="">
+        </div>
+
+    </section>
+
+
+    <!--Sobre nós-->
+    <section class="secao-sobre-nos" id="sobre-nos">
+
+        <div class="rotulo-secao">
+            <span class="linha-rotulo"></span>
+            <span class="texto-rotulo">SOBRE NÓS</span>
+            <span class="linha-rotulo"></span>
+        </div>
+
+        <div class="cabecalhos-principais">
+            <h2 class="titulos-principais">
+                Conheça a <span class="destaque-azul">AirPulse</span> - monitoramento
+                proativo para operações confiáveis.
+            </h2>
+            <p class="descricao-principal">
+                Uma plataforma institucional que transforma dados em prevenção, reduzindo incidentes e
+                aumentando a eficiência operacional.
+            </p>
+        </div>
+
+        <div class="bloco-essencia">
+            <h3 class="subtitulo-bloco">Nossa essência</h3>
+
+            <div class="grade-pilares">
+
+                <div class="cartao-pilar">
+                    <div class="icone-pilar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"></circle>
+                            <line x1="12" y1="8" x2="12" y2="12"></line>
+                            <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                        </svg>
+                    </div>
+                    <h4 class="nome-pilar">Missão</h4>
+                    <p class="descricao-pilar">
+                        Entregar monitoramento proativo para que equipes possam antecipar falhas,
+                        reduzir downtime e focar em crescimento.
+                    </p>
+                </div>
+
+                <div class="cartao-pilar">
+                    <div class="icone-pilar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                    </div>
+                    <h4 class="nome-pilar">Visão</h4>
+                    <p class="descricao-pilar">
+                        Ser a plataforma de confiança para operações digitais - onde dados se
+                        tornam ações preventivas, não apenas relatórios.
+                    </p>
+                </div>
+
+                <div class="cartao-pilar">
+                    <div class="icone-pilar">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polygon
+                                points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2">
+                            </polygon>
+                        </svg>
+                    </div>
+                    <h4 class="nome-pilar">Valores</h4>
+                    <p class="descricao-pilar">
+                        Confiança, clareza e prevenção - tudo feito com engenharia rigorosa e
+                        atendimento próximo.
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+
+    <section class="secao-historia" id="nossa-historia">
+
+        <div class="cabecalhos-secundarios">
+            <h2 class="titulos-secundarios">Nossa história</h2>
+        </div>
+
+        <div class="conteudo-historia">
+
+
+            <div class="bloco-texto-historia">
+                <div class="cartao-historia">
+                    <h3 class="titulo-cartao-historia">De incidentes para prevenção</h3>
+                    <p class="paragrafo-historia">
+                        A AirPulse nasceu
+                        de uma necessidade real no mercado aeroespacial: transformar a gestão do tempo de resposta
+                        e mitigar o impacto financeiro de falhas nos computadores de gerenciamento de voo (FMC).
+                        O que começou como um projeto universitário focado na análise preditiva e monitoramento
+                        de hardware evoluiu para uma solução de arquitetura robusta e em tempo real.<br>
+
+                        <br>Nossa missão é mudar o paradigma da manutenção aeronáutica, migrando o foco de incidentes
+                        corretivos para a prevenção inteligente, direcionando nossa tecnologia especificamente
+                        para as empresas fabricantes desses computadores bordo.<br>
+
+                        <br>Hoje, ajudamos nossos parceiros a monitorar a infraestrutura de maneira altamente proativa e
+                        customizável, identificando desvios e riscos precocemente, antes mesmo que afetem as
+                        operações das companhias aéreas.
+                    </p>
+                </div>
+            </div>
+
+            <div class="imagem-historia">
+                <img src="assets/imgs/aviao-sobre-nos.webp" alt="Infraestrutura de datacenter AirPulse"
+                    class="foto-historia">
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--Diferenciais-->
+    <section class="secao-diferenciais" id="diferenciais">
+
+        <div class="cabecalhos-secundarios">
+            <h2 class="titulos-secundarios">Diferenciais</h2>
+            <p class="subtitulo-diferenciais">O que torna a AirPulse diferente no mercado de monitoramento.</p>
+        </div>
+
+        <div class="grade-diferenciais">
+
+            <div class="cartao-diferencial">
+                <div class="icone-diferencial">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+                    </svg>
+                </div>
+                <h3 class="nome-diferencial">Detecção proativa</h3>
+                <p class="descricao-diferencial">
+                    Identificamos anomalias antes que se tornem incidentes, reduzindo downtime e custos de recuperação.
+                </p>
+            </div>
+
+            <div class="cartao-diferencial">
+                <div class="icone-diferencial">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                    </svg>
+                </div>
+                <h3 class="nome-diferencial">Segurança e confiabilidade</h3>
+                <p class="descricao-diferencial">
+                    Implementações rigorosas em segurança da informação e SLAs claros para operações críticas.
+                </p>
+            </div>
+
+            <div class="cartao-diferencial">
+                <div class="icone-diferencial">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                </div>
+                <h3 class="nome-diferencial">ROI claro</h3>
+                <p class="descricao-diferencial">
+                    Modelos de economia transparentes para que você veja o impacto financeiro real da prevenção.
+                </p>
+            </div>
+
+        </div>
+
+    </section>
+
+    <!--contato-->
+    <section class="secao-cta" id="secao-cta">
+
+        <div class="rotulo-secao">
+            <span class="linha-rotulo"></span>
+            <span class="texto-rotulo">ENTRE EM CONTATO</span>
+            <span class="linha-rotulo"></span>
+        </div>
+
+        <div class="cabecalhos-principais">
+            <h2 class="titulos-principais">
+                Comece a <span class="destaque-azul">Monitorar</span> sua frota
+            </h2>
+        </div>
+
+        <div class="corpo-entre-contato">
+            <div class="fluxoCadastro">
+                <div class="titulos-principais-contato">Como cadastrar sua empresa</div>
+                <img class="imagem-fluxo-cadastro" src="assets/imgs/fluxoCadastro.png" alt="">
+            </div>
+
+            <div class="boxContato">
+                <div id="boxTituloContato">
+                    <div class="titulo-cta">Pronto para voar com mais segurança?</div>
+                    <div class="titulo-cta">Fale conosco!</div>
+                </div>
+
+                <div class="descricao-cta">Entre em contato e garanta o cadastro
+                    da sua empresa para começar a monitorar seus computadores
+                    embarcados.</div>
+
+                <div class="item-contato">
+                    <p class="rotulo-contato">Email para contato:</p>
+                    <button id="btnEmail" class="botao-cta-primario">
+                        air.pulse@airpulse.com</button>
+                </div>
+
+                <div class="item-contato">
+                    <p class="rotulo-contato">Telefone para contato:</p>
+                    <button id="btnTelefone" class="botao-cta-primario">
+                        (11) 99999-9999</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+    <footer class="footer" id="contato">
+
+        <div class="conteudo-footer">
+
+            <div class="coluna-marca">
+                <span class="nome-marca-footer">AirPulse</span>
+                <p class="descricao-marca-footer">
+                    Inteligência para o monitoramento de computadores embarcados aeronáuticos.
+                </p>
+                <span class="localizacao-footer">São Paulo — Brasil</span>
+            </div>
+
+            <div class="coluna-links-footer">
+                <h4 class="titulo-coluna-footer">EMPRESA</h4>
+                <a href="#" class="link-footer">Início</a>
+                <a href="#sobre-nos" class="link-footer">Sobre Nós</a>
+                <a href="#nosso-servico" class="link-footer">Serviço</a>
+                <a href="#secao-cta" class="link-footer">Contato</a>
+            </div>
+
+            <div class="coluna-links-footer">
+                <h4 class="titulo-coluna-footer">ACESSO</h4>
+                <a href="login.html" class="link-footer">Login</a>
+                <a href="#secao-cta" class="link-footer">Entrar em contato</a>
+                <a href="#" class="link-footer">Suporte</a>
+            </div>
+
+        </div>
+
+        <div class="barra-inferior-footer">
+            <p class="texto-direitos">© 2026 AirPulse. Todos os direitos reservados.</p>
+            <span class="versao-footer">v2.0.0</span>
+        </div>
+
+    </footer>
+</body>
+
+</html>

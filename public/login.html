@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AirPulse - Entrar na conta</title>
+    <link rel="icon" type="image/png" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/login.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="js/login.js" type="module" defer></script>
+</head>
+<body>
+    <div class="login-page-container">
+        <div class="login-left-panel">
+            <div class="login-left-panel-decoration">
+                <div class="login-decoration-circle login-decoration-circle-1"></div>
+                <div class="login-decoration-circle login-decoration-circle-2"></div>
+            </div>
+            <div class="login-left-panel-content">
+                <div class="login-brand">
+                    <img src="assets/AirPulse_Logo_Pack/Fundo%20transparente/07_Principal_Branco.svg" alt="AirPulse Logo" class="airpulse-logo">
+                </div>
+                <div class="login-left-panel-middle">
+                    <h1 class="login-welcome-title">Bem-vindo de<br>volta à plataforma</h1>
+                    <p class="login-welcome-description">Acesse o painel de monitoramento dos seus computadores embarcados e acompanhe tudo em tempo real.</p>
+                    <div class="login-features-list">
+                        <div class="login-feature-item">
+                            <div class="login-feature-icon">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span>Monitoramento de CPU, RAM e armazenamento</span>
+                        </div>
+                        <div class="login-feature-item">
+                            <div class="login-feature-icon">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span>Alertas em tempo real</span>
+                        </div>
+                        <div class="login-feature-item">
+                            <div class="login-feature-icon">
+                                <i class="fa-solid fa-check"></i>
+                            </div>
+                            <span>Relatórios e histórico completo</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="login-right-panel">
+            <div class="login-right-panel-content">
+                <div class="login-brand login-brand-dark">
+                    <img src="assets/AirPulse_Logo_Pack/Fundo%20transparente/05_Principal_Azul_Profundo.svg" alt="AirPulse Logo" class="airpulse-logo">
+                </div>
+                <div class="login-form-header">
+                    <h2>Entrar na conta</h2>
+                    <p>Acesse a sua plataforma de monitoramento.</p>
+                </div>
+                <form class="login-form" id="loginForm" novalidate>
+                    <div class="login-form-group">
+                        <label for="emailInput">E-mail corporativo</label>
+                        <input type="email" id="emailInput" placeholder="nome@empresa.aero" required>
+                        <span class="login-error-message" id="emailError"></span>
+                    </div>
+                    <div class="login-form-group">
+                        <div class="login-form-group-label-row">
+                            <label for="passwordInput">Senha</label>
+                        </div>
+                        <input type="password" id="passwordInput" placeholder="••••••••" required>
+                        <span class="login-error-message" id="passwordError"></span>
+                    </div>
+                    <button type="submit" class="login-submit-button" id="loginSubmitButton">Entrar na plataforma</button>
+                </form>
+                <div class="login-divider"></div>
+                <a href="index.html" class="login-back-link">← Voltar ao site</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

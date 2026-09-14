@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/cadastro_funcionario.css">
+    <title>AirPulse - Cadastro de Funcionário</title>
+</head>
+
+<body>
+
+    <div class="app-layout">
+
+        <!-- Menu Lateral (Sidebar) — Empresa cliente (gestor/funcionário) -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a class="sidebar-brand" href="home.html">
+                    <img class="brand-logo-full" src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                    <span class="brand-badge">Área do Cliente</span>
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <div class="nav-section-label">PAINEL DE CONTROLE</div>
+
+                <div class="nav-item disabled">
+                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="9"></rect>
+                        <rect x="14" y="3" width="7" height="5"></rect>
+                        <rect x="14" y="12" width="7" height="9"></rect>
+                        <rect x="3" y="16" width="7" height="5"></rect>
+                    </svg>
+                    <span>Dashboard</span>
+                    <span class="nav-item-badge">Em breve</span>
+                </div>
+
+                <div class="nav-item disabled">
+                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="2"></rect><path d="M9 9h6v6H9z"></path></svg>
+                    <span>Componentes</span>
+                    <span class="nav-item-badge">Em breve</span>
+                </div>
+
+                <div class="nav-section-label">GESTÃO DE EQUIPE</div>
+
+                <a href="cadastro_funcionario.html" class="nav-item active" id="itemCadastrarFuncionario">
+                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    <span>Cadastrar Funcionário</span>
+                </a>
+
+                <div class="nav-section-label">SUPORTE & AIRPULSE</div>
+
+                <div class="nav-item disabled">
+                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+                    <span>Chamados & Suporte</span>
+                    <span class="nav-item-badge">Em breve</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar" id="userAvatar">--</div>
+                    <div class="user-details">
+                        <span class="user-name" id="userNameDisplay">Usuário</span>
+                        <span class="user-role" id="userRoleDisplay">Gestor da Empresa</span>
+                    </div>
+                </div>
+
+                <button class="btn-logout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+        <!-- Área Principal de Conteúdo -->
+        <div class="main-wrapper">
+
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        ☰
+                    </button>
+                    <span class="topbar-title">Cadastro de Funcionário</span>
+                </div>
+
+                <div class="topbar-right">
+                    <a class="btn-back-home" href="home.html">Voltar à Home</a>
+                </div>
+            </header>
+
+            <main>
+                <div class="card_erro" id="cardErro">
+                    <span id="mensagem_erro"></span>
+                </div>
+
+                <div class="container-cadastro">
+                    <div class="box-cadastro">
+                        <h1 class="titulo-cadastro">Cadastro de Funcionário</h1>
+                        <form class="form-cadastro" id="form-cadastro">
+                            <div class="input-group">
+                                <label for="nome">Nome</label>
+                                <input type="text" id="nome" placeholder="Nome completo">
+                            </div>
+                            <div class="form-grid">
+
+                                <div class="input-group">
+                                    <label for="email">Email Corporativo</label>
+                                    <input type="email" id="email" placeholder="nome@empresa.aero">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="data-nascimento">Data de Nascimento</label>
+                                    <input type="date" id="data_nascimento" placeholder="DD/MM/AAAA">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="cpf">CPF</label>
+                                    <input type="text" id="cpf" placeholder="000.000.000-00">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="telefone">Telefone</label>
+                                    <input type="text" id="telefone" placeholder="(11) 90000-0000">
+                                </div>
+
+                                <div class="input-group">
+                                    <label for="cargo">Cargo*</label>
+                                    <select id="cargo" name="cargo" required class="select-cargo">
+                                        <option value="">Selecione</option>
+                                        <option>Administrador</option>
+                                        <option>Gestor de operações</option>
+                                        <option>Engenheiro de sistemas</option>
+                                        <option>Analista de monitoramento</option>
+                                        <option>Outro</option>
+                                    </select>
+                                </div>
+                                <div class="input-group">
+                                    <label for="senha">Senha</label>
+                                    <input type="password" id="senha" placeholder="Mínimo 8 caracteres">
+                                </div>
+                            </div>
+
+                            <div class="form-actions">
+                                <button type="button" class="btn-voltar" onclick="voltar()">Voltar</button>
+                                <button type="button" class="btn-proximo" onclick="cadastrar()">Cadastrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+    <script src="js/sessao.js"></script>
+    <script src="js/app-shell.js"></script>
+    <script src="js/cadastro_funcionario.js"></script>
+</body>
+
+</html>

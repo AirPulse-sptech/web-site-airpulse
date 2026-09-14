@@ -1,0 +1,411 @@
+/*
+   As variáveis de cor/fonte da marca (--color-primary, --text-primary,
+   --bg-input, --border-soft etc.) agora vêm de css/global.css, que deve
+   ser carregado antes deste arquivo. Aqui ficam só variáveis específicas
+   desta página.
+*/
+:root {
+    --bg-main: var(--bg-surface);
+    --bg-panel-dark: var(--color-primary-dark);
+
+    /* DECORAÇÃO */
+    --decoration-circle: rgba(255, 255, 255, 0.06);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    min-width: none;
+    min-height: 0;
+}
+
+html {
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    background-color: var(--bg-main);
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-weight: 400;
+    height: 100%;
+    overflow: hidden;
+}
+
+a {
+    text-decoration: none;
+}
+
+button {
+    font-family: var(--font-body);
+    border: none;
+}
+
+/* CONTAINER PRINCIPAL */
+.login-page-container {
+    display: flex;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+}
+
+/* PAINEL ESQUERDO */
+.login-left-panel {
+    width: 42%;
+    background-color: var(--bg-panel-dark);
+    background-image: var(--gradient-brand);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-shrink: 0;
+}
+
+.login-left-panel-decoration {
+    position: absolute;
+    inset: 0;
+
+    .login-decoration-circle {
+        position: absolute;
+        border-radius: 50%;
+        background-color: var(--decoration-circle);
+    }
+
+    .login-decoration-circle-1 {
+        width: 500px;
+        height: 500px;
+        top: -150px;
+        left: -150px;
+    }
+
+    .login-decoration-circle-2 {
+        width: 350px;
+        height: 350px;
+        bottom: -100px;
+        right: -80px;
+    }
+}
+
+.login-left-panel-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 1rem;
+    width: 100%;
+    height: 100%;
+    padding: clamp(1.25rem, 5vh, 3rem) clamp(1.75rem, 3.5vw, 3.5rem);
+    padding-bottom: 6rem;
+    position: relative;
+    z-index: 1;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.airpulse-logo {
+    height: 70px;
+}
+
+.login-left-panel-middle {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(.75rem, 2.5vh, 1.5rem);
+    min-height: 0;
+}
+
+/* MARCA (LOGO) */
+.login-brand {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    color: var(--text-on-dark);
+
+    span {
+        font-family: var(--font-heading);
+        font-size: 20px;
+        font-weight: 700;
+    }
+
+    .login-brand-icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        background-color: rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+            font-size: 15px;
+        }
+    }
+}
+
+.login-brand-dark {
+    color: var(--text-primary);
+
+    .login-brand-icon {
+        background-color: var(--bg-input);
+        color: var(--color-primary);
+    }
+}
+
+.login-welcome-title {
+    font-family: var(--font-heading);
+    font-size: clamp(22px, 3.4vh, 38px);
+    font-weight: 800;
+    line-height: 1.25;
+    color: var(--text-on-dark);
+}
+
+.login-welcome-description {
+    font-size: clamp(12px, 1.7vh, 15px);
+    line-height: 1.6;
+    color: var(--text-on-dark-secondary);
+    max-width: 90%;
+}
+
+.login-features-list {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(.4rem, 1.3vh, .9rem);
+    margin-top: .5rem;
+}
+
+.login-feature-item {
+    display: flex;
+    align-items: center;
+    gap: .75rem;
+
+    span {
+        font-size: 14px;
+        color: var(--text-on-dark);
+    }
+
+    .login-feature-icon {
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+
+        i {
+            font-size: 10px;
+            color: var(--text-on-dark);
+        }
+    }
+}
+
+.login-testimonial-box {
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 10px;
+    padding: clamp(.6rem, 2vh, 1rem) 1.25rem;
+    background-color: rgba(255, 255, 255, 0.05);
+    flex-shrink: 0;
+
+    p {
+        font-size: clamp(11px, 1.5vh, 13px);
+        color: var(--text-on-dark-secondary);
+        line-height: 1.5;
+        font-style: italic;
+    }
+
+    span {
+        display: block;
+        margin-top: .6rem;
+        font-size: clamp(10px, 1.3vh, 12px);
+        color: var(--text-on-dark-secondary);
+        opacity: .7;
+    }
+}
+
+/* PAINEL DIREITO */
+.login-right-panel {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(1rem, 4vh, 2rem);
+    height: 100%;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.login-right-panel-content {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    gap: clamp(.9rem, 2.4vh, 1.75rem);
+}
+
+.login-form-header {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+
+    h2 {
+        font-family: var(--font-heading);
+        font-size: clamp(20px, 3.2vh, 26px);
+        font-weight: 800;
+        color: var(--text-primary);
+    }
+
+    p {
+        font-size: clamp(12px, 1.7vh, 14px);
+        color: var(--text-secondary);
+    }
+}
+
+.login-inline-link {
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+/* FORMULÁRIO */
+.login-form {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(.6rem, 1.8vh, 1.1rem);
+}
+
+.login-form-group {
+    display: flex;
+    flex-direction: column;
+    gap: .4rem;
+
+    label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text-primary);
+    }
+
+    input {
+        background-color: var(--bg-input);
+        border: 1px solid var(--border-soft);
+        border-radius: 8px;
+        padding: clamp(.5rem, 1.5vh, .75rem) .9rem;
+        font-size: 14px;
+        font-family: 'Inter', sans-serif;
+        color: var(--text-primary);
+        outline: none;
+        transition: border-color .2s ease-in-out;
+    }
+
+    input:focus {
+        border-color: var(--color-primary-light);
+    }
+}
+
+.login-error-message {
+    color: #ef4444;
+    font-size: 12px;
+    font-weight: 500;
+    margin-top: -0.1rem;
+    display: none;
+}
+
+.input-error {
+    border-color: #ef4444 !important;
+}
+
+.login-form-group-label-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .login-inline-link {
+        font-size: 12px;
+        font-weight: 500;
+    }
+}
+
+.login-checkbox-row {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+
+    label {
+        font-size: 13px;
+        color: var(--text-secondary);
+    }
+
+    input {
+        width: 15px;
+        height: 15px;
+        accent-color: var(--color-primary);
+    }
+}
+
+.login-submit-button {
+    background-color: var(--color-primary);
+    color: var(--text-on-dark);
+    padding: clamp(.6rem, 1.7vh, .85rem) 1rem;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: .4rem;
+    transition: all .2s ease-in-out;
+}
+
+.login-submit-button:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.login-divider {
+    width: 100%;
+    height: 1px;
+    background-color: var(--border-soft);
+}
+
+.login-secondary-buttons {
+    display: flex;
+    gap: .75rem;
+
+    a {
+        flex: 1;
+    }
+}
+
+.login-secondary-button {
+    width: 100%;
+    background-color: var(--bg-input);
+    color: var(--color-primary);
+    padding: clamp(.5rem, 1.4vh, .7rem) 1rem;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+}
+
+.login-secondary-button:hover {
+    background-color: var(--border-soft);
+}
+
+.login-back-link {
+    text-align: center;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+/* RESPONSIVO */
+@media (max-width: 900px) {
+    .login-left-panel {
+        display: none;
+    }
+
+    .login-right-panel {
+        width: 100%;
+    }
+}
+
+@media (max-width: 420px) {
+    .login-right-panel {
+        padding: 1.5rem 1.25rem;
+    }
+}

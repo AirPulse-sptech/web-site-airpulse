@@ -1,0 +1,665 @@
+/*
+   As cores de marca (--color-primary, --text-primary, --border-soft etc.)
+   agora vêm de css/global.css, que deve ser carregado antes deste arquivo.
+   Aqui ficam só o alias em português já usado no resto deste arquivo
+   (apontando pras variáveis centrais) e o que é específico desta página.
+*/
+:root {
+  --cor-primaria: var(--color-primary);
+  --cor-primaria-escura: var(--color-primary-dark);
+  --cor-texto: var(--text-primary);
+  --cor-texto-secundario: var(--text-secondary);
+  --cor-borda: var(--border-soft);
+  --fundo-campo: var(--bg-input);
+  --fundo-superficie: var(--bg-surface);
+  --fundo-pagina: var(--bg-page);
+  --azul-suave: var(--color-primary-soft);
+  --cor-erro: var(--color-error);
+  --cor-sucesso: var(--color-success);
+  --sombra-padrao: 0 18px 50px rgba(26, 35, 126, 0.1);
+}
+
+
+/* configuração geral */
+* {
+  box-sizing: border-box;
+}
+
+html {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  overflow-x: hidden;
+  color: var(--cor-texto);
+  background: var(--fundo-pagina);
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+
+/* A casca do app autenticado (sidebar, topbar, .main-wrapper) agora mora em
+   global.css, compartilhada por todas as páginas pós-login. Aqui ficam só
+   os estilos específicos desta página (formulário de cadastro de empresa). */
+
+/* Conteudo principal */
+main {
+  min-height: calc(100vh - 70px);
+  overflow: visible;
+}
+
+
+/* texto pequeno acima do titulo */
+.eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  flex-shrink: 0;
+  color: var(--cor-primaria);
+  font-size: 12px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.eyebrow::before,
+.eyebrow::after {
+  width: min(34vw, 500px);
+  height: 2px;
+  content: "";
+  background: var(--cor-primaria);
+}
+
+
+/* titulo da pagina */
+h1 {
+  margin: 8px 0 4px;
+  flex-shrink: 0;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: clamp(28px, 3vw, 40px);
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  margin: 0;
+  flex-shrink: 0;
+  color: var(--cor-texto-secundario);
+  text-align: center;
+  font-size: 15px;
+}
+
+
+/* barra com as etapas */
+.progress {
+  width: min(100%, 1100px);
+  margin: 16px auto;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  flex-shrink: 0;
+  list-style: none;
+}
+
+.progress li {
+  position: relative;
+  min-width: 0;
+  color: rgba(107, 114, 128, 0.6);
+  text-align: center;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* linha que liga uma etapa na outra */
+.progress li:not(:last-child)::after {
+  position: absolute;
+  z-index: 0;
+  top: 18px;
+  left: calc(50% + 25px);
+  width: calc(100% - 50px);
+  height: 2px;
+  content: "";
+  background: var(--cor-borda);
+}
+
+
+/* bolinha das etapas */
+.progress .circle {
+  position: relative;
+  z-index: 1;
+  width: 38px;
+  height: 38px;
+  margin: 0 auto 6px;
+  display: grid;
+  place-items: center;
+  border: 2px solid var(--cor-borda);
+  border-radius: 50%;
+  background: var(--fundo-pagina);
+  color: rgba(107, 114, 128, 0.65);
+  font-size: 14px;
+}
+
+
+/* etapa atual e etapas concluidas */
+.progress li.active,
+.progress li.done {
+  color: var(--cor-primaria);
+}
+
+.progress li.active .circle,
+.progress li.done .circle {
+  border-color: var(--cor-primaria);
+  background: var(--cor-primaria);
+  color: white;
+}
+
+.progress li.done:not(:last-child)::after {
+  background: var(--cor-primaria);
+}
+
+
+/* caixa principal do formulario */
+.card {
+  width: 100%;
+  height: auto;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  overflow: visible;
+  border: 1px solid var(--cor-borda);
+  border-radius: 20px;
+  background: var(--fundo-superficie);
+  box-shadow: var(--sombra-padrao);
+}
+
+
+/* cada etapa do cadastro */
+.step {
+  display: flex;
+  flex-direction: column;
+}
+
+.step[hidden] {
+  display: none !important;
+}
+
+
+/* titulo de cada etapa */
+h2 {
+  margin: 0 0 18px;
+  flex-shrink: 0;
+  font-family: var(--font-heading);
+  font-size: clamp(22px, 2vw, 27px);
+  letter-spacing: -0.02em;
+}
+
+
+/* organiza os campos em duas colunas */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px 28px;
+  flex: 1;
+  align-content: start;
+}
+
+.field.full {
+  grid-column: 1 / -1;
+}
+
+
+/* nomes dos campos */
+label {
+  display: inline-block;
+  margin-bottom: 5px;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.optional {
+  color: var(--cor-texto-secundario);
+  font-weight: 500;
+}
+
+
+/* inputs e selects */
+input,
+select {
+  width: 100%;
+  height: 50px;
+  padding: 0 18px;
+  border: 1px solid var(--border-medium);
+  border-radius: 13px;
+  outline: none;
+  background: var(--fundo-campo);
+  color: var(--cor-texto);
+  font-size: 15px;
+  transition:
+    border-color 0.2s,
+    box-shadow 0.2s,
+    background 0.2s;
+}
+
+input::placeholder {
+  color: #79819c;
+}
+
+
+/* quando o usuario clica no campo */
+input:focus,
+select:focus {
+  border-color: var(--cor-primaria);
+  background: white;
+  box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
+}
+
+
+/* erro nos campos */
+input.invalid,
+select.invalid {
+  border-color: var(--cor-erro);
+}
+
+.error {
+  min-height: 14px;
+  margin: 4px 0 0;
+  color: var(--cor-erro);
+  font-size: 12px;
+}
+
+
+/* campo de senha */
+.password-wrap {
+  position: relative;
+}
+
+.password-wrap input {
+  padding-right: 76px;
+}
+
+
+/* botão para mostrar a senha */
+.show-password {
+  position: absolute;
+  top: 50%;
+  right: 16px;
+  padding: 6px;
+  border: 0;
+  background: transparent;
+  color: var(--cor-primaria);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 700;
+  transform: translateY(-50%);
+}
+
+
+/* texto de ajuda abaixo dos campos */
+.helper {
+  margin: 5px 0 0;
+  color: var(--cor-texto-secundario);
+  font-size: 12px;
+}
+
+
+/* área dos botões */
+.actions {
+  margin-top: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  flex-shrink: 0;
+}
+
+
+/* estilo geral dos botões */
+.button {
+  min-width: 160px;
+  height: 48px;
+  padding: 0 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 750;
+  transition:
+    transform 0.15s,
+    background 0.2s,
+    box-shadow 0.2s;
+}
+
+.button:hover {
+  transform: translateY(-1px);
+}
+
+.button:focus-visible {
+  outline: 3px solid rgba(79, 70, 229, 0.28);
+  outline-offset: 3px;
+}
+
+
+/* botão de continuar */
+.button-primary {
+  margin-left: auto;
+  background: var(--cor-primaria);
+  color: white;
+  box-shadow: 0 10px 24px rgba(79, 70, 229, 0.22);
+}
+
+.button-primary:hover {
+  background: var(--cor-primaria-escura);
+}
+
+
+/* botão de voltar */
+.button-secondary {
+  border-color: var(--border-medium);
+  background: var(--azul-suave);
+  color: var(--cor-primaria);
+}
+
+
+/* parte de revisão dos dados */
+.review-title {
+  margin-bottom: 18px;
+  text-align: center;
+  font-family: var(--font-heading);
+  font-size: clamp(24px, 3vw, 32px);
+}
+
+.review-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  flex: 1;
+}
+
+
+/* cada bloco da revisão */
+.review-section {
+  position: relative;
+  padding: 18px;
+  border: 1px solid var(--border-soft);
+  border-radius: 15px;
+  background: var(--bg-soft);
+}
+
+.review-section.full {
+  grid-column: 1 / -1;
+}
+
+
+/* titulo dos blocos da revisão */
+.review-heading {
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+}
+
+.review-heading h3 {
+  margin: 0;
+  color: var(--cor-primaria);
+  font-size: 16px;
+}
+
+
+/* botão de editar na revisão */
+.edit-button {
+  padding: 6px 10px;
+  border: 1px solid var(--border-medium);
+  border-radius: 8px;
+  background: var(--azul-suave);
+  color: var(--cor-primaria);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 750;
+}
+
+
+/* dados mostrados na revisão */
+.review-list {
+  margin: 0;
+  display: grid;
+  grid-template-columns: 145px 1fr;
+  gap: 7px 12px;
+  font-size: 14px;
+}
+
+.review-list dt {
+  color: var(--cor-texto-secundario);
+}
+
+.review-list dd {
+  min-width: 0;
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-weight: 650;
+}
+
+
+/* tela depois que o cadastro termina */
+.success-screen {
+  margin: auto;
+  padding: 20px 10px;
+  text-align: center;
+}
+
+
+/* icone de sucesso */
+.success-icon {
+  width: 70px;
+  height: 70px;
+  margin: 0 auto 16px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: #e4fbf3;
+  color: var(--cor-sucesso);
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.success-screen h2 {
+  margin-bottom: 10px;
+  font-size: 28px;
+}
+
+.success-screen p {
+  max-width: 680px;
+  margin: 0 auto;
+  color: var(--cor-texto-secundario);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+
+/* ajustes para celular */
+/* Tablet e celular */
+@media (max-width: 768px) {
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .subtitle {
+    font-size: 14px;
+  }
+
+  .eyebrow {
+    gap: 10px;
+    font-size: 11px;
+  }
+
+  .eyebrow::before,
+  .eyebrow::after {
+    width: 18vw;
+  }
+
+  .progress {
+    margin: 20px auto;
+  }
+
+  .progress li {
+    font-size: 11px;
+  }
+
+  .progress .circle {
+    width: 34px;
+    height: 34px;
+  }
+
+  .progress li:not(:last-child)::after {
+    top: 16px;
+    left: calc(50% + 22px);
+    width: calc(100% - 44px);
+  }
+
+  .card {
+    width: 100%;
+    padding: 24px 20px;
+    overflow: visible;
+  }
+
+  .grid,
+  .review-grid,
+  .review-list {
+    grid-template-columns: 1fr;
+  }
+
+  .field.full,
+  .review-section.full {
+    grid-column: auto;
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+  }
+
+  .button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .button-primary {
+    margin-left: 0;
+  }
+}
+
+
+/* Celulares pequenos, incluindo 320px */
+@media (max-width: 400px) {
+  h1 {
+    font-size: 24px;
+    line-height: 1.15;
+  }
+
+  .subtitle {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+
+  .eyebrow {
+    gap: 6px;
+    font-size: 10px;
+  }
+
+  .eyebrow::before,
+  .eyebrow::after {
+    width: 12vw;
+  }
+
+  .progress {
+    width: 100%;
+    margin: 16px auto;
+  }
+
+  .progress li {
+    font-size: 9px;
+  }
+
+  .progress .circle {
+    width: 30px;
+    height: 30px;
+    font-size: 12px;
+  }
+
+  .progress li:not(:last-child)::after {
+    top: 14px;
+    left: calc(50% + 19px);
+    width: calc(100% - 38px);
+  }
+
+  .card {
+    padding: 18px 12px;
+    border-radius: 12px;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    min-width: 0;
+    font-size: 16px;
+  }
+
+  .actions {
+    gap: 10px;
+  }
+
+  .button {
+    padding: 12px 14px;
+    font-size: 14px;
+  }
+}
+
+
+/* Computador com janela minimizada na altura */
+@media (max-height: 750px) and (min-width: 769px) {
+  html,
+  body {
+    overflow-y: auto;
+  }
+
+  main {
+    height: auto;
+    min-height: calc(100dvh - 70px);
+    overflow: visible;
+  }
+
+  .card {
+    overflow: visible;
+  }
+}

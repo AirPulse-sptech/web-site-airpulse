@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AirPulse - Cadastro de Empresa</title>
+  <link rel="icon" href="assets/icon/logo-icon.png">
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/cadastro_empresa.css">
+</head>
+
+<body>
+
+  <div class="app-layout">
+
+    <!-- Menu Lateral (Sidebar) — Admin AirPulse -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <a class="sidebar-brand" href="cadastro_empresa.html">
+          <img class="brand-logo-full" src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+          <span class="brand-badge">Painel Interno</span>
+        </a>
+      </div>
+
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">PAINEL DE CONTROLE</div>
+
+        <div class="nav-item disabled">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="9"></rect>
+            <rect x="14" y="3" width="7" height="5"></rect>
+            <rect x="14" y="12" width="7" height="9"></rect>
+            <rect x="3" y="16" width="7" height="5"></rect>
+          </svg>
+          <span>Visão Geral</span>
+          <span class="nav-item-badge">Em breve</span>
+        </div>
+
+        <div class="nav-section-label">GESTÃO DE CLIENTES</div>
+
+        <a href="cadastro_empresa.html" class="nav-item active">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="8.5" cy="7" r="4"></circle><line x1="20" y1="8" x2="20" y2="14"></line><line x1="23" y1="11" x2="17" y2="11"></line></svg>
+          <span>Cadastrar Empresa</span>
+        </a>
+
+        <div class="nav-section-label">SUPORTE & AIRPULSE</div>
+
+        <div class="nav-item disabled">
+          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          <span>Chamados & Suporte</span>
+          <span class="nav-item-badge">Em breve</span>
+        </div>
+      </nav>
+
+      <!-- Rodapé do Menu com Usuário Logado e Botão Deslogar -->
+      <div class="sidebar-footer">
+        <div class="user-profile">
+          <div class="user-avatar">AP</div>
+          <div class="user-details">
+            <span class="user-name" id="userNameDisplay">Admin AirPulse</span>
+            <span class="user-role">Gestor Interno</span>
+          </div>
+        </div>
+
+        <button class="btn-logout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+          <span>Deslogar</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+    <!-- Área Principal de Conteúdo -->
+    <div class="main-wrapper">
+
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+            ☰
+          </button>
+          <span class="topbar-title">Módulo de Cadastramento de Clientes</span>
+        </div>
+      </header>
+
+      <main>
+
+        <div class="eyebrow">Painel Interno AirPulse</div>
+
+        <h1>Cadastrar Nova Empresa Cliente</h1>
+
+        <p class="subtitle">
+          Preencha as informações da empresa cliente para liberarmos o acesso à plataforma AirPulse.
+        </p>
+
+        <ol class="progress" id="progress">
+          <li class="active" data-progress="1">
+            <span class="circle">1</span>
+            <span>Dados da empresa</span>
+          </li>
+
+          <li data-progress="2">
+            <span class="circle">2</span>
+            <span>Endereço</span>
+          </li>
+
+          <li data-progress="3">
+            <span class="circle">3</span>
+            <span>Responsável</span>
+          </li>
+
+          <li data-progress="4">
+            <span class="circle">4</span>
+            <span>Confirmação</span>
+          </li>
+        </ol>
+
+        <form id="company-form" novalidate>
+
+          <section class="card step" data-step="1">
+            <h2>Dados da empresa</h2>
+
+            <div class="grid">
+
+              <div class="field full">
+                <label for="razao-social">Razão social *</label>
+                <input id="razao-social" name="razao_social" type="text"
+                  placeholder="Nome completo da empresa" required>
+                <p class="error" data-error="razao_social"></p>
+              </div>
+
+              <div class="field">
+                <label for="nome-fantasia">
+                  Nome fantasia <span class="optional">(opcional)</span>
+                </label>
+                <input id="nome-fantasia" name="nome_fantasia" type="text"
+                  placeholder="Nome comercial">
+                <p class="error" data-error="nome_fantasia"></p>
+              </div>
+
+              <div class="field">
+                <label for="cnpj">CNPJ *</label>
+                <input id="cnpj" name="cnpj" type="text" maxlength="18"
+                  placeholder="00.000.000/0001-00" required>
+                <p class="error" data-error="cnpj"></p>
+              </div>
+
+              <div class="field">
+                <label for="segmento">Segmento de atuação *</label>
+
+                <select id="segmento" name="segmento" required>
+                  <option value="">Selecione o segmento</option>
+                  <option>Fabricante de sistemas embarcados</option>
+                  <option>Fabricante de aeronaves</option>
+                  <option>Manutenção aeronáutica</option>
+                  <option>Operador aéreo</option>
+                  <option>Outro</option>
+                </select>
+
+                <p class="error" data-error="segmento"></p>
+              </div>
+
+              <div class="field">
+                <label for="website">
+                  Website <span class="optional">(opcional)</span>
+                </label>
+                <input id="website" name="website" type="url"
+                  placeholder="https://empresa.com.br">
+                <p class="error" data-error="website"></p>
+              </div>
+
+              <div class="field full">
+                <label for="email-empresa">E-mail corporativo da empresa *</label>
+                <input id="email-empresa" name="email_empresa" type="email"
+                  placeholder="contato@empresa.aero" required>
+                <p class="error" data-error="email_empresa"></p>
+              </div>
+
+            </div>
+          </section>
+
+          <section class="card step" data-step="2" hidden>
+            <h2>Endereço</h2>
+
+            <div class="grid">
+
+              <div class="field">
+                <label for="cep">CEP *</label>
+                <input id="cep" name="cep" type="text" maxlength="9"
+                  placeholder="00000-000" required>
+                <p class="error" data-error="cep"></p>
+              </div>
+
+              <div class="field full">
+                <label for="logradouro">Logradouro *</label>
+                <input id="logradouro" name="logradouro" type="text"
+                  placeholder="Rua, avenida, alameda..." required>
+                <p class="error" data-error="logradouro"></p>
+              </div>
+
+              <div class="field">
+                <label for="bairro">Bairro *</label>
+                <input id="bairro" name="bairro" type="text"
+                  placeholder="Bairro" required>
+                <p class="error" data-error="bairro"></p>
+              </div>
+
+              <div class="field">
+                <label for="numero">Número *</label>
+                <input id="numero" name="numero" type="text"
+                  placeholder="123 ou S/N" required>
+                <p class="error" data-error="numero"></p>
+              </div>
+
+              <div class="field">
+                <label for="estado">Estado *</label>
+
+                <select id="estado" name="estado" required>
+                  <option value="">UF</option>
+                  <option value="AC">AC</option>
+                  <option value="AL">AL</option>
+                  <option value="AP">AP</option>
+                  <option value="AM">AM</option>
+                  <option value="BA">BA</option>
+                  <option value="CE">CE</option>
+                  <option value="DF">DF</option>
+                  <option value="ES">ES</option>
+                  <option value="GO">GO</option>
+                  <option value="MA">MA</option>
+                  <option value="MT">MT</option>
+                  <option value="MS">MS</option>
+                  <option value="MG">MG</option>
+                  <option value="PA">PA</option>
+                  <option value="PB">PB</option>
+                  <option value="PR">PR</option>
+                  <option value="PE">PE</option>
+                  <option value="PI">PI</option>
+                  <option value="RJ">RJ</option>
+                  <option value="RN">RN</option>
+                  <option value="RS">RS</option>
+                  <option value="RO">RO</option>
+                  <option value="RR">RR</option>
+                  <option value="SC">SC</option>
+                  <option value="SP">SP</option>
+                  <option value="SE">SE</option>
+                  <option value="TO">TO</option>
+                </select>
+
+                <p class="error" data-error="estado"></p>
+              </div>
+
+              <div class="field">
+                <label for="cidade">Cidade *</label>
+                <input id="cidade" name="cidade" type="text"
+                  placeholder="São Paulo" required>
+                <p class="error" data-error="cidade"></p>
+              </div>
+
+            </div>
+          </section>
+
+          <section class="card step" data-step="3" hidden>
+            <h2>Responsável pela conta</h2>
+
+            <div class="grid">
+
+              <div class="field full">
+                <label for="responsavel">Nome completo *</label>
+                <input id="responsavel" name="responsavel" type="text"
+                  placeholder="Nome e sobrenome" required>
+                <p class="error" data-error="responsavel"></p>
+              </div>
+
+              <div class="field">
+                <label for="email-responsavel">E-mail corporativo *</label>
+                <input id="email-responsavel" name="email_responsavel" type="email"
+                  placeholder="nome@empresa.aero" required>
+                <p class="error" data-error="email_responsavel"></p>
+              </div>
+
+              <div class="field">
+                <label for="telefone">Telefone *</label>
+                <input id="telefone" name="telefone" type="tel" maxlength="15"
+                  placeholder="(11) 90000-0000" required>
+                <p class="error" data-error="telefone"></p>
+              </div>
+
+              <div class="field">
+                <label for="cargo">Cargo *</label>
+
+                <select id="cargo" name="cargo" required>
+                  <option value="">Selecione o cargo</option>
+                  <option>Administrador</option>
+                  <option>Gestor de operações</option>
+                  <option>Engenheiro de sistemas</option>
+                  <option>Analista de monitoramento</option>
+                  <option>Outro</option>
+                </select>
+
+                <p class="error" data-error="cargo"></p>
+              </div>
+
+              <div class="field">
+                <label for="cpf">CPF *</label>
+                <input id="cpf" name="cpf" type="text" maxlength="14"
+                  placeholder="000.000.000-00" required>
+                <p class="error" data-error="cpf"></p>
+              </div>
+
+              <div class="field">
+                <label for="senha">Senha *</label>
+
+                <div class="password-wrap">
+                  <input id="senha" name="senha" type="password" minlength="8"
+                    placeholder="Crie uma senha" required>
+
+                  <button class="show-password" type="button" data-password="senha">
+                    Mostrar
+                  </button>
+                </div>
+
+                <p class="helper">Mínimo de 8 caracteres, com letra e número.</p>
+                <p class="error" data-error="senha"></p>
+              </div>
+
+              <div class="field">
+                <label for="confirmar-senha">Confirmar senha *</label>
+
+                <div class="password-wrap">
+                  <input id="confirmar-senha" name="confirmar_senha" type="password"
+                    placeholder="Repita a senha" required>
+
+                  <button class="show-password" type="button" data-password="confirmar-senha">
+                    Mostrar
+                  </button>
+                </div>
+
+                <p class="helper">&nbsp;</p>
+                <p class="error" data-error="confirmar_senha"></p>
+              </div>
+
+            </div>
+          </section>
+
+          <section class="card step" data-step="4" hidden>
+            <h2 class="review-title">Confirme os dados informados</h2>
+            <div class="review-grid" id="review-content"></div>
+          </section>
+
+          <section class="card step" data-step="5" hidden>
+            <div class="success-screen">
+              <div class="success-icon">✓</div>
+              <h2>Cadastro concluído!</h2>
+              <p>
+                A empresa foi cadastrada com sucesso. Os dados foram salvos no sistema AirPulse.
+              </p>
+            </div>
+          </section>
+
+          <div class="actions" id="actions">
+            <button class="button button-secondary" id="back-button" type="button" hidden>
+              🠔 Voltar
+            </button>
+
+            <button class="button button-primary" id="next-button" type="button">
+              Próximo passo ➔
+            </button>
+          </div>
+
+        </form>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script src="js/sessao.js"></script>
+  <script src="js/app-shell.js"></script>
+  <script src="js/cadastro_empresa.js"></script>
+</body>
+</html>

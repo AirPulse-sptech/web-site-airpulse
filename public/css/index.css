@@ -1,0 +1,713 @@
+/* Fontes já importadas centralmente em global.css (Inter + Sora) */
+
+* {
+    padding: 0%;
+    margin: 0%;
+    box-sizing: border-box;
+    font-family: var(--font-body);
+}
+
+/*Banner-----------------------------------------------------------------*/
+
+#bannerIndex {
+    background-image:
+        linear-gradient(to right,
+            #ffffff 0%,
+            #ffffff 35%,
+            rgba(255, 255, 255, 0) 65%),
+        url('../assets/imgs/aviao-banner.jpg');
+    width: 100%;
+    height: 600px;
+    max-height: 88vh;
+    background-size: cover;
+    background-position: center right;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    border-bottom: 5px solid var(--bg-soft);
+}
+
+#tituloBanner {
+    font-family: var(--font-heading);
+    color: var(--color-primary);
+    font-size: 20px;
+    margin-left: 5%;
+    font-weight: 800;
+}
+
+#slogan {
+    font-family: var(--font-heading);
+    font-size: 50px;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 20px;
+    max-width: 450px;
+    margin-left: 5%;
+    margin-right: auto;
+}
+
+.destaque-banner {
+    color: var(--color-primary);
+}
+
+.subtituloBanner {
+    font-size: 15px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+    max-width: 400px;
+    margin-left: 5%;
+}
+
+.cadastro-pelo-banner {
+    display: flex;
+    flex-direction: row;
+    margin-left: 5%;
+}
+
+/*Beneficios ----------------------------------------------------------- */
+
+.grade-pilares-beneficios {
+     display: grid;
+   
+  grid-template-columns: repeat(
+     auto-fit,
+     minmax(240px, 1fr)
+  );
+}
+
+.posicao-grade-beneficios {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: 24px;
+    padding: 55px 55px;
+    border-right: 2px solid var(--bg-soft);
+    border-top: 2px solid var(--bg-soft);
+}
+
+.icone-pilar-beneficios {
+    width: 100px;
+    height: 55px;
+    background-color: var(--color-primary-soft);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: var(--color-primary-dark);
+}
+
+/* LOGIN----------------------------------------------------------------- */
+
+#divLogin {
+    width: 100%;
+    height: 550px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#boxLogin {
+    width: 500px;
+    height: 300px;
+    border-radius: 20px;
+    background-color: #1800ad;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.titulo-login-cadastro {
+    color: white;
+    font-size: 35px;
+}
+
+.ipt-login-cadastro {
+    width: 250px;
+    height: 30px;
+    border: none;
+    border-radius: 20px;
+}
+
+#btn-login {
+    width: 100px;
+    height: 40px;
+    background-color: white;
+    color: black;
+    border-radius: 20px;
+    border: 1px solid black;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+
+.texto-ipt {
+    color: white;
+}
+
+
+/* scroll-behavior: smooth já definido globalmente em global.css */
+
+.secao-nosso-servico {
+    background-color: var(--bg-soft);
+    padding: 80px 120px;
+}
+
+.secao-como-funciona {
+    background-color: white;
+    padding: 80px 120px;
+}
+
+.secao-sobre-nos {
+    background-color: var(--bg-soft);
+    padding: 80px 120px;
+}
+
+/* Rótulos----------------------------------------------------------- */
+.rotulo-secao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 40px;
+}
+
+.linha-rotulo {
+    display: block;
+    width: 80px;
+    height: 1px;
+    background-color: var(--color-primary-light);
+}
+
+.texto-rotulo {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--color-primary);
+    /*impede de quebrar o texto*/
+    white-space: nowrap;
+}
+
+
+/* Cabeçalhos e subtitulos ----------------------------------------------- */
+.cabecalhos-principais {
+    text-align: center;
+    margin-bottom: 60px;
+}
+
+.cabecalhos-secundarios {
+    margin-bottom: 40px;
+}
+
+.titulos-secundarios {
+    font-family: var(--font-heading);
+    font-size: 30px;
+    font-weight: 800;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.titulos-principais {
+    font-family: var(--font-heading);
+    font-size: 36px;
+    font-weight: 800;
+    color: var(--text-primary);
+    line-height: 1.2;
+    margin-bottom: 20px;
+    max-width: 650px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.titulos-principais-contato {
+    font-family: var(--font-heading);
+    font-size: 25px;
+    font-weight: 800;
+    color: var(--color-primary);
+    line-height: 1.25;
+    margin-bottom: 20px;
+    max-width: 680px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.destaque-azul {
+    color: var(--color-primary);
+}
+
+
+.descricao-principal {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 540px;
+    margin: 0 auto;
+    line-height: 1.7;
+}
+
+
+.bloco-essencia {
+    margin-top: 80px;
+}
+
+.subtitulo-bloco {
+    font-family: var(--font-heading);
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 8px;
+}
+
+.texto-bloco {
+    font-size: 17px;
+    color: var(--text-secondary);
+    margin-bottom: 32px;
+}
+
+
+.grade-pilares {
+    margin-top: 1%;
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(
+    auto-fit,
+    minmax(150px, 1fr)
+  );
+}
+
+.diagrama-negocio {
+    height: 10%;
+    width: 75%;
+    border: 3px solid var(--color-primary);
+}
+
+ .diagrama-negocio-vertical {
+        display: none;
+    }
+
+.ajuste-diagrama-negocio {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+
+.cartao-pilar {
+    flex: 1;
+    background-color: white;
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 28px 24px;
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.cartao-pilar:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 28px rgba(79, 70, 229, 0.15);
+}
+
+.icone-pilar {
+    width: 44px;
+    height: 44px;
+    background-color: var(--color-primary);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: var(--color-white);
+}
+
+.nome-pilar {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.descricao-pilar {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+
+/*historia---------------------------------------------------*/
+
+.secao-historia {
+    background-color: var(--bg-surface);
+    padding: 80px 120px;
+    border-top: 1px solid var(--border-soft);
+}
+
+.subtitulo-historia {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.conteudo-historia {
+    display: flex;
+    flex-direction: row;
+    gap: 48px;
+    align-items: flex-start;
+}
+
+.bloco-texto-historia {
+    flex: 1;
+}
+
+.cartao-historia {
+    background-color: var(--bg-soft);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 32px;
+    transition: box-shadow 0.25s;
+}
+
+.cartao-historia:hover {
+    box-shadow: 0 8px 24px rgba(79, 70, 229, 0.12);
+}
+
+.titulo-cartao-historia {
+    font-family: var(--font-heading);
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 12px;
+}
+
+.paragrafo-historia {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 24px;
+    text-align: justify;
+}
+
+
+.imagem-historia {
+    flex: 1;
+    border-radius: 12px;
+    overflow: hidden;
+    transition: box-shadow 0.25s;
+}
+
+.imagem-historia:hover {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
+}
+
+.foto-historia {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 12px;
+    display: block;
+}
+
+/*diferenciais ----------------------------------------------------------*/
+
+.secao-diferenciais {
+    background-color: var(--bg-soft);
+    padding: 80px 120px;
+}
+
+.subtitulo-diferenciais {
+    font-size: 14px;
+    color: var(--text-secondary);
+}
+
+.grade-diferenciais {
+    margin-top: 1%;
+    display: grid;
+    gap: 24px;
+    grid-template-columns: repeat(
+     auto-fit,
+     minmax(150px, 1fr)
+  );
+}
+
+.cartao-diferencial {
+    flex: 1;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    padding: 28px 24px;
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.cartao-diferencial:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 28px rgba(79, 70, 229, 0.15);
+}
+
+.icone-diferencial {
+    width: 44px;
+    height: 44px;
+    background-color: var(--color-primary-soft);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    color: var(--color-primary);
+}
+
+.nome-diferencial {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-bottom: 10px;
+}
+
+.descricao-diferencial {
+    font-size: 13px;
+    color: var(--text-secondary);
+    line-height: 1.65;
+}
+
+/*contato----------------------------------------------------*/
+
+.secao-cta {
+    background-color: var(--bg-soft);
+    padding: 40px 40px;
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+    
+}
+
+.corpo-entre-contato {
+    display: flex;
+    flex-direction: row;
+    gap: 48px;
+    align-items: flex-start;
+}
+
+.imagem-fluxo-cadastro{
+    border-radius: 1.5rem;
+    width: 100%;
+}
+
+.fluxoCadastro {
+    display: flex;
+    flex-direction: column;
+    align-items:center;
+}
+
+.boxContato {
+    display: flex;
+    flex-direction: column;
+    align-items:center; 
+    background: var(--gradient-brand);
+    border-radius: 20px;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(26, 35, 126, 0.35);
+    width: 50%;            
+    max-width: 800px;
+    box-sizing: border-box;
+    padding: clamp(10px, 5vh, 60px) clamp(10px, 6vw, 80px);
+    margin-top: 50px;
+}
+
+.titulo-cta {
+    font-family: var(--font-heading);
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--color-white);
+    margin-bottom: 16px;
+    line-height: 1.3;
+}
+
+.item-contato {
+    display: flex;
+    flex-direction: row;
+    align-items: center;       
+    justify-content: center;    
+    gap: 15px;                 
+    margin-bottom: 20px; 
+    } 
+    
+    .rotulo-contato {
+    font-size: 14px;
+    color: var(--text-on-dark-secondary);
+    margin: 0;                  
+    white-space: nowrap;       
+}
+
+.descricao-cta {
+    font-size: 14px;
+    color: var(--text-on-dark-secondary);
+    margin-bottom: 80px;
+    line-height: 1.7;
+    max-width: 540px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.botao-cta-primario {
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-primary);
+    border: 2px solid var(--color-white);
+    border-radius: 8px;
+    padding: 12px 28px;
+    
+    cursor: pointer;
+    transition: transform 0.25s, box-shadow 0.25s;
+}
+
+.botao-cta-primario:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 28px rgba(223, 221, 245, 0.206);
+}
+
+
+
+@media (max-width: 450px){
+#bannerIndex{
+     background-image:none;
+     height: auto;
+     min-height: 60vh;
+     justify-content: center;
+     gap: 28px;
+     padding: 40px 0;
+}
+
+#slogan{
+     font-size: 25px;
+}
+
+.titulos-principais{
+    font-size: 20px;
+    
+}
+
+.cabecalhos-principais{
+    width: 100%;
+}
+
+.titulos-secundarios{
+    font-size: 20px;
+}
+
+.subtitulo-bloco {
+    font-size: 20px;
+}
+
+.secao-nosso-servico { 
+    padding: 20px 20px;
+}
+
+.secao-como-funciona {
+    padding: 20px 20px;
+}
+
+.secao-sobre-nos {
+    padding: 20px 20px;
+}
+
+.secao-historia {
+    padding: 20px 20px;  
+}
+
+.secao-diferenciais {
+    padding: 20px 20px;
+}
+
+.secao-cta { 
+    padding: 20px 20px;  
+}
+
+.botao-cta-primario{
+    padding: 5px 5px;
+}
+
+.boxContato {
+   width: 100%;
+    padding: clamp(1px, 5vh, 60px) clamp(1px, 6vw, 80px);
+}
+
+.linha-rotulo {
+    display: none;
+}
+
+.posicao-grade-beneficios {
+    padding: 30px 24px;
+}
+
+.item-contato {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+}
+
+.botao-cta-primario {
+    width: 100%;
+}
+}
+
+
+@media (max-width: 900px) {
+    .secao-nosso-servico,
+    .secao-como-funciona,
+    .secao-sobre-nos,
+    .secao-historia,
+    .secao-diferenciais {
+        padding: 56px 40px;
+    }
+
+    .cabecalhos-principais {
+        margin-bottom: 40px;
+    }
+
+    .titulos-principais {
+        font-size: 28px;
+    }
+
+    .conteudo-historia {
+        flex-direction: column;
+    }
+}
+
+
+@media (max-width: 1024px){
+    .imagem-historia{
+        display: none;
+    }
+
+    .diagrama-negocio {
+        display: none;
+    }
+
+    .diagrama-negocio-vertical {
+        display: block;
+        width: 100%;
+        aspect-ratio: 3/9;
+    }
+
+    .boxContato {
+   width: 100%;
+    padding: clamp(1px, 5vh, 60px) clamp(1px, 6vw, 80px);
+}
+}
+
+
+
+@media (max-width: 1050px){
+.fluxoCadastro{
+    display: none;
+}
+}
+
+
+
+@media (min-width: 730px) and (max-width: 1050px) {
+    .grade-pilares-beneficios {
+        grid-template-columns: repeat(2, 1fr); 
+    }
+}
+
+
