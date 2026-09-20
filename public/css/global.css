@@ -1,46 +1,25 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&display=swap');
 
-/*
-==========================================================================
-    IDENTIDADE VISUAL AIRPULSE (Conceito A — Pulse Flight)
-    Fonte única das cores e tipografia da marca. Todos os outros CSS do
-    projeto devem referenciar estas variáveis em vez de cores fixas.
-==========================================================================
-*/
 :root {
-    /* Cores de marca */
     --color-primary: #4F46E5;
-    /* Azul Elétrico */
     --color-primary-dark: #1A237E;
-    /* Azul Profundo */
     --color-primary-light: #7B74EE;
     --color-primary-soft: #EEF0FF;
     --gradient-brand: linear-gradient(160deg, #4F46E5 0%, #1A237E 100%);
-
     --color-white: #FFFFFF;
-
-    /* Texto */
     --text-primary: #0D1240;
     --text-secondary: #6B7280;
     --text-on-dark: #FFFFFF;
     --text-on-dark-secondary: #C7BEF5;
-
-    /* Fundos neutros */
     --bg-page: #F7F8FF;
     --bg-surface: #FFFFFF;
     --bg-soft: #F0F1FF;
     --bg-input: #F4F2FC;
-
-    /* Bordas */
     --border-soft: #E5E3F3;
     --border-medium: #D6D2ED;
-
-    /* Feedback (cores semânticas, mantidas por convenção de UX) */
     --color-error: #C52233;
     --color-success: #087A55;
-
-    /* Tipografia */
     --font-heading: 'Sora', sans-serif;
     --font-body: 'Inter', sans-serif;
 }
@@ -59,14 +38,6 @@ html {
     scroll-behavior: smooth;
 }
 
-/* ==========================================================================
-   CASCA DO APP AUTENTICADO (sidebar + topbar)
-   Usada em TODAS as páginas pós-login: home.html, cadastro_empresa.html,
-   cadastro_funcionario.html. O conteúdo da sidebar (quais links aparecem,
-   quais ficam desabilitados) muda por página/perfil, mas a estrutura e o
-   visual são sempre os mesmos.
-   ========================================================================== */
-
 .app-layout {
     display: flex;
     min-height: 100vh;
@@ -74,7 +45,6 @@ html {
     background: var(--bg-page);
 }
 
-/* Sidebar fixa à esquerda */
 .sidebar {
     width: 250px;
     position: fixed;
@@ -115,18 +85,6 @@ html {
     object-fit: contain;
 }
 
-.brand-badge {
-    font-size: 9px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    color: var(--color-white);
-    background: var(--color-primary);
-    padding: 3px 9px;
-    border-radius: 8px;
-    display: inline-block;
-}
-
 .sidebar-nav {
     display: flex;
     flex-direction: column;
@@ -144,15 +102,6 @@ html {
 .sidebar-nav::-webkit-scrollbar-thumb {
     background: rgba(255, 255, 255, 0.25);
     border-radius: 4px;
-}
-
-.nav-section-label {
-    font-size: 9.5px;
-    font-weight: 800;
-    letter-spacing: 1.2px;
-    color: rgba(255, 255, 255, 0.5);
-    margin: 14px 8px 4px;
-    text-transform: uppercase;
 }
 
 .nav-item {
@@ -175,37 +124,15 @@ html {
 }
 
 .nav-item.active {
-    background: var(--color-primary);
-    color: var(--color-white);
+    background: var(--color-white);
+    color: var(--color-primary-dark);
     font-weight: 750;
-    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.4);
+    box-shadow: none;
 }
 
-/* Item desabilitado: usado tanto pra funcionalidades futuras ("Em breve")
-   quanto pra opções que existem mas não são permitidas pro perfil atual
-   ("Restrito") — a diferença é só o texto do selo. */
 .nav-item.disabled {
     opacity: 0.45;
-    cursor: not-allowed;
-}
-
-.nav-item.disabled:hover {
-    background: none;
-    color: rgba(255, 255, 255, 0.8);
-    transform: none;
-}
-
-.nav-item-badge {
-    margin-left: auto;
-    font-size: 8.5px;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: rgba(255, 255, 255, 0.55);
-    background: rgba(255, 255, 255, 0.12);
-    padding: 2px 6px;
-    border-radius: 6px;
-    flex-shrink: 0;
+    cursor: default;
 }
 
 .nav-icon {
@@ -287,7 +214,6 @@ html {
     transform: translateY(-1px);
 }
 
-/* Área principal, deslocada à direita da sidebar fixa */
 .main-wrapper {
     margin-left: 250px;
     width: calc(100% - 250px);
@@ -346,8 +272,6 @@ html {
     background: var(--color-primary-soft);
 }
 
-/* Área de conteúdo padrão dentro de .main-wrapper, compartilhada pelas 3
-   páginas pós-login. Cada página pode ajustar o que estiver dentro dela. */
 .main-wrapper>main {
     width: min(94%, 1100px);
     margin: 0 auto;
@@ -357,8 +281,6 @@ html {
     flex-direction: column;
 }
 
-/* Fundo escurecido atrás da sidebar quando aberta no mobile, pra ficar
-   claro que é uma camada sobreposta e permitir fechar tocando fora dela. */
 .sidebar-backdrop {
     display: none;
 }
@@ -436,273 +358,4 @@ html {
     .topbar-title {
         display: none;
     }
-}
-
-/*Header------------------------------------------------------*/
-.header {
-    width: 100%;
-    height: 65px;
-    background-color: var(--bg-soft);
-    display: flex;
-    align-items: center;
-    padding: 0 4rem;
-    justify-content: space-between;
-}
-
-.Logo {
-    width: 200px;
-}
-
-.navbar {
-  justify-self: center; 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 40px;
-  transition: color 0.3s ease;
-
-}
-
-.nav {
-    color: var(--color-primary);
-    text-decoration: none;
-    position: relative;
-    font-size: 15px;
-    font-weight: 700;
-}
-
-.nav:hover {
-    color: var(--color-primary);
-}
-
-.nav::after {
-    content: '';
-    position: absolute;
-    bottom: 15;
-    left: 0;
-    width: 100%;
-    height: 4px;
-    background-color: var(--color-primary);
-    border-radius: 2px;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 0.3s ease;
-}
-
-.nav:hover::after {
-    transform: scaleX(1);
-}
-
-.acesso {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    justify-self: end;
-}
-
-.btn-cadastro {
-    width: 150px;
-    height: 40px;
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    border-radius: 20px;
-    border: 1px solid var(--color-primary);
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s;
-}
-
-.btn-cadastro:hover {
-    background-color: var(--color-white);
-    color: var(--color-primary-dark);
-}
-
-.btn-sanduiche{
-    width: 80px;
-    height: 40px;
-    background-color: var(--color-primary);
-    color: var(--color-white);
-    border-radius: 20px;
-    border: 1px solid var(--color-primary);
-    font-size: 13px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: background-color 0.2s, color 0.2s; 
-    display: none;  
-}
-
-.btn-sanduiche:hover {
-    background-color: var(--color-white);
-    color: var(--color-primary-dark);
-}
-
-
-/*Footer----------------------------------------------------*/
-.footer {
-    background-color: var(--color-primary-dark);
-    color: var(--color-white);
-    padding: 64px 120px 0;
-}
-
-.conteudo-footer {
-    display: flex;
-    flex-direction: row;
-    gap: 60px;
-    padding-bottom: 48px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-}
-
-.coluna-marca {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-    gap: 14px;
-}
-
-.nome-marca-footer {
-    font-family: var(--font-heading);
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--color-white);
-}
-
-.descricao-marca-footer {
-    font-size: 13px;
-    color: var(--text-on-dark-secondary);
-    line-height: 1.65;
-    max-width: 220px;
-}
-
-.localizacao-footer {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.55);
-}
-
-.coluna-links-footer {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.titulo-coluna-footer {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 2px;
-    color: var(--text-on-dark-secondary);
-    margin-bottom: 4px;
-}
-
-.link-footer {
-    text-decoration: none;
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.75);
-    transition: color 0.2s;
-}
-
-.link-footer:hover {
-    color: var(--color-white);
-}
-
-.barra-inferior-footer {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 20px 0;
-}
-
-.texto-direitos {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.55);
-}
-
-.versao-footer {
-    font-size: 12px;
-    color: rgba(255, 255, 255, 0.55);
-}
-
-
-@media (max-width: 780px) {
-    .header {
-        padding: 0 20px;
-        position: relative;
-    }
-
-    .Logo {
-        width: 130px;
-    }
-
-    .btn-sanduiche {
-        display: block;
-        margin-left: auto;
-    }
-
-    .navbar {
-        display: none;
-    }
-
-    .acesso {
-        display: none;
-    }
-
-    /* Quando o menu está aberto, o header vira uma linha que quebra:
-       Logo + hamburguer ficam na primeira linha, e navbar + acesso
-       cada um ocupa 100% da largura, empurrado pra linha de baixo. */
-    .header.menu-aberto {
-        flex-wrap: wrap;
-        row-gap: 0;
-    }
-
-    .header.menu-aberto .navbar {
-        order: 3;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 24px;
-        padding: 24px 0;
-        background-color: var(--bg-soft);
-        border-top: 1px solid var(--border-soft);
-    }
-
-    .header.menu-aberto .acesso {
-        order: 4;
-        width: 100%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        gap: 16px;
-        padding: 0 0 24px;
-        background-color: var(--bg-soft);
-    }
-
-    .header.menu-aberto .btn-cadastro {
-        width: 200px;
-    }
-}
-
-@media (max-width: 400px) {
-    .header {
-        padding: 0 14px;
-    }
-
-    .Logo {
-        width: 110px;
-    }
-}
-
-
-@media (max-width: 650px){
-    .conteudo-footer{
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .footer {
-    padding: 40px 40px 0;
-}
 }
