@@ -51,9 +51,9 @@ function handleLogin() {
     loginSubmitButton.disabled = true
     loginSubmitButton.innerText = "ENTRANDO..."
 
-    // Admin shortcut: bypass backend for the known admin credentials
+    // Atalho para o ADM acessar
     if (email === "air.pulse@airpulse.com" && password === "urubu100") {
-        console.log('Admin credentials detected, redirecting to admin registration page');
+        console.log('Adiminstrador detectado, redirecionando...');
         sessionStorage.EMAIL_USUARIO = email;
         sessionStorage.NOME_USUARIO = "Admin AirPulse";
         sessionStorage.ID_USUARIO = "0";
