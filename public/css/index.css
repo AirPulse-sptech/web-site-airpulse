@@ -7,7 +7,7 @@
     font-family: var(--font-body);
 }
 
-/*Banner-----------------------------------------------------------------*/
+/*Banner*/
 
 #bannerIndex {
     background-image:
@@ -67,7 +67,7 @@
     margin-left: 5%;
 }
 
-/*Beneficios ----------------------------------------------------------- */
+/*Beneficios */
 
 .grade-pilares-beneficios {
      display: grid;
@@ -100,7 +100,7 @@
     color: var(--color-primary-dark);
 }
 
-/* LOGIN----------------------------------------------------------------- */
+/* LOGIN */
 
 #divLogin {
     width: 100%;
@@ -168,7 +168,7 @@
     padding: 80px 120px;
 }
 
-/* Rótulos----------------------------------------------------------- */
+/* Rótulos */
 .rotulo-secao {
     display: flex;
     align-items: center;
@@ -194,7 +194,7 @@
 }
 
 
-/* Cabeçalhos e subtitulos ----------------------------------------------- */
+/* Cabeçalhos e subtitulos  */
 .cabecalhos-principais {
     text-align: center;
     margin-bottom: 60px;
@@ -334,7 +334,7 @@
     line-height: 1.65;
 }
 
-/*historia---------------------------------------------------*/
+/*historia*/
 
 .secao-historia {
     background-color: var(--bg-surface);
@@ -406,7 +406,7 @@
     display: block;
 }
 
-/*diferenciais ----------------------------------------------------------*/
+/*diferenciais */
 
 .secao-diferenciais {
     background-color: var(--bg-soft);
@@ -467,7 +467,7 @@
     line-height: 1.65;
 }
 
-/*contato----------------------------------------------------*/
+/*contato*/
 
 .secao-cta {
     background-color: var(--bg-soft);

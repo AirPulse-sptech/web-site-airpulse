@@ -60,9 +60,11 @@ a {
 }
 
 
-/* A casca do app autenticado (sidebar, topbar, .main-wrapper) agora mora em
-   global.css, compartilhada por todas as páginas pós-login. Aqui ficam só
-   os estilos específicos desta página (formulário de cadastro de empresa). */
+/* 
+O corpo do app está no global.css. 
+Aqui ficam só os estilos específicos desta 
+página (formulário de cadastro de empresa). 
+*/
 
 /* Conteudo principal */
 main {
@@ -139,7 +141,7 @@ h1 {
   position: absolute;
   z-index: 0;
   top: 18px;
-  left: calc(50% + 25px);
+  left: calc(50% + 25px); 
   width: calc(100% - 50px);
   height: 2px;
   content: "";
