@@ -132,22 +132,22 @@ INSERT INTO funcionario
      senha, status_sistema, entrada_sistema, fk_empresa_fabricante)
 VALUES
     ('Guilherme Barbosa de Albuquerque', '2005-05-10', 'guilherme@honeywell.airpulse.test',
-     '11970001001', '12345678909', 'Administrador de monitoramento', 1,
+     '11970001001', '12345678909', 'Administrador', 1,
      'senha_teste_123', 1, NOW(), 1),
     ('Marina Oliveira', '1992-08-20', 'marina@honeywell.airpulse.test',
-     '11970001002', '11144477735', 'Engenheira de sistemas avionicos', 0,
+     '11970001002', '11144477735', 'TI', 0,
      'senha_teste_123', 1, NOW(), 1),
     ('Manuella Martins Arantes', '2004-11-18', 'manuella@thales.airpulse.test',
-     '11970001003', '98765432100', 'Administradora de suporte', 1,
+     '11970001003', '98765432100', 'Administradora', 1,
      'senha_teste_123', 1, NOW(), 2),
     ('Lucas Ferreira', '1994-02-14', 'lucas@thales.airpulse.test',
-     '11970001004', '45678912364', 'Analista de manutencao preditiva', 0,
+     '11970001004', '45678912364', 'Analista', 0,
      'senha_teste_123', 1, NOW(), 2),
     ('Beatriz Santos', '1991-07-03', 'beatriz@collins.airpulse.test',
-     '12970001005', '32165498791', 'Administradora de operacoes', 1,
+     '12970001005', '32165498791', 'Administradora', 1,
      'senha_teste_123', 1, NOW(), 3),
     ('Rafael Costa', '1989-12-09', 'rafael@collins.airpulse.test',
-     '12970001006', '74185296355', 'Tecnico de sistemas embarcados', 0,
+     '12970001006', '74185296355', 'TI', 0,
      'senha_teste_123', 1, NOW(), 3);
 
 INSERT INTO aeronave
