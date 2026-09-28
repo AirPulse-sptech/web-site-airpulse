@@ -34,7 +34,7 @@ function restringirItemSidebarAGestor(elementId) {
     const item = document.getElementById(elementId);
     if (!item) return;
 
-    const ehGestor = sessionStorage.ADM_USUARIO === "true";
+    const ehGestor = sessionStorage.CARGO_USUARIO === "Gestor";
 
     if (!ehGestor) {
         item.classList.add("disabled");

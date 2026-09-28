@@ -4,7 +4,7 @@ validarSessao();
 // Regra de negócio: só o gestor da empresa cadastra novos funcionários.
 // Um funcionário comum que tentar acessar esta página direto pela URL
 // é levado de volta pra Home.
-if (sessionStorage.ADM_USUARIO !== "true") {
+if (sessionStorage.CARGO_USUARIO !== "Gestor") {
     window.location.href = "home.html";
 }
 
