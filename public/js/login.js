@@ -62,7 +62,7 @@ function handleLogin() {
     }
 
     // Aqui entra a chamada pra API de autenticação
-    fetch("/usuarios/autenticar", {
+    fetch("/usuario/autenticar", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
