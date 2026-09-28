@@ -24,13 +24,13 @@ function cadastrar(req, res) {
     } else if (telefone == undefined) {
         res.status(400).send("Seu telefone está undefined!");
     } else if (cargo == undefined) {
-        res.status(400).send("Seu telefone está undefined!");
+        res.status(400).send("Seu cargo está undefined!");
     } else if (idFuncionarioAdm == undefined) {
         res.status(400).send("Sua empresa a vincular está undefined!");
     } 
     else {
 
-        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
+
         cadastro_funcionario_model.cadastrar(nome, email, dtNascimento, cpf, cargo, senha, telefone, idFuncionarioAdm)
             .then(
                 function (resultado) {

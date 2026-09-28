@@ -3,7 +3,6 @@ const emailInput = document.getElementById("emailInput")
 const passwordInput = document.getElementById("passwordInput")
 const loginSubmitButton = document.getElementById("loginSubmitButton")
 
-// Limpa erros ao digitar
 emailInput.addEventListener('input', () => {
     document.getElementById('emailError').style.display = 'none';
     emailInput.classList.remove('input-error');
@@ -14,7 +13,6 @@ passwordInput.addEventListener('input', () => {
     passwordInput.classList.remove('input-error');
 });
 
-// adiciona um ouvinte de evento para quando o formulario for enviado
 loginForm.addEventListener('submit', (event) => {
     event.preventDefault()
     handleLogin()
@@ -24,13 +22,11 @@ function handleLogin() {
     const emailError = document.getElementById("emailError");
     const passwordError = document.getElementById("passwordError");
 
-    // Reseta as mensagens de erro
     emailError.style.display = "none";
     passwordError.style.display = "none";
     emailInput.classList.remove("input-error");
     passwordInput.classList.remove("input-error");
 
-    // pega os valores digitados e remove os espacos vazios do email
     const email = emailInput.value.trim();
     const password = passwordInput.value;
 
@@ -51,7 +47,6 @@ function handleLogin() {
     loginSubmitButton.disabled = true
     loginSubmitButton.innerText = "ENTRANDO..."
 
-    // Atalho para o ADM acessar
     if (email === "air.pulse@airpulse.com" && password === "urubu100") {
         console.log('Adiminstrador detectado, redirecionando...');
         sessionStorage.EMAIL_USUARIO = email;
@@ -61,7 +56,6 @@ function handleLogin() {
         return;
     }
 
-    // Aqui entra a chamada pra API de autenticação
     fetch("/usuarios/autenticar", {
         method: "POST",
         headers: {
@@ -77,14 +71,19 @@ function handleLogin() {
                 sessionStorage.EMAIL_USUARIO = json.email;
                 sessionStorage.NOME_USUARIO = json.nome;
                 sessionStorage.ID_USUARIO = json.id;
-                // Flag que diferencia o gestor da empresa
                 sessionStorage.ADM_USUARIO = json.admin ? "true" : "false";
+                sessionStorage.CARGO_USUARIO = json.cargo;
 
-                // Redirect admin to company registration page
+    
                 if (json.email === "air.pulse@airpulse.com") {
-                  window.location.href = "cadastro_empresa.html";
+                    window.location.href = "cadastro_empresa.html";
+                } else if (json.cargo === "Gestor de operações") {
+                    window.location.href = "cadastro_funcionario.html";
+                } else if (json.cargo === "Analista de monitoramento") {
+                    window.location.href = "tela_analista.html";
                 } else {
-                  window.location.href = "home.html";
+
+                    window.location.href = "home.html";
                 }
             });
         } else {
@@ -97,7 +96,7 @@ function handleLogin() {
                 passwordInput.classList.add("input-error");
                 emailInput.classList.add("input-error");
 
-                // volta o botao ao normal em caso de erro
+
                 loginSubmitButton.disabled = false;
                 loginSubmitButton.innerText = "entrar na plataforma";
             });
