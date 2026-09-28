@@ -51,18 +51,6 @@ function handleLogin() {
     loginSubmitButton.disabled = true
     loginSubmitButton.innerText = "ENTRANDO..."
 
-    // Atalho para o ADM acessar... que coisa feia
-    /*
-    if (email === "air.pulse@airpulse.com" && password === "urubu100") {
-        console.log('Adiminstrador detectado, redirecionando...');
-        sessionStorage.EMAIL_USUARIO = email;
-        sessionStorage.CARGO_USUARIO = json.cargo;
-        sessionStorage.NOME_USUARIO = "Admin AirPulse";
-        sessionStorage.ID_USUARIO = "0";
-        window.location.href = "./cadastro_empresa.html";
-        return;
-    }*/
-
     // Aqui entra a chamada pra API de autenticação
     fetch("/usuario/autenticar", {
         method: "POST",
@@ -80,7 +68,6 @@ function handleLogin() {
                 sessionStorage.CARGO_USUARIO = json.cargo;
                 sessionStorage.NOME_USUARIO = json.nome;
                 sessionStorage.ID_USUARIO = json.id;
-                // Flag que diferencia o gestor da empresa
 
                 // redireciona administrador AIRPULSE para a página de cadastro de empresa
                 if (json.cargo === "ADMIN") {

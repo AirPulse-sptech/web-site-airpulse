@@ -36,7 +36,6 @@ CREATE TABLE funcionario (
     telefone VARCHAR(20) NOT NULL,
     cpf CHAR(11) NOT NULL,
     cargo VARCHAR(50),
-    adm TINYINT NOT NULL, -- ADM ou comum
     senha VARCHAR(200) NOT NULL,
     status_sistema TINYINT NOT NULL DEFAULT 1,
     entrada_sistema DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -128,26 +127,26 @@ VALUES
      1, NOW(), 'https://www.collinsaerospace.com', 3);
 
 INSERT INTO funcionario
-    (nome, data_nascimento, email_corporativo, telefone, cpf, cargo, adm,
+    (nome, data_nascimento, email_corporativo, telefone, cpf, cargo,
      senha, status_sistema, entrada_sistema, fk_empresa_fabricante)
 VALUES
     ('Guilherme Barbosa de Albuquerque', '2005-05-10', 'guilherme@honeywell.airpulse.test',
-     '11970001001', '12345678909', 'Administrador', 1,
+     '11970001001', '12345678909', 'Administrador',
      'senha_teste_123', 1, NOW(), 1),
     ('Marina Oliveira', '1992-08-20', 'marina@honeywell.airpulse.test',
-     '11970001002', '11144477735', 'TI', 0,
+     '11970001002', '11144477735', 'TI',
      'senha_teste_123', 1, NOW(), 1),
     ('Manuella Martins Arantes', '2004-11-18', 'manuella@thales.airpulse.test',
-     '11970001003', '98765432100', 'Administrador', 1,
+     '11970001003', '98765432100', 'Administrador',
      'senha_teste_123', 1, NOW(), 2),
     ('Lucas Ferreira', '1994-02-14', 'lucas@thales.airpulse.test',
-     '11970001004', '45678912364', 'Analista', 0,
+     '11970001004', '45678912364', 'Analista',
      'senha_teste_123', 1, NOW(), 2),
     ('Beatriz Santos', '1991-07-03', 'beatriz@collins.airpulse.test',
-     '12970001005', '32165498791', 'Administrador', 1,
+     '12970001005', '32165498791', 'Administrador',
      'senha_teste_123', 1, NOW(), 3),
     ('Rafael Costa', '1989-12-09', 'rafael@collins.airpulse.test',
-     '12970001006', '74185296355', 'TI', 0,
+     '12970001006', '74185296355', 'TI',
      'senha_teste_123', 1, NOW(), 3);
 
 INSERT INTO aeronave

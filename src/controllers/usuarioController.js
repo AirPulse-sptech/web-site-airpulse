@@ -25,7 +25,6 @@ function autenticar(req, res) {
                             nome: resultadoAutenticar[0].nome,
                             cargo: resultadoAutenticar[0].cargo,
                             empresaId: resultadoAutenticar[0].empresaId,
-                            admin: resultadoAutenticar[0].adm
                         });
                     } else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Email e/ou senha inválido(s)");
