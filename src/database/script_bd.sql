@@ -2,108 +2,115 @@ CREATE DATABASE airpulse;
 USE airpulse;
 
 CREATE TABLE endereco (
-    id_endereco INT PRIMARY KEY AUTO_INCREMENT,
-    cep CHAR(8) NOT NULL,
-    logradouro VARCHAR(100) NOT NULL,
-    bairro VARCHAR(100) NOT NULL,
-    numero VARCHAR(20) NOT NULL,
-    complemento VARCHAR(100),
-    estado CHAR(2) NOT NULL,
-    cidade VARCHAR(100) NOT NULL
+id_endereco INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+cep CHAR(8),
+lagradouro VARCHAR(100),
+bairro VARCHAR(100),
+numero VARCHAR(20),
+complemento VARCHAR(100),
+estado CHAR(2),
+cidade VARCHAR(100)
 );
 
--- fabricante dos computadores:
 CREATE TABLE empresa_fabricante (
-    id_empresa_fabricante INT PRIMARY KEY AUTO_INCREMENT,
-    razao_social VARCHAR(100) NOT NULL,
-    nome_fantasia VARCHAR(100),
-    cnpj CHAR(14) UNIQUE NOT NULL,
-    segmento_atuacao VARCHAR(80) NOT NULL,
-    email VARCHAR(200) UNIQUE NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
-    status_sistema TINYINT NOT NULL, -- se a empresa está ativa no nosso sistema
-    entrada_sistema DATETIME NOT NULL, -- quando foi cadastrada
-    website VARCHAR(200),
-    fk_endereco INT,
-    FOREIGN KEY (fk_endereco) REFERENCES endereco(id_endereco)
+id_idempresa_fabricante  INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+razao_social VARCHAR(100),
+nome_fantasia VARCHAR(100),
+cnpj CHAR(14),
+segmento_atuacao VARCHAR(80),
+email VARCHAR(200),
+telefone VARCHAR(20) NOT NULL,
+status_sistema VARCHAR(80) NOT NULL,
+entrada_sistema DATETIME NOT NULL,
+fk_endereco INT NOT NULL,
+CONSTRAINT ct_empresa_fabricante_endereco
+FOREIGN KEY (fk_endereco) REFERENCES endereco (id_endereco)
 );
 
 CREATE TABLE funcionario (
-    id_funcionario INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100) NOT NULL,
-    data_nascimento DATE,
-    email_corporativo VARCHAR(200) NOT NULL,
-    telefone VARCHAR(20) NOT NULL,
-    cpf CHAR(11) NOT NULL,
-    cargo VARCHAR(50),
-    adm TINYINT NOT NULL, -- ADM ou comum
-    senha VARCHAR(200) NOT NULL,
-    status_sistema TINYINT NOT NULL DEFAULT 1,
-    entrada_sistema DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    fk_empresa_fabricante INT,
-    FOREIGN KEY (fk_empresa_fabricante) REFERENCES empresa_fabricante(id_empresa_fabricante)
+id_funcionario INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nome VARCHAR(100),
+data_nascimento DATE,
+email_corporativo VARCHAR(100),
+telefone VARCHAR(20),
+cpf CHAR(11),
+cargo VARCHAR(45),
+senha VARCHAR(200),
+status_sistema VARCHAR(80) NOT NULL,
+entrada_sistema DATETIME,
+fk_empresa_fabricante INT NOT NULL,
+CONSTRAINT ct_funcionario_empresa_fabricante
+FOREIGN KEY (fk_empresa_fabricante) REFERENCES empresa_fabricante (id_idempresa_fabricante)
 );
 
-
-
 CREATE TABLE aeronave (
-    id_aeronave INT PRIMARY KEY AUTO_INCREMENT,
-    prefixo VARCHAR(10) UNIQUE NOT NULL,
-    modelo VARCHAR(100) NOT NULL,
-    fabricante_aeronave VARCHAR(100) NOT NULL,
-    numero_serie VARCHAR(45) UNIQUE NOT NULL,
-    status_aeronave VARCHAR(45) NOT NULL, -- se está ativa, em manutenção ou inativa
-    entrada_sistema DATETIME NOT NULL,
-    companhia_aerea VARCHAR(100)
+id_aeronave INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nome VARCHAR(100),
+modelo VARCHAR(100),
+numero_serie VARCHAR(45),
+status_aeronave VARCHAR(45),
+entrada_sistema DATETIME,
+companhia_aerea VARCHAR(100),
+fk_empresa_fabricante INT NOT NULL,
+CONSTRAINT ct_aeronave_empresa_fabricante
+FOREIGN KEY (fk_empresa_fabricante) REFERENCES empresa_fabricante (id_idempresa_fabricante)
 );
 
 CREATE TABLE computador (
-    id_computador INT PRIMARY KEY AUTO_INCREMENT,
-    numero_serie VARCHAR(45) UNIQUE NOT NULL, 
-    modelo VARCHAR(100) NOT NULL,
-    status_computador VARCHAR(45) NOT NULL, -- ATIVO, MANUTENCAO, INATIVO
-    data_instalacao DATE NOT NULL, -- instalação no avião
-    entrada_sistema DATETIME NOT NULL,
-    fk_aeronave INT,
-    fk_empresa_fabricante INT,
-    FOREIGN KEY (fk_aeronave) REFERENCES aeronave(id_aeronave),
-    FOREIGN KEY (fk_empresa_fabricante) REFERENCES empresa_fabricante(id_empresa_fabricante)
+id_computador INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nome VARCHAR(45),
+tipo_fmc VARCHAR(45),
+numero_serie VARCHAR(45) NOT NULL,
+modelo VARCHAR(100) NOT NULL,
+status_computador VARCHAR(45) NOT NULL,
+data_instalacao DATE NOT NULL,
+entrada_sistema DATE NOT NULL,
+fk_aeronave INT NOT NULL,
+CONSTRAINT ct_computador_aeronave
+FOREIGN KEY (fk_aeronave) REFERENCES aeronave (id_aeronave)
 );
 
 CREATE TABLE componente (
-    id_componente INT PRIMARY KEY AUTO_INCREMENT,
-    tipo VARCHAR(45) NOT NULL, -- cpu, ram, disco
-    modelo VARCHAR(100),
-    numero_serie VARCHAR(100), 
-    capacidade_total DECIMAL(14,2),
-    unidade_capacidade VARCHAR(45),
-    status_monitoramento TINYINT,
-    entrada_sistema DATETIME,
-    fk_computador INT,
-    FOREIGN KEY (fk_computador) REFERENCES computador(id_computador)
+id_componente INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+tipo VARCHAR(45),
+modelo VARCHAR(100)
 );
 
-CREATE TABLE parametro_monitoramento (
-    id_parametro_monitoramento INT PRIMARY KEY AUTO_INCREMENT,
-    limite_atencao DECIMAL(14,2) NOT NULL,
-    limite_critico DECIMAL(14,2) NOT NULL,
-	fk_computador INT,
-    FOREIGN KEY (fk_computador) REFERENCES computador(id_computador)
-);
-
--- O que será monitorado em relação a qual componente
 CREATE TABLE metrica (
-    id_metrica INT PRIMARY KEY AUTO_INCREMENT,
-    nome VARCHAR(100),
-    unidade_medida VARCHAR(45),
-    descricao VARCHAR(200),
-    fk_componente INT,
-    fk_parametro_monitoramento INT,
-    FOREIGN KEY (fk_componente) REFERENCES componente(id_componente),
-    FOREIGN KEY (fk_parametro_monitoramento) REFERENCES parametro_monitoramento(id_parametro_monitoramento)
+id_metrica INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nome VARCHAR(45),
+unidade_medida VARCHAR(45),
+descricao VARCHAR(200),
+fk_componente INT NOT NULL,
+CONSTRAINT fk_metrica_componente1
+FOREIGN KEY (fk_componente) REFERENCES componente (id_componente)
+);
+
+CREATE TABLE computador_componente (
+id_computador_componente INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+status_monitoramento VARCHAR(45),
+limite_atencao DECIMAL(14,2),
+limite_critico DECIMAL(14,2),
+fk_componente INT NOT NULL,
+fk_computador INT NOT NULL,
+CONSTRAINT fk_computador_componente_componente1
+FOREIGN KEY (fk_componente) REFERENCES componente (id_componente),
+CONSTRAINT fk_computador_componente_computador1
+FOREIGN KEY (fk_computador) REFERENCES computador (id_computador)
 );
 
 
+
+
+
+
+
+
+
+
+
+/* Antigo insert do último grupo */
+/*
 -- TESTE COM DADOS:
 
 INSERT INTO endereco
@@ -252,3 +259,4 @@ INNER JOIN parametro_monitoramento pm ON m.fk_parametro_monitoramento = pm.id_pa
 INNER JOIN computador comp ON c.fk_computador = comp.id_computador
 INNER JOIN aeronave a ON comp.fk_aeronave = a.id_aeronave
 INNER JOIN empresa_fabricante emp ON comp.fk_empresa_fabricante = emp.id_empresa_fabricante;
+*/
