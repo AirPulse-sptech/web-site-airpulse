@@ -1,4 +1,3 @@
-
 USE airpulse;
 
 INSERT INTO empresa_fabricante (razao_social, nome_fantasia, cnpj, segmento_atuacao, email, telefone, status_sistema, entrada_sistema, website, fk_endereco)
