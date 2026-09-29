@@ -1,6 +1,6 @@
 validarSessao();
 
-if (sessionStorage.CARGO_USUARIO !== "Gestor de operações") {
+if (sessionStorage.CARGO_USUARIO !== "Gestor") {
     window.location.href = "home.html";
 }
 
@@ -33,7 +33,7 @@ function cadastrar() {
         return false;
     }
 
-    fetch("/cadastro_funcionario/cadastrar", {
+    fetch("/usuario/cadastrar", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",

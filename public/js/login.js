@@ -47,16 +47,8 @@ function handleLogin() {
     loginSubmitButton.disabled = true
     loginSubmitButton.innerText = "ENTRANDO..."
 
-    if (email === "air.pulse@airpulse.com" && password === "urubu100") {
-        console.log('Adiminstrador detectado, redirecionando...');
-        sessionStorage.EMAIL_USUARIO = email;
-        sessionStorage.NOME_USUARIO = "Admin AirPulse";
-        sessionStorage.ID_USUARIO = "0";
-        window.location.href = "./cadastro_empresa.html";
-        return;
-    }
-
-    fetch("/usuarios/autenticar", {
+    // Aqui entra a chamada pra API de autenticação
+    fetch("/usuario/autenticar", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -69,18 +61,13 @@ function handleLogin() {
         if (resposta.ok) {
             resposta.json().then(json => {
                 sessionStorage.EMAIL_USUARIO = json.email;
+                sessionStorage.CARGO_USUARIO = json.cargo;
                 sessionStorage.NOME_USUARIO = json.nome;
                 sessionStorage.ID_USUARIO = json.id;
-                sessionStorage.ADM_USUARIO = json.admin ? "true" : "false";
-                sessionStorage.CARGO_USUARIO = json.cargo;
 
-    
-                if (json.email === "air.pulse@airpulse.com") {
-                    window.location.href = "cadastro_empresa.html";
-                } else if (json.cargo === "Gestor de operações") {
-                    window.location.href = "cadastro_funcionario.html";
-                } else if (json.cargo === "Analista de monitoramento") {
-                    window.location.href = "tela_analista.html";
+                // redireciona administrador AIRPULSE para a página de cadastro de empresa
+                if (json.cargo === "ADMIN") {
+                  window.location.href = "cadastro_empresa.html";
                 } else {
 
                     window.location.href = "home.html";

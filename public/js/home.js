@@ -2,7 +2,7 @@
 validarSessao();
 
 const nomeUsuario = sessionStorage.NOME_USUARIO || "Usuário";
-const ehGestor = sessionStorage.ADM_USUARIO === "true";
+const ehGestor = sessionStorage.CARGO_USUARIO === "Gestor";
 
 document.getElementById("b_usuario").innerHTML = nomeUsuario;
 document.getElementById("userNameDisplay").textContent = nomeUsuario;

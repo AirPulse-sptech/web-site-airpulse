@@ -1,11 +1,12 @@
 const formulario = document.querySelector("#company-form");
 
 // Acesso Admin
-const requiredEmail = "air.pulse@airpulse.com";
-if (sessionStorage.EMAIL_USUARIO !== requiredEmail) {
+const requiredCargo = "ADMIN";
+if (sessionStorage.CARGO_USUARIO !== requiredCargo) {
   // Não Autorizado
   window.location.href = "login.html";
 }
+
 const etapas = document.querySelectorAll(".step");
 const progresso = document.querySelectorAll("[data-progress]");
 const voltar = document.querySelector("#back-button");

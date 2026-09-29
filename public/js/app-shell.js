@@ -26,7 +26,7 @@ function restringirItemSidebarAGestor(elementId) {
     const item = document.getElementById(elementId);
     if (!item) return;
 
-    const ehGestor = sessionStorage.CARGO_USUARIO === "Gestor de operações";
+    const ehGestor = sessionStorage.CARGO_USUARIO === "Gestor";
 
     if (!ehGestor) {
         item.remove();

@@ -23,8 +23,8 @@ function autenticar(req, res) {
                             id: resultadoAutenticar[0].id,
                             email: resultadoAutenticar[0].email,
                             nome: resultadoAutenticar[0].nome,
-                            admin: resultadoAutenticar[0].adm,
-                            cargo: resultadoAutenticar[0].cargo
+                            cargo: resultadoAutenticar[0].cargo,
+                            empresaId: resultadoAutenticar[0].empresaId,
                         });
                     } else if (resultadoAutenticar.length == 0) {
                         res.status(403).send("Email e/ou senha inválido(s)");
@@ -46,21 +46,34 @@ function autenticar(req, res) {
 function cadastrar(req, res) {
     var nome = req.body.nomeServer;
     var email = req.body.emailServer;
+    var dtNascimento = req.body.dtNascimentoServer;
+    var cpf = req.body.cpfServer;
     var senha = req.body.senhaServer;
-    var fkEmpresa = req.body.idEmpresaVincularServer;
+    var telefone = req.body.telefoneServer;
+    var cargo = req.body.cargoServer
+    var idFuncionarioAdm = req.body.idFuncionarioAdmServer;
 
     if (nome == undefined) {
         res.status(400).send("Seu nome está undefined!");
     } else if (email == undefined) {
         res.status(400).send("Seu email está undefined!");
+    } else if (dtNascimento == undefined) {
+        res.status(400).send("Sua data de nascimento está undefined!");
+    } else if (cpf == undefined) {
+        res.status(400).send("Seu CPF está undefined!");
     } else if (senha == undefined) {
         res.status(400).send("Sua senha está undefined!");
-    } else if (fkEmpresa == undefined) {
+    } else if (telefone == undefined) {
+        res.status(400).send("Seu telefone está undefined!");
+    } else if (cargo == undefined) {
+        res.status(400).send("Seu cargo está undefined!");
+    } else if (idFuncionarioAdm == undefined) {
         res.status(400).send("Sua empresa a vincular está undefined!");
-    } else {
+    } 
+    else {
 
 
-        usuarioModel.cadastrar(nome, email, senha, fkEmpresa)
+        usuarioModel.cadastrar(nome, email, dtNascimento, cpf, cargo, senha, telefone, idFuncionarioAdm)
             .then(
                 function (resultado) {
                     res.json(resultado);
