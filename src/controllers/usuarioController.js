@@ -72,7 +72,7 @@ function cadastrar(req, res) {
     } 
     else {
 
-        // Passe os valores como parâmetro e vá para o arquivo usuarioModel.js
+
         usuarioModel.cadastrar(nome, email, dtNascimento, cpf, cargo, senha, telefone, idFuncionarioAdm)
             .then(
                 function (resultado) {

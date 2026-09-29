@@ -1,8 +1,3 @@
-// Comportamento compartilhado da casca do app autenticado (sidebar + topbar),
-// usado em home.html, cadastro_empresa.html e cadastro_funcionario.html.
-
-// Abre/fecha a sidebar em telas menores através do botão hamburguer da topbar,
-// com um fundo escurecido (backdrop) que também fecha o menu ao ser tocado.
 (function () {
     const mobileToggle = document.getElementById("mobileToggle");
     const sidebar = document.getElementById("sidebar");
@@ -27,9 +22,6 @@
     }
 })();
 
-// Marca visualmente um item da sidebar como restrito ao perfil de gestor.
-// Usado em páginas onde a opção existe, mas só é permitida pra quem
-// administra a empresa (ex.: Cadastrar Funcionário).
 function restringirItemSidebarAGestor(elementId) {
     const item = document.getElementById(elementId);
     if (!item) return;
@@ -37,13 +29,6 @@ function restringirItemSidebarAGestor(elementId) {
     const ehGestor = sessionStorage.CARGO_USUARIO === "Gestor";
 
     if (!ehGestor) {
-        item.classList.add("disabled");
-        item.removeAttribute("href");
-        item.title = "Apenas o gestor da empresa pode acessar esta opção.";
-
-        const badge = document.createElement("span");
-        badge.className = "nav-item-badge";
-        badge.textContent = "Restrito";
-        item.appendChild(badge);
+        item.remove();
     }
 }

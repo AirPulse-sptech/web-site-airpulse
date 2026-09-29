@@ -3,7 +3,6 @@ const emailInput = document.getElementById("emailInput")
 const passwordInput = document.getElementById("passwordInput")
 const loginSubmitButton = document.getElementById("loginSubmitButton")
 
-// Limpa erros ao digitar
 emailInput.addEventListener('input', () => {
     document.getElementById('emailError').style.display = 'none';
     emailInput.classList.remove('input-error');
@@ -14,7 +13,6 @@ passwordInput.addEventListener('input', () => {
     passwordInput.classList.remove('input-error');
 });
 
-// adiciona um ouvinte de evento para quando o formulario for enviado
 loginForm.addEventListener('submit', (event) => {
     event.preventDefault()
     handleLogin()
@@ -24,13 +22,11 @@ function handleLogin() {
     const emailError = document.getElementById("emailError");
     const passwordError = document.getElementById("passwordError");
 
-    // Reseta as mensagens de erro
     emailError.style.display = "none";
     passwordError.style.display = "none";
     emailInput.classList.remove("input-error");
     passwordInput.classList.remove("input-error");
 
-    // pega os valores digitados e remove os espacos vazios do email
     const email = emailInput.value.trim();
     const password = passwordInput.value;
 
@@ -73,7 +69,8 @@ function handleLogin() {
                 if (json.cargo === "ADMIN") {
                   window.location.href = "cadastro_empresa.html";
                 } else {
-                  window.location.href = "home.html";
+
+                    window.location.href = "home.html";
                 }
             });
         } else {
@@ -86,7 +83,7 @@ function handleLogin() {
                 passwordInput.classList.add("input-error");
                 emailInput.classList.add("input-error");
 
-                // volta o botao ao normal em caso de erro
+
                 loginSubmitButton.disabled = false;
                 loginSubmitButton.innerText = "entrar na plataforma";
             });
