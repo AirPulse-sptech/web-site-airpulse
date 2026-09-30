@@ -33,8 +33,8 @@ function cadastrarEmpresa(razaoSocial, nomeFantasia, cnpj, segmento, website, em
 
 function cadastrarRepresentante(nome, email, telefone, cpf, cargo, senha, fkEmpresa) {
   var instrucaoSql = `
-    INSERT INTO funcionario (nome, email_corporativo, telefone, cpf, cargo, adm, senha, status_sistema, entrada_sistema, fk_empresa_fabricante) 
-    VALUES ('${nome}', '${email}', '${telefone}', '${cpf}', '${cargo}', 1, '${senha}', 1, NOW(), ${fkEmpresa});
+    INSERT INTO funcionario (nome, email_corporativo, telefone, cpf, cargo, senha, status_sistema, entrada_sistema, fk_empresa_fabricante) 
+    VALUES ('${nome}', '${email}', '${telefone}', '${cpf}', '${cargo}', '${senha}', 1, NOW(), ${fkEmpresa});
   `;
   return database.executar(instrucaoSql);
 }

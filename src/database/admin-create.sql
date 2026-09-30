@@ -11,7 +11,6 @@ INSERT INTO funcionario (
     telefone,
     cpf,
     cargo,
-    adm,
     senha,
     status_sistema,
     entrada_sistema,
@@ -23,7 +22,6 @@ INSERT INTO funcionario (
     '11999999999',
     '00000000000',
     'ADMIN',
-    1,               -- adm = 1 (true)
     'urubu100',
     1,
     NOW(),

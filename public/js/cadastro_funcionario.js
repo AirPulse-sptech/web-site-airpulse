@@ -1,10 +1,6 @@
-// Garante que o usuário está logado.
 validarSessao();
 
-// Regra de negócio: só o gestor da empresa cadastra novos funcionários.
-// Um funcionário comum que tentar acessar esta página direto pela URL
-// é levado de volta pra Home.
-if (sessionStorage.ADM_USUARIO !== "true") {
+if (sessionStorage.CARGO_USUARIO !== "Gestor") {
     window.location.href = "home.html";
 }
 
@@ -37,7 +33,7 @@ function cadastrar() {
         return false;
     }
 
-    fetch("/cadastro_funcionario/cadastrar", {
+    fetch("/usuario/cadastrar", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -57,11 +53,6 @@ function cadastrar() {
             console.log("resposta: ", resposta);
 
             if (resposta.ok) {
-                // Regra de negócio: o gestor cadastra o funcionário, mas não é
-                // ele quem vai logar com essa conta — por isso não redireciona
-                // pro login. Só confirma o sucesso e limpa o formulário.
-                // (Futuro: redirecionar pra uma listagem de funcionários,
-                // que ainda não existe nesse escopo.)
                 const nomeCadastrado = nomeVar;
                 document.getElementById("form-cadastro").reset();
 
@@ -87,7 +78,6 @@ function aplicarMascara(id, mascara) {
     });
 }
 
-/* Máscara de CPF */
 aplicarMascara("cpf", valor => {
     return valor
         .replace(/\D/g, "")
@@ -97,7 +87,7 @@ aplicarMascara("cpf", valor => {
         .replace(/\.(\d{3})(\d)/, ".$1-$2");
 });
 
-/* Máscara de telefone */
+
 aplicarMascara("telefone", valor => {
     return valor
         .replace(/\D/g, "")
@@ -124,7 +114,7 @@ function validarTelefone(telefone) {
     return telefoneLimpo.length === 11;
 }
 
-/* Exibe nome e cargo do gestor logado na sidebar */
+
 if (sessionStorage.NOME_USUARIO) {
     const nomeUsuario = sessionStorage.NOME_USUARIO;
     document.getElementById("userNameDisplay").textContent = nomeUsuario;

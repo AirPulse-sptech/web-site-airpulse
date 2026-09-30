@@ -1,0 +1,216 @@
+.painel {
+    padding: 24px 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.painel h1 {
+    font-size: 28px;
+    color: #1a1f5c;
+    margin: 0;
+}
+
+.painel .subtitulo {
+    color: #6b7280;
+    font-size: 14px;
+    margin: 4px 0 0;
+}
+
+.tituloCard {
+    font-size: 18px;
+    font-weight: 700;
+    color: #1a1f5c;
+}
+
+.cartao {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 1px 4px rgba(20, 30, 90, .08);
+}
+
+.gradeIndicadores {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    gap: 16px;
+}
+
+.gradeMeio {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+}
+
+.gradeDetalhes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    align-items: start;
+}
+
+.indicadorTopo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    color: #4b5563;
+}
+
+.selo {
+    font-size: 12px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-weight: 600;
+}
+
+.indicadorValor {
+    font-size: 34px;
+    font-weight: 700;
+    margin: 10px 0 2px;
+}
+
+.indicadorTexto {
+    font-size: 13px;
+}
+
+.barra {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 8px;
+    margin-top: 12px;
+    overflow: hidden;
+}
+
+.barra div {
+    height: 100%;
+    border-radius: 8px;
+}
+
+.critico {
+    color: #e11d48;
+}
+
+.critico.selo {
+    background: #ffe4e9;
+}
+
+.criticoFundo {
+    background: #e11d48;
+}
+
+.moderado {
+    color: #f97316;
+}
+
+.moderado.selo {
+    background: #ffedd5;
+}
+
+.moderadoFundo {
+    background: #f97316;
+}
+
+.normal {
+    color: #16a34a;
+}
+
+.normal.selo {
+    background: #dcfce7;
+}
+
+.normalFundo {
+    background: #16a34a;
+}
+
+.graficoTopo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.abas button {
+    border: none;
+    background: #eef0fb;
+    color: #4b5563;
+    padding: 7px 14px;
+    font-size: 13px;
+    border-radius: 10px;
+}
+
+.abas button.ativa {
+    background: #3b3ff0;
+    color: #fff;
+}
+
+.graficoArea {
+    margin-top: 12px;
+}
+
+.graficoArea svg {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.alerta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 12px;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.alerta small {
+    display: block;
+    font-weight: 400;
+    color: #6b7280;
+}
+
+.alerta.critico {
+    background: #fff1f3;
+}
+
+.alerta.moderado {
+    background: #fff5eb;
+}
+
+.detalhe summary {
+    cursor: pointer;
+    font-weight: 700;
+    color: #1a1f5c;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+}
+
+.detalhe summary::-webkit-details-marker {
+    display: none;
+}
+
+.detalheLista {
+    margin-top: 12px;
+}
+
+.detalheLista div {
+    display: flex;
+    justify-content: space-between;
+    padding: 7px 0;
+    border-bottom: 1px solid #eef0f5;
+    font-size: 14px;
+}
+
+.detalheLista b {
+    color: #3b3ff0;
+}
+
+@media (max-width: 900px) {
+    .gradeMeio {
+        grid-template-columns: 1fr;
+    }
+}
