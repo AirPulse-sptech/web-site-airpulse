@@ -5,12 +5,12 @@ const loginSubmitButton = document.getElementById("loginSubmitButton")
 
 emailInput.addEventListener('input', () => {
     document.getElementById('emailError').style.display = 'none';
-    emailInput.classList.remove('input-error');
+    emailInput.classList.remove('inputError');
 });
 
 passwordInput.addEventListener('input', () => {
     document.getElementById('passwordError').style.display = 'none';
-    passwordInput.classList.remove('input-error');
+    passwordInput.classList.remove('inputError');
 });
 
 loginForm.addEventListener('submit', (event) => {
@@ -24,8 +24,8 @@ function handleLogin() {
 
     emailError.style.display = "none";
     passwordError.style.display = "none";
-    emailInput.classList.remove("input-error");
-    passwordInput.classList.remove("input-error");
+    emailInput.classList.remove("inputError");
+    passwordInput.classList.remove("inputError");
 
     const email = emailInput.value.trim();
     const password = passwordInput.value;
@@ -34,12 +34,12 @@ function handleLogin() {
         if (!email) {
             emailError.innerText = "Preencha este campo.";
             emailError.style.display = "block";
-            emailInput.classList.add("input-error");
+            emailInput.classList.add("inputError");
         }
         if (!password) {
             passwordError.innerText = "Preencha este campo.";
             passwordError.style.display = "block";
-            passwordInput.classList.add("input-error");
+            passwordInput.classList.add("inputError");
         }
         return;
     }
@@ -47,7 +47,6 @@ function handleLogin() {
     loginSubmitButton.disabled = true
     loginSubmitButton.innerText = "ENTRANDO..."
 
-    // Aqui entra a chamada pra API de autenticação
     fetch("/usuario/autenticar", {
         method: "POST",
         headers: {
@@ -59,19 +58,9 @@ function handleLogin() {
         })
     }).then(function (resposta) {
         if (resposta.ok) {
-            resposta.json().then(json => {
-                sessionStorage.EMAIL_USUARIO = json.email;
-                sessionStorage.CARGO_USUARIO = json.cargo;
-                sessionStorage.NOME_USUARIO = json.nome;
-                sessionStorage.ID_USUARIO = json.id;
-
-                // redireciona administrador AIRPULSE para a página de cadastro de empresa
-                if (json.cargo === "ADMIN") {
-                  window.location.href = "cadastro_empresa.html";
-                } else {
-
-                    window.location.href = "home.html";
-                }
+            return resposta.json().then(usuario => {
+                salvarSessao(usuario.id, usuario.nome, usuario.email, usuario.cargo);
+                window.location.href = obterPaginaInicial();
             });
         } else {
             console.log("houve um erro ao tentar realizar o login!");
@@ -80,8 +69,8 @@ function handleLogin() {
                 const passwordError = document.getElementById("passwordError");
                 passwordError.innerText = "E-mail ou senha inválidos!";
                 passwordError.style.display = "block";
-                passwordInput.classList.add("input-error");
-                emailInput.classList.add("input-error");
+                passwordInput.classList.add("inputError");
+                emailInput.classList.add("inputError");
 
 
                 loginSubmitButton.disabled = false;

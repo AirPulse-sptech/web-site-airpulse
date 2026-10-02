@@ -7,25 +7,24 @@
   <title>AirPulse - Cadastro de Empresa</title>
   <link rel="icon" href="assets/icon/logo-icon.png">
   <link rel="stylesheet" href="css/global.css">
-  <link rel="stylesheet" href="css/cadastro_empresa.css">
+  <link rel="stylesheet" href="css/cadastroEmpresa.css">
 </head>
 
 <body>
 
-  <div class="app-layout">
+  <div class="appLayout">
 
-    <!-- Menu Lateral (Sidebar) — Admin AirPulse -->
     <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <a class="sidebar-brand" href="cadastro_empresa.html">
-          <img class="brand-logo-full" src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg"
+      <div class="sidebarHeader">
+        <a class="sidebarBrand" href="cadastroEmpresa.html">
+          <img class="brandLogoFull" src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg"
             alt="AirPulse">
         </a>
       </div>
 
-      <nav class="sidebar-nav">
-        <div class="nav-item disabled">
-          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+      <nav class="sidebarNav">
+        <div class="navItem disabled">
+          <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <rect x="3" y="3" width="7" height="9"></rect>
             <rect x="14" y="3" width="7" height="5"></rect>
@@ -35,8 +34,8 @@
           <span>Visão Geral</span>
         </div>
 
-        <a href="cadastro_empresa.html" class="nav-item active">
-          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        <a href="cadastroEmpresa.html" class="navItem active" aria-current="page">
+          <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
             <circle cx="8.5" cy="7" r="4"></circle>
@@ -46,8 +45,8 @@
           <span>Cadastrar Empresa</span>
         </a>
 
-        <div class="nav-item disabled">
-          <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+        <div class="navItem disabled">
+          <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="10"></circle>
             <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
@@ -57,16 +56,16 @@
         </div>
       </nav>
 
-      <div class="sidebar-footer">
-        <div class="user-profile">
-          <div class="user-avatar">AP</div>
-          <div class="user-details">
-            <span class="user-name" id="userNameDisplay">Admin AirPulse</span>
-            <span class="user-role">Gestor Interno</span>
+      <div class="sidebarFooter">
+        <div class="userProfile">
+          <div class="userAvatar" id="userAvatar">--</div>
+          <div class="userDetails">
+            <span class="userName" id="userNameDisplay">Usuário</span>
+            <span class="userRole" id="userRoleDisplay"></span>
           </div>
         </div>
 
-        <button class="btn-logout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+        <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round" stroke-linejoin="round">
             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -78,17 +77,16 @@
       </div>
     </aside>
 
-    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+    <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
-    <!-- Área Principal de Conteúdo -->
-    <div class="main-wrapper">
+    <div class="mainWrapper">
 
       <header class="topbar">
-        <div class="topbar-left">
-          <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+        <div class="topbarLeft">
+          <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
             ☰
           </button>
-          <span class="topbar-title">Módulo de Cadastramento de Clientes</span>
+          <span class="topbarTitle">Módulo de Cadastramento de Clientes</span>
         </div>
       </header>
 
@@ -122,7 +120,7 @@
           </li>
         </ol>
 
-        <form id="company-form" novalidate>
+        <form id="companyForm" novalidate>
 
           <section class="card step" data-step="1">
             <h2>Dados da empresa</h2>
@@ -130,18 +128,18 @@
             <div class="grid">
 
               <div class="field full">
-                <label for="razao-social">Razão social *</label>
-                <input id="razao-social" name="razao_social" type="text" placeholder="Nome completo da empresa"
+                <label for="razaoSocial">Razão social *</label>
+                <input id="razaoSocial" name="razaoSocial" type="text" placeholder="Nome completo da empresa"
                   required>
-                <p class="error" data-error="razao_social"></p>
+                <p class="error" data-error="razaoSocial"></p>
               </div>
 
               <div class="field">
-                <label for="nome-fantasia">
+                <label for="nomeFantasia">
                   Nome fantasia <span class="optional">(opcional)</span>
                 </label>
-                <input id="nome-fantasia" name="nome_fantasia" type="text" placeholder="Nome comercial">
-                <p class="error" data-error="nome_fantasia"></p>
+                <input id="nomeFantasia" name="nomeFantasia" type="text" placeholder="Nome comercial">
+                <p class="error" data-error="nomeFantasia"></p>
               </div>
 
               <div class="field">
@@ -166,17 +164,9 @@
               </div>
 
               <div class="field">
-                <label for="website">
-                  Website <span class="optional">(opcional)</span>
-                </label>
-                <input id="website" name="website" type="url" placeholder="https://empresa.com.br">
-                <p class="error" data-error="website"></p>
-              </div>
-
-              <div class="field full">
-                <label for="email-empresa">E-mail corporativo da empresa *</label>
-                <input id="email-empresa" name="email_empresa" type="email" placeholder="contato@empresa.aero" required>
-                <p class="error" data-error="email_empresa"></p>
+                <label for="emailEmpresa">E-mail corporativo da empresa *</label>
+                <input id="emailEmpresa" name="emailEmpresa" type="email" placeholder="contato@empresa.aero" required>
+                <p class="error" data-error="emailEmpresa"></p>
               </div>
 
             </div>
@@ -269,10 +259,10 @@
               </div>
 
               <div class="field">
-                <label for="email-responsavel">E-mail corporativo *</label>
-                <input id="email-responsavel" name="email_responsavel" type="email" placeholder="nome@empresa.aero"
+                <label for="emailResponsavel">E-mail corporativo *</label>
+                <input id="emailResponsavel" name="emailResponsavel" type="email" placeholder="nome@empresa.aero"
                   required>
-                <p class="error" data-error="email_responsavel"></p>
+                <p class="error" data-error="emailResponsavel"></p>
               </div>
 
               <div class="field">
@@ -286,9 +276,8 @@
 
                 <select id="cargo" name="cargo" required>
                   <option value="">Selecione o cargo</option>
-                 <!-- <option>Administrador</option> -->
-                  <option>Gestor</option>
-                  <option>Analista</option>
+                  <option value="GESTOR">GESTOR</option>
+                  <option value="ANALISTA">ANALISTA</option>
                 </select>
 
                 <p class="error" data-error="cargo"></p>
@@ -303,10 +292,10 @@
               <div class="field">
                 <label for="senha">Senha *</label>
 
-                <div class="password-wrap">
+                <div class="passwordWrap">
                   <input id="senha" name="senha" type="password" minlength="8" placeholder="Crie uma senha" required>
 
-                  <button class="show-password" type="button" data-password="senha">
+                  <button class="showPassword" type="button" data-password="senha">
                     Mostrar
                   </button>
                 </div>
@@ -316,32 +305,32 @@
               </div>
 
               <div class="field">
-                <label for="confirmar-senha">Confirmar senha *</label>
+                <label for="confirmarSenha">Confirmar senha *</label>
 
-                <div class="password-wrap">
-                  <input id="confirmar-senha" name="confirmar_senha" type="password" placeholder="Repita a senha"
+                <div class="passwordWrap">
+                  <input id="confirmarSenha" name="confirmarSenha" type="password" placeholder="Repita a senha"
                     required>
 
-                  <button class="show-password" type="button" data-password="confirmar-senha">
+                  <button class="showPassword" type="button" data-password="confirmarSenha">
                     Mostrar
                   </button>
                 </div>
 
                 <p class="helper">&nbsp;</p>
-                <p class="error" data-error="confirmar_senha"></p>
+                <p class="error" data-error="confirmarSenha"></p>
               </div>
 
             </div>
           </section>
 
           <section class="card step" data-step="4" hidden>
-            <h2 class="review-title">Confirme os dados informados</h2>
-            <div class="review-grid" id="review-content"></div>
+            <h2 class="reviewTitle">Confirme os dados informados</h2>
+            <div class="reviewGrid" id="reviewContent"></div>
           </section>
 
           <section class="card step" data-step="5" hidden>
-            <div class="success-screen">
-              <div class="success-icon">✓</div>
+            <div class="successScreen">
+              <div class="successIcon">✓</div>
               <h2>Cadastro concluído!</h2>
               <p>
                 A empresa foi cadastrada com sucesso. Os dados foram salvos no sistema AirPulse.
@@ -350,11 +339,11 @@
           </section>
 
           <div class="actions" id="actions">
-            <button class="button button-secondary" id="back-button" type="button" hidden>
+            <button class="button buttonSecondary" id="backButton" type="button" hidden>
               🠔 Voltar
             </button>
 
-            <button class="button button-primary" id="next-button" type="button">
+            <button class="button buttonPrimary" id="nextButton" type="button">
               Próximo passo ➔
             </button>
           </div>
@@ -367,8 +356,9 @@
   </div>
 
   <script src="js/sessao.js"></script>
-  <script src="js/app-shell.js"></script>
-  <script src="js/cadastro_empresa.js"></script>
+  <script>validarSessao();</script>
+  <script src="js/menuLateral.js"></script>
+  <script src="js/cadastroEmpresa.js"></script>
 </body>
 
 </html>

@@ -12,20 +12,19 @@
 
 <body>
 
-    <div class="app-layout">
+    <div class="appLayout">
 
-        <!-- Menu Lateral (Sidebar) — Empresa cliente (gestor/funcionário) -->
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <a class="sidebar-brand" href="home.html">
-                    <img class="brand-logo-full"
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="home.html">
+                    <img class="brandLogoFull"
                         src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
                 </a>
             </div>
 
-            <nav class="sidebar-nav">
-                <div class="nav-item disabled">
-                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            <nav class="sidebarNav">
+                <a href="telaAnalista.html" class="navItem">
+                    <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="3" width="7" height="9"></rect>
                         <rect x="14" y="3" width="7" height="5"></rect>
@@ -33,10 +32,10 @@
                         <rect x="3" y="16" width="7" height="5"></rect>
                     </svg>
                     <span>Dashboard</span>
-                </div>
+                </a>
 
-                <div class="nav-item disabled">
-                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <div class="navItem disabled">
+                    <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="4" y="4" width="16" height="16" rx="2"></rect>
                         <path d="M9 9h6v6H9z"></path>
@@ -44,8 +43,8 @@
                     <span>Componentes</span>
                 </div>
 
-                <a href="alertas.html" class="nav-item">
-                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <a href="alertas.html" class="navItem">
+                    <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
@@ -53,8 +52,8 @@
                     <span>Alertas</span>
                 </a>
 
-                <a href="cadastro_funcionario.html" class="nav-item" id="itemCadastrarFuncionario">
-                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
+                    <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                         <circle cx="9" cy="7" r="4"></circle>
@@ -64,8 +63,8 @@
                     <span>Cadastrar Funcionário</span>
                 </a>
 
-                <div class="nav-item disabled">
-                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <div class="navItem disabled">
+                    <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
                         <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
@@ -75,16 +74,16 @@
                 </div>
             </nav>
 
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar" id="userAvatar">--</div>
-                    <div class="user-details">
-                        <span class="user-name" id="userNameDisplay">Usuário</span>
-                        <span class="user-role" id="userRoleDisplay">Funcionário</span>
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
                     </div>
                 </div>
 
-                <button class="btn-logout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -96,23 +95,22 @@
             </div>
         </aside>
 
-        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
-        <!-- Área Principal de Conteúdo -->
-        <div class="main-wrapper">
+        <div class="mainWrapper">
 
             <header class="topbar">
-                <div class="topbar-left">
-                    <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
                         ☰
                     </button>
-                    <span class="topbar-title">Painel</span>
+                    <span class="topbarTitle">Painel</span>
                 </div>
             </header>
 
             <main>
                 <div class="corpo">
-                    <div class="saudacoes">Seja bem vindo(a), <span id="b_usuario"></span></div>
+                    <div class="saudacoes">Seja bem vindo(a), <span id="bUsuario"></span></div>
                 </div>
             </main>
         </div>
@@ -120,8 +118,8 @@
     </div>
 
     <script src="js/sessao.js"></script>
-    <script src="js/app-shell.js"></script>
-    <script src="js/home.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
 </body>
 
 </html>

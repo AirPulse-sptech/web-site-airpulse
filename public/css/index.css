@@ -1,13 +1,10 @@
-/* Fontes já importadas centralmente em global.css (Inter + Sora) */
-
 * {
     padding: 0%;
     margin: 0%;
     box-sizing: border-box;
-    font-family: var(--font-body);
+    font-family: var(--fontBody);
 }
 
-/*Banner*/
 
 #bannerIndex {
     background-image:
@@ -26,22 +23,22 @@
     flex-direction: column;
     align-items: flex-start;
     justify-content: space-evenly;
-    border-bottom: 5px solid var(--bg-soft);
+    border-bottom: 5px solid var(--bgSoft);
 }
 
 #tituloBanner {
-    font-family: var(--font-heading);
-    color: var(--color-primary);
+    font-family: var(--fontHeading);
+    color: var(--colorPrimary);
     font-size: 20px;
     margin-left: 5%;
     font-weight: 800;
 }
 
 #slogan {
-    font-family: var(--font-heading);
+    font-family: var(--fontHeading);
     font-size: 50px;
     font-weight: 800;
-    color: var(--text-primary);
+    color: var(--textPrimary);
     line-height: 1.2;
     margin-bottom: 20px;
     max-width: 450px;
@@ -49,58 +46,56 @@
     margin-right: auto;
 }
 
-.destaque-banner {
-    color: var(--color-primary);
+.destaqueBanner {
+    color: var(--colorPrimary);
 }
 
 .subtituloBanner {
     font-size: 15px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     line-height: 1.65;
     max-width: 400px;
     margin-left: 5%;
 }
 
-.cadastro-pelo-banner {
+.cadastroPeloBanner {
     display: flex;
     flex-direction: row;
     margin-left: 5%;
 }
 
-/*Beneficios */
 
-.grade-pilares-beneficios {
+.gradePilaresBeneficios {
      display: grid;
-   
+
   grid-template-columns: repeat(
      auto-fit,
      minmax(240px, 1fr)
   );
 }
 
-.posicao-grade-beneficios {
+.posicaoGradeBeneficios {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     gap: 24px;
     padding: 55px 55px;
-    border-right: 2px solid var(--bg-soft);
-    border-top: 2px solid var(--bg-soft);
+    border-right: 2px solid var(--bgSoft);
+    border-top: 2px solid var(--bgSoft);
 }
 
-.icone-pilar-beneficios {
+.iconePilarBeneficios {
     width: 100px;
     height: 55px;
-    background-color: var(--color-primary-soft);
+    background-color: var(--colorPrimarySoft);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
-    color: var(--color-primary-dark);
+    color: var(--colorPrimaryDark);
 }
 
-/* LOGIN */
 
 #divLogin {
     width: 100%;
@@ -122,19 +117,19 @@
     justify-content: space-evenly;
 }
 
-.titulo-login-cadastro {
+.tituloLoginCadastro {
     color: white;
     font-size: 35px;
 }
 
-.ipt-login-cadastro {
+.iptLoginCadastro {
     width: 250px;
     height: 30px;
     border: none;
     border-radius: 20px;
 }
 
-#btn-login {
+#btnLogin {
     width: 100px;
     height: 40px;
     background-color: white;
@@ -146,30 +141,29 @@
 }
 
 
-.texto-ipt {
+.textoIpt {
     color: white;
 }
 
 
 /* scroll-behavior: smooth já definido globalmente em global.css */
 
-.secao-nosso-servico {
-    background-color: var(--bg-soft);
+.secaoNossoServico {
+    background-color: var(--bgSoft);
     padding: 80px 120px;
 }
 
-.secao-como-funciona {
+.secaoComoFunciona {
     background-color: white;
     padding: 80px 120px;
 }
 
-.secao-sobre-nos {
-    background-color: var(--bg-soft);
+.secaoSobreNos {
+    background-color: var(--bgSoft);
     padding: 80px 120px;
 }
 
-/* Rótulos */
-.rotulo-secao {
+.rotuloSecao {
     display: flex;
     align-items: center;
     justify-content: center;
@@ -177,46 +171,44 @@
     margin-bottom: 40px;
 }
 
-.linha-rotulo {
+.linhaRotulo {
     display: block;
     width: 80px;
     height: 1px;
-    background-color: var(--color-primary-light);
+    background-color: var(--colorPrimaryLight);
 }
 
-.texto-rotulo {
+.textoRotulo {
     font-size: 12px;
     font-weight: 600;
     letter-spacing: 3px;
-    color: var(--color-primary);
-    /*impede de quebrar o texto*/
+    color: var(--colorPrimary);
     white-space: nowrap;
 }
 
 
-/* Cabeçalhos e subtitulos  */
-.cabecalhos-principais {
+.cabecalhosPrincipais {
     text-align: center;
     margin-bottom: 60px;
 }
 
-.cabecalhos-secundarios {
+.cabecalhosSecundarios {
     margin-bottom: 40px;
 }
 
-.titulos-secundarios {
-    font-family: var(--font-heading);
+.titulosSecundarios {
+    font-family: var(--fontHeading);
     font-size: 30px;
     font-weight: 800;
-    color: var(--text-primary);
+    color: var(--textPrimary);
     margin-bottom: 8px;
 }
 
-.titulos-principais {
-    font-family: var(--font-heading);
+.titulosPrincipais {
+    font-family: var(--fontHeading);
     font-size: 36px;
     font-weight: 800;
-    color: var(--text-primary);
+    color: var(--textPrimary);
     line-height: 1.2;
     margin-bottom: 20px;
     max-width: 650px;
@@ -224,51 +216,51 @@
     margin-right: auto;
 }
 
-.titulos-principais-contato {
-    font-family: var(--font-heading);
+.titulosPrincipaisContato {
+    font-family: var(--fontHeading);
     font-size: 25px;
     font-weight: 800;
-    color: var(--color-primary);
+    color: var(--colorPrimary);
     line-height: 1.25;
     margin-bottom: 20px;
     max-width: 680px;
     margin-left: auto;
     margin-right: auto;
 }
-.destaque-azul {
-    color: var(--color-primary);
+.destaqueAzul {
+    color: var(--colorPrimary);
 }
 
 
-.descricao-principal {
+.descricaoPrincipal {
     font-size: 15px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     max-width: 540px;
     margin: 0 auto;
     line-height: 1.7;
 }
 
 
-.bloco-essencia {
+.blocoEssencia {
     margin-top: 80px;
 }
 
-.subtitulo-bloco {
-    font-family: var(--font-heading);
+.subtituloBloco {
+    font-family: var(--fontHeading);
     font-size: 30px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--textPrimary);
     margin-bottom: 8px;
 }
 
-.texto-bloco {
+.textoBloco {
     font-size: 17px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     margin-bottom: 32px;
 }
 
 
-.grade-pilares {
+.gradePilares {
     margin-top: 1%;
     display: grid;
     gap: 24px;
@@ -278,127 +270,126 @@
   );
 }
 
-.diagrama-negocio {
+.diagramaNegocio {
     height: 10%;
     width: 75%;
-    border: 3px solid var(--color-primary);
+    border: 3px solid var(--colorPrimary);
 }
 
- .diagrama-negocio-vertical {
+ .diagramaNegocioVertical {
         display: none;
     }
 
-.ajuste-diagrama-negocio {
+.ajusteDiagramaNegocio {
     display: flex;
     flex-direction: row;
     justify-content: center;
 }
 
 
-.cartao-pilar {
+.cartaoPilar {
     flex: 1;
     background-color: white;
-    border: 1px solid var(--border-soft);
+    border: 1px solid var(--borderSoft);
     border-radius: 12px;
     padding: 28px 24px;
     transition: transform 0.25s, box-shadow 0.25s;
 }
 
-.cartao-pilar:hover {
+.cartaoPilar:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 28px rgba(79, 70, 229, 0.15);
 }
 
-.icone-pilar {
+.iconePilar {
     width: 44px;
     height: 44px;
-    background-color: var(--color-primary);
+    background-color: var(--colorPrimary);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
-    color: var(--color-white);
+    color: var(--colorWhite);
 }
 
-.nome-pilar {
+.nomePilar {
     font-size: 15px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--textPrimary);
     margin-bottom: 10px;
 }
 
-.descricao-pilar {
+.descricaoPilar {
     font-size: 13px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     line-height: 1.65;
 }
 
-/*historia*/
 
-.secao-historia {
-    background-color: var(--bg-surface);
+.secaoHistoria {
+    background-color: var(--bgSurface);
     padding: 80px 120px;
-    border-top: 1px solid var(--border-soft);
+    border-top: 1px solid var(--borderSoft);
 }
 
-.subtitulo-historia {
+.subtituloHistoria {
     font-size: 14px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
 }
 
-.conteudo-historia {
+.conteudoHistoria {
     display: flex;
     flex-direction: row;
     gap: 48px;
     align-items: flex-start;
 }
 
-.bloco-texto-historia {
+.blocoTextoHistoria {
     flex: 1;
 }
 
-.cartao-historia {
-    background-color: var(--bg-soft);
-    border: 1px solid var(--border-soft);
+.cartaoHistoria {
+    background-color: var(--bgSoft);
+    border: 1px solid var(--borderSoft);
     border-radius: 12px;
     padding: 32px;
     transition: box-shadow 0.25s;
 }
 
-.cartao-historia:hover {
+.cartaoHistoria:hover {
     box-shadow: 0 8px 24px rgba(79, 70, 229, 0.12);
 }
 
-.titulo-cartao-historia {
-    font-family: var(--font-heading);
+.tituloCartaoHistoria {
+    font-family: var(--fontHeading);
     font-size: 16px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--textPrimary);
     margin-bottom: 12px;
 }
 
-.paragrafo-historia {
+.paragrafoHistoria {
     font-size: 13px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     line-height: 1.7;
     margin-bottom: 24px;
     text-align: justify;
 }
 
 
-.imagem-historia {
+.imagemHistoria {
     flex: 1;
     border-radius: 12px;
     overflow: hidden;
     transition: box-shadow 0.25s;
 }
 
-.imagem-historia:hover {
+.imagemHistoria:hover {
     box-shadow: 0 12px 32px rgba(0, 0, 0, 0.15);
 }
 
-.foto-historia {
+.fotoHistoria {
     width: 100%;
     height: 100%;
     object-fit: cover;
@@ -406,19 +397,18 @@
     display: block;
 }
 
-/*diferenciais */
 
-.secao-diferenciais {
-    background-color: var(--bg-soft);
+.secaoDiferenciais {
+    background-color: var(--bgSoft);
     padding: 80px 120px;
 }
 
-.subtitulo-diferenciais {
+.subtituloDiferenciais {
     font-size: 14px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
 }
 
-.grade-diferenciais {
+.gradeDiferenciais {
     margin-top: 1%;
     display: grid;
     gap: 24px;
@@ -428,64 +418,63 @@
   );
 }
 
-.cartao-diferencial {
+.cartaoDiferencial {
     flex: 1;
-    background-color: var(--bg-surface);
-    border: 1px solid var(--border-soft);
+    background-color: var(--bgSurface);
+    border: 1px solid var(--borderSoft);
     border-radius: 12px;
     padding: 28px 24px;
     transition: transform 0.25s, box-shadow 0.25s;
 }
 
-.cartao-diferencial:hover {
+.cartaoDiferencial:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 28px rgba(79, 70, 229, 0.15);
 }
 
-.icone-diferencial {
+.iconeDiferencial {
     width: 44px;
     height: 44px;
-    background-color: var(--color-primary-soft);
+    background-color: var(--colorPrimarySoft);
     border-radius: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
     margin-bottom: 16px;
-    color: var(--color-primary);
+    color: var(--colorPrimary);
 }
 
-.nome-diferencial {
+.nomeDiferencial {
     font-size: 15px;
     font-weight: 700;
-    color: var(--text-primary);
+    color: var(--textPrimary);
     margin-bottom: 10px;
 }
 
-.descricao-diferencial {
+.descricaoDiferencial {
     font-size: 13px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     line-height: 1.65;
 }
 
-/*contato*/
 
-.secao-cta {
-    background-color: var(--bg-soft);
+.secaoCta {
+    background-color: var(--bgSoft);
     padding: 40px 40px;
     display: flex;
     flex-direction: column;
     align-items:center;
-    
+
 }
 
-.corpo-entre-contato {
+.corpoEntreContato {
     display: flex;
     flex-direction: row;
     gap: 48px;
     align-items: flex-start;
 }
 
-.imagem-fluxo-cadastro{
+.imagemFluxoCadastro{
     border-radius: 1.5rem;
     width: 100%;
 }
@@ -499,46 +488,46 @@
 .boxContato {
     display: flex;
     flex-direction: column;
-    align-items:center; 
-    background: var(--gradient-brand);
+    align-items:center;
+    background: var(--gradientBrand);
     border-radius: 20px;
     text-align: center;
     box-shadow: 0 20px 60px rgba(26, 35, 126, 0.35);
-    width: 50%;            
+    width: 50%;
     max-width: 800px;
     box-sizing: border-box;
     padding: clamp(10px, 5vh, 60px) clamp(10px, 6vw, 80px);
     margin-top: 50px;
 }
 
-.titulo-cta {
-    font-family: var(--font-heading);
+.tituloCta {
+    font-family: var(--fontHeading);
     font-size: 28px;
     font-weight: 800;
-    color: var(--color-white);
+    color: var(--colorWhite);
     margin-bottom: 16px;
     line-height: 1.3;
 }
 
-.item-contato {
+.itemContato {
     display: flex;
     flex-direction: row;
-    align-items: center;       
-    justify-content: center;    
-    gap: 15px;                 
-    margin-bottom: 20px; 
-    } 
-    
-    .rotulo-contato {
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    }
+
+    .rotuloContato {
     font-size: 14px;
-    color: var(--text-on-dark-secondary);
-    margin: 0;                  
-    white-space: nowrap;       
+    color: var(--textOnDarkSecondary);
+    margin: 0;
+    white-space: nowrap;
 }
 
-.descricao-cta {
+.descricaoCta {
     font-size: 14px;
-    color: var(--text-on-dark-secondary);
+    color: var(--textOnDarkSecondary);
     margin-bottom: 80px;
     line-height: 1.7;
     max-width: 540px;
@@ -546,20 +535,20 @@
     margin-right: auto;
 }
 
-.botao-cta-primario {
+.botaoCtaPrimario {
     text-decoration: none;
     font-size: 14px;
     font-weight: 600;
-    color: var(--color-primary);
-    border: 2px solid var(--color-white);
+    color: var(--colorPrimary);
+    border: 2px solid var(--colorWhite);
     border-radius: 8px;
     padding: 12px 28px;
-    
+
     cursor: pointer;
     transition: transform 0.25s, box-shadow 0.25s;
 }
 
-.botao-cta-primario:hover {
+.botaoCtaPrimario:hover {
     transform: translateY(-5px);
     box-shadow: 0 10px 28px rgba(223, 221, 245, 0.206);
 }
@@ -580,48 +569,48 @@
      font-size: 25px;
 }
 
-.titulos-principais{
+.titulosPrincipais{
     font-size: 20px;
-    
+
 }
 
-.cabecalhos-principais{
+.cabecalhosPrincipais{
     width: 100%;
 }
 
-.titulos-secundarios{
+.titulosSecundarios{
     font-size: 20px;
 }
 
-.subtitulo-bloco {
+.subtituloBloco {
     font-size: 20px;
 }
 
-.secao-nosso-servico { 
+.secaoNossoServico {
     padding: 20px 20px;
 }
 
-.secao-como-funciona {
+.secaoComoFunciona {
     padding: 20px 20px;
 }
 
-.secao-sobre-nos {
+.secaoSobreNos {
     padding: 20px 20px;
 }
 
-.secao-historia {
-    padding: 20px 20px;  
-}
-
-.secao-diferenciais {
+.secaoHistoria {
     padding: 20px 20px;
 }
 
-.secao-cta { 
-    padding: 20px 20px;  
+.secaoDiferenciais {
+    padding: 20px 20px;
 }
 
-.botao-cta-primario{
+.secaoCta {
+    padding: 20px 20px;
+}
+
+.botaoCtaPrimario{
     padding: 5px 5px;
 }
 
@@ -630,59 +619,59 @@
     padding: clamp(1px, 5vh, 60px) clamp(1px, 6vw, 80px);
 }
 
-.linha-rotulo {
+.linhaRotulo {
     display: none;
 }
 
-.posicao-grade-beneficios {
+.posicaoGradeBeneficios {
     padding: 30px 24px;
 }
 
-.item-contato {
+.itemContato {
     flex-direction: column;
     align-items: flex-start;
     gap: 6px;
 }
 
-.botao-cta-primario {
+.botaoCtaPrimario {
     width: 100%;
 }
 }
 
 
 @media (max-width: 900px) {
-    .secao-nosso-servico,
-    .secao-como-funciona,
-    .secao-sobre-nos,
-    .secao-historia,
-    .secao-diferenciais {
+    .secaoNossoServico,
+    .secaoComoFunciona,
+    .secaoSobreNos,
+    .secaoHistoria,
+    .secaoDiferenciais {
         padding: 56px 40px;
     }
 
-    .cabecalhos-principais {
+    .cabecalhosPrincipais {
         margin-bottom: 40px;
     }
 
-    .titulos-principais {
+    .titulosPrincipais {
         font-size: 28px;
     }
 
-    .conteudo-historia {
+    .conteudoHistoria {
         flex-direction: column;
     }
 }
 
 
 @media (max-width: 1024px){
-    .imagem-historia{
+    .imagemHistoria{
         display: none;
     }
 
-    .diagrama-negocio {
+    .diagramaNegocio {
         display: none;
     }
 
-    .diagrama-negocio-vertical {
+    .diagramaNegocioVertical {
         display: block;
         width: 100%;
         aspect-ratio: 3/9;
@@ -705,8 +694,8 @@
 
 
 @media (min-width: 730px) and (max-width: 1050px) {
-    .grade-pilares-beneficios {
-        grid-template-columns: repeat(2, 1fr); 
+    .gradePilaresBeneficios {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 

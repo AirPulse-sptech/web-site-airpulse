@@ -1,15 +1,8 @@
-/*
-   As variáveis de cor/fonte da marca (--color-primary, --text-primary,
-   --bg-input, --border-soft etc.) agora vêm de css/global.css, que deve
-   ser carregado antes deste arquivo. Aqui ficam só variáveis específicas
-   desta página.
-*/
 :root {
-    --bg-main: var(--bg-surface);
-    --bg-panel-dark: var(--color-primary-dark);
+    --bgMain: var(--bgSurface);
+    --bgPanelDark: var(--colorPrimaryDark);
 
-    /* DECORAÇÃO */
-    --decoration-circle: rgba(255, 255, 255, 0.06);
+    --decorationCircle: rgba(255, 255, 255, 0.06);
 }
 
 * {
@@ -26,9 +19,9 @@ html {
 }
 
 body {
-    background-color: var(--bg-main);
-    color: var(--text-primary);
-    font-family: var(--font-body);
+    background-color: var(--bgMain);
+    color: var(--textPrimary);
+    font-family: var(--fontBody);
     font-weight: 400;
     height: 100%;
     overflow: hidden;
@@ -39,47 +32,45 @@ a {
 }
 
 button {
-    font-family: var(--font-body);
+    font-family: var(--fontBody);
     border: none;
 }
 
-/* CONTAINER PRINCIPAL */
-.login-page-container {
+.loginPageContainer {
     display: flex;
     width: 100%;
     height: 100vh;
     height: 100dvh;
 }
 
-/* PAINEL ESQUERDO */
-.login-left-panel {
+.loginLeftPanel {
     width: 42%;
-    background-color: var(--bg-panel-dark);
-    background-image: var(--gradient-brand);
+    background-color: var(--bgPanelDark);
+    background-image: var(--gradientBrand);
     position: relative;
     overflow: hidden;
     display: flex;
     flex-shrink: 0;
 }
 
-.login-left-panel-decoration {
+.loginLeftPanelDecoration {
     position: absolute;
     inset: 0;
 
-    .login-decoration-circle {
+    .loginDecorationCircle {
         position: absolute;
         border-radius: 50%;
-        background-color: var(--decoration-circle);
+        background-color: var(--decorationCircle);
     }
 
-    .login-decoration-circle-1 {
+    .loginDecorationCircle1 {
         width: 500px;
         height: 500px;
         top: -150px;
         left: -150px;
     }
 
-    .login-decoration-circle-2 {
+    .loginDecorationCircle2 {
         width: 350px;
         height: 350px;
         bottom: -100px;
@@ -87,7 +78,7 @@ button {
     }
 }
 
-.login-left-panel-content {
+.loginLeftPanelContent {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -102,31 +93,30 @@ button {
     overflow: hidden;
 }
 
-.airpulse-logo {
+.airpulseLogo {
     height: 70px;
 }
 
-.login-left-panel-middle {
+.loginLeftPanelMiddle {
     display: flex;
     flex-direction: column;
     gap: clamp(.75rem, 2.5vh, 1.5rem);
     min-height: 0;
 }
 
-/* MARCA (LOGO) */
-.login-brand {
+.loginBrand {
     display: flex;
     align-items: center;
     gap: .6rem;
-    color: var(--text-on-dark);
+    color: var(--textOnDark);
 
     span {
-        font-family: var(--font-heading);
+        font-family: var(--fontHeading);
         font-size: 20px;
         font-weight: 700;
     }
 
-    .login-brand-icon {
+    .loginBrandIcon {
         width: 32px;
         height: 32px;
         border-radius: 8px;
@@ -141,48 +131,48 @@ button {
     }
 }
 
-.login-brand-dark {
-    color: var(--text-primary);
+.loginBrandDark {
+    color: var(--textPrimary);
 
-    .login-brand-icon {
-        background-color: var(--bg-input);
-        color: var(--color-primary);
+    .loginBrandIcon {
+        background-color: var(--bgInput);
+        color: var(--colorPrimary);
     }
 }
 
-.login-welcome-title {
-    font-family: var(--font-heading);
+.loginWelcomeTitle {
+    font-family: var(--fontHeading);
     font-size: clamp(22px, 3.4vh, 38px);
     font-weight: 800;
     line-height: 1.25;
-    color: var(--text-on-dark);
+    color: var(--textOnDark);
 }
 
-.login-welcome-description {
+.loginWelcomeDescription {
     font-size: clamp(12px, 1.7vh, 15px);
     line-height: 1.6;
-    color: var(--text-on-dark-secondary);
+    color: var(--textOnDarkSecondary);
     max-width: 90%;
 }
 
-.login-features-list {
+.loginFeaturesList {
     display: flex;
     flex-direction: column;
     gap: clamp(.4rem, 1.3vh, .9rem);
     margin-top: .5rem;
 }
 
-.login-feature-item {
+.loginFeatureItem {
     display: flex;
     align-items: center;
     gap: .75rem;
 
     span {
         font-size: 14px;
-        color: var(--text-on-dark);
+        color: var(--textOnDark);
     }
 
-    .login-feature-icon {
+    .loginFeatureIcon {
         width: 20px;
         height: 20px;
         border-radius: 50%;
@@ -194,12 +184,12 @@ button {
 
         i {
             font-size: 10px;
-            color: var(--text-on-dark);
+            color: var(--textOnDark);
         }
     }
 }
 
-.login-testimonial-box {
+.loginTestimonialBox {
     border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 10px;
     padding: clamp(.6rem, 2vh, 1rem) 1.25rem;
@@ -208,7 +198,7 @@ button {
 
     p {
         font-size: clamp(11px, 1.5vh, 13px);
-        color: var(--text-on-dark-secondary);
+        color: var(--textOnDarkSecondary);
         line-height: 1.5;
         font-style: italic;
     }
@@ -217,13 +207,12 @@ button {
         display: block;
         margin-top: .6rem;
         font-size: clamp(10px, 1.3vh, 12px);
-        color: var(--text-on-dark-secondary);
+        color: var(--textOnDarkSecondary);
         opacity: .7;
     }
 }
 
-/* PAINEL DIREITO */
-.login-right-panel {
+.loginRightPanel {
     flex: 1;
     display: flex;
     align-items: center;
@@ -234,7 +223,7 @@ button {
     overflow: hidden;
 }
 
-.login-right-panel-content {
+.loginRightPanelContent {
     width: 100%;
     max-width: 380px;
     display: flex;
@@ -242,37 +231,36 @@ button {
     gap: clamp(.9rem, 2.4vh, 1.75rem);
 }
 
-.login-form-header {
+.loginFormHeader {
     display: flex;
     flex-direction: column;
     gap: .4rem;
 
     h2 {
-        font-family: var(--font-heading);
+        font-family: var(--fontHeading);
         font-size: clamp(20px, 3.2vh, 26px);
         font-weight: 800;
-        color: var(--text-primary);
+        color: var(--textPrimary);
     }
 
     p {
         font-size: clamp(12px, 1.7vh, 14px);
-        color: var(--text-secondary);
+        color: var(--textSecondary);
     }
 }
 
-.login-inline-link {
-    color: var(--color-primary);
+.loginInlineLink {
+    color: var(--colorPrimary);
     font-weight: 600;
 }
 
-/* FORMULÁRIO */
-.login-form {
+.loginForm {
     display: flex;
     flex-direction: column;
     gap: clamp(.6rem, 1.8vh, 1.1rem);
 }
 
-.login-form-group {
+.loginFormGroup {
     display: flex;
     flex-direction: column;
     gap: .4rem;
@@ -280,27 +268,27 @@ button {
     label {
         font-size: 13px;
         font-weight: 600;
-        color: var(--text-primary);
+        color: var(--textPrimary);
     }
 
     input {
-        background-color: var(--bg-input);
-        border: 1px solid var(--border-soft);
+        background-color: var(--bgInput);
+        border: 1px solid var(--borderSoft);
         border-radius: 8px;
         padding: clamp(.5rem, 1.5vh, .75rem) .9rem;
         font-size: 14px;
         font-family: 'Inter', sans-serif;
-        color: var(--text-primary);
+        color: var(--textPrimary);
         outline: none;
         transition: border-color .2s ease-in-out;
     }
 
     input:focus {
-        border-color: var(--color-primary-light);
+        border-color: var(--colorPrimaryLight);
     }
 }
 
-.login-error-message {
+.loginErrorMessage {
     color: #ef4444;
     font-size: 12px;
     font-weight: 500;
@@ -308,41 +296,41 @@ button {
     display: none;
 }
 
-.input-error {
+.inputError {
     border-color: #ef4444 !important;
 }
 
-.login-form-group-label-row {
+.loginFormGroupLabelRow {
     display: flex;
     justify-content: space-between;
     align-items: center;
 
-    .login-inline-link {
+    .loginInlineLink {
         font-size: 12px;
         font-weight: 500;
     }
 }
 
-.login-checkbox-row {
+.loginCheckboxRow {
     display: flex;
     align-items: center;
     gap: .5rem;
 
     label {
         font-size: 13px;
-        color: var(--text-secondary);
+        color: var(--textSecondary);
     }
 
     input {
         width: 15px;
         height: 15px;
-        accent-color: var(--color-primary);
+        accent-color: var(--colorPrimary);
     }
 }
 
-.login-submit-button {
-    background-color: var(--color-primary);
-    color: var(--text-on-dark);
+.loginSubmitButton {
+    background-color: var(--colorPrimary);
+    color: var(--textOnDark);
     padding: clamp(.6rem, 1.7vh, .85rem) 1rem;
     border-radius: 8px;
     font-size: 15px;
@@ -352,17 +340,17 @@ button {
     transition: all .2s ease-in-out;
 }
 
-.login-submit-button:hover {
-    background-color: var(--color-primary-dark);
+.loginSubmitButton:hover {
+    background-color: var(--colorPrimaryDark);
 }
 
-.login-divider {
+.loginDivider {
     width: 100%;
     height: 1px;
-    background-color: var(--border-soft);
+    background-color: var(--borderSoft);
 }
 
-.login-secondary-buttons {
+.loginSecondaryButtons {
     display: flex;
     gap: .75rem;
 
@@ -371,10 +359,10 @@ button {
     }
 }
 
-.login-secondary-button {
+.loginSecondaryButton {
     width: 100%;
-    background-color: var(--bg-input);
-    color: var(--color-primary);
+    background-color: var(--bgInput);
+    color: var(--colorPrimary);
     padding: clamp(.5rem, 1.4vh, .7rem) 1rem;
     border-radius: 8px;
     font-size: 13px;
@@ -383,29 +371,28 @@ button {
     transition: all .2s ease-in-out;
 }
 
-.login-secondary-button:hover {
-    background-color: var(--border-soft);
+.loginSecondaryButton:hover {
+    background-color: var(--borderSoft);
 }
 
-.login-back-link {
+.loginBackLink {
     text-align: center;
     font-size: 13px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
 }
 
-/* RESPONSIVO */
 @media (max-width: 900px) {
-    .login-left-panel {
+    .loginLeftPanel {
         display: none;
     }
 
-    .login-right-panel {
+    .loginRightPanel {
         width: 100%;
     }
 }
 
 @media (max-width: 420px) {
-    .login-right-panel {
+    .loginRightPanel {
         padding: 1.5rem 1.25rem;
     }
 }

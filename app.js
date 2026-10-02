@@ -1,17 +1,15 @@
-// var ambiente_processo = 'producao';
-var ambiente_processo = 'desenvolvimento';
+// var ambienteProcesso = 'producao';
+var ambienteProcesso = 'desenvolvimento';
 
-var caminho_env = ambiente_processo === 'producao' ? '.env' : '.env.dev';
-// Acima, temos o uso do operador ternário para definir o caminho do arquivo .env
-// A sintaxe do operador ternário é: condição ? valor_se_verdadeiro : valor_se_falso
+var caminhoEnv = ambienteProcesso === 'producao' ? '.env' : '.env.dev';
 
-require("dotenv").config({ path: caminho_env });
+require("dotenv").config({ path: caminhoEnv });
 
 var express = require("express");
 var cors = require("cors");
 var path = require("path");
-var PORTA_APP = process.env.APP_PORT;
-var HOST_APP = process.env.APP_HOST;
+var portaApp = process.env.APP_PORT;
+var hostApp = process.env.APP_HOST;
 
 var app = express();
 
@@ -29,7 +27,7 @@ app.use("/", indexRouter);
 app.use("/usuario", usuarioRouter);
 app.use("/empresas", empresasRouter);
 
-app.listen(PORTA_APP, function () {
+app.listen(portaApp, function () {
     console.log(`
     █████╗ ██╗██████╗ ██████╗ ██╗   ██╗██╗     ███████╗███████╗███████╗
    ██╔══██╗██║██╔══██╗██╔══██╗██║   ██║██║     ██╔════╝██╔════╝██╔════╝
@@ -41,7 +39,7 @@ app.listen(PORTA_APP, function () {
                                    __|__
                             |--O----(_)----O--|
     \n\n\n                                                                                                 
-    Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar .: http://${HOST_APP}:${PORTA_APP} :. \n\n
+    Servidor do seu site já está rodando! Acesse o caminho a seguir para visualizar .: http://${hostApp}:${portaApp} :. \n\n
     Você está rodando sua aplicação em ambiente de .:${process.env.AMBIENTE_PROCESSO}:. \n\n
     \tSe .:desenvolvimento:. você está se conectando ao banco local. \n
     \tSe .:producao:. você está se conectando ao banco remoto. \n\n

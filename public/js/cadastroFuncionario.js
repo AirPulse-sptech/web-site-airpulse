@@ -1,9 +1,3 @@
-validarSessao();
-
-if (sessionStorage.CARGO_USUARIO !== "Gestor") {
-    window.location.href = "home.html";
-}
-
 function voltar() {
     window.location = "home.html";
 }
@@ -11,12 +5,12 @@ function voltar() {
 function cadastrar() {
     var nomeVar = nome.value;
     var emailVar = email.value;
-    var dtNascimentoVar = data_nascimento.value;
+    var dtNascimentoVar = dataNascimento.value;
     var cpfVar = limparCpf(cpf.value);
     var telefoneVar = limparTelefone(telefone.value);
     var cargoVar = cargo.value;
     var senhaVar = senha.value;
-    var idFuncionarioAdmVar = sessionStorage.ID_USUARIO;
+    var idFuncionarioAdmVar = sessionStorage.idUsuario;
 
     if (
         nomeVar == "" ||
@@ -29,7 +23,7 @@ function cadastrar() {
         idFuncionarioAdmVar == ""
     ) {
         cardErro.style.display = "block";
-        mensagem_erro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
+        mensagemErro.innerHTML = "(Mensagem de erro para todos os campos em branco)";
         return false;
     }
 
@@ -54,13 +48,13 @@ function cadastrar() {
 
             if (resposta.ok) {
                 const nomeCadastrado = nomeVar;
-                document.getElementById("form-cadastro").reset();
+                document.getElementById("formCadastro").reset();
 
                 cardErro.style.display = "block";
-                mensagem_erro.innerHTML = `Funcionário "${nomeCadastrado}" cadastrado com sucesso!`;
+                mensagemErro.innerHTML = `Funcionário "${nomeCadastrado}" cadastrado com sucesso!`;
             } else {
                 cardErro.style.display = "block";
-                mensagem_erro.innerHTML = "Houve um erro ao tentar realizar o cadastro!";
+                mensagemErro.innerHTML = "Houve um erro ao tentar realizar o cadastro!";
             }
         })
         .catch(function (resposta) {
@@ -112,17 +106,4 @@ function limparTelefone(telefone) {
 function validarTelefone(telefone) {
     const telefoneLimpo = limparTelefone(telefone);
     return telefoneLimpo.length === 11;
-}
-
-
-if (sessionStorage.NOME_USUARIO) {
-    const nomeUsuario = sessionStorage.NOME_USUARIO;
-    document.getElementById("userNameDisplay").textContent = nomeUsuario;
-    document.getElementById("userAvatar").textContent = nomeUsuario
-        .trim()
-        .split(/\s+/)
-        .slice(0, 2)
-        .map(parte => parte[0])
-        .join("")
-        .toUpperCase();
 }

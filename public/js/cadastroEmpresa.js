@@ -1,22 +1,14 @@
-const formulario = document.querySelector("#company-form");
-
-// Acesso Admin
-const requiredCargo = "ADMIN";
-if (sessionStorage.CARGO_USUARIO !== requiredCargo) {
-  // Não Autorizado
-  window.location.href = "login.html";
-}
+const formulario = document.querySelector("#companyForm");
 
 const etapas = document.querySelectorAll(".step");
 const progresso = document.querySelectorAll("[data-progress]");
-const voltar = document.querySelector("#back-button");
-const avancar = document.querySelector("#next-button");
+const voltar = document.querySelector("#backButton");
+const avancar = document.querySelector("#nextButton");
 const acoes = document.querySelector("#actions");
-const revisao = document.querySelector("#review-content");
+const revisao = document.querySelector("#reviewContent");
 
 let etapaAtual = 1;
 
-/* Mostra a etapa escolhida e esconde as outras */
 function mostrarEtapa(numero) {
   etapaAtual = numero;
 
@@ -64,11 +56,9 @@ function mostrarEtapa(numero) {
     montarRevisao();
   }
 
-  // Rolar suavemente para o topo do formulário ao mudar de etapa
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-/* Valida os campos da etapa atual */
 function validarEtapa() {
   const etapa = document.querySelector(
     `[data-step="${etapaAtual}"]`
@@ -90,7 +80,7 @@ function validarEtapa() {
   if (etapaAtual === 3) {
     const senha = document.querySelector("#senha");
     const confirmar = document.querySelector(
-      "#confirmar-senha"
+      "#confirmarSenha"
     );
 
     if (senha && confirmar && senha.value !== confirmar.value) {
@@ -103,7 +93,6 @@ function validarEtapa() {
   return true;
 }
 
-/* Pega o valor de um campo */
 function valor(id) {
   const campo = document.querySelector(`#${id}`);
 
@@ -114,31 +103,30 @@ function valor(id) {
   return campo.value;
 }
 
-/* Monta a tela de confirmação */
 function montarRevisao() {
   if (!revisao) return;
 
   revisao.innerHTML = `
-    <div class="review-section">
-      <div class="review-heading">
+    <div class="reviewSection">
+      <div class="reviewHeading">
         <h3>Dados da empresa</h3>
-        <button type="button" class="edit-button" onclick="mostrarEtapa(1)">Editar</button>
+        <button type="button" class="editButton" onclick="mostrarEtapa(1)">Editar</button>
       </div>
-      <dl class="review-list">
-        <dt>Razão social:</dt><dd>${valor("razao-social")}</dd>
-        <dt>Nome fantasia:</dt><dd>${valor("nome-fantasia")}</dd>
+      <dl class="reviewList">
+        <dt>Razão social:</dt><dd>${valor("razaoSocial")}</dd>
+        <dt>Nome fantasia:</dt><dd>${valor("nomeFantasia")}</dd>
         <dt>CNPJ:</dt><dd>${valor("cnpj")}</dd>
         <dt>Segmento:</dt><dd>${valor("segmento")}</dd>
-        <dt>E-mail:</dt><dd>${valor("email-empresa")}</dd>
+        <dt>E-mail:</dt><dd>${valor("emailEmpresa")}</dd>
       </dl>
     </div>
 
-    <div class="review-section">
-      <div class="review-heading">
+    <div class="reviewSection">
+      <div class="reviewHeading">
         <h3>Endereço</h3>
-        <button type="button" class="edit-button" onclick="mostrarEtapa(2)">Editar</button>
+        <button type="button" class="editButton" onclick="mostrarEtapa(2)">Editar</button>
       </div>
-      <dl class="review-list">
+      <dl class="reviewList">
         <dt>CEP:</dt><dd>${valor("cep")}</dd>
         <dt>Logradouro:</dt><dd>${valor("logradouro")}</dd>
         <dt>Bairro:</dt><dd>${valor("bairro")}</dd>
@@ -148,14 +136,14 @@ function montarRevisao() {
       </dl>
     </div>
 
-    <div class="review-section full">
-      <div class="review-heading">
+    <div class="reviewSection full">
+      <div class="reviewHeading">
         <h3>Responsável</h3>
-        <button type="button" class="edit-button" onclick="mostrarEtapa(3)">Editar</button>
+        <button type="button" class="editButton" onclick="mostrarEtapa(3)">Editar</button>
       </div>
-      <dl class="review-list">
+      <dl class="reviewList">
         <dt>Nome:</dt><dd>${valor("responsavel")}</dd>
-        <dt>E-mail:</dt><dd>${valor("email-responsavel")}</dd>
+        <dt>E-mail:</dt><dd>${valor("emailResponsavel")}</dd>
         <dt>Telefone:</dt><dd>${valor("telefone")}</dd>
         <dt>Cargo:</dt><dd>${valor("cargo")}</dd>
         <dt>CPF:</dt><dd>${valor("cpf")}</dd>
@@ -165,7 +153,6 @@ function montarRevisao() {
   `;
 }
 
-/* Aplica uma máscara em um campo */
 function aplicarMascara(id, mascara) {
   const campo = document.querySelector(`#${id}`);
 
@@ -176,7 +163,6 @@ function aplicarMascara(id, mascara) {
   }
 }
 
-/* Máscara de CNPJ */
 aplicarMascara("cnpj", val => {
   return val
     .replace(/\D/g, "")
@@ -187,7 +173,6 @@ aplicarMascara("cnpj", val => {
     .replace(/(\d{4})(\d)/, "$1-$2");
 });
 
-/* Máscara de CPF */
 aplicarMascara("cpf", val => {
   return val
     .replace(/\D/g, "")
@@ -197,7 +182,6 @@ aplicarMascara("cpf", val => {
     .replace(/\.(\d{3})(\d)/, ".$1-$2");
 });
 
-/* Máscara de CEP */
 aplicarMascara("cep", val => {
   return val
     .replace(/\D/g, "")
@@ -205,7 +189,6 @@ aplicarMascara("cep", val => {
     .replace(/(\d{5})(\d)/, "$1-$2");
 });
 
-/* Máscara de telefone */
 aplicarMascara("telefone", val => {
   return val
     .replace(/\D/g, "")
@@ -214,8 +197,7 @@ aplicarMascara("telefone", val => {
     .replace(/(\d{5})(\d)/, "$1-$2");
 });
 
-/* Botão mostrar / ocultar senha */
-document.querySelectorAll(".show-password").forEach(button => {
+document.querySelectorAll(".showPassword").forEach(button => {
   button.addEventListener("click", () => {
     const inputId = button.getAttribute("data-password");
     const input = document.getElementById(inputId);
@@ -227,7 +209,6 @@ document.querySelectorAll(".show-password").forEach(button => {
   });
 });
 
-/* Avança para a próxima etapa ou finaliza */
 if (avancar) {
   avancar.addEventListener("click", () => {
     if (!validarEtapa()) {
@@ -242,14 +223,12 @@ if (avancar) {
   });
 }
 
-/* Volta para a etapa anterior */
 if (voltar) {
   voltar.addEventListener("click", () => {
     mostrarEtapa(etapaAtual - 1);
   });
 }
 
-/* Função que realiza o envio dos dados para o backend */
 function cadastrarEmpresa() {
   const cnpjLimpo = (document.querySelector("#cnpj")?.value || "").replace(/\D/g, "");
   const cpfLimpo = (document.querySelector("#cpf")?.value || "").replace(/\D/g, "");
@@ -263,12 +242,11 @@ function cadastrarEmpresa() {
   const complementoVal = complementoEl ? complementoEl.value : "";
 
   const payload = {
-    razaoSocialServer: document.querySelector("#razao-social")?.value || "",
-    nomeFantasiaServer: document.querySelector("#nome-fantasia")?.value || "",
+    razaoSocialServer: document.querySelector("#razaoSocial")?.value || "",
+    nomeFantasiaServer: document.querySelector("#nomeFantasia")?.value || "",
     cnpjServer: cnpjLimpo,
     segmentoServer: document.querySelector("#segmento")?.value || "",
-    websiteServer: document.querySelector("#website")?.value || "",
-    emailEmpresaServer: document.querySelector("#email-empresa")?.value || "",
+    emailEmpresaServer: document.querySelector("#emailEmpresa")?.value || "",
     telefoneEmpresaServer: telefoneEmpresaLimpo,
 
     cepServer: cepLimpo,
@@ -280,7 +258,7 @@ function cadastrarEmpresa() {
     cidadeServer: document.querySelector("#cidade")?.value || "",
 
     nomeResponsavelServer: document.querySelector("#responsavel")?.value || "",
-    emailResponsavelServer: document.querySelector("#email-responsavel")?.value || "",
+    emailResponsavelServer: document.querySelector("#emailResponsavel")?.value || "",
     telefoneResponsavelServer: telefoneResponsavelLimpo,
     cargoResponsavelServer: document.querySelector("#cargo")?.value || "",
     cpfResponsavelServer: cpfLimpo,
@@ -330,20 +308,10 @@ function cadastrarEmpresa() {
   });
 }
 
-/* Impede que a página seja recarregada no submit */
 if (formulario) {
   formulario.addEventListener("submit", evento => {
     evento.preventDefault();
   });
 }
 
-/* Exibe nome do usuário logado na sidebar*/
-if (sessionStorage.NOME_USUARIO) {
-  const displayNome = document.getElementById("userNameDisplay");
-  if (displayNome) {
-    displayNome.textContent = sessionStorage.NOME_USUARIO;
-  }
-}
-
-/* Inicia o formulário na primeira etapa */
 mostrarEtapa(1);

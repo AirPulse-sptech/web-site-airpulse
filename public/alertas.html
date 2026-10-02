@@ -12,22 +12,19 @@
 
 <body>
 
-    <div class="app-layout">
+    <div class="appLayout">
 
         <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <a class="sidebar-brand" href="home.html">
-                    <img class="brand-logo-full"
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="home.html">
+                    <img class="brandLogoFull"
                         src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
-                    <span class="brand-badge">Área do Cliente</span>
                 </a>
             </div>
 
-            <nav class="sidebar-nav">
-                <div class="nav-section-label">PAINEL DE CONTROLE</div>
-
-                <div class="nav-item disabled">
-                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+            <nav class="sidebarNav">
+                <a href="telaAnalista.html" class="navItem">
+                    <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="3" y="3" width="7" height="9"></rect>
                         <rect x="14" y="3" width="7" height="5"></rect>
@@ -35,21 +32,19 @@
                         <rect x="3" y="16" width="7" height="5"></rect>
                     </svg>
                     <span>Dashboard</span>
-                    <span class="nav-item-badge">Em breve</span>
-                </div>
+                </a>
 
-                <div class="nav-item disabled">
-                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <div class="navItem disabled">
+                    <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <rect x="4" y="4" width="16" height="16" rx="2"></rect>
                         <path d="M9 9h6v6H9z"></path>
                     </svg>
                     <span>Componentes</span>
-                    <span class="nav-item-badge">Em breve</span>
                 </div>
 
-                <a href="alertas.html" class="nav-item">
-                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <a href="alertas.html" class="navItem active" aria-current="page">
+                    <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                         <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
@@ -57,10 +52,8 @@
                     <span>Alertas</span>
                 </a>
 
-                <div class="nav-section-label">GESTÃO DE EQUIPE</div>
-
-                <a href="cadastro_funcionario.html" class="nav-item" id="itemCadastrarFuncionario">
-                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
+                    <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                         <circle cx="9" cy="7" r="4"></circle>
@@ -70,30 +63,27 @@
                     <span>Cadastrar Funcionário</span>
                 </a>
 
-                <div class="nav-section-label">SUPORTE & AIRPULSE</div>
-
-                <div class="nav-item disabled">
-                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                <div class="navItem disabled">
+                    <svg class="navIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10"></circle>
                         <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
                         <line x1="12" y1="17" x2="12.01" y2="17"></line>
                     </svg>
                     <span>Chamados & Suporte</span>
-                    <span class="nav-item-badge">Em breve</span>
                 </div>
             </nav>
 
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar" id="userAvatar">--</div>
-                    <div class="user-details">
-                        <span class="user-name" id="userNameDisplay">Usuário</span>
-                        <span class="user-role" id="userRoleDisplay">Funcionário</span>
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
                     </div>
                 </div>
 
-                <button class="btn-logout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
@@ -105,43 +95,44 @@
             </div>
         </aside>
 
-        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
-        <div class="main-wrapper">
+        <div class="mainWrapper">
 
             <header class="topbar">
-                <div class="topbar-left">
-                    <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
                         ☰
                     </button>
+                    <span class="topbarTitle">Alertas</span>
                 </div>
             </header>
 
             <main>
-                <div class="cabecalho-alertas">
-                    <h1 class="titulo-alertas">Alertas do FMC</h1>
-                    <span class="subtitulo-alertas">PR-GOL &nbsp;•&nbsp; Boeing 737 &nbsp;•&nbsp; Monitoramento de
+                <div class="cabecalhoAlertas">
+                    <h1 class="tituloAlertas">Alertas do FMC</h1>
+                    <span class="subtituloAlertas">PR-GOL &nbsp;•&nbsp; Boeing 737 &nbsp;•&nbsp; Monitoramento de
                         alertas</span>
                 </div>
 
-                <div class="cards-resumo">
-                    <div class="card-resumo">
-                        <div class="card-icone icone-total">
+                <div class="cardsResumo">
+                    <div class="cardResumo">
+                        <div class="cardIcone iconeTotal">
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                                 <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
                             </svg>
                         </div>
-                        <div class="card-texto">
-                            <span class="card-label">Total de alertas</span>
-                            <span class="card-numero">14</span>
-                            <span class="card-legenda">Últimos 7 dias</span>
+                        <div class="cardTexto">
+                            <span class="cardLabel">Total de alertas</span>
+                            <span class="cardNumero">14</span>
+                            <span class="cardLegenda">Últimos 7 dias</span>
                         </div>
                     </div>
 
-                    <div class="card-resumo">
-                        <div class="card-icone icone-critico">
+                    <div class="cardResumo">
+                        <div class="cardIcone iconeCritico">
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path
@@ -151,15 +142,15 @@
                                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
                             </svg>
                         </div>
-                        <div class="card-texto">
-                            <span class="card-label">Críticos</span>
-                            <span class="card-numero texto-critico">4</span>
-                            <span class="card-legenda">29% do total</span>
+                        <div class="cardTexto">
+                            <span class="cardLabel">Críticos</span>
+                            <span class="cardNumero textoCritico">4</span>
+                            <span class="cardLegenda">29% do total</span>
                         </div>
                     </div>
 
-                    <div class="card-resumo">
-                        <div class="card-icone icone-moderado">
+                    <div class="cardResumo">
+                        <div class="cardIcone iconeModerado">
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                 <path
@@ -169,24 +160,24 @@
                                 <line x1="12" y1="17" x2="12.01" y2="17"></line>
                             </svg>
                         </div>
-                        <div class="card-texto">
-                            <span class="card-label">Moderados</span>
-                            <span class="card-numero texto-moderado">7</span>
-                            <span class="card-legenda">50% do total</span>
+                        <div class="cardTexto">
+                            <span class="cardLabel">Moderados</span>
+                            <span class="cardNumero textoModerado">7</span>
+                            <span class="cardLegenda">50% do total</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="barra-filtros">
+                <div class="barraFiltros">
                     <div class="filtro">
-                        <svg class="filtro-icone" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                        <svg class="filtroIcone" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                             <line x1="16" y1="2" x2="16" y2="6"></line>
                             <line x1="8" y1="2" x2="8" y2="6"></line>
                             <line x1="3" y1="10" x2="21" y2="10"></line>
                         </svg>
-                        <div class="filtro-campo">
+                        <div class="filtroCampo">
                             <label>Período</label>
                             <select>
                                 <option>Últimos 7 dias</option>
@@ -195,8 +186,8 @@
                         </div>
                     </div>
 
-                    <div class="filtro filtro-divisor">
-                        <svg class="filtro-icone" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    <div class="filtro filtroDivisor">
+                        <svg class="filtroIcone" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path
                                 d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z">
@@ -204,7 +195,7 @@
                             <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
                             <line x1="12" y1="22.08" x2="12" y2="12"></line>
                         </svg>
-                        <div class="filtro-campo">
+                        <div class="filtroCampo">
                             <label>Componente</label>
                             <select>
                                 <option>Todos</option>
@@ -215,40 +206,40 @@
                         </div>
                     </div>
 
-                    <div class="filtro filtro-divisor">
-                        <div class="filtro-campo">
+                    <div class="filtro filtroDivisor">
+                        <div class="filtroCampo">
                             <label>Severidade</label>
                             <div class="chips">
-                                <span class="chip"><span class="ponto ponto-critico"></span>Crítico</span>
-                                <span class="chip"><span class="ponto ponto-moderado"></span>Moderado</span>
+                                <span class="chip"><span class="ponto pontoCritico"></span>Crítico</span>
+                                <span class="chip"><span class="ponto pontoModerado"></span>Moderado</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="box-mapa">
-                    <div class="mapa-topo">
+                <div class="boxMapa">
+                    <div class="mapaTopo">
                         <div>
-                            <h2 class="mapa-titulo">Mapa de calor de componentes</h2>
-                            <span class="mapa-subtitulo">Visualize a frequência de alertas por componente ao longo do
+                            <h2 class="mapaTitulo">Mapa de calor de componentes</h2>
+                            <span class="mapaSubtitulo">Visualize a frequência de alertas por componente ao longo do
                                 período selecionado.</span>
                         </div>
 
                         <div class="legenda">
-                            <span class="legenda-item"><span class="ponto nivel-1"></span>Normal</span>
-                            <span class="legenda-item"><span class="ponto nivel-2"></span>Atenção</span>
-                            <span class="legenda-item"><span class="ponto nivel-4"></span>Crítico</span>
-                            <span class="legenda-item"><span class="ponto nivel-0"></span>Sem dados</span>
+                            <span class="legendaItem"><span class="ponto nivel1"></span>Normal</span>
+                            <span class="legendaItem"><span class="ponto nivel2"></span>Atenção</span>
+                            <span class="legendaItem"><span class="ponto nivel4"></span>Crítico</span>
+                            <span class="legendaItem"><span class="ponto nivel0"></span>Sem dados</span>
                         </div>
                     </div>
 
-                    <div class="mapa-ferramentas">
-                        <span class="agrupar-label">Agrupar por</span>
-                        <select class="select-agrupar">
+                    <div class="mapaFerramentas">
+                        <span class="agruparLabel">Agrupar por</span>
+                        <select class="selectAgrupar">
                             <option>Componente</option>
                             <option>Severidade</option>
                         </select>
-                        <button class="btn-lista" type="button" aria-label="Modo lista">
+                        <button class="btnLista" type="button" aria-label="Modo lista">
                             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                                 <line x1="8" y1="6" x2="21" y2="6"></line>
@@ -262,9 +253,9 @@
                     </div>
 
                     <div class="mapa">
-                        <div class="mapa-linha">
+                        <div class="mapaLinha">
                             <div></div>
-                            <div class="mapa-datas">
+                            <div class="mapaDatas">
                                 <span>26/08</span>
                                 <span>27/08</span>
                                 <span>28/08</span>
@@ -276,8 +267,8 @@
                             </div>
                             <div></div>
                         </div>
-                        <div class="mapa-linha">
-                            <div class="mapa-rotulo">
+                        <div class="mapaLinha">
+                            <div class="mapaRotulo">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <ellipse cx="12" cy="5" rx="9" ry="3"></ellipse>
@@ -286,11 +277,11 @@
                                 </svg>
                                 <span>Disco</span>
                             </div>
-                            <div class="mapa-celulas" id="celulasDisco"></div>
-                            <button class="mapa-seta" type="button" aria-label="Ver detalhes do disco">›</button>
+                            <div class="mapaCelulas" id="celulasDisco"></div>
+                            <button class="mapaSeta" type="button" aria-label="Ver detalhes do disco">›</button>
                         </div>
-                        <div class="mapa-linha">
-                            <div class="mapa-rotulo">
+                        <div class="mapaLinha">
+                            <div class="mapaRotulo">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
@@ -306,11 +297,11 @@
                                 </svg>
                                 <span>RAM</span>
                             </div>
-                            <div class="mapa-celulas" id="celulasRam"></div>
-                            <button class="mapa-seta" type="button" aria-label="Ver detalhes da RAM">›</button>
+                            <div class="mapaCelulas" id="celulasRam"></div>
+                            <button class="mapaSeta" type="button" aria-label="Ver detalhes da RAM">›</button>
                         </div>
-                        <div class="mapa-linha">
-                            <div class="mapa-rotulo">
+                        <div class="mapaLinha">
+                            <div class="mapaRotulo">
                                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                     stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <rect x="4" y="4" width="16" height="16" rx="2" ry="2"></rect>
@@ -326,8 +317,8 @@
                                 </svg>
                                 <span>CPU</span>
                             </div>
-                            <div class="mapa-celulas" id="celulasCpu"></div>
-                            <button class="mapa-seta" type="button" aria-label="Ver detalhes da CPU">›</button>
+                            <div class="mapaCelulas" id="celulasCpu"></div>
+                            <button class="mapaSeta" type="button" aria-label="Ver detalhes da CPU">›</button>
                         </div>
                     </div>
                 </div>
@@ -337,7 +328,8 @@
     </div>
 
     <script src="js/sessao.js"></script>
-    <script src="js/app-shell.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
     <script src="js/alertas.js"></script>
 </body>
 

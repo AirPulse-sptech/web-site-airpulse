@@ -1,55 +1,51 @@
 :root {
-    --alerta-critico: #F02D2D;
-    --alerta-moderado: #F5850B;
+    --alertaCritico: #F02D2D;
+    --alertaModerado: #F5850B;
 
-    --nivel-0: #DCE7F3;
-    --nivel-1: #9DE2BD;
-    --nivel-2: #FBD77B;
-    --nivel-3: #F9A66B;
-    --nivel-4: #F2646B;
+    --nivel0: #DCE7F3;
+    --nivel1: #9DE2BD;
+    --nivel2: #FBD77B;
+    --nivel3: #F9A66B;
+    --nivel4: #F2646B;
 }
 
-.topbar {
-    display: none;
-}
-
-.cabecalho-alertas {
+.cabecalhoAlertas {
     display: flex;
     flex-direction: column;
     gap: 4px;
     margin-bottom: 20px;
 }
 
-.titulo-alertas {
+.tituloAlertas {
     margin: 0;
-    font-family: var(--font-heading);
+    font-family: var(--fontHeading);
     font-size: 32px;
-    color: var(--color-primary-dark);
+    color: var(--colorPrimaryDark);
 }
 
-.subtitulo-alertas {
+.subtituloAlertas {
     font-size: 13px;
-    color: var(--color-primary);
+    color: var(--colorPrimary);
 }
 
-.cards-resumo {
+.cardsResumo {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
     margin-bottom: 16px;
 }
 
-.card-resumo {
+.cardResumo {
     display: flex;
     align-items: center;
     gap: 16px;
     padding: 20px 24px;
-    background-color: var(--bg-surface);
+    background-color: var(--bgSurface);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
 }
 
-.card-icone {
+.cardIcone {
     width: 56px;
     height: 56px;
     border-radius: 50%;
@@ -58,57 +54,57 @@
     flex-shrink: 0;
 }
 
-.icone-total {
-    background-color: var(--color-primary-soft);
-    color: var(--color-primary);
+.iconeTotal {
+    background-color: var(--colorPrimarySoft);
+    color: var(--colorPrimary);
 }
 
-.icone-critico {
+.iconeCritico {
     background-color: #FDECEC;
-    color: var(--alerta-critico);
+    color: var(--alertaCritico);
 }
 
-.icone-moderado {
+.iconeModerado {
     background-color: #FEF1E0;
-    color: var(--alerta-moderado);
+    color: var(--alertaModerado);
 }
 
-.card-texto {
+.cardTexto {
     display: flex;
     flex-direction: column;
 }
 
-.card-label {
+.cardLabel {
     font-size: 13px;
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--colorPrimary);
 }
 
-.card-numero {
-    font-family: var(--font-heading);
+.cardNumero {
+    font-family: var(--fontHeading);
     font-size: 30px;
     font-weight: 800;
     line-height: 1.2;
-    color: var(--color-primary-dark);
+    color: var(--colorPrimaryDark);
 }
 
-.texto-critico {
-    color: var(--alerta-critico);
+.textoCritico {
+    color: var(--alertaCritico);
 }
 
-.texto-moderado {
-    color: var(--alerta-moderado);
+.textoModerado {
+    color: var(--alertaModerado);
 }
 
-.card-legenda {
+.cardLegenda {
     font-size: 13px;
-    color: var(--color-primary);
+    color: var(--colorPrimary);
 }
 
-.barra-filtros {
+.barraFiltros {
     display: flex;
     align-items: center;
-    background-color: var(--bg-surface);
+    background-color: var(--bgSurface);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     margin-bottom: 24px;
@@ -121,40 +117,40 @@
     padding: 18px 24px;
 }
 
-.filtro-divisor {
-    border-left: 1px solid var(--border-soft);
+.filtroDivisor {
+    border-left: 1px solid var(--borderSoft);
 }
 
-.filtro-icone {
-    color: var(--color-primary);
+.filtroIcone {
+    color: var(--colorPrimary);
     flex-shrink: 0;
 }
 
-.filtro-campo {
+.filtroCampo {
     display: flex;
     flex-direction: column;
     gap: 6px;
 }
 
-.filtro-campo label {
+.filtroCampo label {
     font-size: 12px;
     font-weight: 700;
-    color: var(--color-primary-dark);
+    color: var(--colorPrimaryDark);
 }
 
-.filtro-campo select,
-.select-agrupar {
+.filtroCampo select,
+.selectAgrupar {
     appearance: none;
     min-width: 190px;
     padding: 10px 36px 10px 14px;
-    border: 1px solid var(--border-soft);
+    border: 1px solid var(--borderSoft);
     border-radius: 8px;
-    background-color: var(--bg-surface);
+    background-color: var(--bgSurface);
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%231A237E' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 12px center;
     font-size: 13px;
-    color: var(--color-primary-dark);
+    color: var(--colorPrimaryDark);
     cursor: pointer;
 }
 
@@ -169,9 +165,9 @@
     gap: 8px;
     padding: 10px 18px;
     border-radius: 8px;
-    background-color: var(--bg-soft);
+    background-color: var(--bgSoft);
     font-size: 13px;
-    color: var(--color-primary-dark);
+    color: var(--colorPrimaryDark);
 }
 
 .ponto {
@@ -181,38 +177,38 @@
     flex-shrink: 0;
 }
 
-.ponto-critico {
-    background-color: var(--alerta-critico);
+.pontoCritico {
+    background-color: var(--alertaCritico);
 }
 
-.ponto-moderado {
-    background-color: var(--alerta-moderado);
+.pontoModerado {
+    background-color: var(--alertaModerado);
 }
 
-.box-mapa {
-    background-color: var(--bg-surface);
+.boxMapa {
+    background-color: var(--bgSurface);
     border-radius: 12px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
     padding: 24px;
 }
 
-.mapa-topo {
+.mapaTopo {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     gap: 16px;
 }
 
-.mapa-titulo {
+.mapaTitulo {
     margin: 0 0 4px;
-    font-family: var(--font-heading);
+    font-family: var(--fontHeading);
     font-size: 16px;
-    color: var(--color-primary-dark);
+    color: var(--colorPrimaryDark);
 }
 
-.mapa-subtitulo {
+.mapaSubtitulo {
     font-size: 12px;
-    color: var(--color-primary);
+    color: var(--colorPrimary);
 }
 
 .legenda {
@@ -220,15 +216,15 @@
     gap: 14px;
 }
 
-.legenda-item {
+.legendaItem {
     display: flex;
     align-items: center;
     gap: 6px;
     font-size: 11px;
-    color: var(--color-primary);
+    color: var(--colorPrimary);
 }
 
-.mapa-ferramentas {
+.mapaFerramentas {
     display: flex;
     justify-content: flex-end;
     align-items: center;
@@ -236,24 +232,24 @@
     margin: 24px 0 8px;
 }
 
-.agrupar-label {
+.agruparLabel {
     font-size: 12px;
-    color: var(--color-primary);
+    color: var(--colorPrimary);
 }
 
-.select-agrupar {
+.selectAgrupar {
     min-width: 150px;
 }
 
-.btn-lista {
+.btnLista {
     width: 38px;
     height: 38px;
     display: grid;
     place-items: center;
-    border: 1px solid var(--border-soft);
+    border: 1px solid var(--borderSoft);
     border-radius: 8px;
-    background-color: var(--bg-surface);
-    color: var(--color-primary-dark);
+    background-color: var(--bgSurface);
+    color: var(--colorPrimaryDark);
     cursor: pointer;
 }
 
@@ -263,37 +259,37 @@
     gap: 10px;
 }
 
-.mapa-linha {
+.mapaLinha {
     display: grid;
     grid-template-columns: 100px 1fr 36px;
     column-gap: 12px;
     align-items: center;
 }
 
-.mapa-datas {
+.mapaDatas {
     grid-column: 2;
     grid-row: 1;
     display: grid;
     grid-template-columns: repeat(8, 1fr);
     font-size: 11px;
     font-weight: 600;
-    color: var(--color-primary);
+    color: var(--colorPrimary);
 }
 
-.mapa-rotulo {
+.mapaRotulo {
     display: flex;
     align-items: center;
     gap: 10px;
     height: 44px;
     padding: 0 12px;
     border-radius: 8px;
-    background-color: var(--bg-soft);
-    color: var(--color-primary-dark);
+    background-color: var(--bgSoft);
+    color: var(--colorPrimaryDark);
     font-size: 13px;
     font-weight: 600;
 }
 
-.mapa-celulas {
+.mapaCelulas {
     display: grid;
     grid-template-columns: repeat(48, 1fr);
     gap: 2px;
@@ -304,33 +300,33 @@
     border-radius: 3px;
 }
 
-.mapa-seta {
+.mapaSeta {
     width: 36px;
     height: 36px;
-    border: 1px solid var(--border-soft);
+    border: 1px solid var(--borderSoft);
     border-radius: 8px;
-    background-color: var(--bg-surface);
-    color: var(--color-primary-dark);
+    background-color: var(--bgSurface);
+    color: var(--colorPrimaryDark);
     font-size: 18px;
     cursor: pointer;
 }
 
-.nivel-0 {
-    background-color: var(--nivel-0);
+.nivel0 {
+    background-color: var(--nivel0);
 }
 
-.nivel-1 {
-    background-color: var(--nivel-1);
+.nivel1 {
+    background-color: var(--nivel1);
 }
 
-.nivel-2 {
-    background-color: var(--nivel-2);
+.nivel2 {
+    background-color: var(--nivel2);
 }
 
-.nivel-3 {
-    background-color: var(--nivel-3);
+.nivel3 {
+    background-color: var(--nivel3);
 }
 
-.nivel-4 {
-    background-color: var(--nivel-4);
+.nivel4 {
+    background-color: var(--nivel4);
 }
