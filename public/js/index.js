@@ -1,8 +1,8 @@
 function abrirMenuLaterar() {
 
-  const header = document.getElementById('siteHeader');
+  const header = document.getElementById('siteHeader')
 
-  header.classList.toggle('menuAberto');
+  header.classList.toggle('menuAberto')
 
 }
 

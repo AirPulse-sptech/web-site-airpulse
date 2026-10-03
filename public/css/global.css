@@ -46,7 +46,7 @@ html {
     background: var(--bgPage);
 }
 
-.sidebar {
+#sidebar {
     width: 250px;
     position: fixed;
     top: 0;
@@ -226,7 +226,7 @@ html {
 
 .topbar {
     height: 70px;
-    display: flex;
+    display: none;
     align-items: center;
     justify-content: space-between;
     padding: 0 32px;
@@ -287,11 +287,15 @@ html {
 }
 
 @media (max-width: 900px) {
-    .sidebar {
+    .topbar {
+        display: flex;
+    }
+
+    #sidebar {
         left: -250px;
     }
 
-    .sidebar.open {
+    #sidebar.open {
         transform: translateX(250px);
     }
 
@@ -621,4 +625,15 @@ html {
     .footer {
     padding: 40px 40px 0;
 }
+}
+
+.bi {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1em;
+    height: 1em;
+    line-height: 1;
+    vertical-align: -0.125em;
 }

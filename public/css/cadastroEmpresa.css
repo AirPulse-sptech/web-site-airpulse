@@ -99,8 +99,12 @@ h1 {
 }
 
 
-.progress {
+.cadastroProgress {
   width: min(100%, 1100px);
+  height: auto;
+  min-height: 64px;
+  overflow: visible;
+  align-items: start;
   margin: 16px auto;
   padding: 0;
   display: grid;
@@ -109,8 +113,9 @@ h1 {
   list-style: none;
 }
 
-.progress li {
+.cadastroProgress li {
   position: relative;
+  line-height: 1.4;
   min-width: 0;
   color: rgba(107, 114, 128, 0.6);
   text-align: center;
@@ -119,7 +124,7 @@ h1 {
 }
 
 
-.progress li:not(:last-child)::after {
+.cadastroProgress li:not(:last-child)::after {
   position: absolute;
   z-index: 0;
   top: 18px;
@@ -131,7 +136,7 @@ h1 {
 }
 
 
-.progress .circle {
+.cadastroProgress .circle {
   position: relative;
   z-index: 1;
   width: 38px;
@@ -147,19 +152,19 @@ h1 {
 }
 
 
-.progress li.active,
-.progress li.done {
+.cadastroProgress li.active,
+.cadastroProgress li.done {
   color: var(--corPrimaria);
 }
 
-.progress li.active .circle,
-.progress li.done .circle {
+.cadastroProgress li.active .circle,
+.cadastroProgress li.done .circle {
   border-color: var(--corPrimaria);
   background: var(--corPrimaria);
   color: white;
 }
 
-.progress li.done:not(:last-child)::after {
+.cadastroProgress li.done:not(:last-child)::after {
   background: var(--corPrimaria);
 }
 
@@ -484,20 +489,20 @@ select.invalid {
     width: 18vw;
   }
 
-  .progress {
+  .cadastroProgress {
     margin: 20px auto;
   }
 
-  .progress li {
+  .cadastroProgress li {
     font-size: 11px;
   }
 
-  .progress .circle {
+  .cadastroProgress .circle {
     width: 34px;
     height: 34px;
   }
 
-  .progress li:not(:last-child)::after {
+  .cadastroProgress li:not(:last-child)::after {
     top: 16px;
     left: calc(50% + 22px);
     width: calc(100% - 44px);
@@ -558,22 +563,22 @@ select.invalid {
     width: 12vw;
   }
 
-  .progress {
+  .cadastroProgress {
     width: 100%;
     margin: 16px auto;
   }
 
-  .progress li {
+  .cadastroProgress li {
     font-size: 9px;
   }
 
-  .progress .circle {
+  .cadastroProgress .circle {
     width: 30px;
     height: 30px;
     font-size: 12px;
   }
 
-  .progress li:not(:last-child)::after {
+  .cadastroProgress li:not(:last-child)::after {
     top: 14px;
     left: calc(50% + 19px);
     width: calc(100% - 38px);
