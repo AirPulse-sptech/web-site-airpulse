@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboardPrincipalAnalista.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <title>AirPulse - Visão Geral</title>
+</head>
+
+<body>
+
+    <div class="appLayout">
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="dashboardPrincipalAnalista.html">
+                    <img class="brandLogoFull"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebarNav">
+                <a href="dashboardPrincipalAnalista.html" class="navItem active" aria-current="page">
+                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Componentes</span>
+                </div>
+
+                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
+                    <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Funcionário</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Chamados & Suporte</span>
+                </div>
+            </nav>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
+                    </div>
+                </div>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+        <div class="mainWrapper">
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu"><i
+                            class="bi bi-list" aria-hidden="true"></i></button>
+                    <span class="topbarTitle">Dashboard</span>
+                </div>
+            </header>
+
+            <main class="conteudoPrincipal dashboard">
+                <header class="cabecalhoDashboard">
+                    <div>
+                        <h1>Dashboard - Visão Geral</h1>
+                        <p>Acompanhe em tempo real o status das aeronaves monitoradas no sistema AirPulse.</p>
+                    </div>
+                    <time class="dataDashboard" id="dataDashboard"></time>
+                </header>
+                <section class="indicadores" aria-label="Resumo do monitoramento">
+                    <article class="cartaoIndicador">
+                        <div class="caixaIcone laranja"><i class="bi bi-bell icone" aria-hidden="true"></i></div>
+                        <div>
+                            <h2>Alertas ativos</h2><strong class="valorIndicador">03</strong>
+                            <p>2 aviões · 1 crítico</p>
+                        </div>
+                    </article>
+                    <article class="cartaoIndicador">
+                        <div class="caixaIcone vermelho"><i class="bi bi-exclamation-triangle icone"
+                                aria-hidden="true"></i></div>
+                        <div>
+                            <h2>Alertas críticos</h2><strong class="valorIndicador">01</strong>
+                            <p>FMC secundário (PR-GOL)</p>
+                        </div>
+                    </article>
+                </section>
+                <section class="cartaoSituacao" aria-labelledby="tituloSituacao">
+                    <div class="cabecalhoSecao">
+                        <h2 id="tituloSituacao">Status das Aeronaves</h2>
+                        <p>Visão geral da condição operacional das aeronaves monitoradas</p>
+                    </div>
+                    <div class="resumoSituacao">
+                        <div class="graficoRosca" role="img"
+                            aria-label="4 aeronaves: 1 normal (25%), 2 em atenção (50%) e 1 crítica (25%).">
+                            <div class="centroGrafico"><strong>4</strong><span>Aeronaves</span></div>
+                        </div>
+                        <ul class="legendaGrafico" aria-label="Status das aeronaves">
+                            <li><span class="ponto normal"></span><span>Normal</span><strong>1</strong><span>25%</span>
+                            </li>
+                            <li><span
+                                    class="ponto atencao"></span><span>Atenção</span><strong>2</strong><span>50%</span>
+                            </li>
+                            <li><span
+                                    class="ponto critico"></span><span>Crítico</span><strong>1</strong><span>25%</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="secaoAeronaves" aria-labelledby="tituloAeronaves">
+                    <div class="cabecalhoAeronaves">
+                        <div>
+                            <h2 id="tituloAeronaves">Aeronaves</h2>
+                            <p>Lista de aeronaves monitoradas e seu status em tempo real</p>
+                        </div>
+                        <div class="filtrosAeronaves" role="group" aria-label="Filtros de status">
+                            <button class="botaoFiltro selecionado" data-status="todos" type="button"
+                                aria-pressed="true">Todos (4)</button>
+                            <button class="botaoFiltro" data-status="critico" type="button" aria-pressed="false"><span
+                                    class="ponto critico"></span>Crítico (1)</button>
+                            <button class="botaoFiltro" data-status="atencao" type="button" aria-pressed="false"><span
+                                    class="ponto atencao"></span>Atenção (2)</button>
+                            <button class="botaoFiltro" data-status="normal" type="button" aria-pressed="false"><span
+                                    class="ponto normal"></span>Normal (1)</button>
+                        </div>
+                    </div>
+                    <div class="campoBusca"><i class="bi bi-search icone" aria-hidden="true"></i><label
+                            class="textoAcessivel" for="buscaAeronave">Buscar aeronave, modelo ou
+                            identificação</label><input id="buscaAeronave" type="search"
+                            placeholder="Buscar aeronave, modelo ou identificação..."></div>
+                    <ul class="listaAeronaves" id="listaAeronaves"></ul>
+                    <template id="modeloCartaoAeronave">
+                        <li class="cartaoAeronave">
+                            <div class="caixaIcone azul"><i class="bi bi-airplane-fill icone" aria-hidden="true"></i>
+                            </div>
+                            <div class="identificacaoAeronave">
+                                <h3></h3>
+                                <p><span class="modeloAeronave"></span> <span aria-hidden="true">·</span> <span
+                                        class="matriculaAeronave"></span></p>
+                            </div>
+                            <div class="situacaoAeronave">
+                                <span class="etiquetaSituacao"><span class="ponto"></span><span
+                                        class="nomeStatus"></span></span>
+                                <p class="tempoEstado">Há <time></time> neste estado</p>
+                            </div>
+                            <div class="ultimaAtualizacao"><span>Última atualização</span><time></time></div>
+                            <a class="botaoDetalhes" href="dashboardAnaliseFmcAnalista.html">Abrir detalhes <i
+                                    class="bi bi-chevron-right icone" aria-hidden="true"></i></a>
+                        </li>
+                    </template>
+                    <p class="mensagemVazia" id="mensagemVazia" role="status" hidden>Nenhuma aeronave encontrada para os
+                        filtros selecionados.</p>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="js/sessao.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
+    <script src="js/dashboardPrincipalAnalista.js"></script>
+</body>
+
+</html>

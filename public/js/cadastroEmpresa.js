@@ -1,24 +1,24 @@
-const formulario = document.querySelector("#companyForm");
+const formulario = document.querySelector("#companyForm")
 
-const etapas = document.querySelectorAll(".step");
-const progresso = document.querySelectorAll("[data-progress]");
-const voltar = document.querySelector("#backButton");
-const avancar = document.querySelector("#nextButton");
-const acoes = document.querySelector("#actions");
-const revisao = document.querySelector("#reviewContent");
+const etapas = document.querySelectorAll(".step")
+const progresso = document.querySelectorAll("[data-progress]")
+const voltar = document.querySelector("#backButton")
+const avancar = document.querySelector("#nextButton")
+const acoes = document.querySelector("#actions")
+const revisao = document.querySelector("#reviewContent")
 
-let etapaAtual = 1;
+let etapaAtual = 1
 
 function mostrarEtapa(numero) {
-  etapaAtual = numero;
+  etapaAtual = numero
 
   etapas.forEach(etapa => {
-    etapa.hidden = Number(etapa.dataset.step) !== numero;
-  });
+    etapa.hidden = Number(etapa.dataset.step) !== numero
+  })
 
   const etapa = document.querySelector(
     `[data-step="${numero}"]`
-  );
+  )
 
   if (etapa) {
     etapa.animate(
@@ -27,84 +27,84 @@ function mostrarEtapa(numero) {
         { opacity: 1, transform: "translateY(0)" }
       ],
       { duration: 300 }
-    );
+    )
   }
 
   progresso.forEach(item => {
-    const posicao = Number(item.dataset.progress);
+    const posicao = Number(item.dataset.progress)
 
     item.classList.toggle(
       "active",
       posicao === numero
-    );
+    )
 
     item.classList.toggle(
       "done",
       posicao < numero
-    );
-  });
+    )
+  })
 
-  voltar.hidden = numero === 1 || numero === 5;
-  acoes.hidden = numero === 5;
+  voltar.hidden = numero === 1 || numero === 5
+  acoes.hidden = numero === 5
 
   avancar.textContent =
     numero === 4
       ? "Finalizar cadastro"
-      : "Próximo passo ➔";
+      : "Próximo passo ➔"
 
   if (numero === 4) {
-    montarRevisao();
+    montarRevisao()
   }
 
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  window.scrollTo({ top: 0, behavior: "smooth" })
 }
 
 function validarEtapa() {
   const etapa = document.querySelector(
     `[data-step="${etapaAtual}"]`
-  );
+  )
 
-  if (!etapa) return true;
+  if (!etapa) return true
 
   const campos = etapa.querySelectorAll(
     "input, select, textarea"
-  );
+  )
 
   for (const campo of campos) {
     if (!campo.checkValidity()) {
-      campo.reportValidity();
-      return false;
+      campo.reportValidity()
+      return false
     }
   }
 
   if (etapaAtual === 3) {
-    const senha = document.querySelector("#senha");
+    const senha = document.querySelector("#senha")
     const confirmar = document.querySelector(
       "#confirmarSenha"
-    );
+    )
 
     if (senha && confirmar && senha.value !== confirmar.value) {
-      alert("As senhas não coincidem.");
-      confirmar.focus();
-      return false;
+      alert("As senhas não coincidem.")
+      confirmar.focus()
+      return false
     }
   }
 
-  return true;
+  return true
 }
 
 function valor(id) {
-  const campo = document.querySelector(`#${id}`);
+  const campo = document.querySelector(`#${id}`)
 
   if (!campo || !campo.value) {
-    return "Não informado";
+    return "Não informado"
   }
 
-  return campo.value;
+  return campo.value
 }
 
 function montarRevisao() {
-  if (!revisao) return;
+  if (!revisao) return
 
   revisao.innerHTML = `
     <div class="reviewSection">
@@ -150,16 +150,16 @@ function montarRevisao() {
         <dt>Senha:</dt><dd>••••••••</dd>
       </dl>
     </div>
-  `;
+  `
 }
 
 function aplicarMascara(id, mascara) {
-  const campo = document.querySelector(`#${id}`);
+  const campo = document.querySelector(`#${id}`)
 
   if (campo) {
     campo.addEventListener("input", () => {
-      campo.value = mascara(campo.value);
-    });
+      campo.value = mascara(campo.value)
+    })
   }
 }
 
@@ -170,8 +170,8 @@ aplicarMascara("cnpj", val => {
     .replace(/^(\d{2})(\d)/, "$1.$2")
     .replace(/^(\d{2})\.(\d{3})(\d)/, "$1.$2.$3")
     .replace(/\.(\d{3})(\d)/, ".$1/$2")
-    .replace(/(\d{4})(\d)/, "$1-$2");
-});
+    .replace(/(\d{4})(\d)/, "$1-$2")
+})
 
 aplicarMascara("cpf", val => {
   return val
@@ -179,67 +179,67 @@ aplicarMascara("cpf", val => {
     .slice(0, 11)
     .replace(/^(\d{3})(\d)/, "$1.$2")
     .replace(/^(\d{3})\.(\d{3})(\d)/, "$1.$2.$3")
-    .replace(/\.(\d{3})(\d)/, ".$1-$2");
-});
+    .replace(/\.(\d{3})(\d)/, ".$1-$2")
+})
 
 aplicarMascara("cep", val => {
   return val
     .replace(/\D/g, "")
     .slice(0, 8)
-    .replace(/(\d{5})(\d)/, "$1-$2");
-});
+    .replace(/(\d{5})(\d)/, "$1-$2")
+})
 
 aplicarMascara("telefone", val => {
   return val
     .replace(/\D/g, "")
     .slice(0, 11)
     .replace(/^(\d{2})(\d)/, "($1) $2")
-    .replace(/(\d{5})(\d)/, "$1-$2");
-});
+    .replace(/(\d{5})(\d)/, "$1-$2")
+})
 
 document.querySelectorAll(".showPassword").forEach(button => {
   button.addEventListener("click", () => {
-    const inputId = button.getAttribute("data-password");
-    const input = document.getElementById(inputId);
+    const inputId = button.getAttribute("data-password")
+    const input = document.getElementById(inputId)
     if (input) {
-      const isPassword = input.type === "password";
-      input.type = isPassword ? "text" : "password";
-      button.textContent = isPassword ? "Ocultar" : "Mostrar";
+      const isPassword = input.type === "password"
+      input.type = isPassword ? "text" : "password"
+      button.textContent = isPassword ? "Ocultar" : "Mostrar"
     }
-  });
-});
+  })
+})
 
 if (avancar) {
   avancar.addEventListener("click", () => {
     if (!validarEtapa()) {
-      return;
+      return
     }
 
     if (etapaAtual === 4) {
-      cadastrarEmpresa();
+      cadastrarEmpresa()
     } else {
-      mostrarEtapa(etapaAtual + 1);
+      mostrarEtapa(etapaAtual + 1)
     }
-  });
+  })
 }
 
 if (voltar) {
   voltar.addEventListener("click", () => {
-    mostrarEtapa(etapaAtual - 1);
-  });
+    mostrarEtapa(etapaAtual - 1)
+  })
 }
 
 function cadastrarEmpresa() {
-  const cnpjLimpo = (document.querySelector("#cnpj")?.value || "").replace(/\D/g, "");
-  const cpfLimpo = (document.querySelector("#cpf")?.value || "").replace(/\D/g, "");
-  const cepLimpo = (document.querySelector("#cep")?.value || "").replace(/\D/g, "");
-  const telefoneResponsavelLimpo = (document.querySelector("#telefone")?.value || "").replace(/\D/g, "");
+  const cnpjLimpo = (document.querySelector("#cnpj")?.value || "").replace(/\D/g, "")
+  const cpfLimpo = (document.querySelector("#cpf")?.value || "").replace(/\D/g, "")
+  const cepLimpo = (document.querySelector("#cep")?.value || "").replace(/\D/g, "")
+  const telefoneResponsavelLimpo = (document.querySelector("#telefone")?.value || "").replace(/\D/g, "")
 
-  const telefoneEmpresaEl = document.querySelector("#telefone-empresa");
-  const telefoneEmpresaLimpo = telefoneEmpresaEl ? telefoneEmpresaEl.value.replace(/\D/g, "") : telefoneResponsavelLimpo;
+  const telefoneEmpresaEl = document.querySelector("#telefone-empresa")
+  const telefoneEmpresaLimpo = telefoneEmpresaEl ? telefoneEmpresaEl.value.replace(/\D/g, "") : telefoneResponsavelLimpo
 
-  const complementoEl = document.querySelector("#complemento");
-  const complementoVal = complementoEl ? complementoEl.value : "";
+  const complementoEl = document.querySelector("#complemento")
+  const complementoVal = complementoEl ? complementoEl.value : ""
 
   const payload = {
     razaoSocialServer: document.querySelector("#razaoSocial")?.value || "",
@@ -263,14 +263,14 @@ function cadastrarEmpresa() {
     cargoResponsavelServer: document.querySelector("#cargo")?.value || "",
     cpfResponsavelServer: cpfLimpo,
     senhaResponsavelServer: document.querySelector("#senha")?.value || ""
-  };
+  }
 
-  avancar.disabled = true;
-  avancar.textContent = "Cadastrando...";
+  avancar.disabled = true
+  avancar.textContent = "Cadastrando..."
 
   const baseUrl = (window.location.protocol === "file:" || (window.location.port && window.location.port !== "3333"))
     ? "http://localhost:3333"
-    : "";
+    : ""
 
   fetch(`${baseUrl}/empresas/cadastrar`, {
     method: "POST",
@@ -282,36 +282,36 @@ function cadastrarEmpresa() {
   .then(function (resposta) {
     if (resposta.ok) {
       return resposta.json().then(function () {
-        mostrarEtapa(5);
+        mostrarEtapa(5)
         setTimeout(function () {
-          window.location.href = "login.html";
-        }, 4000);
-      });
+          window.location.href = "login.html"
+        }, 4000)
+      })
     } else {
       return resposta.text().then(function (textoErro) {
         try {
-          var erroJson = JSON.parse(textoErro);
-          alert(erroJson.mensagem || textoErro);
+          var erroJson = JSON.parse(textoErro)
+          alert(erroJson.mensagem || textoErro)
         } catch (e) {
-          alert(textoErro || "Houve um erro ao realizar o cadastro.");
+          alert(textoErro || "Houve um erro ao realizar o cadastro.")
         }
-        avancar.disabled = false;
-        avancar.textContent = "Finalizar cadastro";
-      });
+        avancar.disabled = false
+        avancar.textContent = "Finalizar cadastro"
+      })
     }
   })
   .catch(function (erro) {
-    console.error("Erro na requisição:", erro);
-    alert("Erro de conexão com o servidor. Verifique se o servidor backend está rodando no terminal (npm start ou node app.js em http://localhost:3333).");
-    avancar.disabled = false;
-    avancar.textContent = "Finalizar cadastro";
-  });
+    console.error("Erro na requisição:", erro)
+    alert("Erro de conexão com o servidor. Verifique se o servidor backend está rodando no terminal (npm start ou node app.js em http://localhost:3333).")
+    avancar.disabled = false
+    avancar.textContent = "Finalizar cadastro"
+  })
 }
 
 if (formulario) {
   formulario.addEventListener("submit", evento => {
-    evento.preventDefault();
-  });
+    evento.preventDefault()
+  })
 }
 
-mostrarEtapa(1);
+mostrarEtapa(1)
