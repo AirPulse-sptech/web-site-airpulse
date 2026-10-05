@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AirPulse - Cadastro de FMC</title>
+  <link rel="icon" href="assets/icon/logo-icon.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/cadastroFmc.css">
+</head>
+
+<body>
+
+  <div class="appLayout">
+
+    <aside id="sidebar">
+      <div class="sidebarHeader">
+        <a class="sidebarBrand" href="home.html">
+          <img class="brandLogoFull"
+            src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+        </a>
+      </div>
+
+      <nav class="sidebarNav">
+        <a href="dashboardPrincipalAnalista.html" class="navItem">
+          <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <div class="navItem disabled">
+          <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Componentes</span>
+        </div>
+
+        <a href="cadastroFmc.html" class="navItem active" aria-current="page" id="itemCadastrarFmc">
+          <i class="bi bi-hdd-rack navIcon" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Cadastrar FMC</span>
+        </a>
+
+        <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
+          <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Cadastrar Funcionário</span>
+        </a>
+
+        <a href="cadastroAeronave.html" class="navItem">
+                    <i class="bi bi-airplane navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Aeronave</span>
+                </a>
+
+        <div class="navItem disabled">
+          <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Chamados & Suporte</span>
+        </div>
+      </nav>
+
+      <div class="sidebarFooter">
+        <div class="userProfile">
+          <div class="userAvatar" id="userAvatar">--</div>
+          <div class="userDetails">
+            <span class="userName" id="userNameDisplay">Usuário</span>
+            <span class="userRole" id="userRoleDisplay"></span>
+          </div>
+        </div>
+
+        <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+          <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Deslogar</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+    <div class="mainWrapper">
+
+      <header class="topbar">
+        <div class="topbarLeft">
+          <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+            <i class="bi bi-list" aria-hidden="true"></i>
+          </button>
+          <span class="topbarTitle">Cadastro de Computador de Bordo</span>
+        </div>
+      </header>
+
+      <main>
+
+        <h1>Cadastrar Computador de Bordo</h1>
+
+        <p class="subtitle">
+          Escolha quais FMCs da aeronave serão monitorados e cadastre as placas de cada um.
+        </p>
+
+        <ol class="cadastroProgress" id="progress">
+          <li class="active" data-progress="1">
+            <span class="circle">1</span>
+            <span>Aeronave e FMCs</span>
+          </li>
+
+          <li data-progress="2">
+            <span class="circle">2</span>
+            <span>Placas do Mestre</span>
+          </li>
+
+          <li data-progress="3">
+            <span class="circle">3</span>
+            <span>FMC Spare</span>
+          </li>
+
+          <li data-progress="4">
+            <span class="circle">4</span>
+            <span>Confirmação</span>
+          </li>
+        </ol>
+
+        <form id="fmcForm" novalidate>
+
+
+            <section class="step" data-step="1">
+
+            <div class="card">
+              <h2>Aeronave e FMCs monitorados</h2>
+
+              <p class="aviso">
+                <i class="bi bi-info-circle" aria-hidden="true"></i>
+                Cada aeronave possui dois computadores, o FMC Mestre e o FMC Spare. Escolha quais deles o AirPulse
+                vai monitorar.
+              </p>
+
+              <div class="field">
+                <label for="fkAeronave">Aeronave associada *</label>
+                <select id="fkAeronave" name="fkAeronave" required>
+                  <option value="">Carregando aeronaves...</option>
+                </select>
+              </div>
+
+              <fieldset class="escolhaFmc">
+                <legend>FMCs que serão monitorados *</legend>
+                <label>
+                  <input type="checkbox" id="monitorarMestre" checked>
+                  <strong>FMC Mestre</strong>
+                  <small id="situacaoMestre">Computador principal da aeronave</small>
+                </label>
+                <label>
+                  <input type="checkbox" id="monitorarSpare" checked>
+                  <strong>FMC Spare</strong>
+                  <small id="situacaoSpare">Computador reserva da aeronave</small>
+                </label>
+              </fieldset>
+            </div>
+
+            <div class="card" id="dadosMestre">
+              <h2>Dados do FMC Mestre</h2>
+
+              <div class="grid">
+
+                <div class="field full">
+                  <label for="mestreTipoFmc">Função do computador</label>
+                  <input id="mestreTipoFmc" type="text" value="FMC Mestre" class="bloqueado" readonly>
+                </div>
+
+                <div class="field">
+                  <label for="mestreNome">Nome do computador *</label>
+                  <input id="mestreNome" name="mestreNome" type="text" placeholder="Ex.: FMC-01 Mestre" maxlength="45" required>
+                </div>
+
+                <div class="field">
+                  <label for="mestreNumeroSerie">Número de série *</label>
+                  <input id="mestreNumeroSerie" name="mestreNumeroSerie" type="text" placeholder="Número de série do fabricante" maxlength="45" required>
+                </div>
+
+                <div class="field">
+                  <label for="mestreModelo">Modelo do computador *</label>
+                  <input id="mestreModelo" name="mestreModelo" type="text" placeholder="Modelo / part number" maxlength="100" required>
+                </div>
+
+                <fieldset class="field status">
+                  <legend>Status do computador *</legend>
+                  <label><input type="radio" name="mestreStatusComputador" value="ATIVO" checked> Ativo</label>
+                  <label><input type="radio" name="mestreStatusComputador" value="INATIVO"> Inativo</label>
+                  <label><input type="radio" name="mestreStatusComputador" value="MANUTENCAO"> Em manutenção</label>
+                </fieldset>
+
+                <div class="field">
+                  <label for="mestreDataInstalacao">Data de instalação *</label>
+                  <input id="mestreDataInstalacao" name="mestreDataInstalacao" type="date" required>
+                </div>
+
+                <div class="field">
+                  <label for="mestreEntradaSistema">Data de entrada no sistema *</label>
+                  <input id="mestreEntradaSistema" name="mestreEntradaSistema" type="date" required>
+                </div>
+
+              </div>
+            </div>
+          </section>
+
+
+          <section class="step" data-step="2" hidden>
+            <div class="cabecalhoSecao">
+              <h2>Placas e componentes do FMC Mestre</h2>
+              <p>
+                O FMC possui uma placa de CPU, uma de memória RAM e uma de disco. Escolha quais placas serão
+                monitoradas e, para cada uma, cadastre o componente e as métricas.
+              </p>
+            </div>
+
+            <div class="listaPlacas" id="placasMestre">
+
+              <article class="card placa" data-computador="mestre" data-tipo="CPU">
+                <header class="cabecalhoPlaca">
+                  <h3>
+                    <i class="bi bi-cpu" aria-hidden="true"></i>
+                    Placa de CPU
+                    <small>Placa 1 de 3 do FMC Mestre</small>
+                  </h3>
+
+                  <label class="monitorarPlaca">
+                    <input type="checkbox" name="mestreCpuMonitorarPlaca" checked data-monitorar-placa>
+                    Monitorar esta placa
+                  </label>
+                </header>
+
+                <div class="colunas">
+                  <div>
+                    <h4>Placa</h4>
+                    <p class="helper">Identificação física da placa no FMC.</p>
+                    <div class="field">
+                      <label for="mestreCpuPlacaNome">Nome da placa *</label>
+                      <input id="mestreCpuPlacaNome" name="mestreCpuPlacaNome" type="text" placeholder="Ex.: Placa CPU" maxlength="100" required>
+                    </div>
+                    <div class="field">
+                      <label for="mestreCpuPlacaModelo">Modelo da placa *</label>
+                      <input id="mestreCpuPlacaModelo" name="mestreCpuPlacaModelo" type="text" placeholder="Modelo / part number da placa" maxlength="100" required>
+                    </div>
+                    <div class="field">
+                      <label for="mestreCpuPlacaNumeroSerie">Número de série da placa *</label>
+                      <input id="mestreCpuPlacaNumeroSerie" name="mestreCpuPlacaNumeroSerie" type="text" placeholder="Número de série do fabricante" maxlength="45" data-serie-placa required>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4>Componente</h4>
+                    <p class="helper">Componente monitorado nesta placa.</p>
+                    <div class="linhaComponente">
+                      <div class="field">
+                        <label for="mestreCpuTipo">Tipo</label>
+                        <input id="mestreCpuTipo" type="text" value="CPU" class="bloqueado" readonly>
+                      </div>
+                      <div class="field">
+                        <label for="mestreCpuComponenteModelo">Modelo do componente *</label>
+                        <input id="mestreCpuComponenteModelo" name="mestreCpuComponenteModelo" type="text" placeholder="Modelo do processador" maxlength="100" required>
+                      </div>
+                    </div>
+
+                    <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso da CPU.</small></p>
+                    <div class="linhaLimites">
+                      <div class="field">
+                        <label for="mestreCpuLimiteAtencao" class="alerta">Alerta (%)</label>
+                        <input id="mestreCpuLimiteAtencao" name="mestreCpuLimiteAtencao" type="number" min="1" max="99" value="70"
+                          required data-limite="atencao">
+                      </div>
+                      <div class="field">
+                        <label for="mestreCpuLimiteCritico" class="critico">Crítico (%)</label>
+                        <input id="mestreCpuLimiteCritico" name="mestreCpuLimiteCritico" type="number" min="2" max="100" value="90"
+                          required data-limite="critico">
+                      </div>
+                    </div>
+                    <div class="barraLimites"></div>
+                    <p class="legendaLimites"></p>
+                  </div>
+
+                  <div>
+                    <h4>Métricas coletadas</h4>
+                    <p class="helper">Marque quais destas métricas serão monitoradas.</p>
+                    <div class="listaMetricas">
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreCpuMetricas" value="Percentual de uso" data-unidade="%"
+                          data-descricao="Uso de processamento no momento da coleta" checked>
+                        <strong>Percentual de uso</strong>
+                        <span class="unidade">%</span>
+                        <small>Uso de processamento no momento da coleta</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreCpuMetricas" value="Frequência atual" data-unidade="GHz"
+                          data-descricao="Frequência de operação no momento da coleta" checked>
+                        <strong>Frequência atual</strong>
+                        <span class="unidade">GHz</span>
+                        <small>Frequência de operação no momento da coleta</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreCpuMetricas" value="Frequência máxima" data-unidade="GHz"
+                          data-descricao="Frequência máxima suportada" checked>
+                        <strong>Frequência máxima</strong>
+                        <span class="unidade">GHz</span>
+                        <small>Frequência máxima suportada</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreCpuMetricas" value="Núcleos físicos" data-unidade="qtd"
+                          data-descricao="Núcleos reais do processador" checked>
+                        <strong>Núcleos físicos</strong>
+                        <span class="unidade">qtd</span>
+                        <small>Núcleos reais do processador</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreCpuMetricas" value="Núcleos lógicos" data-unidade="qtd"
+                          data-descricao="Threads disponíveis para o sistema" checked>
+                        <strong>Núcleos lógicos</strong>
+                        <span class="unidade">qtd</span>
+                        <small>Threads disponíveis para o sistema</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreCpuMetricas" value="Temperatura da CPU" data-unidade="°C"
+                          data-descricao="Temperatura do processador" checked>
+                        <strong>Temperatura da CPU</strong>
+                        <span class="unidade">°C</span>
+                        <small>Temperatura do processador</small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card placa" data-computador="mestre" data-tipo="RAM">
+                <header class="cabecalhoPlaca">
+                  <h3>
+                    <i class="bi bi-memory" aria-hidden="true"></i>
+                    Placa de memória RAM
+                    <small>Placa 2 de 3 do FMC Mestre</small>
+                  </h3>
+
+                  <label class="monitorarPlaca">
+                    <input type="checkbox" name="mestreRamMonitorarPlaca" checked data-monitorar-placa>
+                    Monitorar esta placa
+                  </label>
+                </header>
+
+                <div class="colunas">
+                  <div>
+                    <h4>Placa</h4>
+                    <p class="helper">Identificação física da placa no FMC.</p>
+                    <div class="field">
+                      <label for="mestreRamPlacaNome">Nome da placa *</label>
+                      <input id="mestreRamPlacaNome" name="mestreRamPlacaNome" type="text" placeholder="Ex.: Placa RAM" maxlength="100" required>
+                    </div>
+                    <div class="field">
+                      <label for="mestreRamPlacaModelo">Modelo da placa *</label>
+                      <input id="mestreRamPlacaModelo" name="mestreRamPlacaModelo" type="text" placeholder="Modelo / part number da placa" maxlength="100" required>
+                    </div>
+                    <div class="field">
+                      <label for="mestreRamPlacaNumeroSerie">Número de série da placa *</label>
+                      <input id="mestreRamPlacaNumeroSerie" name="mestreRamPlacaNumeroSerie" type="text" placeholder="Número de série do fabricante" maxlength="45" data-serie-placa required>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4>Componente</h4>
+                    <p class="helper">Componente monitorado nesta placa.</p>
+                    <div class="linhaComponente">
+                      <div class="field">
+                        <label for="mestreRamTipo">Tipo</label>
+                        <input id="mestreRamTipo" type="text" value="RAM" class="bloqueado" readonly>
+                      </div>
+                      <div class="field">
+                        <label for="mestreRamComponenteModelo">Modelo do componente *</label>
+                        <input id="mestreRamComponenteModelo" name="mestreRamComponenteModelo" type="text" placeholder="Modelo da memória" maxlength="100" required>
+                      </div>
+                    </div>
+
+                    <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso da memória.</small></p>
+                    <div class="linhaLimites">
+                      <div class="field">
+                        <label for="mestreRamLimiteAtencao" class="alerta">Alerta (%)</label>
+                        <input id="mestreRamLimiteAtencao" name="mestreRamLimiteAtencao" type="number" min="1" max="99" value="70"
+                          required data-limite="atencao">
+                      </div>
+                      <div class="field">
+                        <label for="mestreRamLimiteCritico" class="critico">Crítico (%)</label>
+                        <input id="mestreRamLimiteCritico" name="mestreRamLimiteCritico" type="number" min="2" max="100" value="90"
+                          required data-limite="critico">
+                      </div>
+                    </div>
+                    <div class="barraLimites"></div>
+                    <p class="legendaLimites"></p>
+                  </div>
+
+                  <div>
+                    <h4>Métricas coletadas</h4>
+                    <p class="helper">Marque quais destas métricas serão monitoradas.</p>
+                    <div class="listaMetricas">
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreRamMetricas" value="Memória total" data-unidade="GB"
+                          data-descricao="Capacidade instalada" checked>
+                        <strong>Memória total</strong>
+                        <span class="unidade">GB</span>
+                        <small>Capacidade instalada</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreRamMetricas" value="Memória usada" data-unidade="GB"
+                          data-descricao="Memória ocupada pelo sistema" checked>
+                        <strong>Memória usada</strong>
+                        <span class="unidade">GB</span>
+                        <small>Memória ocupada pelo sistema</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreRamMetricas" value="Memória disponível" data-unidade="GB"
+                          data-descricao="Memória livre para uso" checked>
+                        <strong>Memória disponível</strong>
+                        <span class="unidade">GB</span>
+                        <small>Memória livre para uso</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreRamMetricas" value="Percentual de uso" data-unidade="%"
+                          data-descricao="Memória usada em relação ao total" checked>
+                        <strong>Percentual de uso</strong>
+                        <span class="unidade">%</span>
+                        <small>Memória usada em relação ao total</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreRamMetricas" value="Cache" data-unidade="GB"
+                          data-descricao="Memória reservada para cache" checked>
+                        <strong>Cache</strong>
+                        <span class="unidade">GB</span>
+                        <small>Memória reservada para cache</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreRamMetricas" value="Velocidade" data-unidade="MHz"
+                          data-descricao="Frequência dos módulos de memória" checked>
+                        <strong>Velocidade</strong>
+                        <span class="unidade">MHz</span>
+                        <small>Frequência dos módulos de memória</small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+              <article class="card placa" data-computador="mestre" data-tipo="DISCO">
+                <header class="cabecalhoPlaca">
+                  <h3>
+                    <i class="bi bi-device-hdd" aria-hidden="true"></i>
+                    Placa de disco
+                    <small>Placa 3 de 3 do FMC Mestre</small>
+                  </h3>
+
+                  <label class="monitorarPlaca">
+                    <input type="checkbox" name="mestreDiscoMonitorarPlaca" checked data-monitorar-placa>
+                    Monitorar esta placa
+                  </label>
+                </header>
+
+                <div class="colunas">
+                  <div>
+                    <h4>Placa</h4>
+                    <p class="helper">Identificação física da placa no FMC.</p>
+                    <div class="field">
+                      <label for="mestreDiscoPlacaNome">Nome da placa *</label>
+                      <input id="mestreDiscoPlacaNome" name="mestreDiscoPlacaNome" type="text" placeholder="Ex.: Placa Disco" maxlength="100" required>
+                    </div>
+                    <div class="field">
+                      <label for="mestreDiscoPlacaModelo">Modelo da placa *</label>
+                      <input id="mestreDiscoPlacaModelo" name="mestreDiscoPlacaModelo" type="text" placeholder="Modelo / part number da placa" maxlength="100" required>
+                    </div>
+                    <div class="field">
+                      <label for="mestreDiscoPlacaNumeroSerie">Número de série da placa *</label>
+                      <input id="mestreDiscoPlacaNumeroSerie" name="mestreDiscoPlacaNumeroSerie" type="text" placeholder="Número de série do fabricante" maxlength="45" data-serie-placa required>
+                    </div>
+                  </div>
+
+                  <div>
+                    <h4>Componente</h4>
+                    <p class="helper">Componente monitorado nesta placa.</p>
+                    <div class="linhaComponente">
+                      <div class="field">
+                        <label for="mestreDiscoTipo">Tipo</label>
+                        <input id="mestreDiscoTipo" type="text" value="Disco" class="bloqueado" readonly>
+                      </div>
+                      <div class="field">
+                        <label for="mestreDiscoComponenteModelo">Modelo do componente *</label>
+                        <input id="mestreDiscoComponenteModelo" name="mestreDiscoComponenteModelo" type="text" placeholder="Modelo do disco" maxlength="100" required>
+                      </div>
+                    </div>
+
+                    <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso do disco.</small></p>
+                    <div class="linhaLimites">
+                      <div class="field">
+                        <label for="mestreDiscoLimiteAtencao" class="alerta">Alerta (%)</label>
+                        <input id="mestreDiscoLimiteAtencao" name="mestreDiscoLimiteAtencao" type="number" min="1" max="99" value="70"
+                          required data-limite="atencao">
+                      </div>
+                      <div class="field">
+                        <label for="mestreDiscoLimiteCritico" class="critico">Crítico (%)</label>
+                        <input id="mestreDiscoLimiteCritico" name="mestreDiscoLimiteCritico" type="number" min="2" max="100" value="90"
+                          required data-limite="critico">
+                      </div>
+                    </div>
+                    <div class="barraLimites"></div>
+                    <p class="legendaLimites"></p>
+                  </div>
+
+                  <div>
+                    <h4>Métricas coletadas</h4>
+                    <p class="helper">Marque quais destas métricas serão monitoradas.</p>
+                    <div class="listaMetricas">
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreDiscoMetricas" value="Capacidade total" data-unidade="GB"
+                          data-descricao="Espaço total de armazenamento" checked>
+                        <strong>Capacidade total</strong>
+                        <span class="unidade">GB</span>
+                        <small>Espaço total de armazenamento</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreDiscoMetricas" value="Em uso" data-unidade="GB"
+                          data-descricao="Espaço ocupado" checked>
+                        <strong>Em uso</strong>
+                        <span class="unidade">GB</span>
+                        <small>Espaço ocupado</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreDiscoMetricas" value="Disponível" data-unidade="GB"
+                          data-descricao="Espaço livre" checked>
+                        <strong>Disponível</strong>
+                        <span class="unidade">GB</span>
+                        <small>Espaço livre</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreDiscoMetricas" value="Percentual de uso" data-unidade="%"
+                          data-descricao="Espaço em uso em relação ao total" checked>
+                        <strong>Percentual de uso</strong>
+                        <span class="unidade">%</span>
+                        <small>Espaço em uso em relação ao total</small>
+                      </label>
+                      <label class="metrica">
+                        <input type="checkbox" name="mestreDiscoMetricas" value="Leitura / escrita" data-unidade="MB/s"
+                          data-descricao="Taxa de transferência do disco" checked>
+                        <strong>Leitura / escrita</strong>
+                        <span class="unidade">MB/s</span>
+                        <small>Taxa de transferência do disco</small>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </article>
+
+            </div>
+          </section>
+
+          
+          <section class="step" data-step="3" hidden>
+
+            <div class="card resumoMestre" id="cardResumoMestre">
+              <i class="bi bi-hdd-rack" aria-hidden="true"></i>
+              <h3>FMC Mestre <span class="badgeSucesso"><i class="bi bi-check-lg" aria-hidden="true"></i> Cadastrado</span></h3>
+              <dl id="resumoMestre"></dl>
+              <button class="editButton" type="button" data-ir-para="1">Editar</button>
+            </div>
+
+            <div class="card">
+              <h2>Dados do FMC Spare <span class="tag">Computador 2 de 2</span></h2>
+
+              <div class="grid">
+
+                <div class="field">
+                  <label for="spareAeronave">Aeronave associada</label>
+                  <input id="spareAeronave" type="text" class="bloqueado" readonly>
+                </div>
+
+                <div class="field">
+                  <label for="spareTipoFmc">Função do computador</label>
+                  <input id="spareTipoFmc" type="text" value="FMC Spare" class="bloqueado" readonly>
+                </div>
+
+                <div class="field">
+                  <label for="spareNome">Nome do computador *</label>
+                  <input id="spareNome" name="spareNome" type="text" placeholder="Ex.: FMC-02 Spare" maxlength="45" required>
+                </div>
+
+                <div class="field">
+                  <label for="spareNumeroSerie">Número de série *</label>
+                  <input id="spareNumeroSerie" name="spareNumeroSerie" type="text" placeholder="Diferente do número de série do Mestre" maxlength="45" required>
+                </div>
+
+                <div class="field">
+                  <label for="spareModelo">Modelo do computador *</label>
+                  <input id="spareModelo" name="spareModelo" type="text" placeholder="Modelo / part number" maxlength="100" required>
+                </div>
+
+                <fieldset class="field status">
+                  <legend>Status do computador *</legend>
+                  <label><input type="radio" name="spareStatusComputador" value="ATIVO" checked> Ativo</label>
+                  <label><input type="radio" name="spareStatusComputador" value="INATIVO"> Inativo</label>
+                  <label><input type="radio" name="spareStatusComputador" value="MANUTENCAO"> Em manutenção</label>
+                </fieldset>
+
+                <div class="field">
+                  <label for="spareDataInstalacao">Data de instalação *</label>
+                  <input id="spareDataInstalacao" name="spareDataInstalacao" type="date" required>
+                </div>
+
+                <div class="field">
+                  <label for="spareEntradaSistema">Data de entrada no sistema *</label>
+                  <input id="spareEntradaSistema" name="spareEntradaSistema" type="date" required>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="card" id="cardPlacasReplicadas">
+              <div class="cabecalhoCard">
+                <div>
+                  <h2>Placas do FMC Spare</h2>
+                  <p>Cada placa física tem o próprio número de série. O restante pode ser copiado das placas do Mestre.</p>
+                </div>
+              </div>
+
+              <label class="replicar">
+                <input type="checkbox" id="replicarPlacas" checked>
+                <i class="bi bi-copy" aria-hidden="true"></i>
+                Replicar nome, modelo, componente, métricas e limites das placas do Mestre
+              </label>
+
+              <div class="listaPlacasSpare" id="placasReplicadas">
+
+                <div class="placaSpare" data-tipo="CPU">
+                  <h3>
+                    <i class="bi bi-cpu" aria-hidden="true"></i>
+                    Placa de CPU
+                    <small>Nome e modelo iguais ao Mestre</small>
+                  </h3>
+                  <p class="resumoPlaca"></p>
+                  <div class="field">
+                    <label for="spareCpuSerieReplicada">Número de série da placa *</label>
+                    <input id="spareCpuSerieReplicada" name="spareCpuSerieReplicada" type="text" placeholder="Nº de série da placa do Spare" maxlength="45" data-serie-placa required>
+                  </div>
+                </div>
+
+                <div class="placaSpare" data-tipo="RAM">
+                  <h3>
+                    <i class="bi bi-memory" aria-hidden="true"></i>
+                    Placa de memória RAM
+                    <small>Nome e modelo iguais ao Mestre</small>
+                  </h3>
+                  <p class="resumoPlaca"></p>
+                  <div class="field">
+                    <label for="spareRamSerieReplicada">Número de série da placa *</label>
+                    <input id="spareRamSerieReplicada" name="spareRamSerieReplicada" type="text" placeholder="Nº de série da placa do Spare" maxlength="45" data-serie-placa required>
+                  </div>
+                </div>
+
+                <div class="placaSpare" data-tipo="DISCO">
+                  <h3>
+                    <i class="bi bi-device-hdd" aria-hidden="true"></i>
+                    Placa de disco
+                    <small>Nome e modelo iguais ao Mestre</small>
+                  </h3>
+                  <p class="resumoPlaca"></p>
+                  <div class="field">
+                    <label for="spareDiscoSerieReplicada">Número de série da placa *</label>
+                    <input id="spareDiscoSerieReplicada" name="spareDiscoSerieReplicada" type="text" placeholder="Nº de série da placa do Spare" maxlength="45" data-serie-placa required>
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <div class="listaPlacas" id="placasSpare" hidden></div>
+
+          </section>
+
+          <section class="card step" data-step="4" hidden>
+            <h2 class="reviewTitle">Revise os computadores da aeronave</h2>
+            <p class="resumoTotal" id="resumoTotal"></p>
+            <div class="reviewGrid" id="reviewContent"></div>
+
+            <p class="aviso">
+              <i class="bi bi-clock-history" aria-hidden="true"></i>
+              Os limites de alerta serão salvos como a versão 1 da configuração. Alterações futuras geram uma nova
+              versão, sem mudar alertas já registrados.
+            </p>
+          </section>
+
+          <section class="card step" data-step="5" hidden>
+            <div class="successScreen">
+              <div class="successIcon"><i class="bi bi-check-lg" aria-hidden="true"></i></div>
+              <h2>Computadores cadastrados!</h2>
+              <p>
+                Os FMCs escolhidos foram cadastrados com suas placas, componentes e métricas.
+              </p>
+            </div>
+          </section>
+
+          <div class="actions" id="actions">
+            <button class="button buttonSecondary" id="backButton" type="button" hidden>
+              🠔 Voltar
+            </button>
+
+            <button class="button buttonPrimary" id="nextButton" type="button">
+              Próximo passo ➔
+            </button>
+          </div>
+
+        </form>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script src="js/sessao.js"></script>
+  <script>validarSessao();</script>
+  <script src="js/menuLateral.js"></script>
+  <script src="js/cadastroFmc.js"></script>
+</body>
+
+</html>

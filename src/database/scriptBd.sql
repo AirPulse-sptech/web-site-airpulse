@@ -153,3 +153,9 @@ INSERT INTO funcionario (
     '11970001002', '11144477735', 'GESTOR', 'urubu100', 1, NOW(),
     (SELECT idEmpresaFabricante FROM empresaFabricante WHERE cnpj = '12345678000195' LIMIT 1)
 );
+
+INSERT INTO aeronave (
+    nome, modelo, numeroSerie, statusAeronave, entradaSistema, companhiaAerea, fkEmpresaFabricante
+    ) VALUES (
+        'PR-AER', 'Boeing 737-8', 'AN-001', 'ATIVA', NOW(), 
+        'GOL', 2);
