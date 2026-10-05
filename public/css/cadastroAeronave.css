@@ -1,0 +1,147 @@
+.containerCadastro {
+    font-family: var(--fontBody);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 70px - 48px);
+    min-width: 100%;
+    box-sizing: border-box;
+}
+
+.boxCadastro {
+    background-color: var(--bgSurface);
+    width: 100%;
+    max-width: 700px;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+    box-sizing: border-box;
+}
+
+.tituloCadastro {
+    text-align: center;
+    color: var(--textPrimary);
+    font-family: var(--fontHeading);
+    font-size: 24px;
+    margin-bottom: 25px;
+}
+
+.inputGroup #nome{
+    margin-bottom: 15px;
+}
+
+.formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 30px;
+    row-gap: 20px;
+    margin-bottom: 30px;
+}
+
+
+.inputGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+.inputGroup label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--textPrimary);
+    margin-bottom: 6px;
+}
+
+.inputGroup input[type="text"],
+.inputGroup input[type="email"],
+.inputGroup input[type="password"],
+.inputGroup input[type="date"],
+.inputGroup select {
+    padding: 12px;
+    border: 1px solid var(--borderSoft);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--textPrimary);
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+#statusAeronave.selectStatus{
+    padding: 12px;
+    border: 1px solid var(--borderSoft);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--textPrimary);
+    outline: none;
+    transition: border-color 0.2s ease;
+    box-sizing: border-box;
+    font-family: inherit;
+    color:  #aaa;
+}
+
+.inputGroup input::placeholder {
+    color: #aaa;
+}
+
+.inputGroup input:focus,
+.inputGroup select:focus {
+    border-color: var(--colorPrimary);
+}
+
+.formActions {
+    display: flex;
+    gap: 20px;
+}
+
+.btnVoltar,
+.btnProximo {
+    flex: 1;
+    padding: 14px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+    font-family: inherit;
+}
+
+.btnVoltar {
+    background-color: var(--bgSurface);
+    color: var(--colorPrimary);
+    border: 1px solid var(--colorPrimary);
+}
+
+.btnVoltar:hover {
+    background-color: var(--bgInput);
+}
+
+.btnProximo {
+    background-color: var(--colorPrimary);
+    color: var(--colorWhite);
+    border: none;
+}
+
+.btnProximo:hover {
+    background-color: var(--colorPrimaryDark);
+}
+
+main {
+    padding: 24px 32px;
+}
+
+.cardErro{
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto 16px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    background-color: var(--colorPrimarySoft);
+    display: none;
+}
+
+#mensagemErro{
+    color: var(--colorPrimary);
+    font-size: 14px;
+}

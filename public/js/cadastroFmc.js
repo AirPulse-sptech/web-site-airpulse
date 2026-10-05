@@ -105,8 +105,8 @@ function atualizarAeronave() {
   situacoes.forEach(([checkbox, idTexto, jaCadastrado, textoPadrao]) => {
     checkbox.disabled = !!jaCadastrado
     if (jaCadastrado) checkbox.checked = false
-    document.querySelector(idTexto).textContent = jaCadastrado ? "Já cadastrado nesta aeronave" : textoPadrao
-  })
+    const texto = document.querySelector(idTexto)
+    if (texto) texto.textContent = jaCadastrado ? "Já cadastrado nesta aeronave" : textoPadrao  })
 
   atualizarEscolhaFmc()
 }

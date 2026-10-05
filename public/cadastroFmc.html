@@ -46,6 +46,11 @@
           <span>Cadastrar Funcionário</span>
         </a>
 
+        <a href="cadastroAeronave.html" class="navItem">
+                    <i class="bi bi-airplane navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Aeronave</span>
+                </a>
+
         <div class="navItem disabled">
           <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
           <span>Chamados & Suporte</span>
@@ -128,9 +133,7 @@
               <div class="field">
                 <label for="fkAeronave">Aeronave associada *</label>
                 <select id="fkAeronave" name="fkAeronave" required>
-                  <option value="">Selecione a aeronave</option>
-                  <!-- TODO: carregar as aeronaves da empresa logada (tabela aeronave) -->
-                  <option value="1">PR-GOL · Boeing 737</option>
+                  <option value="">Carregando aeronaves...</option>
                 </select>
               </div>
 
@@ -139,12 +142,12 @@
                 <label>
                   <input type="checkbox" id="monitorarMestre" checked>
                   <strong>FMC Mestre</strong>
-                  <small>Computador principal da aeronave</small>
+                  <small id="situacaoMestre">Computador principal da aeronave</small>
                 </label>
                 <label>
                   <input type="checkbox" id="monitorarSpare" checked>
                   <strong>FMC Spare</strong>
-                  <small>Computador reserva da aeronave</small>
+                  <small id="situacaoSpare">Computador reserva da aeronave</small>
                 </label>
               </fieldset>
             </div>

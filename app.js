@@ -16,6 +16,7 @@ var app = express()
 var indexRouter = require("./src/routes/index")
 var usuarioRouter = require("./src/routes/usuario")
 var empresasRouter = require("./src/routes/empresas")
+var aeronaveRouter = require("./src/routes/aeronave")
 var computadorRouter = require("./src/routes/computador")
 
 
@@ -28,6 +29,7 @@ app.use(cors())
 app.use("/", indexRouter)
 app.use("/usuario", usuarioRouter)
 app.use("/empresas", empresasRouter)
+app.use("/aeronave", aeronaveRouter)
 app.use("/computador", computadorRouter)
 
 app.listen(portaApp, function () {

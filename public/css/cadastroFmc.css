@@ -343,6 +343,13 @@ input.bloqueado {
   background: var(--azulSuave);
 }
 
+.escolhaFmc label:has(input:disabled) {
+  background: var(--fundoPagina);
+  border-style: dashed;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
 .escolhaFmc strong {
   font-size: 15px;
 }
