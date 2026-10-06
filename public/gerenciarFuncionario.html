@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/gerenciarFuncionario.css">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <title>AirPulse - Gerenciar Funcionário</title>
+</head>
+
+<body>
+
+    <div class="appLayout">
+
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="home.html">
+                    <img class="brandLogoFull"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebarNav">
+                <a href="dashboardPrincipalAnalista.html" class="navItem">
+                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Componentes</span>
+                </div>
+
+                <a href="cadastroFmc.html" class="navItem" id="itemCadastrarFmc">
+                    <i class="bi bi-hdd-rack navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar FMC</span>
+                </a>
+
+                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
+                    <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Funcionário</span>
+                </a>
+
+                <a href="gerenciarFuncionario.html" class="navItem active" aria-current="page" id="itemGerenciarFuncionario">
+                    <i class="bi bi-gear navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Gerenciar Funcionário</span>
+                </a>
+
+                <a href="cadastroAeronave.html" class="navItem">
+                    <i class="bi bi-airplane navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Aeronave</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Chamados & Suporte</span>
+                </div>
+            </nav>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
+                    </div>
+                </div>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+        <div class="mainWrapper">
+
+            <main class="gfConteudo">
+
+                <div class="gfCabecalho">
+                    <div>
+                        <h1 class="gfTitulo">Gerenciamento de Usuários</h1>
+                        <p class="gfSubtitulo">Acompanhe o status e os servidores de cada usuário.</p>
+                    </div>
+                </div>
+
+                <div class="gfFiltros">
+                    <input type="text" class="gfBusca" placeholder="Buscar por nome ou e-mail">
+                    <button type="button" class="gfFiltro ativo">Todos</button>
+                    <button type="button" class="gfFiltro">Ativos</button>
+                    <button type="button" class="gfFiltro">Inativos</button>
+                </div>
+
+                <div class="gfTabela">
+
+                    <div class="gfLinha gfLinhaTitulo">
+                        <span>USUÁRIO</span>
+                        <span>STATUS</span>
+                        <span>AERONAVES</span>
+                        <span></span>
+                    </div>
+
+                    <div class="gfLinha">
+                        <div class="gfUsuario">
+                            <div class="gfAvatar">AS</div>
+                            <div>
+                                <span class="gfNome">Ana Souza</span>
+                                <span class="gfEmail">ana.souza@empresa.com</span>
+                            </div>
+                        </div>
+                        <div><span class="gfStatus ativo">Ativo</span></div>
+                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
+                        <div><span class="gfAeronaves">9 aeronaves associadas</span></div>
+                    </div>
+
+                    <div class="gfLinha">
+                        <div class="gfUsuario">
+                            <div class="gfAvatar">BL</div>
+                            <div>
+                                <span class="gfNome">Bruno Lima</span>
+                                <span class="gfEmail">bruno.lima@empresa.com</span>
+                            </div>
+                        </div>
+                        <div><span class="gfStatus inativo">Inativo</span></div>
+                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
+                        <div><span class="gfAeronaves">5 aeronaves associadas</span></div>
+                    </div>
+
+                    <div class="gfLinha">
+                        <div class="gfUsuario">
+                            <div class="gfAvatar">CM</div>
+                            <div>
+                                <span class="gfNome">Carla Mendes</span>
+                                <span class="gfEmail">carla.mendes@empresa.com</span>
+                            </div>
+                        </div>
+                        <div><span class="gfStatus ativo">Ativo</span></div>
+                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
+                        <div><span class="gfAeronaves">3 aeronaves associadas</span></div>
+                    </div>
+
+                    <div class="gfLinha">
+                        <div class="gfUsuario">
+                            <div class="gfAvatar">DR</div>
+                            <div>
+                                <span class="gfNome">Diego Rocha</span>
+                                <span class="gfEmail">diego.rocha@empresa.com</span>
+                            </div>
+                        </div>
+                        <div><span class="gfStatus inativo">Inativo</span></div>
+                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
+                        <div><span class="gfAeronaves">8 aeronaves associadas</span></div>
+                    </div>
+
+                    <div class="gfLinha">
+                        <div class="gfUsuario">
+                            <div class="gfAvatar">EP</div>
+                            <div>
+                                <span class="gfNome">Elisa Prado</span>
+                                <span class="gfEmail">elisa.prado@empresa.com</span>
+                            </div>
+                        </div>
+                        <div><span class="gfStatus ativo">Ativo</span></div>
+                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
+                        <div><span class="gfAeronaves">2 aeronaves associadas</span></div>
+                    </div>
+
+                    <div class="gfLinha">
+                        <div class="gfUsuario">
+                            <div class="gfAvatar">FT</div>
+                            <div>
+                                <span class="gfNome">Felipe Torres</span>
+                                <span class="gfEmail">felipe.torres@empresa.com</span>
+                            </div>
+                        </div>
+                        <div><span class="gfStatus ativo">Ativo</span></div>
+                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
+                        <div><span class="gfAeronaves">3 aeronaves associadas</span></div>
+                    </div>
+
+                    <div class="gfLinha">
+                        <div class="gfUsuario">
+                            <div class="gfAvatar">GA</div>
+                            <div>
+                                <span class="gfNome">Gisele Alves</span>
+                                <span class="gfEmail">gisele.alves@empresa.com</span>
+                            </div>
+                        </div>
+                        <div><span class="gfStatus inativo">Inativo</span></div>
+                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
+                        <div><span class="gfAeronaves">5 aeronaves associadas</span></div>
+                    </div>
+
+                    <div class="gfRodape">
+                        <span class="gfContagem">Mostrando 1–7 de 24 usuários</span>
+                        <div class="gfPaginas">
+                            <button type="button" class="gfPagina ativo">1</button>
+                            <button type="button" class="gfPagina">2</button>
+                            <button type="button" class="gfPagina">3</button>
+                        </div>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+    <script src="js/sessao.js"></script>
+    <script>validarSessao()</script>
+    <script src="js/menuLateral.js"></script>
+</body>
+
+</html>
