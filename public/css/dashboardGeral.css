@@ -1,0 +1,778 @@
+/*
+   AirPulse — Dashboard "Visão Geral"
+
+*/
+
+:root {
+    /* Cores de status  */
+    --ok: #16a34a;
+    --at: #f97316;
+    --cr: #e11d48;
+    --ok-bg: #dcfce7;
+    --at-bg: #ffedd5;
+    --cr-bg: #ffe4e9;
+    /* Texto */
+    --ok-tx: #15803d;
+    --at-tx: #c2410c;
+    --cr-tx: #be123c;
+
+    --sombra-card: 0 1px 4px rgba(20, 30, 90, .08);
+    --drawer-w: 340px;
+}
+
+.app-layout {
+    font-size: 14px;
+    line-height: 1.45;
+    color: var(--text-primary);
+}
+
+.seg button,
+.chips button,
+.dr-close,
+.dr-tab {
+    font: inherit;
+    cursor: pointer;
+    border: 0;
+    background: none;
+    color: inherit;
+}
+
+.seg button:focus-visible,
+.chips button:focus-visible,
+.dr-close:focus-visible,
+.dr-tab:focus-visible,
+.aircraft-row:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+}
+
+
+
+.topbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.seg {
+    display: inline-flex;
+    gap: 2px;
+    padding: 3px;
+    background: var(--color-primary-soft);
+    border-radius: 10px;
+}
+
+.seg button {
+    padding: 7px 14px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: background .2s, color .2s;
+}
+
+.seg button:hover {
+    color: var(--color-primary);
+}
+
+.seg button.on {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+
+
+
+.dash-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: flex-start;
+}
+
+.dash-main {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 28px 40px 48px;         /* respiro em relação à sidebar e às bordas */
+    container-type: inline-size;
+    container-name: dash;
+}
+
+#dr {
+    flex: 0 0 var(--drawer-w);
+    width: var(--drawer-w);
+    position: sticky;
+    top: 98px;                       /* topbar 70px + 28px de respiro */
+    max-height: calc(100vh - 126px);
+    overflow-y: auto;
+    margin: 28px 40px 28px 0;
+    padding: 20px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    box-shadow: var(--sombra-card);
+}
+
+#dr:empty {
+    display: none;
+}
+
+
+
+.dr-head h2,
+.dr-section h3 {
+    font-family: var(--font-heading);
+    margin: 0;
+}
+
+.mut {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+
+
+
+.kpis {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+}
+
+.k {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 14px;
+    box-shadow: var(--sombra-card);
+}
+
+.k-icon {
+    flex: none;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+}
+
+.k-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.k-icon.ok { background: var(--ok-bg); color: var(--ok-tx); }
+.k-icon.at { background: var(--at-bg); color: var(--at-tx); }
+.k-icon.cr { background: var(--cr-bg); color: var(--cr-tx); }
+.k-icon.nu { background: var(--color-primary-soft); color: var(--color-primary); }
+
+.k-body {
+    min-width: 0;
+}
+
+.k-body small,
+.k-body em {
+    display: block;
+    color: var(--text-secondary);
+    font-style: normal;
+    font-size: 12px;
+    line-height: 1.3;
+}
+
+.k-body small {
+    font-weight: 600;
+}
+
+.k-body b {
+    display: block;
+    margin: 2px 0;
+    font-family: var(--font-heading);
+    font-size: 26px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -.02em;
+    color: var(--text-primary);
+}
+
+@container dash (min-width: 420px) and (max-width: 619px) {
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .k:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
+
+@container dash (min-width: 620px) and (max-width: 959px) {
+    .kpis { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+    .k { grid-column: span 2; }
+    .k:nth-child(n+4) { grid-column: span 3; }
+}
+
+@container dash (min-width: 960px) {
+    .kpis { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+
+
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 20px;
+}
+
+@container dash (min-width: 720px) {
+    .dashboard-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .heat-card,
+    .aircraft-card { grid-column: 1 / -1; }
+}
+
+.dashboard-grid > .cartao {
+    min-width: 0;
+}
+
+.card-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-bottom: 16px;
+}
+
+.card-head .tituloCard {
+    margin: 0;
+    font-family: var(--font-heading);
+}
+
+.card-head .mut {
+    margin-top: 2px;
+    font-size: 12px;
+}
+
+
+.fleet-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+}
+
+.donut-wrap {
+    position: relative;
+    flex: none;
+    width: 150px;
+    height: 150px;
+}
+
+.donut-wrap canvas {
+    display: block;
+}
+
+.donut-center {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.donut-center b {
+    font-family: var(--font-heading);
+    font-size: 32px;
+    font-weight: 800;
+    line-height: 1;
+}
+
+.donut-center span {
+    margin-top: 2px;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.fleet-legend {
+    flex: 1 1 200px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.fleet-item {
+    display: grid;
+    grid-template-columns: 10px minmax(0, 1fr) auto 44px;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 13px;
+}
+
+.fleet-item:last-child {
+    border-bottom: 0;
+}
+
+.fleet-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.fleet-label { color: var(--text-secondary); }
+.fleet-count { font-weight: 700; text-align: right; }
+.fleet-pct   { color: var(--text-secondary); font-size: 12px; text-align: right; }
+
+
+.avail-list {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    max-height: 260px;
+    overflow-y: auto;
+    padding-right: 2px;
+}
+
+.avail-row {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr) 54px;
+    align-items: center;
+    gap: 12px;
+    font-size: 13px;
+}
+
+.avail-track {
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.avail-fill {
+    height: 100%;
+    border-radius: 8px;
+}
+
+.avail-val {
+    text-align: right;
+    font-weight: 700;
+}
+
+
+.aircraft-card {
+    container-type: inline-size;
+    container-name: list;
+}
+
+.chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.chips button {
+    padding: 6px 12px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    transition: background .2s, border-color .2s, color .2s;
+}
+
+.chips button:hover {
+    border-color: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.chips button.on {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: var(--color-white);
+}
+
+.aircraft-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.aircraft-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 110px 110px auto;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background .18s, border-color .18s;
+}
+
+.aircraft-row:hover {
+    background: var(--color-primary-soft);
+    border-color: var(--border-medium);
+}
+
+.aircraft-main {
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.aircraft-marker {
+    flex: none;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--color-primary-soft);
+    color: var(--color-primary);
+    display: grid;
+    place-items: center;
+}
+
+.aircraft-marker svg {
+    width: 18px;
+    height: 18px;
+}
+
+.aircraft-copy {
+    min-width: 0;
+}
+
+.aircraft-copy strong {
+    display: block;
+    font-size: 14px;
+}
+
+.aircraft-copy small {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.metric-cell {
+    text-align: center;
+}
+
+.metric-cell small {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 11px;
+    color: var(--text-secondary);
+}
+
+.metric-cell strong {
+    display: block;
+    font-size: 14px;
+}
+
+.status-pill {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.status-normal    { background: var(--ok-bg); color: var(--ok-tx); }
+.status-attention { background: var(--at-bg); color: var(--at-tx); }
+.status-critical  { background: var(--cr-bg); color: var(--cr-tx); }
+
+.open-btn {
+    justify-self: end;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 12px;
+    border: 1px solid var(--color-primary);
+    border-radius: 10px;
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--color-primary);
+    white-space: nowrap;
+    transition: background .18s, color .18s;
+}
+
+.open-btn svg {
+    width: 14px;
+    height: 14px;
+}
+
+.aircraft-row:hover .open-btn {
+    background: var(--color-primary);
+    color: var(--color-white);
+}
+
+@container list (max-width: 600px) {
+    .aircraft-row {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) auto;
+        gap: 12px;
+    }
+    .aircraft-main { grid-column: 1 / -1; }
+    .metric-cell { text-align: left; }
+}
+
+@container list (max-width: 400px) {
+    .aircraft-row { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .open-btn {
+        grid-column: 1 / -1;
+        justify-self: stretch;
+        justify-content: center;
+    }
+}
+
+
+.dr-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.dr-head h2 {
+    font-size: 18px;
+    font-weight: 800;
+    line-height: 1.2;
+}
+
+.dr-head p {
+    margin: 4px 0 0;
+}
+
+.dr-close {
+    flex: none;
+    width: 32px;
+    height: 32px;
+    display: grid;
+    place-items: center;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    color: var(--text-secondary);
+    transition: background .18s;
+}
+
+.dr-close:hover {
+    background: var(--color-primary-soft);
+}
+
+.dr-close svg {
+    width: 16px;
+    height: 16px;
+}
+
+.dr-tabs {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 14px 0 16px;
+}
+
+.dr-tab {
+    min-width: 0;
+    padding: 10px 12px;
+    text-align: left;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+    transition: background .18s, border-color .18s;
+}
+
+.dr-tab.on {
+    background: var(--color-primary-soft);
+    border-color: var(--color-primary);
+}
+
+.dr-tab strong {
+    display: block;
+    font-size: 12px;
+}
+
+.dr-tab small {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--text-secondary);
+    overflow-wrap: anywhere;
+}
+
+.dr-section {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border-soft);
+}
+
+.dr-section h3 {
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.dr-alert {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 10px;
+    padding: 12px;
+    border-radius: 12px;
+}
+
+.dr-alert.critical  { background: var(--cr-bg); }
+.dr-alert.attention { background: var(--at-bg); }
+.dr-alert.normal    { background: var(--ok-bg); }
+
+.dr-alert-icon {
+    width: 36px;
+    height: 36px;
+    display: grid;
+    place-items: center;
+    border-radius: 10px;
+    background: rgba(255, 255, 255, .65);
+}
+
+.dr-alert.critical  .dr-alert-icon { color: var(--cr-tx); }
+.dr-alert.attention .dr-alert-icon { color: var(--at-tx); }
+.dr-alert.normal    .dr-alert-icon { color: var(--ok-tx); }
+
+.dr-alert-icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.dr-alert strong {
+    display: block;
+    font-size: 14px;
+}
+
+.dr-alert small {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.dr-online {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ok-tx);
+}
+
+.dr-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.dr-stat {
+    padding: 12px;
+    border: 1px solid var(--border-soft);
+    border-radius: 10px;
+}
+
+.dr-stat small {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+}
+
+.dr-stat strong {
+    display: block;
+    margin-top: 2px;
+    font-family: var(--font-heading);
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.dr-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.dr-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 13px;
+}
+
+.dr-row:last-child {
+    border-bottom: 0;
+}
+
+.dr-row span:first-child { color: var(--text-secondary); }
+.dr-row span:last-child  { font-weight: 600; text-align: right; }
+
+.dr-action {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 16px;
+    padding: 12px 14px;
+    background: var(--color-primary);
+    border-radius: 10px;
+    color: var(--color-white);
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background .2s;
+}
+
+.dr-action:hover {
+    background: var(--color-primary-dark);
+}
+
+.dr-action svg {
+    width: 16px;
+    height: 16px;
+}
+
+
+
+
+
+/* Se ficar sem espaço pras 3 colunas o drawer vai virar painel sobreposto */
+@media (max-width: 1180px) {
+    #dr {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: min(380px, 100%);
+        height: 100dvh;
+        max-height: none;
+        border-width: 0 0 0 1px;
+        margin: 0;
+        border-radius: 0;
+        z-index: 120;
+        box-shadow: -12px 0 32px rgba(13, 18, 64, .18);
+    }
+}
+
+@media (max-width: 768px) {
+    .seg button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    * {
+        transition: none !important;
+    }
+}

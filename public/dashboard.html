@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/mapa_calor.css">
+    <link rel="stylesheet" href="css/dashboardGeral.css">
+    <title>AirPulse - Dashboard</title>
+</head>
+
+<body>
+
+    <div class="app-layout">
+
+        <!-- Menu Lateral -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a class="sidebar-brand" href="dashboard.html">
+                    <img class="brand-logo-full"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="dashboard.html" class="nav-item active">
+                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="9"></rect>
+                        <rect x="14" y="3" width="7" height="5"></rect>
+                        <rect x="14" y="12" width="7" height="9"></rect>
+                        <rect x="3" y="16" width="7" height="5"></rect>
+                    </svg>
+                    <span>Visão Geral</span>
+                </a>
+
+                <div class="nav-item disabled">
+                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="4" y="4" width="16" height="16" rx="2"></rect>
+                        <path d="M9 9h6v6H9z"></path>
+                    </svg>
+                    <span>Servidores</span>
+                </div>
+
+                <a href="cadastro_empresa.html" class="nav-item">
+                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="8.5" cy="7" r="4"></circle>
+                        <line x1="20" y1="8" x2="20" y2="14"></line>
+                        <line x1="23" y1="11" x2="17" y2="11"></line>
+                    </svg>
+                    <span>Cadastrar Empresa</span>
+                </a>
+
+                <div class="nav-item disabled">
+                    <svg class="nav-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                        stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                    <span>Chamados & Suporte</span>
+                </div>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar">AP</div>
+                    <div class="user-details">
+                        <span class="user-name" id="userNameDisplay">Admin AirPulse</span>
+                        <span class="user-role">Gestor Interno</span>
+                    </div>
+                </div>
+
+                <button class="btn-logout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                        <polyline points="16 17 21 12 16 7"></polyline>
+                        <line x1="21" y1="12" x2="9" y2="12"></line>
+                    </svg>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
+        <div class="main-wrapper">
+
+            <header class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-toggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        ☰
+                    </button>
+                    <span class="topbar-title">Dashboard</span>
+                </div>
+
+                <div class="topbar-right">
+                    <div class="seg" id="seg">
+                        <button data-p="7">7 dias</button>
+                        <button data-p="30" class="on">30 dias</button>
+                        <button data-p="90">90 dias</button>
+                        <button data-p="180">Histórico</button>
+                    </div>
+                </div>
+            </header>
+
+
+            <div class="dash-body">
+
+                <main class="dash-main">
+                    <div class="pg-header">
+                        <h1>Dashboard - Visão Geral</h1>
+                        <p class="mut" id="sub"></p>
+                    </div>
+
+                    <section class="kpis" id="kpis"></section>
+
+                    <div class="dashboard-grid">
+                        <section class="card">
+                            <div class="card-head">
+                                <h3>Status das Aeronaves</h3>
+                                <span class="mut" id="fleet-total"></span>
+                            </div>
+                            <div class="fleet-wrap">
+                                <div class="donut-wrap">
+                                    <canvas id="donut"></canvas>
+                                    <div class="donut-center"><b id="donut-n"></b><span>aeronaves</span></div>
+                                </div>
+                                <div class="fleet-legend" id="fleet-leg"></div>
+                            </div>
+                        </section>
+
+                        <section class="card">
+                            <div class="card-head">
+                                <h3>Disponibilidade da Coleta</h3>
+                                <span class="mut">por aeronave</span>
+                            </div>
+                            <div id="avail-list" class="avail-list"></div>
+                        </section>
+
+                        <section class="card heat-card">
+                            <div class="card-head">
+                                <div>
+                                    <h3>Mapa de calor: estado das aeronaves no período</h3>
+                                    <p class="mut">Cada célula representa um dia. Use a seta para abrir os detalhes da aeronave.</p>
+                                </div>
+                                <div class="legenda">
+                                    <span class="legendaItem"><span class="ponto nivel1"></span>Normal</span>
+                                    <span class="legendaItem"><span class="ponto nivel2"></span>Atenção</span>
+                                    <span class="legendaItem"><span class="ponto nivel4"></span>Crítico</span>
+                                    <span class="legendaItem"><span class="ponto nivel0"></span>Sem dados</span>
+                                </div>
+                            </div>
+                            <div class="mapa" id="mapa"></div>
+                        </section>
+
+                        <section class="card aircraft-card">
+                            <div class="card-head">
+                                <h3>Aeronaves Monitoradas</h3>
+                                <div class="chips" id="chips"></div>
+                            </div>
+                            <div id="aircraft-list" class="aircraft-list"></div>
+                        </section>
+                    </div>
+                </main>
+
+                <aside id="dr"></aside>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="js/sessao.js"></script>
+    <script src="js/app-shell.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script> 
+<script> 
+const N=180,PT=new Date(2026,8,24); 
+const L={cpu:[60,85],ram:[75,90],disk:[75,90]}; 
+const SN=['Normal','Atenção','Crítico']; 
+const $=s=>document.querySelector(s); 
+const cs=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim(); 
+const esc=s=>String(s).replace(/[&<>\"]/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[m])); 
+const pc=(v,n=1)=>v==null?'-':v.toFixed(n).replace('.',',')+'%'; 
+const lab=d=>{const x=new Date(PT);x.setDate(x.getDate()-(N-1-d));return `${String(x.getDate()).padStart(2,'0')}/${String(x.getMonth()+1).padStart(2,'0')}`}; 
+const av2=(a,i,j)=>{let s=0,n=0;for(let x=i;x<j;x++)if(a[x]!=null){s+=a[x];n++}return n?s/n:null}; 
+const mxv=(a,i,j)=>{let m=null;for(let x=i;x<j;x++)if(a[x]!=null&&(m==null||a[x]>m))m=a[x];return m}; 
+const sv=(v,m)=>v>=L[m][1]?2:v>=L[m][0]?1:0; 
+const rng=s=>()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}; 
+
+function icon(name,size=16){ 
+  const h=`width="${size}" height="${size}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"`; 
+  const p={ 
+    plane:'<path d="M3 12h6l5-7h2l-2.5 7H21c.8 0 1.4.4 1.4 1s-.6 1-1.4 1h-7.5L16 21h-2l-5-7H3l-1.5-2L3 12Z"/>', 
+    bell:'<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/>', 
+    triangle:'<path d="M12 3 2.7 20h18.6L12 3Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>', 
+    gauge:'<path d="M4 14a8 8 0 1 1 16 0"/><path d="M12 14l4-4"/><path d="M4 14h2"/><path d="M18 14h2"/>', 
+    restart:'<path d="M4 7v5h5"/><path d="M20 17v-5h-5"/><path d="M5 12a7 7 0 0 1 12-4"/><path d="M19 12a7 7 0 0 1-12 4"/>', 
+    activity:'<path d="M4 12h3l2-6 4 12 2-6h5"/>', 
+    x:'<path d="M6 6l12 12M18 6 6 18"/>', 
+    chevron:'<path d="m9 18 6-6-6-6"/>' 
+  }; 
+  return `<svg ${h}>${p[name]||p.activity}</svg>`; 
+} 
+
+const specs=[ 
+  ['PR-GOL','Boeing 737','GOL',[['FMC-AB1','2.2',8,62,31,.03],['FMC-AB2','2.2',15,58,31,.02]]], 
+  ['PR-LAT','Airbus A320neo','LATAM',[['FMC-CD1','2.3',20,77,34,.03],['FMC-CD2','2.3',16,70,35,.02]]], 
+  ['PR-AZU','Embraer E195-E2','Azul',[['FMC-DE1','2.3',19,69,34,.02],['FMC-DE2','2.2',17,64,35,.03]]], 
+  ['PR-GLO','Boeing 737-800','GOL',[['FMC-EF1','2.3',12,68,33,.02],['FMC-EF2','2.2',10,60,38,.04]]], 
+  ['PT-MAP','Airbus A321neo','LATAM',[['FMC-GH1','2.3',14,72,36,.025],['FMC-GH2','2.2',11,65,37,.02]]], 
+  ['PR-ONE','Boeing 737 MAX 8','GOL',[['FMC-IJ1','2.4',9,55,28,.015],['FMC-IJ2','2.4',11,58,29,.02]]] 
+]; 
+
+const FMCS=[]; 
+specs.forEach((pl,pi)=>{ 
+  pl[3].forEach((sp,fi)=>{ 
+    const k=FMCS.length,r=rng(k*97+11),leak=pi===4&&fi===0,spike=pi===0&&fi===0,diskRisk=pi===3&&fi===1; 
+    const f={id:sp[0],plane:pl[0],modelo:pl[1],op:pl[2],fw:sp[1],cpu:[],ram:[],disk:[],av:[],sev:[],rb:[],seen:1+Math.floor(r()*2)}; 
+    for(let d=0;d<N;d++){ 
+      let c=sp[2]+4*Math.sin(d/6+k)+(r()-.5)*5+(spike&&d>=N-60&&d<N-52?30:0); 
+      let m=sp[3]+2*Math.sin(d/9+k)+(r()-.5)*3+(leak&&d>=N-30?(d-N+30)*.8:0); 
+      let z=sp[4]+sp[5]*d+(r()-.5)*.3+(diskRisk&&d>=N-35?(d-N+35)*.35:0); 
+      if(k===9&&d>=N-4){f.cpu.push(null);f.ram.push(null);f.disk.push(null);f.av.push(0);f.sev.push(-1);continue} 
+      c=Math.max(1,Math.min(98,c));m=Math.max(1,Math.min(99,m));z=Math.max(1,Math.min(99,z)); 
+      f.cpu.push(c);f.ram.push(m);f.disk.push(z);f.av.push(99+r()*.9); 
+      f.sev.push(Math.max(sv(c,'cpu'),sv(m,'ram'),sv(z,'disk'))); 
+    } 
+    if(pi===0&&fi===0)f.rb=[N-24]; 
+    if(pi===2&&fi===1)f.rb=[N-80]; 
+    if(pi===4&&fi===0)f.rb=[N-20,N-70]; 
+    FMCS.push(f); 
+  }); 
+}); 
+
+const PLANES=specs.map(pl=>({...pl,fmcs:FMCS.filter(f=>f.plane===pl[0])})); 
+const planeState=(pl,i,j)=>{let w=0;pl.fmcs.forEach(f=>{for(let d=i;d<j;d++)w=Math.max(w,f.sev[d])});return w}; 
+const planeAvg=(pl,m,i,j)=>{const v=pl.fmcs.map(f=>av2(f[m],i,j)).filter(x=>x!=null);return v.length?v.reduce((a,b)=>a+b,0)/v.length:0}; 
+const planeAvail=(pl,i,j)=>planeAvg(pl,'av',i,j); 
+FMCS.forEach(f=>f.now={cpu:av2(f.cpu,N-2,N),ram:av2(f.ram,N-2,N),disk:av2(f.disk,N-2,N)}); 
+
+const S={p:30,m:'ram',fs:-1,sk:'st',sd:-1}; 
+let donutChart=null; 
+
+function render(){ 
+  const i=N-S.p; PLANES.forEach(pl=>pl.st=planeState(pl,i,N)); 
+  const cnt=[0,0,0];PLANES.forEach(pl=>cnt[pl.st]++); 
+  const fleetAvail=PLANES.reduce((s,p)=>s+planeAvail(p,i,N),0)/PLANES.length; 
+  const crit=FMCS.filter(f=>f.sev.slice(i).some(v=>v===2)).length; 
+  const rb=FMCS.reduce((s,f)=>s+f.rb.filter(d=>d>=i).length,0); 
+  $('#sub').textContent=`Período: ${lab(i)} a ${lab(N-1)} / ${PLANES.length} aeronaves / ${FMCS.length} FMCs monitorados`; 
+  const k=[ 
+    ['plane','nu','Aeronaves Monitoradas',PLANES.length,`${FMCS.length} FMCs ativos`], 
+    ['gauge','ok','Disponibilidade da Frota',pc(fleetAvail), 'amostras recebidas'], 
+    ['triangle','at','Exigem Atenção',cnt[1]+cnt[2],`${cnt[2]} críticas / ${cnt[1]} em atenção`], 
+    ['bell','cr','FMCs com Estado Crítico',crit,'no período selecionado'], 
+    ['restart','at','Reinícios Detectados',rb,'queda de uptime nos FMCs'],
+  ]; 
+  $('#kpis').innerHTML=k.map(x=>`<div class="k"><div class="k-icon ${x[1]}">${icon(x[0],16)}</div><div class="k-body"><small>${x[2]}</small><b>${x[3]}</b><em>${x[4]}</em></div></div>`).join(''); 
+  $('#donut-n').textContent=PLANES.length; 
+  $('#fleet-total').textContent=`Total de ${PLANES.length} aeronaves`; 
+  if(donutChart)donutChart.destroy(); 
+  donutChart=new Chart($('#donut'),{ 
+    type:'doughnut', 
+    data:{labels:['Normal','Atenção','Crítico'],datasets:[{data:cnt,backgroundColor:[cs('--ok'),cs('--at'),cs('--cr')],borderWidth:0}]}, 
+    options:{cutout:'72%',plugins:{legend:{display:false}},animation:{duration:300}} 
+  }); 
+  $('#fleet-leg').innerHTML=['Normal','Atenção','Crítico'].map((n,x)=>` <div class="fleet-item"> <span class="fleet-dot" style="background:${cs(['--ok','--at','--cr'][x])}"></span> <span class="fleet-label">${n}</span><span class="fleet-count">${cnt[x]}</span> <span class="fleet-pct">${Math.round(cnt[x]/PLANES.length*100)}%</span> </div>`).join(''); 
+  $('#avail-list').innerHTML=[...PLANES].sort((a,b)=>planeAvail(a,i,N)-planeAvail(b,i,N)).map(pl=>{ 
+    const v=planeAvail(pl,i,N),col=v>=99?cs('--ok'):v>=95?cs('--at'):cs('--cr'); 
+    return `<div class="avail-row"><strong>${pl[0]}</strong><div class="avail-track"><div class="avail-fill" style="width:${Math.min(v,100)}%;background:${col}"></div></div><span class="avail-val" style="color:${col}">${pc(v)}</span></div>` 
+  }).join(''); 
+  montarMapaCalor();buildList(); 
+} 
+
+// Nível de cor (nivelN em mapa_calor.css) para cada estado: 0 normal, 1 atenção, 2 crítico.
+// Sem dados usa nivel0.
+const NIVEIS_DO_ESTADO = [1, 2, 4];
+
+// Pior estado entre os FMCs da aeronave em um dia (-1 = sem dados)
+function estadoDaAeronaveNoDia(aeronave, dia) {
+  let pior = -1;
+  aeronave.fmcs.forEach(fmc => {
+    if (fmc.sev[dia] != null) pior = Math.max(pior, fmc.sev[dia]);
+  });
+  return pior;
+}
+
+// Mesma estrutura do mapa de calor de alertas.html: uma célula por dia
+function montarMapaCalor() {
+  const primeiroDia = N - S.p;
+  const mapa = $('#mapa');
+  mapa.style.setProperty('--totalCelulas', S.p);
+
+  // Linha de datas com 8 marcos igualmente espaçados
+  let html = '<div class="mapaLinha"><div class="mapaDatas">';
+  for (let marco = 0; marco < 8; marco++) {
+    html += `<span>${lab(primeiroDia + Math.floor(marco * S.p / 8))}</span>`;
+  }
+  html += '</div></div>';
+
+  PLANES.forEach(aeronave => {
+    const prefixo = aeronave[0];
+    let celulas = '';
+    for (let dia = primeiroDia; dia < N; dia++) {
+      const estado = estadoDaAeronaveNoDia(aeronave, dia);
+      const nivel = estado < 0 ? 0 : NIVEIS_DO_ESTADO[estado];
+      const texto = estado < 0 ? 'Sem dados' : SN[estado];
+      celulas += `<div class="celula nivel${nivel}" title="${prefixo} · ${lab(dia)}: ${texto}"></div>`;
+    }
+    html += `
+      <div class="mapaLinha">
+        <div class="mapaRotulo">${prefixo}</div>
+        <div class="mapaCelulas">${celulas}</div>
+        <button class="mapaSeta" type="button" data-id="${prefixo}" aria-label="Ver detalhes de ${prefixo}">›</button>
+      </div>`;
+  });
+  mapa.innerHTML = html;
+}
+
+function statusPill(st){ 
+  return `<span class="status-pill ${['status-normal','status-attention','status-critical'][st]}">${SN[st]}</span>`; 
+} 
+
+function buildList(){ 
+  const i=N-S.p; 
+  let rows=PLANES.map(pl=>({pl,st:pl.st,ram:planeAvg(pl,'ram',i,N)})); 
+  const defs=[['Todos',-1],['Crítico',2],['Atenção',1],['Normal',0]]; 
+  const counts=[PLANES.length,PLANES.filter(p=>p.st===2).length,PLANES.filter(p=>p.st===1).length,PLANES.filter(p=>p.st===0).length]; 
+  $('#chips').innerHTML=defs.map((d,n)=>`<button data-f="${d[1]}" class="${S.fs===d[1]?'on':''}">${d[0]} (${counts[n]})</button>`).join(''); 
+  if(S.fs>=0)rows=rows.filter(r=>r.st===S.fs); 
+  rows.sort((a,b)=>((a[S.sk]??0)-(b[S.sk]??0))*S.sd); 
+  $('#aircraft-list').innerHTML=rows.map(r=>` 
+    <div class="aircraft-row" data-id="${r.pl[0]}"> 
+      <div class="aircraft-main"> 
+        <div class="aircraft-marker">${icon('plane',13)}</div> 
+        <div class="aircraft-copy"><strong>${r.pl[0]}</strong><small>${r.pl[1]} / ${r.pl[2]}</small></div> 
+      </div> 
+      <div class="metric-cell"><small>Status</small><div>${statusPill(r.st)}</div></div> 
+      <div class="metric-cell"><small>RAM média</small><strong>${pc(r.ram,0)}</strong></div> 
+      <div class="open-btn">Abrir detalhes ${icon('chevron',11)}</div> 
+    </div>`).join(''); 
+} 
+
+function openDrawer(id){ 
+  const pl=PLANES.find(p=>p[0]===id);if(!pl)return; 
+  const i=N-S.p,primary=pl.fmcs[0]; 
+  const avgCPU=planeAvg(pl,'cpu',i,N),avgRAM=planeAvg(pl,'ram',i,N),avgDisk=planeAvg(pl,'disk',i,N),availability=planeAvail(pl,i,N); 
+  $('#dr').innerHTML=` 
+    <div class="dr-head"> 
+      <div><h2>Aeronave ${pl[0]}</h2><p class="mut">${pl[1]} / Identificação ${pl[0]}</p></div> 
+      <button class="dr-close" id="cl">${icon('x',13)}</button> 
+    </div> 
+    <div class="dr-status">${statusPill(pl.st)}</div> 
+    <div class="dr-tabs" id="dr-tabs"> 
+      ${pl.fmcs.map((f,n)=>`<button class="dr-tab ${n===0?'on':''}" data-fmc="${f.id}"><strong>FMC ${n===0?'principal':'secundário'}</strong><small>${f.id} / Firmware${f.fw}</small></button>`).join('')} 
+    </div> 
+    <div id="dr-fmc-body"></div> 
+    <div class="dr-section"> 
+      <h3>Principais Informações</h3> 
+      <div class="dr-info"> 
+        <div class="dr-row"><span>Modelo</span><span>${pl[1]}</span></div> 
+        <div class="dr-row"><span>Operador</span><span>${pl[2]}</span></div> 
+        <div class="dr-row"><span>CPU média</span><span>${pc(avgCPU,0)}</span></div> 
+        <div class="dr-row"><span>RAM média</span><span>${pc(avgRAM,0)}</span></div> 
+        <div class="dr-row"><span>Disco médio</span><span>${pc(avgDisk,0)}</span></div> 
+        <div class="dr-row"><span>Disponibilidade</span><span>${pc(availability)}</span></div> 
+      </div> 
+    </div> 
+    <div class="dr-action">Ver detalhes completos do FMC ${icon('chevron',12)}</div> 
+  `; 
+  function drawFmc(f){ 
+    const sev=Math.max(...f.sev.slice(i)); 
+    const cls=sev===2?'critical':sev===1?'attention':'normal'; 
+    $('#dr-fmc-body').innerHTML=` 
+      <div class="dr-section" style="border-top:0;padding-top:0;margin-top:0"> 
+        <h3>Status do FMC</h3> 
+        <div class="dr-alert ${cls}"> 
+          <div class="dr-alert-icon">${icon(sev===2?'triangle':sev===1?'bell':'gauge',14)}</div> 
+          <div><strong>${SN[sev]}</strong><small>${sev===2?'Estado acima do limite crítico':sev===1?'Estado acima do limite de atenção':'Sem ocorrências no período'}</small></div> 
+          <span class="dr-online">Online</span> 
+        </div> 
+      </div> 
+      <div class="dr-section"> 
+        <h3>Resumo de Alertas</h3> 
+        <div class="dr-summary"> 
+          <div class="dr-stat"><small>Reinícios</small><strong>${f.rb.filter(d=>d>=i).length}</strong></div> 
+          <div class="dr-stat"><small>Disponibilidade</small><strong>${pc(av2(f.av,i,N))}</strong></div> 
+          <div class="dr-stat"><small>CPU média</small><strong>${pc(av2(f.cpu,i,N),0)}</strong></div> 
+          <div class="dr-stat"><small>RAM média</small><strong>${pc(av2(f.ram,i,N),0)}</strong></div> 
+        </div> 
+      </div> 
+    `; 
+  } 
+  drawFmc(primary); 
+
+
+  $('#cl').onclick=()=>{
+
+    $('#dr').innerHTML = '';
+  }; 
+  $('#dr-tabs').onclick=e=>{ 
+    const b=e.target.closest('.dr-tab');if(!b)return; 
+    [...$('#dr-tabs').children].forEach(x=>x.classList.toggle('on',x===b)); 
+    const f=pl.fmcs.find(x=>x.id===b.dataset.fmc);if(f)drawFmc(f); 
+  }; 
+} 
+
+$('#seg').onclick=e=>{ 
+  const b=e.target.closest('button');if(!b)return; 
+  S.p=+b.dataset.p; 
+  [...$('#seg').children].forEach(x=>x.classList.toggle('on',x===b)); 
+  render(); 
+}; 
+$('#chips').onclick=e=>{ 
+  const b=e.target.closest('button');if(!b)return; 
+  S.fs=+b.dataset.f; 
+  buildList(); 
+}; 
+$('#aircraft-list').onclick=e=>{ 
+  const row=e.target.closest('.aircraft-row');if(row)openDrawer(row.dataset.id); 
+}; 
+
+$('#mapa').onclick=e=>{
+  const seta=e.target.closest('.mapaSeta');if(seta)openDrawer(seta.dataset.id);
+};
+
+
+render(); 
+
+if(PLANES.length > 0) openDrawer(PLANES[0][0]);
+
+</script> 
+</body> 
+</html>
