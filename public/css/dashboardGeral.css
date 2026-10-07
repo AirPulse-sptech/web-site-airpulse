@@ -1,18 +1,11 @@
-/*
-   AirPulse — Dashboard "Visão Geral"
-
-*/
-
 :root {
-    /* Cores de status  */
-    --ok: #16a34a;
+        --ok: #16a34a;
     --at: #f97316;
     --cr: #e11d48;
     --ok-bg: #dcfce7;
     --at-bg: #ffedd5;
     --cr-bg: #ffe4e9;
-    /* Texto */
-    --ok-tx: #15803d;
+        --ok-tx: #15803d;
     --at-tx: #c2410c;
     --cr-tx: #be123c;
 
@@ -20,13 +13,12 @@
     --drawer-w: 340px;
 }
 
-.app-layout {
+.appLayout {
     font-size: 14px;
     line-height: 1.45;
-    color: var(--text-primary);
+    color: var(--textPrimary);
 }
 
-.seg button,
 .chips button,
 .dr-close,
 .dr-tab {
@@ -37,50 +29,57 @@
     color: inherit;
 }
 
-.seg button:focus-visible,
 .chips button:focus-visible,
 .dr-close:focus-visible,
 .dr-tab:focus-visible,
 .aircraft-row:focus-visible {
-    outline: 2px solid var(--color-primary);
+    outline: 2px solid var(--colorPrimary);
     outline-offset: 2px;
 }
 
+.pg-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+}
 
+.filtrosPeriodo {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
 
-.topbar-right {
+.botaoFiltro {
     display: flex;
     align-items: center;
+    justify-content: center;
+    min-height: 36px;
+    padding: 9px 15px;
+    border: 1px solid #e1ecff;
+    border-radius: 22px;
+    background: white;
+    color: #526299;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgb(48 104 255 / 4%);
 }
 
-.seg {
-    display: inline-flex;
-    gap: 2px;
-    padding: 3px;
-    background: var(--color-primary-soft);
-    border-radius: 10px;
+.botaoFiltro.selecionado {
+    color: white;
+    background: #0755ff;
+    border-color: #0755ff;
+    box-shadow: 0 3px 12px rgb(7 85 255 / 12%);
 }
 
-.seg button {
-    padding: 7px 14px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-secondary);
-    transition: background .2s, color .2s;
+.botaoFiltro:focus-visible {
+    outline: 2px solid var(--colorPrimary);
+    outline-offset: 2px;
 }
-
-.seg button:hover {
-    color: var(--color-primary);
-}
-
-.seg button.on {
-    background: var(--color-primary);
-    color: var(--color-white);
-}
-
-
-
 
 .dash-body {
     flex: 1;
@@ -95,8 +94,7 @@
     display: flex;
     flex-direction: column;
     gap: 24px;
-    padding: 28px 40px 48px;         /* respiro em relação à sidebar e às bordas */
-    container-type: inline-size;
+    padding: 28px 40px 48px;                 container-type: inline-size;
     container-name: dash;
 }
 
@@ -104,13 +102,12 @@
     flex: 0 0 var(--drawer-w);
     width: var(--drawer-w);
     position: sticky;
-    top: 98px;                       /* topbar 70px + 28px de respiro */
-    max-height: calc(100vh - 126px);
+    top: 28px;                           max-height: calc(100vh - 56px);
     overflow-y: auto;
     margin: 28px 40px 28px 0;
     padding: 20px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
+    background: var(--bgSurface);
+    border: 1px solid var(--borderSoft);
     border-radius: 14px;
     box-shadow: var(--sombra-card);
 }
@@ -119,22 +116,17 @@
     display: none;
 }
 
-
-
 .dr-head h2,
 .dr-section h3 {
-    font-family: var(--font-heading);
+    font-family: var(--fontHeading);
     margin: 0;
 }
 
 .mut {
     margin: 4px 0 0;
     font-size: 13px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
 }
-
-
-
 
 .kpis {
     display: grid;
@@ -148,8 +140,8 @@
     align-items: center;
     gap: 14px;
     padding: 16px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
+    background: var(--bgSurface);
+    border: 1px solid var(--borderSoft);
     border-radius: 14px;
     box-shadow: var(--sombra-card);
 }
@@ -171,7 +163,7 @@
 .k-icon.ok { background: var(--ok-bg); color: var(--ok-tx); }
 .k-icon.at { background: var(--at-bg); color: var(--at-tx); }
 .k-icon.cr { background: var(--cr-bg); color: var(--cr-tx); }
-.k-icon.nu { background: var(--color-primary-soft); color: var(--color-primary); }
+.k-icon.nu { background: var(--colorPrimarySoft); color: var(--colorPrimary); }
 
 .k-body {
     min-width: 0;
@@ -180,7 +172,7 @@
 .k-body small,
 .k-body em {
     display: block;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     font-style: normal;
     font-size: 12px;
     line-height: 1.3;
@@ -193,12 +185,12 @@
 .k-body b {
     display: block;
     margin: 2px 0;
-    font-family: var(--font-heading);
+    font-family: var(--fontHeading);
     font-size: 26px;
     font-weight: 800;
     line-height: 1.1;
     letter-spacing: -.02em;
-    color: var(--text-primary);
+    color: var(--textPrimary);
 }
 
 @container dash (min-width: 420px) and (max-width: 619px) {
@@ -216,8 +208,6 @@
     .kpis { grid-template-columns: repeat(5, minmax(0, 1fr)); }
 }
 
-
-
 .dashboard-grid {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -230,8 +220,14 @@
     .aircraft-card { grid-column: 1 / -1; }
 }
 
+.dashboard-grid > .card,
 .dashboard-grid > .cartao {
     min-width: 0;
+    padding: 20px 24px;
+    background: var(--bgSurface);
+    border: 1px solid var(--borderSoft);
+    border-radius: 14px;
+    box-shadow: var(--sombra-card);
 }
 
 .card-head {
@@ -243,16 +239,19 @@
     margin-bottom: 16px;
 }
 
-.card-head .tituloCard {
+.card-head h3 {
     margin: 0;
-    font-family: var(--font-heading);
+    font-family: var(--fontHeading);
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -.7px;
+    line-height: 1.3;
 }
 
 .card-head .mut {
     margin-top: 2px;
     font-size: 12px;
 }
-
 
 .fleet-wrap {
     display: flex;
@@ -284,7 +283,7 @@
 }
 
 .donut-center b {
-    font-family: var(--font-heading);
+    font-family: var(--fontHeading);
     font-size: 32px;
     font-weight: 800;
     line-height: 1;
@@ -293,7 +292,7 @@
 .donut-center span {
     margin-top: 2px;
     font-size: 12px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
 }
 
 .fleet-legend {
@@ -309,7 +308,7 @@
     align-items: center;
     gap: 10px;
     padding: 9px 0;
-    border-bottom: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--borderSoft);
     font-size: 13px;
 }
 
@@ -323,10 +322,9 @@
     border-radius: 50%;
 }
 
-.fleet-label { color: var(--text-secondary); }
+.fleet-label { color: var(--textSecondary); }
 .fleet-count { font-weight: 700; text-align: right; }
-.fleet-pct   { color: var(--text-secondary); font-size: 12px; text-align: right; }
-
+.fleet-pct   { color: var(--textSecondary); font-size: 12px; text-align: right; }
 
 .avail-list {
     display: flex;
@@ -362,7 +360,6 @@
     font-weight: 700;
 }
 
-
 .aircraft-card {
     container-type: inline-size;
     container-name: list;
@@ -376,24 +373,24 @@
 
 .chips button {
     padding: 6px 12px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
+    background: var(--bgSurface);
+    border: 1px solid var(--borderSoft);
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     transition: background .2s, border-color .2s, color .2s;
 }
 
 .chips button:hover {
-    border-color: var(--color-primary-light);
-    color: var(--color-primary);
+    border-color: var(--colorPrimaryLight);
+    color: var(--colorPrimary);
 }
 
 .chips button.on {
-    background: var(--color-primary);
-    border-color: var(--color-primary);
-    color: var(--color-white);
+    background: var(--colorPrimary);
+    border-color: var(--colorPrimary);
+    color: var(--colorWhite);
 }
 
 .aircraft-list {
@@ -408,16 +405,16 @@
     align-items: center;
     gap: 16px;
     padding: 12px 14px;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
+    background: var(--bgSurface);
+    border: 1px solid var(--borderSoft);
     border-radius: 12px;
     cursor: pointer;
     transition: background .18s, border-color .18s;
 }
 
 .aircraft-row:hover {
-    background: var(--color-primary-soft);
-    border-color: var(--border-medium);
+    background: var(--colorPrimarySoft);
+    border-color: var(--borderMedium);
 }
 
 .aircraft-main {
@@ -432,8 +429,8 @@
     width: 36px;
     height: 36px;
     border-radius: 10px;
-    background: var(--color-primary-soft);
-    color: var(--color-primary);
+    background: var(--colorPrimarySoft);
+    color: var(--colorPrimary);
     display: grid;
     place-items: center;
 }
@@ -455,7 +452,7 @@
 .aircraft-copy small {
     display: block;
     font-size: 12px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -469,7 +466,7 @@
     display: block;
     margin-bottom: 3px;
     font-size: 11px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
 }
 
 .metric-cell strong {
@@ -498,11 +495,11 @@
     align-items: center;
     gap: 6px;
     padding: 8px 12px;
-    border: 1px solid var(--color-primary);
+    border: 1px solid var(--colorPrimary);
     border-radius: 10px;
     font-size: 12px;
     font-weight: 700;
-    color: var(--color-primary);
+    color: var(--colorPrimary);
     white-space: nowrap;
     transition: background .18s, color .18s;
 }
@@ -513,8 +510,8 @@
 }
 
 .aircraft-row:hover .open-btn {
-    background: var(--color-primary);
-    color: var(--color-white);
+    background: var(--colorPrimary);
+    color: var(--colorWhite);
 }
 
 @container list (max-width: 600px) {
@@ -534,7 +531,6 @@
         justify-content: center;
     }
 }
-
 
 .dr-head {
     display: flex;
@@ -560,15 +556,15 @@
     height: 32px;
     display: grid;
     place-items: center;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
+    background: var(--bgSurface);
+    border: 1px solid var(--borderSoft);
     border-radius: 10px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     transition: background .18s;
 }
 
 .dr-close:hover {
-    background: var(--color-primary-soft);
+    background: var(--colorPrimarySoft);
 }
 
 .dr-close svg {
@@ -587,15 +583,15 @@
     min-width: 0;
     padding: 10px 12px;
     text-align: left;
-    background: var(--bg-surface);
-    border: 1px solid var(--border-soft);
+    background: var(--bgSurface);
+    border: 1px solid var(--borderSoft);
     border-radius: 10px;
     transition: background .18s, border-color .18s;
 }
 
 .dr-tab.on {
-    background: var(--color-primary-soft);
-    border-color: var(--color-primary);
+    background: var(--colorPrimarySoft);
+    border-color: var(--colorPrimary);
 }
 
 .dr-tab strong {
@@ -607,14 +603,14 @@
     display: block;
     margin-top: 2px;
     font-size: 11px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
     overflow-wrap: anywhere;
 }
 
 .dr-section {
     margin-top: 16px;
     padding-top: 16px;
-    border-top: 1px solid var(--border-soft);
+    border-top: 1px solid var(--borderSoft);
 }
 
 .dr-section h3 {
@@ -662,7 +658,7 @@
 .dr-alert small {
     display: block;
     font-size: 12px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
 }
 
 .dr-online {
@@ -679,20 +675,20 @@
 
 .dr-stat {
     padding: 12px;
-    border: 1px solid var(--border-soft);
+    border: 1px solid var(--borderSoft);
     border-radius: 10px;
 }
 
 .dr-stat small {
     display: block;
     font-size: 12px;
-    color: var(--text-secondary);
+    color: var(--textSecondary);
 }
 
 .dr-stat strong {
     display: block;
     margin-top: 2px;
-    font-family: var(--font-heading);
+    font-family: var(--fontHeading);
     font-size: 18px;
     font-weight: 800;
 }
@@ -707,7 +703,7 @@
     justify-content: space-between;
     gap: 12px;
     padding: 9px 0;
-    border-bottom: 1px solid var(--border-soft);
+    border-bottom: 1px solid var(--borderSoft);
     font-size: 13px;
 }
 
@@ -715,7 +711,7 @@
     border-bottom: 0;
 }
 
-.dr-row span:first-child { color: var(--text-secondary); }
+.dr-row span:first-child { color: var(--textSecondary); }
 .dr-row span:last-child  { font-weight: 600; text-align: right; }
 
 .dr-action {
@@ -724,9 +720,9 @@
     justify-content: space-between;
     margin-top: 16px;
     padding: 12px 14px;
-    background: var(--color-primary);
+    background: var(--colorPrimary);
     border-radius: 10px;
-    color: var(--color-white);
+    color: var(--colorWhite);
     font-size: 13px;
     font-weight: 700;
     cursor: pointer;
@@ -734,7 +730,7 @@
 }
 
 .dr-action:hover {
-    background: var(--color-primary-dark);
+    background: var(--colorPrimaryDark);
 }
 
 .dr-action svg {
@@ -742,11 +738,6 @@
     height: 16px;
 }
 
-
-
-
-
-/* Se ficar sem espaço pras 3 colunas o drawer vai virar painel sobreposto */
 @media (max-width: 1180px) {
     #dr {
         position: fixed;
@@ -761,13 +752,6 @@
         border-radius: 0;
         z-index: 120;
         box-shadow: -12px 0 32px rgba(13, 18, 64, .18);
-    }
-}
-
-@media (max-width: 768px) {
-    .seg button {
-        padding: 6px 10px;
-        font-size: 12px;
     }
 }
 
