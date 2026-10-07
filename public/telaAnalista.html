@@ -5,40 +5,77 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/dashboard_fmc_principal.css">
+    <link rel="stylesheet" href="css/dashboardFmcPrincipal.css">
+    <link rel="stylesheet" href="css/dashboard.css">
     <title>AirPulse - Dashboard</title>
 </head>
 
 <body>
-    <div class="app-layout">
+    <div class="appLayout">
 
-        <aside class="sidebar" id="sidebar">
-            <div class="sidebar-header">
-                <a class="sidebar-brand" href="tela_analista.html">
-                    <img class="brand-logo-full"
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="dashboardPrincipalAnalista.html">
+                    <img class="brandLogoFull"
                         src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
                 </a>
             </div>
-            <nav class="sidebar-nav">
-                <a href="tela_analista.html" class="nav-item active"><span>Dashboard</span></a>
+
+            <nav class="sidebarNav">
+                <a href="dashboardPrincipalAnalista.html" class="navItem active" aria-current="location">
+                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Componentes</span>
+                </div>
+
+                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
+                    <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Funcionário</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Chamados & Suporte</span>
+                </div>
             </nav>
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar" id="userAvatar">--</div>
-                    <div class="user-details">
-                        <span class="user-name" id="userNameDisplay">Usuário</span>
-                        <span class="user-role" id="userRoleDisplay">Analista de monitoramento</span>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
                     </div>
                 </div>
-                <button class="btn-logout" type="button" onclick="limparSessao()"><span>Deslogar</span></button>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
             </div>
         </aside>
-        <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
-        <div class="main-wrapper">
+        <div class="mainWrapper">
 
-            <main class="painel">
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Dashboard</span>
+                </div>
+            </header>
+
+            <main class="painel dashboard">
                 <div>
                     <h1>FMC principal</h1>
                     <p class="subtitulo">PR-GOL · Boeing 737 · Monitoramento individual do equipamento</p>
@@ -72,15 +109,7 @@
                             <div class="normalFundo" style="width:62%"></div>
                         </div>
                     </div>
-                    <div class="cartao">
-                        <div class="indicadorTopo"><span>Temperatura da CPU</span><span
-                                class="selo normal">Normal</span></div>
-                        <div class="indicadorValor normal">45°C</div>
-                        <div class="indicadorTexto normal">Dentro do limite (máx. 85°C)</div>
-                        <div class="barra">
-                            <div class="normalFundo" style="width:53%"></div>
-                        </div>
-                    </div>
+
                 </section>
 
                 <section class="gradeMeio">
@@ -138,18 +167,21 @@
                     </div>
 
                     <div class="cartao">
-                        <span class="tituloCard">Alertas deste FMC</span>
+                        <div class="alertasTopo">
+                            <span class="tituloCard">Alertas deste FMC</span>
+                            <a class="btnHistoricoAlertas" href="alertas.html">Histórico de alertas</a>
+                        </div>
                         <div class="alerta critico">
-                            <div>CPU acima do limite<small>Hoje às 14:32</small></div><span>›</span>
+                            <div>CPU acima do limite<small>Hoje às 14:32</small></div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span>
                         </div>
                         <div class="alerta moderado">
-                            <div>Uso de RAM elevado<small>Hoje às 12:15</small></div><span>›</span>
+                            <div>Uso de RAM elevado<small>Hoje às 12:15</small></div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span>
                         </div>
                         <div class="alerta moderado">
-                            <div>Disco em crescimento<small>Hoje às 09:48</small></div><span>›</span>
+                            <div>Disco em crescimento<small>Hoje às 09:48</small></div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span>
                         </div>
                         <div class="alerta moderado">
-                            <div>CPU oscilando acima de 50%<small>Hoje às 08:21</small></div><span>›</span>
+                            <div>CPU oscilando acima de 50%<small>Hoje às 08:21</small></div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span>
                         </div>
                     </div>
                 </section>
@@ -163,7 +195,6 @@
                             <div><span>Frequência máxima</span><b>4.20 GHz</b></div>
                             <div><span>Núcleos físicos</span><b>6</b></div>
                             <div><span>Núcleos lógicos</span><b>12</b></div>
-                            <div><span>Temperatura</span><b>45°C</b></div>
                         </div>
                     </details>
 
@@ -174,8 +205,6 @@
                             <div><span>Memória total</span><b>16 GB</b></div>
                             <div><span>Em uso</span><b>11,84 GB</b></div>
                             <div><span>Disponível</span><b>4,16 GB</b></div>
-                            <div><span>Uso de swap</span><b>1,2 GB</b></div>
-                            <div><span>Frequência</span><b>3200 MHz</b></div>
                         </div>
                     </details>
 
@@ -186,8 +215,6 @@
                             <div><span>Capacidade total</span><b>512 GB</b></div>
                             <div><span>Em uso</span><b>317,4 GB</b></div>
                             <div><span>Livre</span><b>194,6 GB</b></div>
-                            <div><span>Velocidade de leitura</span><b>540 MB/s</b></div>
-                            <div><span>Velocidade de escrita</span><b>480 MB/s</b></div>
                         </div>
                     </details>
                 </section>
@@ -196,8 +223,8 @@
     </div>
 
     <script src="js/sessao.js"></script>
-    <script src="js/app-shell.js"></script>
-    <script src="js/tela_analista.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
 </body>
 
 </html>

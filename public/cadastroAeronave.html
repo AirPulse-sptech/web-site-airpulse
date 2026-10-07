@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/cadastroAeronave.css">
+    <title>AirPulse - Cadastro de Aeronave</title>
+</head>
+
+<body>
+
+    <div class="appLayout">
+
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="home.html">
+                    <img class="brandLogoFull"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebarNav">
+                <a href="dashboardPrincipalAnalista.html" class="navItem">
+                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Componentes</span>
+                </div>
+
+                <a href="cadastroFmc.html" class="navItem" id="itemCadastrarFmc">
+                    <i class="bi bi-hdd-rack navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar FMC</span>
+                </a>
+
+                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
+                    <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Funcionário</span>
+                </a>
+
+                <a href="gerenciarFuncionario.html" class="navItem" id="itemGerenciarFuncionario">
+                    <i class="bi bi-gear navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Gerenciar Funcionário</span>
+                </a>
+
+                <a href="cadastroAeronave.html" class="navItem active" aria-current="page">
+                    <i class="bi bi-airplane navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Aeronave</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Chamados & Suporte</span>
+                </div>
+            </nav>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
+                    </div>
+                </div>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+        <div class="mainWrapper">
+
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Cadastro de Aeronave</span>
+                </div>
+            </header>
+
+            <main>
+                <div class="cardErro" id="cardErro">
+                    <span id="mensagemErro"></span>
+                </div>
+
+                <div class="containerCadastro">
+                    <div class="boxCadastro">
+                        <h1 class="tituloCadastro">Cadastro de Aeronave</h1>
+                        <form class="formCadastro" id="formCadastro">
+                            <div class="inputGroup">
+                                <label for="nome">Nome</label>
+                                <input type="text" id="nome" placeholder="Ex.: PR-GOL">
+                            </div>
+                            <div class="formGrid">
+
+                                <div class="inputGroup">
+                                    <label for="modelo">Modelo</label>
+                                    <input type="text" id="modelo" placeholder="Ex.: Boeing 737-800">
+                                </div>
+
+                                <div class="inputGroup">
+                                    <label for="numeroSerie">Número de Série</label>
+                                    <input type="text" id="numeroSerie" placeholder="Ex.: 38022">
+                                </div>
+
+                                <div class="inputGroup">
+                                    <label for="companhiaAerea">Companhia Aérea</label>
+                                    <input type="text" id="companhiaAerea" placeholder="Ex.: GOL Linhas Aéreas">
+                                </div>
+
+                                <div class="inputGroup">
+                                    <label for="statusAeronave">Status*</label>
+                                    <select id="statusAeronave" name="statusAeronave" required class="selectStatus">
+                                        <option value="">Selecione</option>
+                                        <option value="ATIVA">Ativa</option>
+                                        <option value="MANUTENCAO">Em manutenção</option>
+                                        <option value="INATIVA">Inativa</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="formActions">
+                                <button type="button" class="btnVoltar" onclick="voltar()">Voltar</button>
+                                <button type="button" class="btnProximo" onclick="cadastrar()">Cadastrar</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+    <script src="js/sessao.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
+    <script src="js/cadastroAeronave.js"></script>
+</body>
+
+</html>

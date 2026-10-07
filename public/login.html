@@ -5,41 +5,44 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirPulse - Entrar na conta</title>
     <link rel="icon" type="image/png" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/login.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="js/sessao.js" defer></script>
     <script src="js/login.js" type="module" defer></script>
 </head>
 <body>
-    <div class="login-page-container">
-        <div class="login-left-panel">
-            <div class="login-left-panel-decoration">
-                <div class="login-decoration-circle login-decoration-circle-1"></div>
-                <div class="login-decoration-circle login-decoration-circle-2"></div>
+    <div class="loginPageContainer">
+        <div class="loginLeftPanel">
+            <div class="loginLeftPanelDecoration">
+                <div class="loginDecorationCircle loginDecorationCircle1"></div>
+                <div class="loginDecorationCircle loginDecorationCircle2"></div>
             </div>
-            <div class="login-left-panel-content">
-                <div class="login-brand">
-                    <img src="assets/AirPulse_Logo_Pack/Fundo%20transparente/07_Principal_Branco.svg" alt="AirPulse Logo" class="airpulse-logo">
+            <div class="loginLeftPanelContent">
+                <div class="loginBrand">
+                    <img src="assets/AirPulse_Logo_Pack/Fundo%20transparente/07_Principal_Branco.svg" alt="AirPulse Logo" class="airpulseLogo">
                 </div>
-                <div class="login-left-panel-middle">
-                    <h1 class="login-welcome-title">Bem-vindo de<br>volta à plataforma</h1>
-                    <p class="login-welcome-description">Acesse o painel de monitoramento dos seus computadores embarcados e acompanhe tudo em tempo real.</p>
-                    <div class="login-features-list">
-                        <div class="login-feature-item">
-                            <div class="login-feature-icon">
-                                <i class="fa-solid fa-check"></i>
+                <div class="loginLeftPanelMiddle">
+                    <h1 class="loginWelcomeTitle">Bem-vindo de<br>volta à plataforma</h1>
+                    <p class="loginWelcomeDescription">Acesse o painel de monitoramento dos seus computadores embarcados e acompanhe tudo em tempo real.</p>
+                    <div class="loginFeaturesList">
+                        <div class="loginFeatureItem">
+                            <div class="loginFeatureIcon">
+                                <i class="bi bi-check-lg" aria-hidden="true"></i>
                             </div>
                             <span>Monitoramento de CPU, RAM e armazenamento</span>
                         </div>
-                        <div class="login-feature-item">
-                            <div class="login-feature-icon">
-                                <i class="fa-solid fa-check"></i>
+                        <div class="loginFeatureItem">
+                            <div class="loginFeatureIcon">
+                                <i class="bi bi-check-lg" aria-hidden="true"></i>
                             </div>
                             <span>Alertas em tempo real</span>
                         </div>
-                        <div class="login-feature-item">
-                            <div class="login-feature-icon">
-                                <i class="fa-solid fa-check"></i>
+                        <div class="loginFeatureItem">
+                            <div class="loginFeatureIcon">
+                                <i class="bi bi-check-lg" aria-hidden="true"></i>
                             </div>
                             <span>Relatórios e histórico completo</span>
                         </div>
@@ -48,32 +51,32 @@
 
             </div>
         </div>
-        <div class="login-right-panel">
-            <div class="login-right-panel-content">
-                <div class="login-brand login-brand-dark">
-                    <img src="assets/AirPulse_Logo_Pack/Fundo%20transparente/05_Principal_Azul_Profundo.svg" alt="AirPulse Logo" class="airpulse-logo">
+        <div class="loginRightPanel">
+            <div class="loginRightPanelContent">
+                <div class="loginBrand loginBrandDark">
+                    <img src="assets/AirPulse_Logo_Pack/Fundo%20transparente/05_Principal_Azul_Profundo.svg" alt="AirPulse Logo" class="airpulseLogo">
                 </div>
-                <div class="login-form-header">
+                <div class="loginFormHeader">
                     <h2>Entrar na conta</h2>
                     <p>Acesse a sua plataforma de monitoramento.</p>
                 </div>
-                <form class="login-form" id="loginForm" novalidate>
-                    <div class="login-form-group">
+                <form class="loginForm" id="loginForm" novalidate>
+                    <div class="loginFormGroup">
                         <label for="emailInput">E-mail corporativo</label>
                         <input type="email" id="emailInput" placeholder="nome@empresa.aero" required>
-                        <span class="login-error-message" id="emailError"></span>
+                        <span class="loginErrorMessage" id="emailError"></span>
                     </div>
-                    <div class="login-form-group">
-                        <div class="login-form-group-label-row">
+                    <div class="loginFormGroup">
+                        <div class="loginFormGroupLabelRow">
                             <label for="passwordInput">Senha</label>
                         </div>
                         <input type="password" id="passwordInput" placeholder="••••••••" required>
-                        <span class="login-error-message" id="passwordError"></span>
+                        <span class="loginErrorMessage" id="passwordError"></span>
                     </div>
-                    <button type="submit" class="login-submit-button" id="loginSubmitButton">Entrar na plataforma</button>
+                    <button type="submit" class="loginSubmitButton" id="loginSubmitButton">Entrar na plataforma</button>
                 </form>
-                <div class="login-divider"></div>
-                <a href="index.html" class="login-back-link">← Voltar ao site</a>
+                <div class="loginDivider"></div>
+                <a href="index.html" class="loginBackLink"><i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar ao site</a>
             </div>
         </div>
     </div>

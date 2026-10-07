@@ -1,0 +1,355 @@
+.eaConteudo {
+    --eaRoxo: #4f46e5;
+    --eaRoxoClaro: #eef0ff;
+    --eaTexto: #1b1b4b;
+    --eaCinza: #6b7280;
+    --eaBorda: #e5e7f5;
+    --eaVerde: #16a34a;
+    --eaVerdeClaro: #ecfdf3;
+    --eaVermelho: #dc2626;
+
+    padding: 24px;
+}
+
+
+.eaSvg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+
+.eaVoltar {
+    display: inline-block;
+    margin-bottom: 20px;
+    font-size: 14px;
+    color: var(--eaRoxo);
+    text-decoration: none;
+}
+
+.eaTitulo {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--eaTexto);
+}
+
+.eaSubtitulo {
+    margin: 12px 0 20px;
+    font-size: 16px;
+    color: var(--eaCinza);
+}
+
+
+.eaFuncionario {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    height: 116px;
+    padding: 0 28px;
+    margin-bottom: 28px;
+    background-color: #fff;
+    border: 1px solid var(--eaBorda);
+    border-radius: 18px;
+}
+
+.eaAvatar {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    background-color: #e0e4ff;
+    color: var(--eaRoxo);
+    font-size: 15px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eaNomeFunc {
+    display: block;
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--eaTexto);
+}
+
+.eaEmailFunc {
+    display: block;
+    margin-top: 8px;
+    font-size: 14px;
+    color: var(--eaCinza);
+}
+
+.eaStatus {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    height: 48px;
+    padding: 0 26px;
+    margin-left: 48px;
+    border-radius: 24px;
+    background-color: #dcfce7;
+    color: #15803d;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.eaStatus::before {
+    content: "";
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--eaVerde);
+}
+
+.eaTotal {
+    margin-left: auto;
+    width: 280px;
+    height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #d8dcff;
+    border-radius: 12px;
+    background-color: var(--eaRoxoClaro);
+    color: var(--eaRoxo);
+    font-size: 15px;
+    font-weight: 700;
+}
+
+
+.eaFiltros {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.eaBusca {
+    flex: 1;
+    height: 58px;
+    padding: 0 26px;
+    border: 1px solid var(--eaBorda);
+    border-radius: 16px;
+    background-color: #fff;
+    font-size: 15px;
+}
+
+.eaFiltro {
+    width: 140px;
+    height: 58px;
+    border: 1px solid var(--eaBorda);
+    border-radius: 16px;
+    background-color: #fff;
+    color: var(--eaTexto);
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.eaFiltro.ativo {
+    background-color: var(--eaRoxo);
+    border-color: var(--eaRoxo);
+    color: #fff;
+    font-weight: 700;
+}
+
+
+.eaQuadro {
+    padding: 24px 14px 24px 24px;
+    background-color: #fff;
+    border: 1px solid var(--eaBorda);
+    border-radius: 22px;
+}
+
+
+.eaLista {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 20px;
+    height: 480px;
+    padding-right: 14px;
+    overflow-y: auto;
+    align-content: start;
+}
+
+.eaCard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    height: 75px;
+    padding: 0 24px;
+    background-color: #fff;
+    border: 1px solid var(--eaBorda);
+    border-radius: 14px;
+}
+
+.eaCard.associada {
+    background-color: var(--eaVerdeClaro);
+    border: 1px solid #86efac;
+    border-left: 8px solid var(--eaVerde);
+}
+
+.eaIcone {
+    position: relative;
+    flex-shrink: 0;
+    width: 60px;
+    height: 60px;
+    border-radius: 12px;
+    background-color: var(--eaRoxoClaro);
+    color: var(--eaRoxo);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.associada .eaIcone {
+    background-color: #d1fae5;
+    color: var(--eaVerde);
+}
+
+.eaCheck {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    width: 24px;
+    height: 24px;
+    border: 2px solid #fff;
+    border-radius: 50%;
+    background-color: var(--eaVerde);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.eaCheck .eaSvg {
+    width: 14px;
+    height: 14px;
+    stroke-width: 3;
+}
+
+.eaInfo {
+    flex: 1;
+    min-width: 0;
+}
+
+.eaNome {
+    display: block;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--eaTexto);
+}
+
+.eaModelo {
+    display: block;
+    margin-top: 8px;
+    font-size: 12px;
+    color: var(--eaCinza);
+}
+
+
+.eaBtnCard {
+    flex-shrink: 0;
+    width: 108px;
+    height: 44px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.eaBtnCard.associar {
+    border: 1px solid var(--eaRoxo);
+    background-color: var(--eaRoxo);
+    color: #fff;
+}
+
+.eaBtnCard.remover {
+    border: 1px solid var(--eaVermelho);
+    background-color: #fff;
+    color: var(--eaVermelho);
+}
+
+.eaRodape {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 28px;
+}
+
+.eaResumo {
+    font-size: 13px;
+    color: var(--eaCinza);
+}
+
+.eaAcoes {
+    display: flex;
+    gap: 20px;
+}
+
+.eaBtnGrande {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 58px;
+    border-radius: 16px;
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.eaBtnGrande.cancelar {
+    width: 150px;
+    border: 1px solid var(--eaBorda);
+    background-color: #fff;
+    color: var(--eaRoxo);
+}
+
+.eaBtnGrande.salvar {
+    width: 220px;
+    border: 1px solid var(--eaRoxo);
+    background-color: var(--eaRoxo);
+    color: #fff;
+}
+
+/*Celular*/
+@media (max-width: 768px) {
+    .eaConteudo {
+        padding: 16px;
+    }
+
+    .eaFuncionario {
+        height: auto;
+        flex-wrap: wrap;
+        padding: 20px;
+    }
+
+    .eaStatus {
+        margin-left: 0;
+    }
+
+    .eaTotal {
+        margin-left: 0;
+    }
+
+    .eaFiltros {
+        flex-wrap: wrap;
+    }
+
+    .eaBusca {
+        flex-basis: 100%;
+    }
+
+    .eaLista {
+        grid-template-columns: 1fr;
+    }
+
+    .eaRodape {
+        flex-direction: column;
+        gap: 16px;
+    }
+}

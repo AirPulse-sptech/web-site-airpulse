@@ -1,0 +1,797 @@
+:root {
+    --azulPainel: #0755ff;
+    --textoPainel: #0c103b;
+    --textoSuave: #7785bd;
+    --bordaPainel: #e1ecff;
+    --verdeSituacao: #18be70;
+    --laranjaSituacao: #ffa000;
+    --vermelhoSituacao: #ff354f;
+}
+
+.mainWrapper>.conteudoPrincipal {
+    width: 100%;
+    margin: 0;
+    padding: 14px 20px 24px;
+    background: linear-gradient(115deg, #edf6ff, #f4faff);
+    color: var(--textoPainel);
+}
+
+.mainWrapper>.topbar {
+    display: none;
+}
+
+.conteudoPrincipal :is(h1, h2, h3, p) {
+    margin: 0;
+}
+
+.conteudoPrincipal button,
+.conteudoPrincipal input {
+    font-family: inherit;
+}
+
+.conteudoPrincipal button {
+    cursor: pointer;
+}
+
+.conteudoPrincipal a {
+    text-decoration: none;
+}
+
+.conteudoPrincipal :is(button, a, input):focus-visible {
+    outline: 3px solid #8cacff;
+    outline-offset: 3px;
+}
+
+.conteudoPrincipal [hidden] {
+    display: none;
+}
+
+.icone {
+    width: 18px;
+    font-size: 18px;
+    height: 18px;
+    flex-shrink: 0;
+
+
+
+
+
+}
+
+.textoAcessivel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+}
+
+.cabecalhoDashboard {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 0 10px 18px;
+}
+
+.cabecalhoDashboard h1 {
+    font-size: clamp(24px, 2.7vw, 32px);
+    font-weight: 800;
+    letter-spacing: -1.1px;
+    line-height: 1.2;
+}
+
+.cabecalhoDashboard p {
+    margin-top: 5px;
+    color: var(--textoSuave);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.dataDashboard {
+    flex-shrink: 0;
+    padding-top: 5px;
+    color: var(--textoSuave);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.dataDashboard span {
+    display: block;
+}
+
+.indicadores {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    width: min(100%, 660px);
+    margin-bottom: 12px;
+}
+
+.cartaoIndicador {
+    display: flex;
+    align-items: flex-start;
+    gap: 22px;
+    min-height: 112px;
+    padding: 16px 18px;
+    background: rgb(255 255 255 / 94%);
+    border: 1px solid #f7faff;
+    border-radius: 12px;
+    box-shadow: 0 4px 18px rgb(72 116 188 / 3%);
+}
+
+.cartaoIndicador h2 {
+    margin-bottom: 5px;
+    color: var(--textoSuave);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.valorIndicador {
+    display: block;
+    font-size: 32px;
+    line-height: 1.1;
+    letter-spacing: -1px;
+}
+
+.cartaoIndicador p {
+    margin-top: 6px;
+    color: var(--textoSuave);
+    font-size: 11px;
+}
+
+.caixaIcone {
+    display: grid;
+    place-items: center;
+    width: 54px;
+    height: 54px;
+    flex-shrink: 0;
+    border-radius: 11px;
+}
+
+.caixaIcone .icone {
+    width: 30px;
+    font-size: 30px;
+    height: 30px;
+}
+
+.azul {
+    color: #0860ff;
+    background: #e4efff;
+}
+
+.laranja {
+    color: #ff641c;
+    background: #ffefe4;
+}
+
+.vermelho {
+    color: #ff2549;
+    background: #ffe9ee;
+}
+
+.cartaoSituacao {
+    padding: 17px 20px;
+    border-radius: 13px;
+    background: rgb(255 255 255 / 94%);
+    box-shadow: 0 5px 20px rgb(72 116 188 / 4%);
+}
+
+.conteudoPrincipal h2 {
+    font-size: 20px;
+    font-weight: 800;
+    letter-spacing: -.7px;
+    line-height: 1.3;
+}
+
+.conteudoPrincipal .cartaoIndicador h2 {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0;
+}
+
+.cabecalhoSecao p,
+.cabecalhoAeronaves p {
+    margin-top: 3px;
+    color: var(--textoSuave);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.resumoSituacao {
+    display: grid;
+    grid-template-columns: 174px minmax(190px, .85fr) minmax(260px, 1.15fr);
+    align-items: center;
+    gap: 28px;
+    padding: 6px 0 0;
+}
+
+.graficoRosca {
+    display: grid;
+    place-items: center;
+    width: 174px;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: conic-gradient(var(--verdeSituacao) 0deg 89.5deg, white 89.5deg 90deg, var(--laranjaSituacao) 90deg 269.5deg, white 269.5deg 270deg, var(--vermelhoSituacao) 270deg 359.5deg, white 359.5deg);
+}
+
+.centroGrafico {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 63%;
+    height: 63%;
+    border-radius: 50%;
+    background: white;
+}
+
+.centroGrafico strong {
+    font-size: 38px;
+    line-height: 1;
+}
+
+.centroGrafico span {
+    margin-top: 3px;
+    color: var(--textoSuave);
+    font-size: 12px;
+}
+
+.legendaGrafico {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+}
+
+.legendaGrafico li {
+    display: grid;
+    grid-template-columns: 16px 1fr 18px 40px;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 0;
+    color: #495989;
+    font-size: 12px;
+}
+
+.legendaGrafico li+li {
+    border-top: 1px solid #edf1fb;
+}
+
+.legendaGrafico strong {
+    color: var(--textoPainel);
+    font-size: 16px;
+}
+
+.legendaGrafico li>span:last-child {
+    color: var(--textoSuave);
+    text-align: right;
+}
+
+.ponto {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.ponto.normal {
+    color: var(--verdeSituacao);
+}
+
+.ponto.atencao {
+    color: var(--laranjaSituacao);
+}
+
+.ponto.critico {
+    color: var(--vermelhoSituacao);
+}
+
+.legendaGrafico .ponto {
+    width: 16px;
+    height: 16px;
+}
+
+.cartaoAtencao {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    width: 100%;
+    max-width: 335px;
+    padding: 18px 14px;
+    background: linear-gradient(115deg, #e4efff, #edf6ff);
+    border: 1px solid white;
+    border-radius: 12px;
+    box-shadow: 0 5px 18px rgb(83 129 219 / 8%);
+}
+
+.cartaoAtencao .caixaIcone {
+    width: 48px;
+    height: 52px;
+}
+
+.cartaoAtencao strong {
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.cartaoAtencao p {
+    margin-top: 3px;
+    color: #435488;
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.cartaoAtencao span {
+    display: block;
+    margin-top: 4px;
+    color: var(--textoSuave);
+    font-size: 10px;
+    line-height: 1.5;
+}
+
+.secaoAeronaves {
+    margin-top: 18px;
+}
+
+.cabecalhoAeronaves {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 3px 9px;
+}
+
+.filtrosAeronaves {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.botaoFiltro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-height: 36px;
+    padding: 9px 15px;
+    border: 1px solid var(--bordaPainel);
+    border-radius: 22px;
+    background: white;
+    color: #526299;
+    font-size: 11px;
+    white-space: nowrap;
+    box-shadow: 0 3px 10px rgb(48 104 255 / 4%);
+}
+
+.botaoFiltro.selecionado {
+    color: white;
+    background: var(--azulPainel);
+    border-color: var(--azulPainel);
+    box-shadow: 0 3px 12px rgb(7 85 255 / 12%);
+}
+
+.campoBusca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 0 15px;
+    height: 38px;
+    border: 1px solid var(--bordaPainel);
+    border-radius: 8px;
+    background: rgb(255 255 255 / 90%);
+    color: #7785bd;
+}
+
+.campoBusca input {
+    min-width: 0;
+    width: 100%;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--textoPainel);
+    font-size: 12px;
+}
+
+.campoBusca input::placeholder {
+    color: var(--textoSuave);
+}
+
+.listaAeronaves {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    padding: 0;
+    margin: 10px 0 0;
+    list-style: none;
+}
+
+.cartaoAeronave {
+    display: grid;
+    grid-template-columns: 44px minmax(170px, 1fr) 102px minmax(130px, .65fr) 140px;
+    align-items: center;
+    gap: 18px;
+    min-height: 62px;
+    padding: 9px 12px 9px 16px;
+    border: 1px solid #edf3ff;
+    border-radius: 10px;
+    background: rgb(255 255 255 / 95%);
+}
+
+.cartaoAeronave .caixaIcone {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+}
+
+.cartaoAeronave .caixaIcone .icone {
+    width: 27px;
+    font-size: 27px;
+    height: 27px;
+
+
+}
+
+.identificacaoAeronave {
+    min-width: 0;
+}
+
+.identificacaoAeronave h3 {
+    font-size: 14px;
+    font-weight: 800;
+    letter-spacing: -.4px;
+}
+
+.identificacaoAeronave p {
+    margin-top: 4px;
+    color: var(--textoSuave);
+    font-size: 11px;
+    line-height: 1.4;
+}
+
+.identificacaoAeronave p span[aria-hidden] {
+    margin: 0 6px;
+}
+
+.etiquetaSituacao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 9px 12px;
+    border-radius: 20px;
+    white-space: nowrap;
+    font-size: 11px;
+}
+
+.situacaoAeronave {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    min-width: 0;
+}
+
+.conteudoPrincipal .tempoEstado {
+    color: #495989;
+    font-size: 10px;
+    line-height: 1.4;
+    text-align: center;
+}
+
+.tempoEstado time {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.etiquetaSituacao.critico {
+    color: #ff264a;
+    background: #ffecef;
+}
+
+.etiquetaSituacao.atencao {
+    color: #ed9200;
+    background: #fff4e8;
+}
+
+.etiquetaSituacao.normal {
+    color: #09a960;
+    background: #e5fbef;
+}
+
+.ultimaAtualizacao {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-left: 12px;
+    padding-left: 28px;
+    border-left: 1px solid var(--bordaPainel);
+    color: var(--textoSuave);
+    font-size: 11px;
+    white-space: nowrap;
+}
+
+.botaoDetalhes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 9px 12px;
+    border: 1px solid #4779ff;
+    border-radius: 7px;
+    background: white;
+    color: var(--azulPainel);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.botaoDetalhes .icone {
+    width: 14px;
+    font-size: 14px;
+    height: 14px;
+}
+
+.botaoDetalhes:hover {
+    background: #edf3ff;
+}
+
+.conteudoPrincipal .mensagemVazia {
+    margin-top: 10px;
+    padding: 24px;
+    border-radius: 10px;
+    background: white;
+    color: var(--textoSuave);
+    text-align: center;
+    font-size: 13px;
+}
+
+@media (max-width: 1250px) {
+    .resumoSituacao {
+        grid-template-columns: 160px minmax(170px, 1fr) minmax(220px, 1fr);
+        gap: 20px;
+    }
+
+    .graficoRosca {
+        width: 160px;
+    }
+
+    .cartaoAtencao {
+        gap: 12px;
+        padding: 14px 10px;
+    }
+
+    .cabecalhoAeronaves {
+        flex-wrap: wrap;
+    }
+
+    .cartaoAeronave {
+        grid-template-columns: 40px minmax(140px, 1fr) 98px 126px 130px;
+        gap: 12px;
+    }
+
+    .ultimaAtualizacao {
+        margin-left: 0;
+        padding-left: 12px;
+        font-size: 10px;
+    }
+}
+
+@media (max-width: 1050px) {
+    .resumoSituacao {
+        grid-template-columns: 160px 1fr;
+    }
+
+    .cartaoAtencao {
+        max-width: none;
+    }
+
+    .cartaoAeronave {
+        grid-template-columns: 40px minmax(130px, 1fr) 98px 130px;
+    }
+
+    .ultimaAtualizacao {
+        grid-column: 2;
+        grid-row: 2;
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .botaoDetalhes {
+        grid-column: 4;
+        grid-row: 1 / 3;
+    }
+
+    .situacaoAeronave {
+        grid-column: 3;
+        grid-row: 1 / 3;
+    }
+}
+
+@media (max-width: 900px) {
+    .mainWrapper>.topbar {
+        display: flex;
+    }
+
+    .mainWrapper>.conteudoPrincipal {
+        padding: 18px 16px 24px;
+    }
+}
+
+@media (max-width: 600px) {
+    .cabecalhoDashboard {
+        flex-direction: column;
+        gap: 8px;
+        margin-inline: 0;
+    }
+
+    .cabecalhoDashboard h1 {
+        font-size: 25px;
+    }
+
+    .cabecalhoDashboard p {
+        font-size: 12px;
+    }
+
+    .dataDashboard span {
+        display: inline;
+        margin-right: 8px;
+    }
+
+    .indicadores {
+        gap: 10px;
+    }
+
+    .cartaoIndicador {
+        gap: 10px;
+        padding: 14px 10px;
+    }
+
+    .cartaoIndicador .caixaIcone {
+        width: 38px;
+        height: 42px;
+    }
+
+    .cartaoIndicador .icone {
+        width: 25px;
+    font-size: 25px;
+        height: 25px;
+    }
+
+    .cartaoIndicador p {
+        font-size: 10px;
+        line-height: 1.4;
+    }
+
+    .valorIndicador {
+        font-size: 28px;
+    }
+
+    .cartaoSituacao {
+        padding: 16px 14px;
+    }
+
+    .resumoSituacao {
+        grid-template-columns: 124px 1fr;
+        gap: 14px;
+        padding-top: 12px;
+    }
+
+    .graficoRosca {
+        width: 124px;
+    }
+
+    .centroGrafico strong {
+        font-size: 32px;
+    }
+
+    .legendaGrafico li {
+        grid-template-columns: 10px 1fr 12px 28px;
+        gap: 6px;
+        font-size: 10px;
+    }
+
+    .legendaGrafico .ponto {
+        width: 10px;
+        height: 10px;
+    }
+
+    .legendaGrafico strong {
+        font-size: 13px;
+    }
+
+    .filtrosAeronaves {
+        gap: 6px;
+    }
+
+    .botaoFiltro {
+        padding: 8px 10px;
+        font-size: 10px;
+    }
+
+    .cartaoAeronave {
+        grid-template-columns: 40px 1fr auto;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .identificacaoAeronave h3 {
+        font-size: 12px;
+    }
+
+    .identificacaoAeronave p {
+        font-size: 10px;
+    }
+
+    .situacaoAeronave {
+        grid-column: 3;
+        grid-row: 1;
+        max-width: 110px;
+    }
+
+    .etiquetaSituacao {
+        font-size: 10px;
+        gap: 6px;
+        padding: 8px;
+    }
+
+    .ultimaAtualizacao {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    .botaoDetalhes {
+        grid-column: 3;
+        grid-row: 2;
+        font-size: 10px;
+        padding: 8px;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 380px) {
+    .indicadores {
+        grid-template-columns: 1fr;
+    }
+
+    .resumoSituacao {
+        grid-template-columns: 110px 1fr;
+        gap: 10px;
+    }
+
+    .graficoRosca {
+        width: 110px;
+    }
+
+    .cartaoAeronave {
+        grid-template-columns: 36px 1fr;
+    }
+
+    .situacaoAeronave {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        justify-self: start;
+        align-items: flex-start;
+        max-width: none;
+    }
+
+    .conteudoPrincipal .tempoEstado {
+        text-align: left;
+    }
+
+    .ultimaAtualizacao {
+        grid-column: 1 / -1;
+        grid-row: 3;
+    }
+
+    .botaoDetalhes {
+        grid-column: 1 / -1;
+        grid-row: 4;
+    }
+}

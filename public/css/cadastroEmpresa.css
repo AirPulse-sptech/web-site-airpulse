@@ -1,26 +1,19 @@
-/*
-   As cores de marca (--color-primary, --text-primary, --border-soft etc.)
-   agora vêm de css/global.css, que deve ser carregado antes deste arquivo.
-   Aqui ficam só o alias em português já usado no resto deste arquivo
-   (apontando pras variáveis centrais) e o que é específico desta página.
-*/
 :root {
-  --cor-primaria: var(--color-primary);
-  --cor-primaria-escura: var(--color-primary-dark);
-  --cor-texto: var(--text-primary);
-  --cor-texto-secundario: var(--text-secondary);
-  --cor-borda: var(--border-soft);
-  --fundo-campo: var(--bg-input);
-  --fundo-superficie: var(--bg-surface);
-  --fundo-pagina: var(--bg-page);
-  --azul-suave: var(--color-primary-soft);
-  --cor-erro: var(--color-error);
-  --cor-sucesso: var(--color-success);
-  --sombra-padrao: 0 18px 50px rgba(26, 35, 126, 0.1);
+  --corPrimaria: var(--colorPrimary);
+  --corPrimariaEscura: var(--colorPrimaryDark);
+  --corTexto: var(--textPrimary);
+  --corTextoSecundario: var(--textSecondary);
+  --corBorda: var(--borderSoft);
+  --fundoCampo: var(--bgInput);
+  --fundoSuperficie: var(--bgSurface);
+  --fundoPagina: var(--bgPage);
+  --azulSuave: var(--colorPrimarySoft);
+  --corErro: var(--colorError);
+  --corSucesso: var(--colorSuccess);
+  --sombraPadrao: 0 18px 50px rgba(26, 35, 126, 0.1);
 }
 
 
-/* configuração geral */
 * {
   box-sizing: border-box;
 }
@@ -36,8 +29,8 @@ body {
   min-height: 100vh;
   margin: 0;
   overflow-x: hidden;
-  color: var(--cor-texto);
-  background: var(--fundo-pagina);
+  color: var(--corTexto);
+  background: var(--fundoPagina);
   font-family:
     Inter,
     ui-sans-serif,
@@ -60,27 +53,19 @@ a {
 }
 
 
-/* 
-O corpo do app está no global.css. 
-Aqui ficam só os estilos específicos desta 
-página (formulário de cadastro de empresa). 
-*/
-
-/* Conteudo principal */
 main {
   min-height: calc(100vh - 70px);
   overflow: visible;
 }
 
 
-/* texto pequeno acima do titulo */
 .eyebrow {
   display: flex;
   align-items: center;
   justify-content: center;
   gap: 18px;
   flex-shrink: 0;
-  color: var(--cor-primaria);
+  color: var(--corPrimaria);
   font-size: 12px;
   font-weight: 800;
   text-transform: uppercase;
@@ -91,16 +76,15 @@ main {
   width: min(34vw, 500px);
   height: 2px;
   content: "";
-  background: var(--cor-primaria);
+  background: var(--corPrimaria);
 }
 
 
-/* titulo da pagina */
 h1 {
   margin: 8px 0 4px;
   flex-shrink: 0;
   text-align: center;
-  font-family: var(--font-heading);
+  font-family: var(--fontHeading);
   font-size: clamp(28px, 3vw, 40px);
   line-height: 1.1;
   letter-spacing: -0.03em;
@@ -109,15 +93,18 @@ h1 {
 .subtitle {
   margin: 0;
   flex-shrink: 0;
-  color: var(--cor-texto-secundario);
+  color: var(--corTextoSecundario);
   text-align: center;
   font-size: 15px;
 }
 
 
-/* barra com as etapas */
-.progress {
+.cadastroProgress {
   width: min(100%, 1100px);
+  height: auto;
+  min-height: 64px;
+  overflow: visible;
+  align-items: start;
   margin: 16px auto;
   padding: 0;
   display: grid;
@@ -126,8 +113,9 @@ h1 {
   list-style: none;
 }
 
-.progress li {
+.cadastroProgress li {
   position: relative;
+  line-height: 1.4;
   min-width: 0;
   color: rgba(107, 114, 128, 0.6);
   text-align: center;
@@ -136,21 +124,19 @@ h1 {
 }
 
 
-/* linha que liga uma etapa na outra */
-.progress li:not(:last-child)::after {
+.cadastroProgress li:not(:last-child)::after {
   position: absolute;
   z-index: 0;
   top: 18px;
-  left: calc(50% + 25px); 
+  left: calc(50% + 25px);
   width: calc(100% - 50px);
   height: 2px;
   content: "";
-  background: var(--cor-borda);
+  background: var(--corBorda);
 }
 
 
-/* bolinha das etapas */
-.progress .circle {
+.cadastroProgress .circle {
   position: relative;
   z-index: 1;
   width: 38px;
@@ -158,33 +144,31 @@ h1 {
   margin: 0 auto 6px;
   display: grid;
   place-items: center;
-  border: 2px solid var(--cor-borda);
+  border: 2px solid var(--corBorda);
   border-radius: 50%;
-  background: var(--fundo-pagina);
+  background: var(--fundoPagina);
   color: rgba(107, 114, 128, 0.65);
   font-size: 14px;
 }
 
 
-/* etapa atual e etapas concluidas */
-.progress li.active,
-.progress li.done {
-  color: var(--cor-primaria);
+.cadastroProgress li.active,
+.cadastroProgress li.done {
+  color: var(--corPrimaria);
 }
 
-.progress li.active .circle,
-.progress li.done .circle {
-  border-color: var(--cor-primaria);
-  background: var(--cor-primaria);
+.cadastroProgress li.active .circle,
+.cadastroProgress li.done .circle {
+  border-color: var(--corPrimaria);
+  background: var(--corPrimaria);
   color: white;
 }
 
-.progress li.done:not(:last-child)::after {
-  background: var(--cor-primaria);
+.cadastroProgress li.done:not(:last-child)::after {
+  background: var(--corPrimaria);
 }
 
 
-/* caixa principal do formulario */
 .card {
   width: 100%;
   height: auto;
@@ -192,14 +176,13 @@ h1 {
   display: flex;
   flex-direction: column;
   overflow: visible;
-  border: 1px solid var(--cor-borda);
+  border: 1px solid var(--corBorda);
   border-radius: 20px;
-  background: var(--fundo-superficie);
-  box-shadow: var(--sombra-padrao);
+  background: var(--fundoSuperficie);
+  box-shadow: var(--sombraPadrao);
 }
 
 
-/* cada etapa do cadastro */
 .step {
   display: flex;
   flex-direction: column;
@@ -210,17 +193,15 @@ h1 {
 }
 
 
-/* titulo de cada etapa */
 h2 {
   margin: 0 0 18px;
   flex-shrink: 0;
-  font-family: var(--font-heading);
+  font-family: var(--fontHeading);
   font-size: clamp(22px, 2vw, 27px);
   letter-spacing: -0.02em;
 }
 
 
-/* organiza os campos em duas colunas */
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -234,7 +215,6 @@ h2 {
 }
 
 
-/* nomes dos campos */
 label {
   display: inline-block;
   margin-bottom: 5px;
@@ -243,22 +223,21 @@ label {
 }
 
 .optional {
-  color: var(--cor-texto-secundario);
+  color: var(--corTextoSecundario);
   font-weight: 500;
 }
 
 
-/* inputs e selects */
 input,
 select {
   width: 100%;
   height: 50px;
   padding: 0 18px;
-  border: 1px solid var(--border-medium);
+  border: 1px solid var(--borderMedium);
   border-radius: 13px;
   outline: none;
-  background: var(--fundo-campo);
-  color: var(--cor-texto);
+  background: var(--fundoCampo);
+  color: var(--corTexto);
   font-size: 15px;
   transition:
     border-color 0.2s,
@@ -271,48 +250,44 @@ input::placeholder {
 }
 
 
-/* quando o usuario clica no campo */
 input:focus,
 select:focus {
-  border-color: var(--cor-primaria);
+  border-color: var(--corPrimaria);
   background: white;
   box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.15);
 }
 
 
-/* erro nos campos */
 input.invalid,
 select.invalid {
-  border-color: var(--cor-erro);
+  border-color: var(--corErro);
 }
 
 .error {
   min-height: 14px;
   margin: 4px 0 0;
-  color: var(--cor-erro);
+  color: var(--corErro);
   font-size: 12px;
 }
 
 
-/* campo de senha */
-.password-wrap {
+.passwordWrap {
   position: relative;
 }
 
-.password-wrap input {
+.passwordWrap input {
   padding-right: 76px;
 }
 
 
-/* botão para mostrar a senha */
-.show-password {
+.showPassword {
   position: absolute;
   top: 50%;
   right: 16px;
   padding: 6px;
   border: 0;
   background: transparent;
-  color: var(--cor-primaria);
+  color: var(--corPrimaria);
   cursor: pointer;
   font-size: 13px;
   font-weight: 700;
@@ -320,15 +295,13 @@ select.invalid {
 }
 
 
-/* texto de ajuda abaixo dos campos */
 .helper {
   margin: 5px 0 0;
-  color: var(--cor-texto-secundario);
+  color: var(--corTextoSecundario);
   font-size: 12px;
 }
 
 
-/* área dos botões */
 .actions {
   margin-top: 14px;
   display: flex;
@@ -339,7 +312,6 @@ select.invalid {
 }
 
 
-/* estilo geral dos botões */
 .button {
   min-width: 160px;
   height: 48px;
@@ -369,36 +341,33 @@ select.invalid {
 }
 
 
-/* botão de continuar */
-.button-primary {
+.buttonPrimary {
   margin-left: auto;
-  background: var(--cor-primaria);
+  background: var(--corPrimaria);
   color: white;
   box-shadow: 0 10px 24px rgba(79, 70, 229, 0.22);
 }
 
-.button-primary:hover {
-  background: var(--cor-primaria-escura);
+.buttonPrimary:hover {
+  background: var(--corPrimariaEscura);
 }
 
 
-/* botão de voltar */
-.button-secondary {
-  border-color: var(--border-medium);
-  background: var(--azul-suave);
-  color: var(--cor-primaria);
+.buttonSecondary {
+  border-color: var(--borderMedium);
+  background: var(--azulSuave);
+  color: var(--corPrimaria);
 }
 
 
-/* parte de revisão dos dados */
-.review-title {
+.reviewTitle {
   margin-bottom: 18px;
   text-align: center;
-  font-family: var(--font-heading);
+  font-family: var(--fontHeading);
   font-size: clamp(24px, 3vw, 32px);
 }
 
-.review-grid {
+.reviewGrid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
@@ -406,22 +375,20 @@ select.invalid {
 }
 
 
-/* cada bloco da revisão */
-.review-section {
+.reviewSection {
   position: relative;
   padding: 18px;
-  border: 1px solid var(--border-soft);
+  border: 1px solid var(--borderSoft);
   border-radius: 15px;
-  background: var(--bg-soft);
+  background: var(--bgSoft);
 }
 
-.review-section.full {
+.reviewSection.full {
   grid-column: 1 / -1;
 }
 
 
-/* titulo dos blocos da revisão */
-.review-heading {
+.reviewHeading {
   margin-bottom: 10px;
   display: flex;
   align-items: center;
@@ -429,28 +396,26 @@ select.invalid {
   gap: 14px;
 }
 
-.review-heading h3 {
+.reviewHeading h3 {
   margin: 0;
-  color: var(--cor-primaria);
+  color: var(--corPrimaria);
   font-size: 16px;
 }
 
 
-/* botão de editar na revisão */
-.edit-button {
+.editButton {
   padding: 6px 10px;
-  border: 1px solid var(--border-medium);
+  border: 1px solid var(--borderMedium);
   border-radius: 8px;
-  background: var(--azul-suave);
-  color: var(--cor-primaria);
+  background: var(--azulSuave);
+  color: var(--corPrimaria);
   cursor: pointer;
   font-size: 12px;
   font-weight: 750;
 }
 
 
-/* dados mostrados na revisão */
-.review-list {
+.reviewList {
   margin: 0;
   display: grid;
   grid-template-columns: 145px 1fr;
@@ -458,11 +423,11 @@ select.invalid {
   font-size: 14px;
 }
 
-.review-list dt {
-  color: var(--cor-texto-secundario);
+.reviewList dt {
+  color: var(--corTextoSecundario);
 }
 
-.review-list dd {
+.reviewList dd {
   min-width: 0;
   margin: 0;
   overflow-wrap: anywhere;
@@ -470,16 +435,14 @@ select.invalid {
 }
 
 
-/* tela depois que o cadastro termina */
-.success-screen {
+.successScreen {
   margin: auto;
   padding: 20px 10px;
   text-align: center;
 }
 
 
-/* icone de sucesso */
-.success-icon {
+.successIcon {
   width: 70px;
   height: 70px;
   margin: 0 auto 16px;
@@ -487,27 +450,25 @@ select.invalid {
   place-items: center;
   border-radius: 50%;
   background: #e4fbf3;
-  color: var(--cor-sucesso);
+  color: var(--corSucesso);
   font-size: 32px;
   font-weight: 800;
 }
 
-.success-screen h2 {
+.successScreen h2 {
   margin-bottom: 10px;
   font-size: 28px;
 }
 
-.success-screen p {
+.successScreen p {
   max-width: 680px;
   margin: 0 auto;
-  color: var(--cor-texto-secundario);
+  color: var(--corTextoSecundario);
   font-size: 15px;
   line-height: 1.5;
 }
 
 
-/* ajustes para celular */
-/* Tablet e celular */
 @media (max-width: 768px) {
 
   h1 {
@@ -528,20 +489,20 @@ select.invalid {
     width: 18vw;
   }
 
-  .progress {
+  .cadastroProgress {
     margin: 20px auto;
   }
 
-  .progress li {
+  .cadastroProgress li {
     font-size: 11px;
   }
 
-  .progress .circle {
+  .cadastroProgress .circle {
     width: 34px;
     height: 34px;
   }
 
-  .progress li:not(:last-child)::after {
+  .cadastroProgress li:not(:last-child)::after {
     top: 16px;
     left: calc(50% + 22px);
     width: calc(100% - 44px);
@@ -554,13 +515,13 @@ select.invalid {
   }
 
   .grid,
-  .review-grid,
-  .review-list {
+  .reviewGrid,
+  .reviewList {
     grid-template-columns: 1fr;
   }
 
   .field.full,
-  .review-section.full {
+  .reviewSection.full {
     grid-column: auto;
   }
 
@@ -575,13 +536,12 @@ select.invalid {
     min-width: 0;
   }
 
-  .button-primary {
+  .buttonPrimary {
     margin-left: 0;
   }
 }
 
 
-/* Celulares pequenos, incluindo 320px */
 @media (max-width: 400px) {
   h1 {
     font-size: 24px;
@@ -603,22 +563,22 @@ select.invalid {
     width: 12vw;
   }
 
-  .progress {
+  .cadastroProgress {
     width: 100%;
     margin: 16px auto;
   }
 
-  .progress li {
+  .cadastroProgress li {
     font-size: 9px;
   }
 
-  .progress .circle {
+  .cadastroProgress .circle {
     width: 30px;
     height: 30px;
     font-size: 12px;
   }
 
-  .progress li:not(:last-child)::after {
+  .cadastroProgress li:not(:last-child)::after {
     top: 14px;
     left: calc(50% + 19px);
     width: calc(100% - 38px);
@@ -648,7 +608,6 @@ select.invalid {
 }
 
 
-/* Computador com janela minimizada na altura */
 @media (max-height: 750px) and (min-width: 769px) {
   html,
   body {

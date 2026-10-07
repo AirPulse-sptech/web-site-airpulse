@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/alertas.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <title>AirPulse - Alertas</title>
+</head>
+
+<body>
+
+    <div class="appLayout">
+
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="home.html">
+                    <img class="brandLogoFull"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebarNav">
+                <a href="dashboardPrincipalAnalista.html" class="navItem active" aria-current="location">
+                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Componentes</span>
+                </div>
+
+                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
+                    <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Funcionário</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Chamados & Suporte</span>
+                </div>
+            </nav>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
+                    </div>
+                </div>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+        <div class="mainWrapper">
+
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Alertas</span>
+                </div>
+            </header>
+
+            <main>
+                <div class="cabecalhoAlertas">
+                    <h1 class="tituloAlertas">Alertas do FMC</h1>
+                    <span class="subtituloAlertas">PR-GOL &nbsp;•&nbsp; FMC Principal &nbsp;•&nbsp; P01 &nbsp;•&nbsp; Monitoramento de
+                        alertas</span>
+                </div>
+
+                <div class="cardsResumo">
+                    <div class="cardResumo">
+                        <div class="cardIcone iconeTotal">
+                            <i class="bi bi-bell" style="font-size: 26px" aria-hidden="true"></i>
+                        </div>
+                        <div class="cardTexto">
+                            <span class="cardLabel">Total de alertas</span>
+                            <span class="cardNumero">14</span>
+                            <span class="cardLegenda">Últimos 7 dias</span>
+                        </div>
+                    </div>
+
+                    <div class="cardResumo">
+                        <div class="cardIcone iconeCritico">
+                            <i class="bi bi-exclamation-triangle" style="font-size: 26px" aria-hidden="true"></i>
+                        </div>
+                        <div class="cardTexto">
+                            <span class="cardLabel">Críticos</span>
+                            <span class="cardNumero textoCritico">4</span>
+                            <span class="cardLegenda">29% do total</span>
+                        </div>
+                    </div>
+
+                    <div class="cardResumo">
+                        <div class="cardIcone iconeModerado">
+                            <i class="bi bi-exclamation-triangle" style="font-size: 26px" aria-hidden="true"></i>
+                        </div>
+                        <div class="cardTexto">
+                            <span class="cardLabel">Moderados</span>
+                            <span class="cardNumero textoModerado">7</span>
+                            <span class="cardLegenda">50% do total</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="barraFiltros">
+                    <div class="filtro">
+                        <i class="bi bi-calendar3 filtroIcone" style="font-size: 24px" aria-hidden="true"></i>
+                        <div class="filtroCampo">
+                            <label>Período</label>
+                            <select>
+                                <option>Últimos 7 dias</option>
+                                <option>Últimos 30 dias</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filtro filtroDivisor">
+                        <i class="bi bi-box filtroIcone" style="font-size: 24px" aria-hidden="true"></i>
+                        <div class="filtroCampo">
+                            <label>Componente</label>
+                            <select>
+                                <option>Todos</option>
+                                <option>Disco</option>
+                                <option>RAM</option>
+                                <option>CPU</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="filtro filtroDivisor">
+                        <div class="filtroCampo">
+                            <label>Severidade</label>
+                            <div class="chips">
+                                <span class="chip"><span class="ponto pontoCritico"></span>Crítico</span>
+                                <span class="chip"><span class="ponto pontoModerado"></span>Moderado</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="boxMapa">
+                    <div class="mapaTopo">
+                        <div>
+                            <h2 class="mapaTitulo">Mapa de calor de componentes</h2>
+                            <span class="mapaSubtitulo">Visualize a frequência de alertas por componente ao longo do
+                                período selecionado.</span>
+                        </div>
+
+                        <div class="legenda">
+                            <span class="legendaItem"><span class="ponto nivel1"></span>Normal</span>
+                            <span class="legendaItem"><span class="ponto nivel2"></span>Atenção</span>
+                            <span class="legendaItem"><span class="ponto nivel4"></span>Crítico</span>
+                            <span class="legendaItem"><span class="ponto nivel0"></span>Sem dados</span>
+                        </div>
+                    </div>
+
+                    <div class="mapaFerramentas">
+                        <span class="agruparLabel">Agrupar por</span>
+                        <select class="selectAgrupar">
+                            <option>Componente</option>
+                            <option>Severidade</option>
+                        </select>
+                        <button class="btnLista" type="button" aria-label="Modo lista">
+                            <i class="bi bi-list-ul" style="font-size: 18px" aria-hidden="true"></i>
+                        </button>
+                    </div>
+
+                    <div class="mapa">
+                        <div class="mapaLinha">
+                            <div></div>
+                            <div class="mapaDatas">
+                                <span>26/08</span>
+                                <span>27/08</span>
+                                <span>28/08</span>
+                                <span>29/08</span>
+                                <span>30/08</span>
+                                <span>31/08</span>
+                                <span>01/09</span>
+                                <span>02/09</span>
+                            </div>
+                            <div></div>
+                        </div>
+                        <div class="mapaLinha">
+                            <div class="mapaRotulo">
+                                <i class="bi bi-hdd" style="font-size: 20px" aria-hidden="true"></i>
+                                <span>Disco</span>
+                            </div>
+                            <div class="mapaCelulas" id="celulasDisco"></div>
+                            <button class="mapaSeta" type="button" aria-label="Ver detalhes do disco"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="mapaLinha">
+                            <div class="mapaRotulo">
+                                <i class="bi bi-memory" style="font-size: 20px" aria-hidden="true"></i>
+                                <span>RAM</span>
+                            </div>
+                            <div class="mapaCelulas" id="celulasRam"></div>
+                            <button class="mapaSeta" type="button" aria-label="Ver detalhes da RAM"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+                        </div>
+                        <div class="mapaLinha">
+                            <div class="mapaRotulo">
+                                <i class="bi bi-cpu" style="font-size: 20px" aria-hidden="true"></i>
+                                <span>CPU</span>
+                            </div>
+                            <div class="mapaCelulas" id="celulasCpu"></div>
+                            <button class="mapaSeta" type="button" aria-label="Ver detalhes da CPU"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+    <script src="js/sessao.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
+    <script src="js/alertas.js"></script>
+</body>
+
+</html>

@@ -1,17 +1,15 @@
-/* estilos gerais do container de cadastro */
-.container-cadastro {
-    font-family: var(--font-body);
+.containerCadastro {
+    font-family: var(--fontBody);
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - 70px - 48px); /* descontando a topbar e o padding do main */
+    min-height: calc(100vh - 70px - 48px);
     min-width: 100%;
     box-sizing: border-box;
 }
 
-/* caixa branca principal onde fica o formulario */
-.box-cadastro {
-    background-color: var(--bg-surface);
+.boxCadastro {
+    background-color: var(--bgSurface);
     width: 100%;
     max-width: 700px;
     padding: 40px;
@@ -20,21 +18,19 @@
     box-sizing: border-box;
 }
 
-/* titulo do formulario */
-.titulo-cadastro {
+.tituloCadastro {
     text-align: center;
-    color: var(--text-primary);
-    font-family: var(--font-heading);
+    color: var(--textPrimary);
+    font-family: var(--fontHeading);
     font-size: 24px;
     margin-bottom: 25px;
 }
 
-.input-group #nome{
+.inputGroup #nome{
     margin-bottom: 15px;
 }
 
-/* organizacao do formulario em duas colunas */
-.form-grid {
+.formGrid {
     display: grid;
     grid-template-columns: 1fr 1fr;
     column-gap: 30px;
@@ -43,41 +39,40 @@
 }
 
 
-/* grupo que envolve a label e o input */
-.input-group {
+.inputGroup {
     display: flex;
     flex-direction: column;
 }
 
-.input-group label {
+.inputGroup label {
     font-size: 13px;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--textPrimary);
     margin-bottom: 6px;
 }
 
-.input-group input[type="text"],
-.input-group input[type="email"],
-.input-group input[type="password"],
-.input-group input[type="date"],
-.input-group select {
+.inputGroup input[type="text"],
+.inputGroup input[type="email"],
+.inputGroup input[type="password"],
+.inputGroup input[type="date"],
+.inputGroup select {
     padding: 12px;
-    border: 1px solid var(--border-soft);
+    border: 1px solid var(--borderSoft);
     border-radius: 6px;
     font-size: 14px;
-    color: var(--text-primary);
+    color: var(--textPrimary);
     outline: none;
     transition: border-color 0.2s ease;
     box-sizing: border-box;
     font-family: inherit;
 }
 
-#cargo.select-cargo{
+#cargo.selectCargo{
     padding: 12px;
-    border: 1px solid var(--border-soft);
+    border: 1px solid var(--borderSoft);
     border-radius: 6px;
     font-size: 14px;
-    color: var(--text-primary);
+    color: var(--textPrimary);
     outline: none;
     transition: border-color 0.2s ease;
     box-sizing: border-box;
@@ -85,17 +80,16 @@
     color:  #aaa;
 }
 
-.input-group input::placeholder {
+.inputGroup input::placeholder {
     color: #aaa;
 }
 
-.input-group input:focus,
-.input-group select:focus {
-    border-color: var(--color-primary);
+.inputGroup input:focus,
+.inputGroup select:focus {
+    border-color: var(--colorPrimary);
 }
 
-/* estilo do botao de alternancia para administrador */
-.toggle-switch {
+.toggleSwitch {
     position: relative;
     display: inline-block;
     width: 48px;
@@ -103,7 +97,7 @@
     margin-top: 4px;
 }
 
-.toggle-switch input {
+.toggleSwitch input {
     opacity: 0;
     width: 0;
     height: 0;
@@ -134,21 +128,20 @@
 }
 
 input:checked + .slider {
-    background-color: var(--color-primary);
+    background-color: var(--colorPrimary);
 }
 
 input:checked + .slider:before {
     transform: translateX(24px);
 }
 
-/* area dos botoes no final do formulario */
-.form-actions {
+.formActions {
     display: flex;
     gap: 20px;
 }
 
-.btn-voltar,
-.btn-proximo {
+.btnVoltar,
+.btnProximo {
     flex: 1;
     padding: 14px;
     border-radius: 6px;
@@ -160,57 +153,55 @@ input:checked + .slider:before {
     font-family: inherit;
 }
 
-.btn-voltar {
-    background-color: var(--bg-surface);
-    color: var(--color-primary);
-    border: 1px solid var(--color-primary);
+.btnVoltar {
+    background-color: var(--bgSurface);
+    color: var(--colorPrimary);
+    border: 1px solid var(--colorPrimary);
 }
 
-.btn-voltar:hover {
-    background-color: var(--bg-input);
+.btnVoltar:hover {
+    background-color: var(--bgInput);
 }
 
-.btn-proximo {
-    background-color: var(--color-primary);
-    color: var(--color-white);
+.btnProximo {
+    background-color: var(--colorPrimary);
+    color: var(--colorWhite);
     border: none;
 }
 
-.btn-proximo:hover {
-    background-color: var(--color-primary-dark);
+.btnProximo:hover {
+    background-color: var(--colorPrimaryDark);
 }
 
-/* padding padrão do <main> dentro da casca do app */
 main {
     padding: 24px 32px;
 }
 
-.card_erro{
+.cardErro{
     width: 100%;
     max-width: 700px;
     margin: 0 auto 16px;
     padding: 14px 20px;
     border-radius: 8px;
-    background-color: var(--color-primary-soft);
+    background-color: var(--colorPrimarySoft);
     display: none;
 }
 
-#mensagem_erro{
-    color: var(--color-primary);
+#mensagemErro{
+    color: var(--colorPrimary);
     font-size: 14px;
 }
 
-/* adaptacao para telas menores celulares */
 @media (max-width: 600px) {
-    .form-grid {
-        grid-template-columns: 1fr; /* muda para 1 coluna */
+    .formGrid {
+        grid-template-columns: 1fr;
     }
-    
-    .form-actions {
+
+    .formActions {
         flex-direction: column;
     }
-    
-    .box-cadastro {
+
+    .boxCadastro {
         padding: 20px;
     }
 }

@@ -1,7 +1,3 @@
-/* A casca (sidebar + topbar) desta página agora vem de global.css,
-   compartilhada com cadastro_empresa.html e cadastro_funcionario.html.
-   Aqui fica só o conteúdo específico da Home: a saudação. */
-
 .corpo {
     display: flex;
     flex-direction: column;
@@ -11,7 +7,7 @@
 }
 
 .saudacoes {
-    color: var(--color-primary);
+    color: var(--colorPrimary);
     font-weight: 900;
     font-size: clamp(20px, 2vw, 32px);
     display: flex;
