@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/cadastroRelatorio.css">
+    <title>AirPulse - Novo Relatório</title>
+</head>
+
+<body>
+
+    <div class="appLayout">
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="dashboardPrincipalAnalista.html">
+                    <img class="brandLogoFull"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebarNav">
+                <a href="dashboardPrincipalAnalista.html" class="navItem">
+                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Componentes</span>
+                </div>
+                
+
+                <a href="cadastroRelatorio.html" class="navItem active" aria-current="page" id="itemRelatorios">
+                    <i class="bi bi-file-earmark-text navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Relatórios</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Chamados & Suporte</span>
+                </div>
+            </nav>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
+                    </div>
+                </div>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+        <div class="mainWrapper">
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Relatórios de análise</span>
+                </div>
+            </header>
+
+            <main class="cadastroRelatorio">
+
+                <div class="cabecalhoPagina">
+                    <div>
+                        <h1 id="tituloPagina">Novo relatório de análise</h1>
+                        <p class="subtitle" id="subtituloPagina">Registre sua leitura sobre os dados monitorados de uma aeronave.</p>
+                    </div>
+
+                    <div class="ladoCabecalho">
+                        <p class="statusRelatorio" id="statusRelatorio" hidden>
+                            Status: <span class="statusTag rascunho" id="statusTag">Rascunho</span>
+                        </p>
+
+                        <div class="acoesCabecalho">
+                            <a class="button buttonSecondary botaoPequeno" href="#meusRelatorios">
+                                <i class="bi bi-folder2-open" aria-hidden="true"></i>
+                                Meus relatórios
+                            </a>
+                            <button class="button buttonPrimary botaoPequeno" id="botaoNovoRelatorio" type="button" hidden>
+                                <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                                Registrar outro relatório
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <form class="formRelatorio" id="relatorioForm" novalidate>
+
+                    <div class="colunaRelatorio">
+
+
+                        <section class="card">
+                            <h2>Dados do relatório</h2>
+
+                            <div class="grid">
+                                <div class="field">
+                                    <label for="fkAeronave">Aeronave *</label>
+                                    <select id="fkAeronave" name="fkAeronave" required>
+                                        <option value="">Carregando aeronaves...</option>
+                                    </select>
+                                </div>
+
+                                <div class="field">
+                                    <label for="titulo">Título do relatório *</label>
+                                    <input id="titulo" name="titulo" type="text" maxlength="150"
+                                        placeholder="Ex.: Picos de CPU em setembro" required>
+                                </div>
+
+                                <div class="field">
+                                    <label for="periodoInicio">Início do período *</label>
+                                    <input id="periodoInicio" name="periodoInicio" type="date" required>
+                                </div>
+
+                                <div class="field">
+                                    <label for="periodoFim">Fim do período *</label>
+                                    <input id="periodoFim" name="periodoFim" type="date" required>
+                                </div>
+
+                                <div class="field full atalhosPeriodo">
+                                    <span>Atalhos:</span>
+                                    <button class="atalho" type="button" data-periodo="7">Últimos 7 dias</button>
+                                    <button class="atalho" type="button" data-periodo="30">Últimos 30 dias</button>
+                                    <button class="atalho" type="button" data-periodo="mes">Este mês</button>
+                                    <button class="atalho" type="button" data-periodo="mesPassado">Mês passado</button>
+                                    <span class="resumoPeriodo" id="resumoPeriodo"></span>
+                                </div>
+
+                                <fieldset class="field full conclusao">
+                                    <legend>Conclusão da análise *</legend>
+                                    <div class="opcoesConclusao">
+                                        <label><input type="radio" name="criticidade" value="NORMAL" required> Normal</label>
+                                        <label><input type="radio" name="criticidade" value="ATENCAO"> Atenção</label>
+                                        <label><input type="radio" name="criticidade" value="CRITICO"> Crítico</label>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </section>
+
+
+                        <section class="card">
+                            <div class="cabecalhoCard">
+                                <h2><label for="texto">Análise *</label></h2>
+                                <button class="botaoEstrutura" id="botaoEstrutura" type="button">
+                                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                                    Estrutura sugerida
+                                </button>
+                            </div>
+
+                            <textarea id="texto" name="texto" rows="14" maxlength="50000" required
+                                placeholder="Escreva aqui a sua análise sobre os dados da aeronave.&#10;&#10;Dica: clique em “Estrutura sugerida” para começar com as seções Resumo, O que foi observado, Causa provável e Recomendação."></textarea>
+
+                            <div class="rodapeEditor">
+                                <span id="contadorCaracteres">0 caracteres</span>
+                                <span class="rascunhoSalvo" id="rascunhoSalvo" hidden>
+                                    <i class="bi bi-check2" aria-hidden="true"></i>
+                                    Rascunho salvo às <span id="horaSalvo">--:--</span>
+                                </span>
+                            </div>
+                        </section>
+
+
+                        <section class="card">
+                            <div>
+                                <h2>Analistas responsáveis</h2>
+                                <p class="descricao">Quem escreveu ou revisou este relatório. O autor entra automaticamente.</p>
+                            </div>
+
+                            <div class="listaAnalistas" id="listaAnalistas">
+                                <div class="analista">
+                                    <span class="avatarAnalista" id="avatarAutor">--</span>
+                                    <span class="dadosAnalista">
+                                        <strong id="nomeAutor">Usuário</strong>
+                                        <small>Autor</small>
+                                    </span>
+                                </div>
+
+                                <button class="botaoAdicionarAnalista" id="botaoAdicionarAnalista" type="button">
+                                    <i class="bi bi-plus-lg" aria-hidden="true"></i>
+                                    Adicionar analista
+                                </button>
+                            </div>
+
+                            <div class="escolherAnalista" id="escolherAnalista" hidden>
+                                <label for="selectAnalista">Escolha o analista</label>
+                                <select id="selectAnalista"></select>
+                            </div>
+                        </section>
+                    </div>
+
+                    <aside class="colunaContexto">
+
+                        <section class="card painelAeronave">
+
+
+                            <div class="estadoVazio" id="painelVazio">
+                                <span class="iconeVazio"><i class="bi bi-airplane" aria-hidden="true"></i></span>
+                                <h3>Escolha uma aeronave</h3>
+                                <p>Os FMCs, as placas monitoradas e os limites de alerta aparecem aqui para servir de
+                                    referência enquanto você escreve.</p>
+                            </div>
+
+
+                            <div class="dadosAeronave" id="painelAeronave" hidden>
+                                <div class="cabecalhoAeronave">
+                                    <span class="iconeAeronave"><i class="bi bi-airplane" aria-hidden="true"></i></span>
+                                    <div>
+                                        <h3 id="nomeAeronave"></h3>
+                                        <p id="modeloAeronave"></p>
+                                    </div>
+                                </div>
+
+                                <p class="descricao">Configuração do monitoramento usada como referência para a análise.</p>
+
+                                <div class="listaFmcs" id="listaFmcs"></div>
+
+                                <a class="linkDashboard" href="dashboardAnaliseFmcAnalista.html">Abrir dashboard da aeronave →</a>
+                            </div>
+                        </section>
+
+                        <section class="card relatoriosAnteriores" id="relatoriosAnteriores" hidden>
+                            <h3>Relatórios anteriores da <span id="nomeAeronaveLista"></span></h3>
+
+                            <ul class="listaRelatorios" id="listaRelatorios"></ul>
+                            <p class="semRelatorios" id="semRelatorios" hidden>Nenhum relatório anterior para esta aeronave.</p>
+                        </section>
+                    </aside>
+
+                    <div class="actions">
+                        <a class="button buttonSecondary" href="dashboardPrincipalAnalista.html">Cancelar</a>
+
+                        <div class="actionsDireita">
+                            <button class="button buttonSecondary" id="botaoRascunho" type="button">
+                                Salvar rascunho
+                            </button>
+                            <button class="button buttonPrimary" id="botaoPublicar" type="button">
+                                Publicar relatório
+                            </button>
+                        </div>
+                    </div>
+
+                </form>
+
+                <section class="card meusRelatorios" id="meusRelatorios">
+                    <div class="cabecalhoCard">
+                        <div>
+                            <h2>Meus relatórios</h2>
+                            <p class="descricao">Rascunhos e relatórios publicados em que você é autor ou coautor.</p>
+                        </div>
+
+                        <div class="filtrosRelatorios" role="group" aria-label="Filtrar por status">
+                            <button class="filtro ativo" type="button" data-filtro="TODOS">Todos</button>
+                            <button class="filtro" type="button" data-filtro="RASCUNHO">Rascunhos</button>
+                            <button class="filtro" type="button" data-filtro="PUBLICADO">Publicados</button>
+                        </div>
+                    </div>
+
+                    <div class="tabelaRelatorios">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Relatório</th>
+                                    <th>Aeronave</th>
+                                    <th>Período</th>
+                                    <th>Status</th>
+                                    <th><span class="visualmenteOculto">Ação</span></th>
+                                </tr>
+                            </thead>
+                            <tbody id="listaMeusRelatorios"></tbody>
+                        </table>
+                    </div>
+
+                    <p class="semRelatorios" id="semMeusRelatorios" hidden>Você ainda não tem relatórios salvos.</p>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/sessao.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
+    <script src="js/cadastroRelatorio.js"></script>
+</body>
+
+</html>
