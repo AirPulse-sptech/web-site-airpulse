@@ -93,6 +93,11 @@ CONSTRAINT ctComponentePlaca
 FOREIGN KEY (fkPlaca) REFERENCES placa (idPlaca)
 );
 
+CREATE TABLE scriptPython (
+idScriptPython INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+texto TEXT
+);
+
 CREATE TABLE metrica (
 idMetrica INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 nome VARCHAR(45),
@@ -100,7 +105,61 @@ unidadeMedida VARCHAR(45),
 descricao VARCHAR(200),
 fkComponente INT NOT NULL,
 CONSTRAINT fkMetricaComponente1
-FOREIGN KEY (fkComponente) REFERENCES componente (idComponente)
+FOREIGN KEY (fkComponente) REFERENCES componente (idComponente),
+fkScriptPython INT NULL,
+CONSTRAINT fkMetricaScriptPython
+FOREIGN KEY (fkScriptPython) REFERENCES scriptPython (idScriptPython)
+);
+
+CREATE TABLE leitura (
+idLeitura INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+valor DECIMAL(14,2) NOT NULL,
+dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+fkMetrica INT NOT NULL,
+CONSTRAINT fkLeituraMetrica
+FOREIGN KEY (fkMetrica) REFERENCES metrica (idMetrica)
+);
+
+CREATE TABLE alerta (
+idAlerta INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+nivel VARCHAR(10) NOT NULL,
+valor DECIMAL(14,2) NOT NULL,
+dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+fkLeitura INT NOT NULL,
+CONSTRAINT ctAlertaNivel CHECK (nivel IN ('ATENCAO', 'CRITICO')),
+CONSTRAINT fkAlertaLeitura
+FOREIGN KEY (fkLeitura) REFERENCES leitura (idLeitura)
+);
+
+CREATE TABLE relatorio (
+idRelatorio INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+titulo VARCHAR(150) NOT NULL,
+periodoInicio DATE NOT NULL,
+periodoFim DATE NOT NULL,
+texto MEDIUMTEXT NOT NULL,
+statusRelatorio VARCHAR(45) NOT NULL DEFAULT 'RASCUNHO',
+criticidade VARCHAR(45),
+dataCriacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+fkAeronave INT NOT NULL,
+CONSTRAINT ctRelatorioStatus CHECK (statusRelatorio IN ('RASCUNHO', 'EM_REVISAO', 'PUBLICADO')),
+CONSTRAINT ctRelatorioCriticidade CHECK (criticidade IN ('NORMAL', 'ATENCAO', 'CRITICO')),
+CONSTRAINT ctRelatorioPeriodo CHECK (periodoFim >= periodoInicio),
+CONSTRAINT fkRelatorioAeronave
+FOREIGN KEY (fkAeronave) REFERENCES aeronave (idAeronave)
+);
+
+CREATE TABLE funcionarioRelatorio (
+idFuncionarioRelatorio INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+dataVinculo DATE NOT NULL,
+papel VARCHAR(10) NOT NULL DEFAULT 'COAUTOR',
+fkFuncionario INT NOT NULL,
+CONSTRAINT fkFuncionarioRelatorio1
+FOREIGN KEY (fkFuncionario) REFERENCES funcionario (idFuncionario),
+fkRelatorio INT NOT NULL,
+CONSTRAINT fkFuncionarioRelatorio2
+FOREIGN KEY (fkRelatorio) REFERENCES relatorio (idRelatorio),
+CONSTRAINT ctFuncionarioRelatorioPapel CHECK (papel IN ('AUTOR', 'COAUTOR')),
+CONSTRAINT ctFuncionarioRelatorioUnico UNIQUE (fkFuncionario, fkRelatorio)
 );
 
 INSERT INTO empresaFabricante (razaoSocial, nomeFantasia, cnpj, segmentoAtuacao, email, telefone, statusSistema, entradaSistema, fkEndereco)
@@ -157,5 +216,5 @@ INSERT INTO funcionario (
 INSERT INTO aeronave (
     nome, modelo, numeroSerie, statusAeronave, entradaSistema, companhiaAerea, fkEmpresaFabricante
     ) VALUES (
-        'PR-AER', 'Boeing 737-8', 'AN-001', 'ATIVA', NOW(), 
+        'PR-AER', 'Boeing 737-8', 'AN-001', 'ATIVA', NOW(),
         'GOL', 2);
