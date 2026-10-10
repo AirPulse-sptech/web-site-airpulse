@@ -33,6 +33,7 @@ function podeAcessarPagina(pagina) {
     const cargo = sessionStorage.getItem("cargoUsuario")
     switch (pagina) {
         case "cadastroEmpresa.html": return cargo === "ADMIN"
+        case "empresasCadastradas.html": return cargo === "ADMIN"
         case "cadastroFuncionario.html": return cargo === "GESTOR"
         case "gerenciarFuncionario.html": return cargo === "GESTOR"
         case "EditarUsuario.html": return cargo === "GESTOR"

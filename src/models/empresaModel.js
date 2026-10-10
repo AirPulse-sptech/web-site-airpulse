@@ -39,11 +39,24 @@ function cadastrarRepresentante(nome, email, telefone, cpf, cargo, senha, fkEmpr
   return database.executar(instrucaoSql)
 }
 
+function carregarEmpresas() {
+    var instrucaoSql = `
+        SELECT razaoSocial, nomeFantasia, cnpj, segmentoAtuacao
+        FROM empresaFabricante
+        WHERE cnpj <> '00000000000100';
+    `;
+
+    console.log("Executando a instrução SQL: \n" + instrucaoSql);
+    return database.executar(instrucaoSql);
+}
+
 module.exports = {
   buscarPorCnpj,
   buscarPorId,
   listar,
   cadastrarEndereco,
   cadastrarEmpresa,
-  cadastrarRepresentante
+  cadastrarRepresentante,
+  cadastrarEmpresa,
+  carregarEmpresas
 }
