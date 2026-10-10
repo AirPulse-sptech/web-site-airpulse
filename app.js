@@ -19,6 +19,7 @@ var empresasRouter = require("./src/routes/empresas")
 var aeronaveRouter = require("./src/routes/aeronave")
 var computadorRouter = require("./src/routes/computador")
 var relatorioRouter = require("./src/routes/relatorio")
+var relatorioGestorRouter = require("./src/routes/relatorioGestor")
 
 
 app.use(express.json())
@@ -33,7 +34,7 @@ app.use("/empresas", empresasRouter)
 app.use("/aeronave", aeronaveRouter)
 app.use("/computador", computadorRouter)
 app.use("/relatorio", relatorioRouter)
-
+app.use("/relatorio", relatorioGestorRouter)
 
 app.listen(portaApp, function () {
     console.log(`

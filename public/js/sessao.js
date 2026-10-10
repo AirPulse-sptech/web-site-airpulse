@@ -38,6 +38,8 @@ function podeAcessarPagina(pagina) {
         case "EditarUsuario.html": return cargo === "GESTOR"
         case "cadastroAeronave.html": return cargo === "GESTOR"
         case "cadastroFmc.html": return cargo === "GESTOR"
+        case "relatorioGestor.html": return cargo === "GESTOR"
+        case "verRelatorioGestor.html": return cargo === "GESTOR"
         case "cadastroRelatorio.html": return cargo === "ANALISTA"
         case "dashboardPrincipalAnalista.html":
         case "dashboardAnaliseFmcAnalista.html":
