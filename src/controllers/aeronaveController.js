@@ -34,6 +34,25 @@ function cadastrar(req, res) {
     }
 }
 
+function listarAeronaves(req, res) {
+    var idFuncionario = Number(req.params.idFuncionario)
+
+    if (!idFuncionario) {
+        res.status(400).send("O id do funcionário está undefined!")
+    } else {
+        aeronaveModel.listarAeronaves(idFuncionario)
+            .then(function (resultado) {
+                res.status(200).json(resultado)
+            })
+            .catch(function (erro) {
+                console.log(erro)
+                console.log("\nHouve um erro ao listar as aeronaves! Erro: ", erro.sqlMessage)
+                res.status(500).json(erro.sqlMessage)
+            })
+    }
+}
+
 module.exports = {
+    listarAeronaves,
     cadastrar
 }

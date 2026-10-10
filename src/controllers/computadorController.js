@@ -1,3 +1,4 @@
+var aeronaveModel = require("../models/aeronaveModel")
 var computadorModel = require("../models/computadorModel")
 
 const tiposFmc = ["MESTRE", "SPARE"]
@@ -40,26 +41,6 @@ function dataValida(valor) {
 function textoPreenchido(valor) {
     return valor != undefined && String(valor).trim() != ""
 }
-
-
-function listarAeronaves(req, res) {
-    var idFuncionario = Number(req.params.idFuncionario)
-
-    if (!idFuncionario) {
-        res.status(400).send("O id do funcionário está undefined!")
-    } else {
-        computadorModel.listarAeronaves(idFuncionario)
-            .then(function (resultado) {
-                res.status(200).json(resultado)
-            })
-            .catch(function (erro) {
-                console.log(erro)
-                console.log("\nHouve um erro ao listar as aeronaves! Erro: ", erro.sqlMessage)
-                res.status(500).json(erro.sqlMessage)
-            })
-    }
-}
-
 
 function validarComputadores(computadores) {
     if (!Array.isArray(computadores) || computadores.length == 0) {
@@ -121,9 +102,6 @@ function validarComputadores(computadores) {
     return null
 }
 
-
-
-
 function cadastrarComputadorCompleto(computador, fkAeronave, criados) {
     return computadorModel.cadastrarComputador(
         limparTexto(computador.nome),
@@ -182,7 +160,6 @@ function cadastrarPlacaCompleta(placa, fkComputador) {
     })
 }
 
-
 function cadastrar(req, res) {
     var idFuncionario = Number(req.body.idFuncionarioServer)
     var fkAeronave = Number(req.body.fkAeronaveServer)
@@ -197,7 +174,7 @@ function cadastrar(req, res) {
     } else if (erroValidacao) {
         res.status(400).send(erroValidacao)
     } else {
-        computadorModel.buscarAeronaveDoGestor(fkAeronave, idFuncionario)
+        aeronaveModel.buscarAeronaveDoGestor(fkAeronave, idFuncionario)
             .then(function (resultadoAeronave) {
                 if (resultadoAeronave.length == 0) {
                     res.status(403).json({ mensagem: "Aeronave não encontrada ou você não é gestor desta empresa." })
@@ -251,7 +228,47 @@ function cadastrar(req, res) {
     }
 }
 
+function buscarMonitoramento(req, res) {
+    var idAeronave = Number(req.params.idAeronave)
+    var idFuncionario = Number(req.params.idFuncionario)
+
+    if (!idAeronave || !idFuncionario) {
+        res.status(400).send("O id da aeronave ou do funcionário está undefined!")
+    } else {
+        computadorModel.buscarMonitoramento(idAeronave, idFuncionario)
+            .then(function (resultado) {
+                var computadores = []
+
+                resultado.forEach(function (linha) {
+                    var computador = computadores.find(function (item) { return item.idComputador == linha.idComputador })
+
+                    if (!computador) {
+                        computador = {
+                            idComputador: linha.idComputador,
+                            tipoFmc: linha.tipoFmc,
+                            statusComputador: linha.statusComputador,
+                            componentes: []
+                        }
+                        computadores.push(computador)
+                    }
+
+                    computador.componentes.push({
+                        tipo: linha.tipo,
+                        limiteAtencao: Number(linha.limiteAtencao),
+                        limiteCritico: Number(linha.limiteCritico)
+                    })
+                })
+
+                res.status(200).json(computadores)
+            })
+            .catch(function (erro) {
+                console.log("Houve um erro ao buscar o monitoramento da aeronave!", erro)
+                res.status(500).json(erro.sqlMessage)
+            })
+    }
+}
+
 module.exports = {
-    listarAeronaves,
+    buscarMonitoramento,
     cadastrar
 }

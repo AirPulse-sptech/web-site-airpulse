@@ -1,3 +1,5 @@
+var aeronaveModel = require("../models/aeronaveModel")
+var usuarioModel = require("../models/usuarioModel")
 var relatorioModel = require("../models/relatorioModel")
 
 const statusPermitidos = ["RASCUNHO", "EM_REVISAO", "PUBLICADO"]
@@ -20,60 +22,6 @@ function erroBanco(res, mensagem) {
     }
 }
 
-
-function listarAeronaves(req, res) {
-    var idFuncionario = Number(req.params.idFuncionario)
-
-    if (!idFuncionario) {
-        res.status(400).send("O id do funcionário está undefined!")
-    } else {
-        relatorioModel.listarAeronaves(idFuncionario)
-            .then(function (resultado) {
-                res.status(200).json(resultado)
-            })
-            .catch(erroBanco(res, "Houve um erro ao listar as aeronaves!"))
-    }
-}
-
-
-function buscarMonitoramento(req, res) {
-    var idAeronave = Number(req.params.idAeronave)
-    var idFuncionario = Number(req.params.idFuncionario)
-
-    if (!idAeronave || !idFuncionario) {
-        res.status(400).send("O id da aeronave ou do funcionário está undefined!")
-    } else {
-        relatorioModel.buscarMonitoramento(idAeronave, idFuncionario)
-            .then(function (resultado) {
-                var computadores = []
-
-                resultado.forEach(function (linha) {
-                    var computador = computadores.find(function (item) { return item.idComputador == linha.idComputador })
-
-                    if (!computador) {
-                        computador = {
-                            idComputador: linha.idComputador,
-                            tipoFmc: linha.tipoFmc,
-                            statusComputador: linha.statusComputador,
-                            componentes: []
-                        }
-                        computadores.push(computador)
-                    }
-
-                    computador.componentes.push({
-                        tipo: linha.tipo,
-                        limiteAtencao: Number(linha.limiteAtencao),
-                        limiteCritico: Number(linha.limiteCritico)
-                    })
-                })
-
-                res.status(200).json(computadores)
-            })
-            .catch(erroBanco(res, "Houve um erro ao buscar o monitoramento da aeronave!"))
-    }
-}
-
-
 function listarAnteriores(req, res) {
     var idAeronave = Number(req.params.idAeronave)
     var idFuncionario = Number(req.params.idFuncionario)
@@ -86,21 +34,6 @@ function listarAnteriores(req, res) {
                 res.status(200).json(resultado)
             })
             .catch(erroBanco(res, "Houve um erro ao listar os relatórios anteriores!"))
-    }
-}
-
-
-function listarAnalistas(req, res) {
-    var idFuncionario = Number(req.params.idFuncionario)
-
-    if (!idFuncionario) {
-        res.status(400).send("O id do funcionário está undefined!")
-    } else {
-        relatorioModel.listarAnalistas(idFuncionario)
-            .then(function (resultado) {
-                res.status(200).json(resultado)
-            })
-            .catch(erroBanco(res, "Houve um erro ao listar os analistas!"))
     }
 }
 
@@ -144,7 +77,6 @@ function buscarDetalhe(req, res) {
     }
 }
 
-
 function validarRelatorio(dados) {
     if (!statusPermitidos.includes(dados.statusRelatorio)) return "Status inválido. Use RASCUNHO, EM_REVISAO ou PUBLICADO."
     if (!dados.fkAeronave) return "Escolha a aeronave do relatório."
@@ -180,7 +112,7 @@ function lerDados(req) {
 }
 
 function filtrarCoautores(idFuncionario, coautores) {
-    return relatorioModel.listarAnalistas(idFuncionario).then(function (analistas) {
+    return usuarioModel.listarAnalistas(idFuncionario).then(function (analistas) {
         var permitidos = analistas.map(function (analista) { return analista.id })
         return [...new Set(coautores)].filter(function (id) { return permitidos.includes(id) })
     })
@@ -189,7 +121,6 @@ function filtrarCoautores(idFuncionario, coautores) {
 function textoCriticidade(criticidade) {
     return criticidade ? `'${criticidade}'` : "NULL"
 }
-
 
 function cadastrar(req, res) {
     var dados = lerDados(req)
@@ -200,7 +131,7 @@ function cadastrar(req, res) {
     } else if (erroValidacao) {
         res.status(400).send(erroValidacao)
     } else {
-        relatorioModel.buscarAnalistaDaAeronave(dados.idFuncionario, dados.fkAeronave)
+        aeronaveModel.buscarAnalistaDaAeronave(dados.idFuncionario, dados.fkAeronave)
             .then(function (resultadoAnalista) {
                 if (resultadoAnalista.length == 0) {
                     res.status(403).json({ mensagem: "Apenas analistas da empresa dona da aeronave podem criar relatórios." })
@@ -250,7 +181,6 @@ function cadastrar(req, res) {
     }
 }
 
-
 function atualizar(req, res) {
     var idRelatorio = Number(req.params.idRelatorio)
     var dados = lerDados(req)
@@ -277,7 +207,7 @@ function atualizar(req, res) {
 
                 var papel = resultadoVinculo[0].papel
 
-                return relatorioModel.buscarAnalistaDaAeronave(dados.idFuncionario, dados.fkAeronave)
+                return aeronaveModel.buscarAnalistaDaAeronave(dados.idFuncionario, dados.fkAeronave)
                     .then(function (resultadoAnalista) {
                         if (resultadoAnalista.length == 0) {
                             res.status(403).json({ mensagem: "A aeronave escolhida não é da sua empresa." })
@@ -322,10 +252,7 @@ function atualizar(req, res) {
 }
 
 module.exports = {
-    listarAeronaves,
-    buscarMonitoramento,
     listarAnteriores,
-    listarAnalistas,
     listarMeus,    
     buscarDetalhe,  
     cadastrar,

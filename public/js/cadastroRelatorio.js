@@ -151,7 +151,7 @@ function iniciarPeriodo() {
 
 
 function carregarAeronaves() {
-  aeronavesCarregadas = buscarJson(`/relatorio/aeronaves/${idUsuario}`)
+  aeronavesCarregadas = buscarJson(`/aeronave/listar/${idUsuario}`)
     .then(function (lista) {
       aeronaves = lista
 
@@ -192,7 +192,7 @@ function carregarMonitoramento(idAeronave) {
   const lista = document.querySelector("#listaFmcs")
   lista.innerHTML = '<p class="semDados">Carregando...</p>'
 
-  buscarJson(`/relatorio/monitoramento/${idAeronave}/${idUsuario}`)
+  buscarJson(`/computador/monitoramento/${idAeronave}/${idUsuario}`)
     .then(function (computadores) {
       if (computadores.length === 0) {
         lista.innerHTML = '<p class="semDados">Nenhum FMC monitorado nesta aeronave ainda.</p>'
@@ -253,7 +253,7 @@ function carregarAnteriores(idAeronave) {
 
 
 function carregarAnalistas() {
-  buscarJson(`/relatorio/analistas/${idUsuario}`)
+  buscarJson(`/usuario/analistas/${idUsuario}`)
     .then(function (lista) {
       analistasEmpresa = lista
       atualizarListaAnalistas()

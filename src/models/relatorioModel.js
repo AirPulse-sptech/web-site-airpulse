@@ -1,35 +1,5 @@
 var database = require("../database/config")
 
-function listarAeronaves(idFuncionario) {
-    var instrucaoSql = `
-        SELECT a.idAeronave AS id, a.nome, a.modelo, a.companhiaAerea
-        FROM aeronave a
-            JOIN funcionario f ON f.fkEmpresaFabricante = a.fkEmpresaFabricante
-        WHERE f.idFuncionario = ${idFuncionario}
-        ORDER BY a.nome;
-    `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql)
-    return database.executar(instrucaoSql)
-}
-
-function buscarMonitoramento(idAeronave, idFuncionario) {
-    var instrucaoSql = `
-        SELECT c.idComputador, c.tipoFmc, c.statusComputador,
-            co.tipo, co.limiteAtencao, co.limiteCritico
-        FROM aeronave a
-            JOIN funcionario f ON f.fkEmpresaFabricante = a.fkEmpresaFabricante
-            JOIN computador c ON c.fkAeronave = a.idAeronave
-            JOIN placa p ON p.fkComputador = c.idComputador
-            JOIN componente co ON co.fkPlaca = p.idPlaca
-        WHERE a.idAeronave = ${idAeronave}
-            AND f.idFuncionario = ${idFuncionario}
-            AND co.statusMonitoramento = 'ATIVO'
-        ORDER BY c.tipoFmc, FIELD(co.tipo, 'CPU', 'RAM', 'DISCO');
-    `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql)
-    return database.executar(instrucaoSql)
-}
-
 function listarAnteriores(idAeronave, idFuncionario) {
     var instrucaoSql = `
         SELECT r.idRelatorio, r.titulo, r.statusRelatorio, r.criticidade,
@@ -51,33 +21,6 @@ function listarAnteriores(idAeronave, idFuncionario) {
             )
         ORDER BY r.dataCriacao DESC
         LIMIT 5;
-    `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql)
-    return database.executar(instrucaoSql)
-}
-
-function listarAnalistas(idFuncionario) {
-    var instrucaoSql = `
-        SELECT outro.idFuncionario AS id, outro.nome
-        FROM funcionario outro
-            JOIN funcionario f ON f.fkEmpresaFabricante = outro.fkEmpresaFabricante
-        WHERE f.idFuncionario = ${idFuncionario}
-            AND outro.cargo = 'ANALISTA'
-            AND outro.idFuncionario <> ${idFuncionario}
-        ORDER BY outro.nome;
-    `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql)
-    return database.executar(instrucaoSql)
-}
-
-function buscarAnalistaDaAeronave(idFuncionario, idAeronave) {
-    var instrucaoSql = `
-        SELECT f.idFuncionario
-        FROM funcionario f
-            JOIN aeronave a ON a.fkEmpresaFabricante = f.fkEmpresaFabricante
-        WHERE f.idFuncionario = ${idFuncionario}
-            AND f.cargo = 'ANALISTA'
-            AND a.idAeronave = ${idAeronave};
     `
     console.log("Executando a instrução SQL: \n" + instrucaoSql)
     return database.executar(instrucaoSql)
@@ -192,11 +135,7 @@ function excluir(idRelatorio) {
 }
 
 module.exports = {
-    listarAeronaves,
-    buscarMonitoramento,
     listarAnteriores,
-    listarAnalistas,
-    buscarAnalistaDaAeronave,
     buscarVinculo,
     listarMeus,       
     buscarDetalhe,    

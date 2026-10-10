@@ -103,7 +103,7 @@ function carregarMonitoramento(idAeronave) {
     var lista = document.getElementById("listaFmcs")
     lista.innerHTML = '<p class="semDados">Carregando...</p>'
 
-    buscarJson(`/relatorio/monitoramento/${idAeronave}/${idUsuario}`)
+    buscarJson(`/computador/monitoramento/${idAeronave}/${idUsuario}`)
         .then(function (computadores) {
             if (computadores.length == 0) {
                 lista.innerHTML = '<p class="semDados">Nenhum FMC monitorado nesta aeronave ainda.</p>'

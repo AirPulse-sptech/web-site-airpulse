@@ -1,34 +1,5 @@
 var database = require("../database/config")
 
-function listarAeronaves(idFuncionario) {
-    var instrucaoSql = `
-        SELECT a.idAeronave AS id, a.nome, a.modelo,
-            COALESCE(SUM(c.tipoFmc = 'MESTRE'), 0) > 0 AS possuiMestre,
-            COALESCE(SUM(c.tipoFmc = 'SPARE'), 0) > 0 AS possuiSpare
-        FROM aeronave a
-            JOIN funcionario f ON f.fkEmpresaFabricante = a.fkEmpresaFabricante
-            LEFT JOIN computador c ON c.fkAeronave = a.idAeronave
-        WHERE f.idFuncionario = ${idFuncionario}
-        GROUP BY a.idAeronave, a.nome, a.modelo
-        ORDER BY a.nome;
-    `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql)
-    return database.executar(instrucaoSql)
-}
-
-function buscarAeronaveDoGestor(fkAeronave, idFuncionario) {
-    var instrucaoSql = `
-        SELECT a.idAeronave
-        FROM aeronave a
-            JOIN funcionario f ON f.fkEmpresaFabricante = a.fkEmpresaFabricante
-        WHERE a.idAeronave = ${fkAeronave}
-            AND f.idFuncionario = ${idFuncionario}
-            AND f.cargo = 'GESTOR';
-    `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql)
-    return database.executar(instrucaoSql)
-}
-
 function buscarPorAeronave(fkAeronave) {
     var instrucaoSql = `
         SELECT idComputador, tipoFmc FROM computador WHERE fkAeronave = ${fkAeronave};
@@ -97,9 +68,26 @@ function excluirComputador(idComputador) {
     }, Promise.resolve())
 }
 
+function buscarMonitoramento(idAeronave, idFuncionario) {
+    var instrucaoSql = `
+        SELECT c.idComputador, c.tipoFmc, c.statusComputador,
+            co.tipo, co.limiteAtencao, co.limiteCritico
+        FROM aeronave a
+            JOIN funcionario f ON f.fkEmpresaFabricante = a.fkEmpresaFabricante
+            JOIN computador c ON c.fkAeronave = a.idAeronave
+            JOIN placa p ON p.fkComputador = c.idComputador
+            JOIN componente co ON co.fkPlaca = p.idPlaca
+        WHERE a.idAeronave = ${idAeronave}
+            AND f.idFuncionario = ${idFuncionario}
+            AND co.statusMonitoramento = 'ATIVO'
+        ORDER BY c.tipoFmc, FIELD(co.tipo, 'CPU', 'RAM', 'DISCO');
+    `
+    console.log("Executando a instrução SQL: \n" + instrucaoSql)
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
-    listarAeronaves,
-    buscarAeronaveDoGestor,
+    buscarMonitoramento,
     buscarPorAeronave,
     cadastrarComputador,
     cadastrarPlaca,

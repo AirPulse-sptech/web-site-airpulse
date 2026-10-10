@@ -24,7 +24,22 @@ function cadastrar(nome, email, dtNascimento, cpf, cargo, senha, telefone, idFun
     return database.executar(instrucaoSql)
 }
 
+function listarAnalistas(idFuncionario) {
+    var instrucaoSql = `
+        SELECT outro.idFuncionario AS id, outro.nome
+        FROM funcionario outro
+            JOIN funcionario f ON f.fkEmpresaFabricante = outro.fkEmpresaFabricante
+        WHERE f.idFuncionario = ${idFuncionario}
+            AND outro.cargo = 'ANALISTA'
+            AND outro.idFuncionario <> ${idFuncionario}
+        ORDER BY outro.nome;
+    `
+    console.log("Executando a instrução SQL: \n" + instrucaoSql)
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
+    listarAnalistas,
     autenticar,
     cadastrar
 }

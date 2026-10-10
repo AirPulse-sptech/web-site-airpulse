@@ -69,7 +69,7 @@ function mostrarEtapa(numero) {
 
 
 function carregarAeronaves() {
-  fetch(`/computador/aeronaves/${sessionStorage.getItem("idUsuario")}`)
+  fetch(`/aeronave/listar/${sessionStorage.getItem("idUsuario")}`)
     .then(function (resposta) {
       if (!resposta.ok) throw new Error("Erro ao listar as aeronaves")
       return resposta.json()

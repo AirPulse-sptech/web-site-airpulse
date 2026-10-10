@@ -77,7 +77,6 @@ function cadastrar(req, res) {
     }
     else {
 
-
         usuarioModel.cadastrar(nome, email, dtNascimento, cpf, cargo, senha, telefone, idFuncionarioAdm)
             .then(
                 function (resultado) {
@@ -96,7 +95,25 @@ function cadastrar(req, res) {
     }
 }
 
+function listarAnalistas(req, res) {
+    var idFuncionario = Number(req.params.idFuncionario)
+
+    if (!idFuncionario) {
+        res.status(400).send("O id do funcionário está undefined!")
+    } else {
+        usuarioModel.listarAnalistas(idFuncionario)
+            .then(function (resultado) {
+                res.status(200).json(resultado)
+            })
+            .catch(function (erro) {
+                console.log("Houve um erro ao listar os analistas!", erro)
+                res.status(500).json(erro.sqlMessage)
+            })
+    }
+}
+
 module.exports = {
+    listarAnalistas,
     autenticar,
     cadastrar
 }
