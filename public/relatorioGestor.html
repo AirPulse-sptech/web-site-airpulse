@@ -12,17 +12,16 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/cadastroFuncionario.css">
-    <title>AirPulse - Cadastro de Funcionário</title>
+    <link rel="stylesheet" href="css/relatorioGestor.css">
+    <title>AirPulse - Relatórios</title>
 </head>
 
 <body>
 
     <div class="appLayout">
-
         <aside id="sidebar">
             <div class="sidebarHeader">
-                <a class="sidebarBrand" href="home.html">
+                <a class="sidebarBrand" href="dashboardPrincipalAnalista.html">
                     <img class="brandLogoFull"
                         src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
                 </a>
@@ -44,7 +43,7 @@
                     <span>Cadastrar FMC</span>
                 </a>
 
-                <a href="cadastroFuncionario.html" class="navItem active" aria-current="page" id="itemCadastrarFuncionario">
+                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
                     <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
                     <span>Cadastrar Funcionário</span>
                 </a>
@@ -58,7 +57,8 @@
                     <i class="bi bi-airplane navIcon" style="font-size: 18px" aria-hidden="true"></i>
                     <span>Cadastrar Aeronave</span>
                 </a>
-                <a href="relatorioGestor.html" class="navItem" id="itemRelatorios">
+
+                <a href="relatorioGestor.html" class="navItem active" aria-current="page" id="itemRelatorios">
                     <i class="bi bi-file-earmark-text navIcon" style="font-size: 18px" aria-hidden="true"></i>
                     <span>Relatórios</span>
                 </a>
@@ -88,81 +88,93 @@
         <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
         <div class="mainWrapper">
-
             <header class="topbar">
                 <div class="topbarLeft">
                     <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
                         <i class="bi bi-list" aria-hidden="true"></i>
                     </button>
-                    <span class="topbarTitle">Cadastro de Funcionário</span>
+                    <span class="topbarTitle">Relatórios de análise</span>
                 </div>
             </header>
 
-            <main>
-                <div class="cardErro" id="cardErro">
-                    <span id="mensagemErro"></span>
+            <main class="rgConteudo">
+
+                <h1 class="rgTitulo">Relatórios de análise</h1>
+                <p class="rgSubtitulo">Acompanhe os relatórios publicados pelos analistas da sua empresa.</p>
+
+                <div class="rgResumo">
+                    <div class="rgResumoCard">
+                        <span class="rgResumoIcone"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
+                        <div>
+                            <span class="rgResumoNumero" id="totalRelatorios">0</span>
+                            <span class="rgResumoTexto">Relatórios publicados</span>
+                        </div>
+                    </div>
+
+                    <div class="rgResumoCard">
+                        <span class="rgResumoIcone normal"><i class="bi bi-check-circle" aria-hidden="true"></i></span>
+                        <div>
+                            <span class="rgResumoNumero" id="totalNormal">0</span>
+                            <span class="rgResumoTexto">Conclusão normal</span>
+                        </div>
+                    </div>
+
+                    <div class="rgResumoCard">
+                        <span class="rgResumoIcone atencao"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
+                        <div>
+                            <span class="rgResumoNumero" id="totalAtencao">0</span>
+                            <span class="rgResumoTexto">Em atenção</span>
+                        </div>
+                    </div>
+
+                    <div class="rgResumoCard">
+                        <span class="rgResumoIcone critico"><i class="bi bi-exclamation-octagon" aria-hidden="true"></i></span>
+                        <div>
+                            <span class="rgResumoNumero" id="totalCritico">0</span>
+                            <span class="rgResumoTexto">Críticos</span>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="containerCadastro">
-                    <div class="boxCadastro">
-                        <h1 class="tituloCadastro">Cadastro de Funcionário</h1>
-                        <form class="formCadastro" id="formCadastro">
-                            <div class="inputGroup">
-                                <label for="nome">Nome</label>
-                                <input type="text" id="nome" placeholder="Nome completo">
-                            </div>
-                            <div class="formGrid">
+                <div class="rgTabela">
 
-                                <div class="inputGroup">
-                                    <label for="email">Email Corporativo</label>
-                                    <input type="email" id="email" placeholder="nome@empresa.aero">
-                                </div>
-
-                                <div class="inputGroup">
-                                    <label for="dataNascimento">Data de Nascimento</label>
-                                    <input type="date" id="dataNascimento" placeholder="DD/MM/AAAA">
-                                </div>
-
-                                <div class="inputGroup">
-                                    <label for="cpf">CPF</label>
-                                    <input type="text" id="cpf" placeholder="000.000.000-00">
-                                </div>
-
-                                <div class="inputGroup">
-                                    <label for="telefone">Telefone</label>
-                                    <input type="text" id="telefone" placeholder="(11) 90000-0000">
-                                </div>
-
-                                <div class="inputGroup">
-                                    <label for="cargo">Cargo*</label>
-                                    <select id="cargo" name="cargo" required class="selectCargo">
-                                        <option value="">Selecione</option>
-                                        <option value="GESTOR">GESTOR</option>
-                                        <option value="ANALISTA">ANALISTA</option>
-                                    </select>
-                                </div>
-                                <div class="inputGroup">
-                                    <label for="senha">Senha</label>
-                                    <input type="password" id="senha" placeholder="Mínimo 8 caracteres">
-                                </div>
-                            </div>
-
-                            <div class="formActions">
-                                <button type="button" class="btnVoltar" onclick="voltar()">Voltar</button>
-                                <button type="button" class="btnProximo" onclick="cadastrar()">Cadastrar</button>
-                            </div>
-                        </form>
+                    <div class="rgFiltros">
+                        <input type="text" class="rgBusca" id="busca" placeholder="Buscar por título ou analista">
+                        <select class="rgSelect" id="filtroAeronave">
+                            <option value="">Todas as aeronaves</option>
+                        </select>
+                        <button type="button" class="rgFiltro ativo" data-filtro="TODOS">Todos</button>
+                        <button type="button" class="rgFiltro" data-filtro="NORMAL">Normal</button>
+                        <button type="button" class="rgFiltro" data-filtro="ATENCAO">Atenção</button>
+                        <button type="button" class="rgFiltro" data-filtro="CRITICO">Crítico</button>
                     </div>
+
+                    <div class="rgLinha rgLinhaTitulo">
+                        <span>RELATÓRIO</span>
+                        <span>AERONAVE</span>
+                        <span>PERÍODO</span>
+                        <span>CONCLUSÃO</span>
+                        <span>CRIADO EM</span>
+                        <span></span>
+                    </div>
+
+                    <div id="listaRelatorios"></div>
+
+                    <p class="rgVazio" id="semRelatorios" hidden>Nenhum relatório encontrado.</p>
+
+                    <div class="rgRodape">
+                        <span class="rgContagem" id="contagem"></span>
+                    </div>
+
                 </div>
             </main>
         </div>
-
     </div>
 
     <script src="js/sessao.js"></script>
     <script>validarSessao();</script>
     <script src="js/menuLateral.js"></script>
-    <script src="js/cadastroFuncionario.js"></script>
+    <script src="js/relatorioGestor.js"></script>
 </body>
 
 </html>
