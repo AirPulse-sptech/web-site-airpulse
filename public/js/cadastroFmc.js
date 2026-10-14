@@ -17,6 +17,7 @@ const placasSpare = document.querySelector("#placasSpare")
 const placasReplicadas = document.querySelector("#placasReplicadas")
 
 const nomesStatus = { ATIVO: "Ativo", INATIVO: "Inativo", MANUTENCAO: "Em manutenção" }
+const nomesComponentes = { CPU: "CPU", RAM: "RAM", DISCO: "Armazenamento" }
 
 let etapaAtual = 1
 let aeronaves = []
@@ -284,7 +285,7 @@ function prepararSpare() {
   document.querySelector("#resumoMestre").innerHTML = `
     <div><dt>Nome</dt><dd>${valor("mestreNome")}</dd></div>
     <div><dt>Aeronave</dt><dd>${textoAeronave()}</dd></div>
-    <div><dt>Placas</dt><dd>${placasMonitoradas.map(placa => placa.dataset.tipo).join(", ")}</dd></div>
+    <div><dt>Placas</dt><dd>${placasMonitoradas.map(placa => nomesComponentes[placa.dataset.tipo] || placa.dataset.tipo).join(", ")}</dd></div>
     <div><dt>Status</dt><dd>${nomesStatus[statusSelecionado("mestre")]}</dd></div>`
 
 
@@ -386,7 +387,7 @@ function tabelaPlacas(placas) {
     return `
       <tr>
         <td><strong>${placa.nome}</strong><small>${placa.numeroSerie}</small></td>
-        <td><strong>${componente.tipo}</strong><small>${componente.modelo}</small></td>
+        <td><strong>${nomesComponentes[componente.tipo] || componente.tipo}</strong><small>${componente.modelo}</small></td>
         <td>${componente.metricas.length}</td>
         <td class="valorAlerta">${componente.limiteAtencao}%</td>
         <td class="valorCritico">${componente.limiteCritico}%</td>

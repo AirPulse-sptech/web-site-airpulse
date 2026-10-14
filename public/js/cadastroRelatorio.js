@@ -15,7 +15,7 @@ const campoFim = document.querySelector("#periodoFim")
 const idUsuario = sessionStorage.getItem("idUsuario")
 const nomeUsuario = sessionStorage.getItem("nomeUsuario") || "Usuário"
 
-const nomesComponente = { CPU: "CPU", RAM: "Memória RAM", DISCO: "Disco" }
+const nomesComponente = { CPU: "CPU", RAM: "Memória RAM", DISCO: "Armazenamento" }
 const iconesComponente = { CPU: "bi-cpu", RAM: "bi-memory", DISCO: "bi-device-hdd" }
 const nomesStatusFmc = { ATIVO: "Ativo", INATIVO: "Inativo", MANUTENCAO: "Em manutenção" }
 const statusRelatorio = {

@@ -16,7 +16,7 @@
     width: 100%;
     margin: 0;
     padding: 16px 28px 24px;
-    background: linear-gradient(115deg, #f0f7ff, #edf8ff);
+    background: var(--bgPage);
     color: var(--textoAnalise);
 }
 

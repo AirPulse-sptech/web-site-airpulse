@@ -26,7 +26,7 @@ const metricasPermitidas = {
         { nome: "Em uso", unidadeMedida: "GB", descricao: "Espaço ocupado" },
         { nome: "Disponível", unidadeMedida: "GB", descricao: "Espaço livre" },
         { nome: "Percentual de uso", unidadeMedida: "%", descricao: "Espaço em uso em relação ao total" },
-        { nome: "Leitura / escrita", unidadeMedida: "MB/s", descricao: "Taxa de transferência do disco" }
+        { nome: "Leitura / escrita", unidadeMedida: "MB/s", descricao: "Taxa de transferência do armazenamento" }
     ]
 }
 
@@ -69,27 +69,28 @@ function validarComputadores(computadores) {
 
         for (var placa of computador.placas) {
             var componente = placa.componente || {}
+            var nomeComponente = componente.tipo === "DISCO" ? "Armazenamento" : componente.tipo
             var permitidas = metricasPermitidas[componente.tipo]
 
-            if (!permitidas) return `Tipo de componente inválido no ${fmc}. Use CPU, RAM ou DISCO.`
-            if (!textoPreenchido(placa.nome)) return `O nome da placa de ${componente.tipo} do ${fmc} está undefined!`
-            if (!textoPreenchido(placa.modelo)) return `O modelo da placa de ${componente.tipo} do ${fmc} está undefined!`
-            if (!textoPreenchido(placa.numeroSerie)) return `O número de série da placa de ${componente.tipo} do ${fmc} está undefined!`
-            if (!textoPreenchido(componente.modelo)) return `O modelo do componente ${componente.tipo} do ${fmc} está undefined!`
+            if (!permitidas) return `Tipo de componente inválido no ${fmc}. Use CPU, RAM ou Armazenamento.`
+            if (!textoPreenchido(placa.nome)) return `O nome da placa de ${nomeComponente} do ${fmc} está undefined!`
+            if (!textoPreenchido(placa.modelo)) return `O modelo da placa de ${nomeComponente} do ${fmc} está undefined!`
+            if (!textoPreenchido(placa.numeroSerie)) return `O número de série da placa de ${nomeComponente} do ${fmc} está undefined!`
+            if (!textoPreenchido(componente.modelo)) return `O modelo do componente ${nomeComponente} do ${fmc} está undefined!`
 
             var atencao = Number(componente.limiteAtencao)
             var critico = Number(componente.limiteCritico)
             if (!(atencao > 0 && critico > atencao && critico <= 100)) {
-                return `Limites inválidos no componente ${componente.tipo} do ${fmc}: o crítico deve ser maior que o alerta e no máximo 100%.`
+                return `Limites inválidos no componente ${nomeComponente} do ${fmc}: o crítico deve ser maior que o alerta e no máximo 100%.`
             }
 
             if (!Array.isArray(componente.metricas) || componente.metricas.length == 0) {
-                return `Marque pelo menos uma métrica para o componente ${componente.tipo} do ${fmc}.`
+                return `Marque pelo menos uma métrica para o componente ${nomeComponente} do ${fmc}.`
             }
 
             for (var metrica of componente.metricas) {
                 var existe = permitidas.some(function (permitida) { return permitida.nome == metrica.nome })
-                if (!existe) return `A métrica "${metrica.nome}" não pode ser monitorada no componente ${componente.tipo}.`
+                if (!existe) return `A métrica "${metrica.nome}" não pode ser monitorada no componente ${nomeComponente}.`
             }
         }
 

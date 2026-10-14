@@ -12,7 +12,7 @@
     width: 100%;
     margin: 0;
     padding: 14px 20px 24px;
-    background: linear-gradient(115deg, #edf6ff, #f4faff);
+    background: var(--bgPage);
     color: var(--textoPainel);
 }
 

@@ -186,6 +186,7 @@
 }
 
 .alerta {
+    text-decoration: none;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -196,6 +197,11 @@
     font-weight: 600;
 }
 
+.alerta:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 3px;
+}
+
 .alerta small {
     display: block;
     font-weight: 400;
@@ -203,10 +209,12 @@
 }
 
 .alerta.critico {
+    color: #e11d48;
     background: #fff1f3;
 }
 
 .alerta.moderado {
+    color: #f97316;
     background: #fff5eb;
 }
 

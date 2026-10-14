@@ -1,7 +1,7 @@
 var idUsuario = sessionStorage.getItem("idUsuario")
 var idRelatorio = new URLSearchParams(window.location.search).get("id")
 
-var nomesComponente = { CPU: "CPU", RAM: "Memória RAM", DISCO: "Disco" }
+var nomesComponente = { CPU: "CPU", RAM: "Memória RAM", DISCO: "Armazenamento" }
 var iconesComponente = { CPU: "bi-cpu", RAM: "bi-memory", DISCO: "bi-device-hdd" }
 var nomesStatusFmc = { ATIVO: "Ativo", INATIVO: "Inativo", MANUTENCAO: "Em manutenção" }
 var conclusoes = {

@@ -23,7 +23,7 @@ function verificarSessao() {
 function obterPaginaInicial() {
     switch (sessionStorage.getItem("cargoUsuario")) {
         case "ADMIN": return "cadastroEmpresa.html"
-        case "GESTOR": return "cadastroFuncionario.html"
+        case "GESTOR": return "dashboardGeral.html"
         case "ANALISTA": return "dashboardPrincipalAnalista.html"
         default: return "login.html"
     }
@@ -41,6 +41,7 @@ function podeAcessarPagina(pagina) {
         case "cadastroFmc.html": return cargo === "GESTOR"
         case "relatorioGestor.html": return cargo === "GESTOR"
         case "verRelatorioGestor.html": return cargo === "GESTOR"
+        case "dashboardGeral.html": return cargo === "GESTOR"
         case "cadastroRelatorio.html": return cargo === "ANALISTA"
         case "dashboardPrincipalAnalista.html":
         case "dashboardAnaliseFmcAnalista.html":
@@ -77,7 +78,12 @@ function atualizarMenu() {
 
     const links = document.querySelectorAll('.sidebarNav a[href]')
     for (const link of links) {
-        const pagina = link.getAttribute("href").split("/").pop()
+        let pagina = link.getAttribute("href").split("/").pop()
+        if (sessionStorage.getItem("cargoUsuario") === "GESTOR"
+            && pagina === "dashboardPrincipalAnalista.html") {
+            pagina = "dashboardGeral.html"
+            link.setAttribute("href", pagina)
+        }
         if (!podeAcessarPagina(pagina)) link.remove()
     }
 }

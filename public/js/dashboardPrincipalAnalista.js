@@ -1,7 +1,6 @@
 function inicializarDashboardPrincipalAnalista() {
     if (!verificarSessao() || !podeAcessarPagina("dashboardPrincipalAnalista.html")) return
 
-    const dataDashboard = document.getElementById("dataDashboard")
     const buscaAeronave = document.getElementById("buscaAeronave")
     const filtros = document.querySelectorAll(".botaoFiltro")
     const listaAeronaves = document.getElementById("listaAeronaves")
@@ -74,20 +73,6 @@ function inicializarDashboardPrincipalAnalista() {
         aeronaves = listaAeronaves.querySelectorAll(".cartaoAeronave")
     }
 
-    function atualizarData() {
-        const agora = new Date()
-        dataDashboard.dateTime = agora.toISOString()
-        dataDashboard.replaceChildren()
-        for (const opcoes of [
-            { weekday: "short", day: "numeric", month: "long", year: "numeric" },
-            { hour: "2-digit", minute: "2-digit" }
-        ]) {
-            const parte = document.createElement("span")
-            parte.textContent = agora.toLocaleString("pt-BR", opcoes)
-            dataDashboard.appendChild(parte)
-        }
-    }
-
     function normalizarTexto(texto) {
         return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase()
     }
@@ -117,8 +102,6 @@ function inicializarDashboardPrincipalAnalista() {
     }
 
     buscaAeronave.addEventListener("input", filtrarAeronaves)
-    atualizarData()
-    setInterval(atualizarData, 60000)
 
     construirCards(dadosAeronaves)
     filtrarAeronaves()

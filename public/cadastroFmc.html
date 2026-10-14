@@ -212,7 +212,7 @@
             <div class="cabecalhoSecao">
               <h2>Placas e componentes do FMC Mestre</h2>
               <p>
-                O FMC possui uma placa de CPU, uma de memória RAM e uma de disco. Escolha quais placas serão
+                O FMC possui uma placa de CPU, uma de memória RAM e uma de armazenamento. Escolha quais placas serão
                 monitoradas e, para cada uma, cadastre o componente e as métricas.
               </p>
             </div>
@@ -451,7 +451,7 @@
                 <header class="cabecalhoPlaca">
                   <h3>
                     <i class="bi bi-device-hdd" aria-hidden="true"></i>
-                    Placa de disco
+                    Placa de armazenamento
                     <small>Placa 3 de 3 do FMC Mestre</small>
                   </h3>
 
@@ -467,7 +467,7 @@
                     <p class="helper">Identificação física da placa no FMC.</p>
                     <div class="field">
                       <label for="mestreDiscoPlacaNome">Nome da placa *</label>
-                      <input id="mestreDiscoPlacaNome" name="mestreDiscoPlacaNome" type="text" placeholder="Ex.: Placa Disco" maxlength="100" required>
+                      <input id="mestreDiscoPlacaNome" name="mestreDiscoPlacaNome" type="text" placeholder="Ex.: Placa Armazenamento" maxlength="100" required>
                     </div>
                     <div class="field">
                       <label for="mestreDiscoPlacaModelo">Modelo da placa *</label>
@@ -485,15 +485,15 @@
                     <div class="linhaComponente">
                       <div class="field">
                         <label for="mestreDiscoTipo">Tipo</label>
-                        <input id="mestreDiscoTipo" type="text" value="Disco" class="bloqueado" readonly>
+                        <input id="mestreDiscoTipo" type="text" value="Armazenamento" class="bloqueado" readonly>
                       </div>
                       <div class="field">
                         <label for="mestreDiscoComponenteModelo">Modelo do componente *</label>
-                        <input id="mestreDiscoComponenteModelo" name="mestreDiscoComponenteModelo" type="text" placeholder="Modelo do disco" maxlength="100" required>
+                        <input id="mestreDiscoComponenteModelo" name="mestreDiscoComponenteModelo" type="text" placeholder="Modelo do armazenamento" maxlength="100" required>
                       </div>
                     </div>
 
-                    <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso do disco.</small></p>
+                    <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso do armazenamento.</small></p>
                     <div class="linhaLimites">
                       <div class="field">
                         <label for="mestreDiscoLimiteAtencao" class="alerta">Alerta (%)</label>
@@ -544,10 +544,10 @@
                       </label>
                       <label class="metrica">
                         <input type="checkbox" name="mestreDiscoMetricas" value="Leitura / escrita" data-unidade="MB/s"
-                          data-descricao="Taxa de transferência do disco" checked>
+                          data-descricao="Taxa de transferência do armazenamento" checked>
                         <strong>Leitura / escrita</strong>
                         <span class="unidade">MB/s</span>
-                        <small>Taxa de transferência do disco</small>
+                        <small>Taxa de transferência do armazenamento</small>
                       </label>
                     </div>
                   </div>
@@ -662,7 +662,7 @@
                 <div class="placaSpare" data-tipo="DISCO">
                   <h3>
                     <i class="bi bi-device-hdd" aria-hidden="true"></i>
-                    Placa de disco
+                    Placa de armazenamento
                     <small>Nome e modelo iguais ao Mestre</small>
                   </h3>
                   <p class="resumoPlaca"></p>
