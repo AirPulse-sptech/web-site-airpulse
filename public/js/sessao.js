@@ -35,6 +35,7 @@ function podeAcessarPagina(pagina) {
         case "cadastroEmpresa.html": return cargo === "ADMIN"
         case "empresasCadastradas.html": return cargo === "ADMIN"
         case "cadastroFuncionario.html": return cargo === "GESTOR"
+        case "dashboardRelatorios.html": return cargo === "GESTOR"
         case "gerenciarFuncionario.html": return cargo === "GESTOR"
         case "EditarUsuario.html": return cargo === "GESTOR"
         case "cadastroAeronave.html": return cargo === "GESTOR"

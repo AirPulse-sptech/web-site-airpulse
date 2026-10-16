@@ -139,10 +139,12 @@ periodoFim DATE NOT NULL,
 texto MEDIUMTEXT NOT NULL,
 statusRelatorio VARCHAR(45) NOT NULL DEFAULT 'RASCUNHO',
 criticidade VARCHAR(45),
+categoria VARCHAR(20) NOT NULL,
 dataCriacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
 fkAeronave INT NOT NULL,
 CONSTRAINT ctRelatorioStatus CHECK (statusRelatorio IN ('RASCUNHO', 'EM_REVISAO', 'PUBLICADO')),
 CONSTRAINT ctRelatorioCriticidade CHECK (criticidade IN ('NORMAL', 'ATENCAO', 'CRITICO')),
+CONSTRAINT ctRelatorioCategoria CHECK (categoria IN ('DESEMPENHO', 'FALHA_HARDWARE', 'ARMAZENAMENTO', 'MEMORIA_RAM', 'PROCESSADOR', 'PERDA_CONEXAO')),
 CONSTRAINT ctRelatorioPeriodo CHECK (periodoFim >= periodoInicio),
 CONSTRAINT fkRelatorioAeronave
 FOREIGN KEY (fkAeronave) REFERENCES aeronave (idAeronave)
@@ -218,3 +220,7 @@ INSERT INTO aeronave (
     ) VALUES (
         'PR-AER', 'Boeing 737-8', 'AN-001', 'ATIVA', NOW(),
         'GOL', 2);
+
+INSERT INTO relatorio (titulo, periodoInicio, periodoFim, texto, statusRelatorio, criticidade, categoria, dataCriacao, fkAeronave)
+VALUES ('Uso de RAM acima do limite crítico', DATE_SUB(CURDATE(), INTERVAL 8 DAY), DATE_SUB(CURDATE(), INTERVAL 1 DAY), 'Relatório de análise: uso de ram acima do limite crítico identificado durante o monitoramento da aeronave PR-AER. Ocorrência registrada e encaminhada para acompanhamento da equipe.', 'PUBLICADO', 'CRITICO', 'MEMORIA_RAM', TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY), '08:30:00'), (SELECT idAeronave FROM aeronave WHERE nome = 'PR-AER' LIMIT 1));
+

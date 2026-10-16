@@ -20,7 +20,7 @@ var aeronaveRouter = require("./src/routes/aeronave")
 var computadorRouter = require("./src/routes/computador")
 var relatorioRouter = require("./src/routes/relatorio")
 var relatorioGestorRouter = require("./src/routes/relatorioGestor")
-
+var dashboardRelatorioRouter = require("./src/routes/dashboardRelatorio")
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -35,6 +35,7 @@ app.use("/aeronave", aeronaveRouter)
 app.use("/computador", computadorRouter)
 app.use("/relatorio", relatorioRouter)
 app.use("/relatorio", relatorioGestorRouter)
+app.use("/dashboardRelatorio", dashboardRelatorioRouter)
 
 app.listen(portaApp, function () {
     console.log(`
