@@ -89,18 +89,26 @@
         <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
         <div class="mainWrapper">
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu" aria-controls="sidebar">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Gerenciar Funcionários</span>
+                </div>
+            </header>
 
             <main class="gfConteudo paginaInterna">
 
                 <div class="gfCabecalho">
                     <div>
-                        <h1 class="gfTitulo">Gerenciamento de Usuários</h1>
-                        <p class="gfSubtitulo">Acompanhe o status e os servidores de cada usuário.</p>
+                        <h1 class="gfTitulo">Gerenciamento de Funcionários</h1>
+                        <p class="gfSubtitulo">Acompanhe o status e os servidores de cada Funcionários.</p>
                     </div>
                 </div>
 
                 <div class="gfFiltros">
-                    <input type="text" class="gfBusca" placeholder="Buscar por nome ou e-mail">
+                    <input type="text" class="gfBusca" placeholder="Buscar por nome ou e-mail" aria-label="Buscar por nome ou e-mail">
                     <button type="button" class="gfFiltro ativo">Todos</button>
                     <button type="button" class="gfFiltro">Ativos</button>
                     <button type="button" class="gfFiltro">Inativos</button>
@@ -109,10 +117,10 @@
                 <div class="gfTabela">
 
                     <div class="gfLinha gfLinhaTitulo">
-                        <span>USUÁRIO</span>
+                        <span>Funcionários</span>
                         <span>STATUS</span>
+                        <span>AÇÕES</span>
                         <span>AERONAVES</span>
-                        <span></span>
                     </div>
 
                     <div class="gfLinha">
@@ -207,7 +215,7 @@
                     </div>
 
                     <div class="gfRodape">
-                        <span class="gfContagem">Mostrando 1–7 de 24 usuários</span>
+                        <span class="gfContagem">Mostrando 1–7 de 24 Funcionários</span>
                         <div class="gfPaginas">
                             <button type="button" class="gfPagina ativo">1</button>
                             <button type="button" class="gfPagina">2</button>

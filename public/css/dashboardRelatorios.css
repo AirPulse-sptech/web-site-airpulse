@@ -192,3 +192,110 @@
     font-size: 12px;
     text-align: center;
 }
+
+.dashboard .cartaoSituacao,
+.dashboard .cartaoIndicador,
+.identificacaoServidor {
+    min-width: 0;
+}
+
+.identificacaoServidor,
+.indicadoresRelatorios p {
+    overflow-wrap: anywhere;
+}
+
+.dashboard .resumoCategorias {
+    grid-template-columns: 160px minmax(0, 1fr);
+    gap: 16px;
+}
+
+.dashboard .legendaCategorias li {
+    grid-template-columns: 14px minmax(0, 1fr) auto auto;
+    gap: 8px;
+}
+
+.legendaCategorias li > span:nth-child(2) {
+    overflow-wrap: anywhere;
+}
+
+.tabelaRolavel:focus-visible {
+    outline: 3px solid #8cacff;
+    outline-offset: 3px;
+}
+
+@media (max-width: 1200px) {
+    .dashboard .indicadoresRelatorios {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gradeRelatorios {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard .cabecalhoDashboard {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .dataDashboard span {
+        display: inline;
+        margin-right: 8px;
+    }
+
+    .cartaoServidor {
+        grid-template-columns: 30px minmax(0, 1fr) auto;
+        gap: 10px;
+        padding: 12px;
+    }
+
+    .barraServidor {
+        grid-column: 2 / -1;
+        grid-row: 2;
+    }
+
+    .totalServidor {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .tabelaAnalistas {
+        min-width: 520px;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard .indicadoresRelatorios {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .dashboard .resumoCategorias {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .resumoCategorias .graficoRosca {
+        width: 160px;
+        justify-self: center;
+    }
+
+    .areaGrafico,
+    .areaGraficoLinha {
+        height: 240px;
+    }
+
+    .cartaoServidor {
+        grid-template-columns: 30px minmax(0, 1fr);
+    }
+
+    .totalServidor {
+        grid-column: 2;
+        grid-row: 2;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .barraServidor {
+        grid-row: 3;
+    }
+}
