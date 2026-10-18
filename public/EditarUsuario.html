@@ -33,48 +33,13 @@
 
         <aside id="sidebar">
             <div class="sidebarHeader">
-                <a class="sidebarBrand" href="home.html">
+                <a class="sidebarBrand" href="dashboardGeral.html">
                     <img class="brandLogoFull"
                         src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
                 </a>
             </div>
 
-            <nav class="sidebarNav">
-                <a href="dashboardPrincipalAnalista.html" class="navItem">
-                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Dashboard</span>
-                </a>
-
-                <div class="navItem disabled">
-                    <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Componentes</span>
-                </div>
-
-                <a href="cadastroFmc.html" class="navItem" id="itemCadastrarFmc">
-                    <i class="bi bi-hdd-rack navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Cadastrar FMC</span>
-                </a>
-
-                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
-                    <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Cadastrar Funcionário</span>
-                </a>
-
-                <a href="gerenciarFuncionario.html" class="navItem active" aria-current="page" id="itemGerenciarFuncionario">
-                    <i class="bi bi-gear navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Gerenciar Funcionário</span>
-                </a>
-
-                <a href="cadastroAeronave.html" class="navItem">
-                    <i class="bi bi-airplane navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Cadastrar Aeronave</span>
-                </a>
-
-                <div class="navItem disabled">
-                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Chamados & Suporte</span>
-                </div>
-            </nav>
+            <nav class="sidebarNav" aria-label="Menu principal"></nav>
 
             <div class="sidebarFooter">
                 <div class="userProfile">
@@ -94,6 +59,15 @@
 
         <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
         <div class="mainWrapper">
+
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Editar Usuário</span>
+                </div>
+            </header>
 
             <main class="eaConteudo paginaInterna">
 

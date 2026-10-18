@@ -73,6 +73,36 @@ function atualizarMenu() {
     const marca = document.querySelector('.sidebarBrand')
     if (marca) marca.setAttribute("href", obterPaginaInicial())
 
+    const menu = document.querySelector('.sidebarNav')
+    if (menu && sessionStorage.getItem("cargoUsuario") === "GESTOR") {
+        const pagina = window.location.pathname.split("/").pop()
+        const paginasRelacionadas = {
+            "EditarUsuario.html": "gerenciarFuncionario.html",
+            "verRelatorioGestor.html": "relatorioGestor.html",
+            "alertas.html": "dashboardGeral.html"
+        }
+        const paginaAtiva = paginasRelacionadas[pagina] || pagina
+        const itens = [
+            { pagina: "dashboardGeral.html", nome: "Dashboard", icone: "bi-grid-1x2" },
+            { pagina: "cadastroFmc.html", nome: "Cadastrar FMC", icone: "bi-hdd-rack", id: "itemCadastrarFmc" },
+            { pagina: "cadastroFuncionario.html", nome: "Cadastrar Funcionário", icone: "bi-people", id: "itemCadastrarFuncionario" },
+            { pagina: "gerenciarFuncionario.html", nome: "Gerenciar Funcionário", icone: "bi-gear", id: "itemGerenciarFuncionario" },
+            { pagina: "cadastroAeronave.html", nome: "Cadastrar Aeronave", icone: "bi-airplane" },
+            { pagina: "relatorioGestor.html", nome: "Relatórios", icone: "bi-file-earmark-text", id: "itemRelatorios" },
+            { pagina: "dashboardRelatorios.html", nome: "Produtividade Funcionarios", icone: "bi-file-earmark-bar-graph", id: "itemProdutividadeFuncionarios" }
+        ]
+
+        menu.setAttribute("aria-label", "Menu principal")
+        menu.innerHTML = itens.map(item => {
+            const ativo = item.pagina === paginaAtiva
+            return `
+                <a href="${item.pagina}" class="navItem${ativo ? ' active' : ''}"${item.id ? ` id="${item.id}"` : ''}${ativo ? ' aria-current="page"' : ''}>
+                    <i class="bi ${item.icone} navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>${item.nome}</span>
+                </a>`
+        }).join("")
+    }
+
     for (const item of document.querySelectorAll('.sidebarNav .navItem.disabled')) {
         item.remove()
     }
