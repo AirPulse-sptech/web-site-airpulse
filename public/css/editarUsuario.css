@@ -189,7 +189,6 @@
 .eaCard.associada {
     background-color: var(--eaVerdeClaro);
     border: 1px solid #86efac;
-    border-left: 8px solid var(--eaVerde);
 }
 
 .eaIcone {
@@ -316,6 +315,33 @@
     color: #fff;
 }
 
+.eaConteudo.paginaInterna .eaSubtitulo {
+    margin-bottom: 8px;
+}
+
+.eaConteudo.paginaInterna .eaQuadro {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 24px;
+}
+
+.eaConteudo.paginaInterna .eaLista {
+    gap: 20px;
+    padding: 4px 8px 4px 0;
+}
+
+.eaConteudo.paginaInterna .eaCard {
+    gap: 16px;
+    padding: 16px 18px;
+}
+
+.eaConteudo.paginaInterna .eaRodape {
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-top: 8px;
+}
+
 /*Celular*/
 @media (max-width: 768px) {
     .eaConteudo {
@@ -351,5 +377,33 @@
     .eaRodape {
         flex-direction: column;
         gap: 16px;
+    }
+
+    .eaConteudo.paginaInterna .eaQuadro {
+        gap: 20px;
+        padding: 16px;
+    }
+
+    .eaConteudo.paginaInterna .eaFiltro {
+        flex: 1;
+        width: auto;
+    }
+
+    .eaConteudo.paginaInterna .eaCard {
+        flex-wrap: wrap;
+        padding: 16px;
+    }
+
+    .eaConteudo.paginaInterna .eaInfo {
+        overflow-wrap: anywhere;
+    }
+
+    .eaConteudo.paginaInterna .eaAcoes {
+        width: 100%;
+    }
+
+    .eaConteudo.paginaInterna .eaBtnGrande {
+        flex: 1;
+        width: auto;
     }
 }
