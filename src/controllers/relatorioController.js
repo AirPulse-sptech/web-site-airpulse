@@ -4,6 +4,7 @@ var relatorioModel = require("../models/relatorioModel")
 
 const statusPermitidos = ["RASCUNHO", "EM_REVISAO", "PUBLICADO"]
 const criticidadesPermitidas = ["NORMAL", "ATENCAO", "CRITICO"]
+const categoriasPermitidas = ["DESEMPENHO", "FALHA_HARDWARE", "ARMAZENAMENTO", "MEMORIA_RAM", "PROCESSADOR", "PERDA_CONEXAO"]
 const limiteTexto = 50000
 
 function limparTexto(valor) {
@@ -85,6 +86,7 @@ function validarRelatorio(dados) {
     if (!dataValida(dados.periodoInicio) || !dataValida(dados.periodoFim)) return "Informe o período analisado."
     if (dados.periodoFim < dados.periodoInicio) return "O fim do período não pode ser antes do início."
     if (dados.texto.length > limiteTexto) return `A análise pode ter no máximo ${limiteTexto} caracteres.`
+    if (!categoriasPermitidas.includes(dados.categoria)) return "Escolha uma categoria válida."
     if (dados.criticidade && !criticidadesPermitidas.includes(dados.criticidade)) return "Conclusão inválida. Use NORMAL, ATENCAO ou CRITICO."
 
     if (dados.statusRelatorio == "PUBLICADO") {
@@ -105,6 +107,7 @@ function lerDados(req) {
         texto: String(req.body.textoServer || "").trim(),
         statusRelatorio: req.body.statusServer,
         criticidade: req.body.criticidadeServer || null,
+        categoria: req.body.categoriaServer,
         coautores: Array.isArray(req.body.coautoresServer)
             ? req.body.coautoresServer.map(Number).filter(Boolean)
             : []
@@ -147,6 +150,7 @@ function cadastrar(req, res) {
                     limparTexto(dados.texto),
                     dados.statusRelatorio,
                     textoCriticidade(dados.criticidade),
+                    dados.categoria,
                     dados.fkAeronave
                 )
                     .then(function (resultadoRelatorio) {
@@ -222,6 +226,7 @@ function atualizar(req, res) {
                             limparTexto(dados.texto),
                             dados.statusRelatorio,
                             textoCriticidade(dados.criticidade),
+                            dados.categoria,
                             dados.fkAeronave
                         )
                             .then(function () {
