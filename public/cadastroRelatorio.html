@@ -38,7 +38,7 @@
                     <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
                     <span>Componentes</span>
                 </div>
-                
+
 
                 <a href="cadastroRelatorio.html" class="navItem active" aria-current="page" id="itemRelatorios">
                     <i class="bi bi-file-earmark-text navIcon" style="font-size: 18px" aria-hidden="true"></i>
@@ -84,7 +84,8 @@
                 <div class="cabecalhoPagina">
                     <div>
                         <h1 id="tituloPagina">Novo relatório de análise</h1>
-                        <p class="subtitle" id="subtituloPagina">Registre sua leitura sobre os dados monitorados de uma aeronave.</p>
+                        <p class="subtitle" id="subtituloPagina">Registre sua leitura sobre os dados monitorados de uma
+                            aeronave.</p>
                     </div>
 
                     <div class="ladoCabecalho">
@@ -97,7 +98,8 @@
                                 <i class="bi bi-folder2-open" aria-hidden="true"></i>
                                 Meus relatórios
                             </a>
-                            <button class="button buttonPrimary botaoPequeno" id="botaoNovoRelatorio" type="button" hidden>
+                            <button class="button buttonPrimary botaoPequeno" id="botaoNovoRelatorio" type="button"
+                                hidden>
                                 <i class="bi bi-plus-lg" aria-hidden="true"></i>
                                 Registrar outro relatório
                             </button>
@@ -149,9 +151,28 @@
                                 <fieldset class="field full conclusao">
                                     <legend>Conclusão da análise *</legend>
                                     <div class="opcoesConclusao">
-                                        <label><input type="radio" name="criticidade" value="NORMAL" required> Normal</label>
+                                        <label><input type="radio" name="criticidade" value="NORMAL" required>
+                                            Normal</label>
                                         <label><input type="radio" name="criticidade" value="ATENCAO"> Atenção</label>
                                         <label><input type="radio" name="criticidade" value="CRITICO"> Crítico</label>
+                                    </div>
+                                </fieldset>
+
+                                <fieldset class="field full conclusao">
+                                    <legend>Categoria *</legend>
+                                    <div class="opcoesConclusao">
+                                        <label><input type="radio" name="categoria" value="DESEMPENHO" required>
+                                            Desempenho</label>
+                                        <label><input type="radio" name="categoria" value="FALHA_HARDWARE"> Falha de
+                                            hardware</label>
+                                        <label><input type="radio" name="categoria" value="ARMAZENAMENTO">
+                                            Armazenamento</label>
+                                        <label><input type="radio" name="categoria" value="MEMORIA_RAM"> Memória
+                                            RAM</label>
+                                        <label><input type="radio" name="categoria" value="PROCESSADOR">
+                                            Processador</label>
+                                        <label><input type="radio" name="categoria" value="PERDA_CONEXAO"> Perda de
+                                            conexão</label>
                                     </div>
                                 </fieldset>
                             </div>
@@ -183,7 +204,8 @@
                         <section class="card">
                             <div>
                                 <h2>Analistas responsáveis</h2>
-                                <p class="descricao">Quem escreveu ou revisou este relatório. O autor entra automaticamente.</p>
+                                <p class="descricao">Quem escreveu ou revisou este relatório. O autor entra
+                                    automaticamente.</p>
                             </div>
 
                             <div class="listaAnalistas" id="listaAnalistas">
@@ -230,11 +252,13 @@
                                     </div>
                                 </div>
 
-                                <p class="descricao">Configuração do monitoramento usada como referência para a análise.</p>
+                                <p class="descricao">Configuração do monitoramento usada como referência para a análise.
+                                </p>
 
                                 <div class="listaFmcs" id="listaFmcs"></div>
 
-                                <a class="linkDashboard" href="dashboardAnaliseFmcAnalista.html">Abrir dashboard da aeronave →</a>
+                                <a class="linkDashboard" href="dashboardAnaliseFmcAnalista.html">Abrir dashboard da
+                                    aeronave →</a>
                             </div>
                         </section>
 
@@ -242,7 +266,8 @@
                             <h3>Relatórios anteriores da <span id="nomeAeronaveLista"></span></h3>
 
                             <ul class="listaRelatorios" id="listaRelatorios"></ul>
-                            <p class="semRelatorios" id="semRelatorios" hidden>Nenhum relatório anterior para esta aeronave.</p>
+                            <p class="semRelatorios" id="semRelatorios" hidden>Nenhum relatório anterior para esta
+                                aeronave.</p>
                         </section>
                     </aside>
 

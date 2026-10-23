@@ -57,7 +57,7 @@ function listarMeus(idFuncionario) {
 
 function buscarDetalhe(idRelatorio, idFuncionario) {
     var instrucaoSql = `
-        SELECT r.idRelatorio, r.titulo, r.texto, r.statusRelatorio, r.criticidade, r.fkAeronave, fr.papel,
+        SELECT r.idRelatorio, r.titulo, r.texto, r.statusRelatorio, r.criticidade, r.categoria, r.fkAeronave, fr.papel,
             DATE_FORMAT(r.periodoInicio, '%Y-%m-%d') AS periodoInicio,
             DATE_FORMAT(r.periodoFim, '%Y-%m-%d') AS periodoFim
         FROM relatorio r
@@ -81,16 +81,16 @@ function listarVinculados(idRelatorio) {
     return database.executar(instrucaoSql)
 }
 
-function cadastrar(titulo, periodoInicio, periodoFim, texto, statusRelatorio, criticidade, fkAeronave) {
+function cadastrar(titulo, periodoInicio, periodoFim, texto, statusRelatorio, criticidade, categoria, fkAeronave) {
     var instrucaoSql = `
-        INSERT INTO relatorio (titulo, periodoInicio, periodoFim, texto, statusRelatorio, criticidade, fkAeronave)
-        VALUES ('${titulo}', '${periodoInicio}', '${periodoFim}', '${texto}', '${statusRelatorio}', ${criticidade}, ${fkAeronave});
+        INSERT INTO relatorio (titulo, periodoInicio, periodoFim, texto, statusRelatorio, criticidade, categoria, fkAeronave)
+        VALUES ('${titulo}', '${periodoInicio}', '${periodoFim}', '${texto}', '${statusRelatorio}', ${criticidade}, '${categoria}', ${fkAeronave});
     `
     console.log("Executando a instrução SQL: \n" + instrucaoSql)
     return database.executar(instrucaoSql)
 }
 
-function atualizar(idRelatorio, titulo, periodoInicio, periodoFim, texto, statusRelatorio, criticidade, fkAeronave) {
+function atualizar(idRelatorio, titulo, periodoInicio, periodoFim, texto, statusRelatorio, criticidade, categoria, fkAeronave) {
     var instrucaoSql = `
         UPDATE relatorio SET
             titulo = '${titulo}',
@@ -99,6 +99,7 @@ function atualizar(idRelatorio, titulo, periodoInicio, periodoFim, texto, status
             texto = '${texto}',
             statusRelatorio = '${statusRelatorio}',
             criticidade = ${criticidade},
+            categoria = '${categoria}',
             fkAeronave = ${fkAeronave}
         WHERE idRelatorio = ${idRelatorio};
     `

@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/gerenciarFuncionario.css">
+    <link rel="stylesheet" href="css/gerenciarAeronave.css">
+    <title>AirPulse - Gerenciar Aeronave</title>
+    <link rel="stylesheet" href="css/painel.css">
+</head>
+
+<body>
+
+    <div class="appLayout">
+
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="home.html">
+                    <img class="brandLogoFull"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebarNav">
+                <a href="dashboardPrincipalAnalista.html" class="navItem">
+                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Componentes</span>
+                </div>
+
+                <a href="cadastroFmc.html" class="navItem" id="itemCadastrarFmc">
+                    <i class="bi bi-hdd-rack navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar FMC</span>
+                </a>
+
+                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
+                    <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Funcionário</span>
+                </a>
+
+                <a href="gerenciarFuncionario.html" class="navItem" id="itemGerenciarFuncionario">
+                    <i class="bi bi-gear navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Gerenciar Funcionário</span>
+                </a>
+
+                <a href="cadastroAeronave.html" class="navItem">
+                    <i class="bi bi-airplane navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Aeronave</span>
+                </a>
+                <a href="gerenciarAeronave.html" class="navItem active" aria-current="page">
+                    <i class="bi bi-airplane-engines navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Gerenciar Aeronave</span>
+                </a>
+                <a href="relatorioGestor.html" class="navItem" id="itemRelatorios">
+                    <i class="bi bi-file-earmark-text navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Relatórios</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Chamados & Suporte</span>
+                </div>
+            </nav>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
+                    </div>
+                </div>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+        <div class="mainWrapper">
+
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Gerenciar Aeronave</span>
+                </div>
+            </header>
+
+            <main class="gfConteudo paginaInterna">
+
+                <div class="gfCabecalho">
+                    <div>
+                        <h1 class="gfTitulo">Gerenciamento de Aeronaves</h1>
+                        <p class="gfSubtitulo">Edite as informações e ative ou desative aeronaves e FMCs.</p>
+                    </div>
+                </div>
+
+                <div class="cardErro" id="cardErro">
+                    <span id="mensagemErro"></span>
+                </div>
+
+                <div class="gfTabela">
+
+                    <div class="gfLinha gaLinha gfLinhaTitulo">
+                        <span>AERONAVE</span>
+                        <span>STATUS</span>
+                        <span>FMC 1</span>
+                        <span>FMC 2</span>
+                        <span>AÇÕES</span>
+                    </div>
+
+                    <div id="listaAeronaves"></div>
+
+                    <div class="gfRodape">
+                        <span class="gfContagem" id="contagem"></span>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+
+    </div>
+
+    <div class="modal fade" id="modalEditar" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title">Editar aeronave</h2>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+                </div>
+
+                <div class="modal-body">
+                    <div class="cardErro" id="cardErroModal">
+                        <span id="mensagemErroModal"></span>
+                    </div>
+
+                    <h3 class="gaSecao">Aeronave</h3>
+                    <div class="formGrid">
+                        <div class="inputGroup">
+                            <label for="editNome">Nome</label>
+                            <input type="text" id="editNome">
+                        </div>
+
+                        <div class="inputGroup">
+                            <label for="editModelo">Modelo</label>
+                            <input type="text" id="editModelo">
+                        </div>
+
+                        <div class="inputGroup">
+                            <label for="editNumeroSerie">Número de Série</label>
+                            <input type="text" id="editNumeroSerie">
+                        </div>
+
+                        <div class="inputGroup">
+                            <label for="editCompanhiaAerea">Companhia Aérea</label>
+                            <input type="text" id="editCompanhiaAerea">
+                        </div>
+
+                        <div class="inputGroup">
+                            <label for="editStatus">Status</label>
+                            <select id="editStatus">
+                                <option value="ATIVA">Ativa</option>
+                                <option value="MANUTENCAO">Em manutenção</option>
+                                <option value="INATIVA">Inativa</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div id="editFmcs"></div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btnVoltar" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btnProximo" onclick="salvarEdicao()">Salvar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/sessao.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
+    <script src="js/gerenciarAeronave.js"></script>
+</body>
+
+</html>

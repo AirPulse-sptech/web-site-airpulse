@@ -1,0 +1,210 @@
+.gaLinha {
+    grid-template-columns: 1.6fr 1fr 1.6fr 1.6fr 1.8fr;
+    column-gap: 12px;
+}
+
+.gaNome {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.gaBolinha {
+    flex-shrink: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #dc2626;
+}
+
+.gaBolinha.ativo {
+    background-color: #16a34a;
+}
+
+.gaTextoStatus {
+    font-size: 13px;
+    font-weight: 700;
+    color: #b91c1c;
+}
+
+.gaTextoStatus.ativo {
+    color: #15803d;
+}
+
+.gaFmc {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.gaVazio {
+    font-size: 13px;
+    color: var(--gfCinza);
+}
+
+.gaAcoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.gaBtnStatus {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 120px;
+    height: 36px;
+    border: 1px solid var(--gfBorda);
+    border-radius: 8px;
+    font-family: var(--fontBody);
+    background-color: #fff;
+    color: var(--gfTexto);
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.gaBtnStatus:hover {
+    background-color: var(--gfRoxoClaro);
+}
+
+.gaBtnStatusPequeno {
+    align-self: flex-start;
+    width: auto;
+    height: 30px;
+    padding: 0 12px;
+    font-size: 12px;
+}
+
+#modalEditar .btnVoltar,
+#modalEditar .btnProximo {
+    padding: 12px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+#modalEditar .btnVoltar {
+    background-color: var(--bgSurface);
+    color: var(--colorPrimary);
+    border: 1px solid var(--colorPrimary);
+}
+
+#modalEditar .btnVoltar:hover {
+    background-color: var(--bgInput);
+}
+
+#modalEditar .btnProximo {
+    background-color: var(--colorPrimary);
+    color: var(--colorWhite);
+    border: none;
+}
+
+#modalEditar .btnProximo:hover {
+    background-color: var(--colorPrimaryDark);
+}
+
+#modalEditar .modal-title {
+    font-family: var(--fontHeading);
+    font-size: 20px;
+    font-weight: 700;
+    color: var(--textPrimary);
+}
+
+#modalEditar .gaSubsecao {
+    margin: 18px 0 10px;
+    font-family: var(--fontBody);
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--textSecondary);
+}
+
+#modalEditar .gaMetricas {
+    padding: 10px 0;
+    font-size: 13px;
+    color: var(--textSecondary);
+}
+
+#modalEditar .gaSecao {
+    margin: 24px 0 12px;
+    font-family: var(--fontHeading);
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--colorPrimary);
+}
+
+#modalEditar .modal-body > .gaSecao:first-of-type {
+    margin-top: 0;
+}
+
+#modalEditar .formGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    column-gap: 20px;
+    row-gap: 14px;
+}
+
+#modalEditar .inputGroup {
+    display: flex;
+    flex-direction: column;
+}
+
+#modalEditar .inputGroup label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--textPrimary);
+    margin-bottom: 6px;
+}
+
+#modalEditar .inputGroup input,
+#modalEditar .inputGroup select {
+    padding: 10px 12px;
+    border: 1px solid var(--borderSoft);
+    border-radius: 6px;
+    font-size: 14px;
+    color: var(--textPrimary);
+    outline: none;
+}
+
+#modalEditar .inputGroup select {
+    background-color: #fff;
+}
+
+#modalEditar .inputGroup input:focus,
+#modalEditar .inputGroup select:focus {
+    border-color: var(--colorPrimary);
+}
+
+#modalEditar .modal-footer {
+    gap: 12px;
+}
+
+#modalEditar .modal-footer button {
+    min-width: 120px;
+}
+
+.cardErro {
+    width: 100%;
+    margin: 0 auto 16px;
+    padding: 14px 20px;
+    border-radius: 8px;
+    background-color: var(--colorPrimarySoft);
+    display: none;
+}
+
+#mensagemErro,
+#mensagemErroModal {
+    color: var(--colorPrimary);
+    font-size: 14px;
+}
+
+@media (max-width: 768px) {
+    .gaLinha {
+        min-width: 960px;
+    }
+
+    #modalEditar .formGrid {
+        grid-template-columns: 1fr;
+    }
+}

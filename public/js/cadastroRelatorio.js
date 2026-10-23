@@ -453,6 +453,8 @@ function abrirRelatorio(id) {
 
       const opcao = formulario.querySelector(`input[name="criticidade"][value="${relatorio.criticidade}"]`)
       if (opcao) opcao.checked = true
+      const opcaoCategoria = formulario.querySelector(`input[name="categoria"][value="${relatorio.categoria}"]`)
+      if (opcaoCategoria) opcaoCategoria.checked = true
 
       validarPeriodo()
       atualizarPainel()
@@ -487,7 +489,9 @@ document.querySelector("#listaMeusRelatorios").addEventListener("click", functio
 function validarParaSalvar(status) {
   const campos = status === "PUBLICADO"
     ? [...formulario.querySelectorAll("input, select, textarea")]
-    : [selectAeronave, document.querySelector("#titulo"), campoInicio, campoFim]
+    : [selectAeronave, document.querySelector("#titulo"), campoInicio, campoFim,
+    formulario.querySelector('input[name="categoria"]')]
+    
 
   validarPeriodo()
 
@@ -502,6 +506,7 @@ function validarParaSalvar(status) {
 
 function montarDados(status) {
   const criticidade = formulario.querySelector('input[name="criticidade"]:checked')
+  const categoria = formulario.querySelector('input[name="categoria"]:checked')
 
   return {
     idFuncionarioServer: idUsuario,
@@ -511,6 +516,7 @@ function montarDados(status) {
     periodoFimServer: campoFim.value,
     textoServer: texto.value,
     criticidadeServer: criticidade ? criticidade.value : "",
+    categoriaServer: categoria ? categoria.value : "",
     statusServer: status,
     coautoresServer: coautores.map(analista => analista.id)
   }
