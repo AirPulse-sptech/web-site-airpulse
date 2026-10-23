@@ -358,7 +358,8 @@ function prepararSpare() {
   document.querySelector("#resumoMestre").innerHTML = `
     <div><dt>Nome</dt><dd>${valor("mestreNome")}</dd></div>
     <div><dt>Aeronave</dt><dd>${textoAeronave()}</dd></div>
-    <div><dt>Placas</dt><dd>${placasMonitoradas.map(placa => placa.dataset.tipo).join(", ")}</dd></div>
+    <div><dt>Placas</dt><dd>${placas.length} ${placas.length === 1 ? "placa" : "placas"}</dd></div>
+    <!-- CORREÇÃO 1: a linha de cima usava "placasMonitoradas", que não existe mais (erro na etapa do Spare) -->
     <div><dt>Status</dt><dd>${nomesStatus[statusSelecionado("mestre")]}</dd></div>`
 
   const seriesDigitadas = {}
@@ -490,11 +491,10 @@ function tabelaPlacas(placas) {
 
     return `
       <tr>
-        <td><strong>${placa.nome}</strong><small>${placa.numeroSerie}</small></td>
-        <td><strong>${componente.tipo}</strong><small>${componente.modelo}</small></td>
-        <td>${componente.metricas.length}</td>
-        <td class="valorAlerta">${componente.limiteAtencao}%</td>
-        <td class="valorCritico">${componente.limiteCritico}%</td>
+        <td><strong>${escaparTexto(placa.nome)}</strong><small>${escaparTexto(placa.numeroSerie)}</small></td>
+        <td>${componentes}</td>
+        <!-- CORREÇÃO 2: estas duas linhas substituem as colunas antigas (um componente por placa),
+             que usavam "componente" fora do lugar e travavam a tela de confirmação -->
       </tr>`
   })
 
@@ -538,7 +538,6 @@ function montarRevisao() {
   document.querySelector("#resumoTotal").textContent =
     `Serão cadastrados ${computadores.length} ${computadores.length === 1 ? "computador" : "computadores"}, ` +
     `${placas.length} ${placas.length === 1 ? "placa" : "placas"}, ${componentes.length} componentes e ${metricas} métricas.`
-  // FIM DA ALTERAÇÃO
 
   revisao.innerHTML = computadores.map(secaoRevisao).join("")
 }

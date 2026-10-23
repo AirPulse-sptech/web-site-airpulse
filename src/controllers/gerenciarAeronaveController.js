@@ -66,27 +66,10 @@ function listar(req, res) {
                             numeroSerie: linha.numeroSerieFmc,
                             statusComputador: linha.statusComputador,
                             dataInstalacao: linha.dataInstalacao,
-                            placas: placas
-                                .filter(function (placa) { return placa.fkComputador == linha.idComputador })
-                                .map(function (placa) {
-                                    return {
-                                        idPlaca: placa.idPlaca,
-                                        nome: placa.nome,
-                                        modelo: placa.modelo,
-                                        numeroSerie: placa.numeroSerie,
-                                        componente: {
-                                            idComponente: placa.idComponente,
-                                            tipo: placa.tipo,
-                                            modelo: placa.modeloComponente,
-                                            statusMonitoramento: placa.statusMonitoramento,
-                                            limiteAtencao: placa.limiteAtencao,
-                                            limiteCritico: placa.limiteCritico,
-                                            metricas: metricas
-                                                .filter(function (metrica) { return metrica.fkComponente == placa.idComponente })
-                                                .map(function (metrica) { return metrica.nome })
-                                        }
-                                    }
-                                })
+                            placas: agruparPlacas(
+                                placas.filter(function (placa) { return placa.fkComputador == linha.idComputador }),
+                                metricas
+                            )
                         })
                     }
                 })
@@ -95,6 +78,41 @@ function listar(req, res) {
             })
             .catch(erroBanco(res, "Houve um erro ao listar as aeronaves para gerenciamento!"))
     }
+}
+
+function agruparPlacas(linhas, metricas) {
+    var placas = []
+
+    linhas.forEach(function (linha) {
+        var placa = placas.find(function (item) { return item.idPlaca == linha.idPlaca })
+
+        if (!placa) {
+            placa = {
+                idPlaca: linha.idPlaca,
+                nome: linha.nome,
+                modelo: linha.modelo,
+                numeroSerie: linha.numeroSerie,
+                componentes: []
+            }
+            placas.push(placa)
+        }
+
+        if (linha.idComponente) {
+            placa.componentes.push({
+                idComponente: linha.idComponente,
+                tipo: linha.tipo,
+                modelo: linha.modeloComponente,
+                statusMonitoramento: linha.statusMonitoramento,
+                limiteAtencao: linha.limiteAtencao,
+                limiteCritico: linha.limiteCritico,
+                metricas: metricas
+                    .filter(function (metrica) { return metrica.fkComponente == linha.idComponente })
+                    .map(function (metrica) { return metrica.nome })
+            })
+        }
+    })
+
+    return placas
 }
 
 function validarEdicao(dados) {
@@ -114,14 +132,15 @@ function validarEdicao(dados) {
         var placas = Array.isArray(computador.placas) ? computador.placas : []
 
         for (var placa of placas) {
-            var componente = placa.componente || {}
-
             if (!Number(placa.idPlaca)) return "O id da placa está undefined!"
             if (!textoPreenchido(placa.nome) || !textoPreenchido(placa.modelo) || !textoPreenchido(placa.numeroSerie)) {
                 return "Preencha todos os campos das placas."
             }
 
-            if (Number(componente.idComponente)) {
+            var componentes = Array.isArray(placa.componentes) ? placa.componentes : []
+
+            for (var componente of componentes) {
+                if (!Number(componente.idComponente)) return "O id do componente está undefined!"
                 if (!textoPreenchido(componente.modelo)) return "Preencha o modelo de todos os componentes."
                 if (!statusMonitoramentoPermitidos.includes(componente.statusMonitoramento)) return "Monitoramento inválido. Use ATIVO ou INATIVO."
 
@@ -150,19 +169,21 @@ function editarPlacasDoComputador(computador, idComputador) {
                 limparTexto(placa.numeroSerie)
             )
         }).then(function () {
-            var componente = placa.componente || {}
+            var componentes = Array.isArray(placa.componentes) ? placa.componentes : []
 
-            if (!Number(componente.idComponente)) return
-
-            return gerenciarAeronaveModel.editarComponente(
-                Number(componente.idComponente),
-                Number(placa.idPlaca),
-                idComputador,
-                limparTexto(componente.modelo),
-                componente.statusMonitoramento,
-                Number(componente.limiteAtencao),
-                Number(componente.limiteCritico)
-            )
+            return componentes.reduce(function (anteriorComponente, componente) {
+                return anteriorComponente.then(function () {
+                    return gerenciarAeronaveModel.editarComponente(
+                        Number(componente.idComponente),
+                        Number(placa.idPlaca),
+                        idComputador,
+                        limparTexto(componente.modelo),
+                        componente.statusMonitoramento,
+                        Number(componente.limiteAtencao),
+                        Number(componente.limiteCritico)
+                    )
+                })
+            }, Promise.resolve())
         })
     }, Promise.resolve())
 }

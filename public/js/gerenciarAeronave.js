@@ -180,10 +180,9 @@ var nomesComponente = {
     DISCO: "Armazenamento"
 }
 
-function montarCamposPlaca(placa) {
-    var componente = placa.componente
+function montarCamposPlaca(placa, posicao) {
     var html = `
-        <h4 class="gaSubsecao">Placa de ${nomesComponente[componente.tipo] || escapar(componente.tipo)}</h4>
+        <h4 class="gaSubsecao">Placa ${posicao}</h4>
         <div class="formGrid">
             <div class="inputGroup">
                 <label for="placaNome${placa.idPlaca}">Nome da placa</label>
@@ -201,36 +200,44 @@ function montarCamposPlaca(placa) {
             </div>
     `
 
-    if (componente.idComponente) {
+    html += "</div>"
+
+    for (var i = 0; i < placa.componentes.length; i++) {
+        var componente = placa.componentes[i]
+        var id = componente.idComponente
+
         html += `
+        <h5 class="gaSubsecao">${nomesComponente[componente.tipo] || escapar(componente.tipo)}</h5>
+        <div class="formGrid">
             <div class="inputGroup">
-                <label for="componenteModelo${placa.idPlaca}">Modelo do componente</label>
-                <input type="text" id="componenteModelo${placa.idPlaca}" value="${escapar(componente.modelo)}">
+                <label for="componenteModelo${id}">Modelo do componente</label>
+                <input type="text" id="componenteModelo${id}" value="${escapar(componente.modelo)}">
             </div>
 
             <div class="inputGroup">
-                <label for="limiteAtencao${placa.idPlaca}">Limite de atenção (%)</label>
-                <input type="number" id="limiteAtencao${placa.idPlaca}" value="${escapar(componente.limiteAtencao)}" min="1" max="100" step="0.01">
+                <label for="limiteAtencao${id}">Limite de atenção (%)</label>
+                <input type="number" id="limiteAtencao${id}" value="${escapar(componente.limiteAtencao)}" min="1" max="100" step="0.01">
             </div>
 
             <div class="inputGroup">
-                <label for="limiteCritico${placa.idPlaca}">Limite crítico (%)</label>
-                <input type="number" id="limiteCritico${placa.idPlaca}" value="${escapar(componente.limiteCritico)}" min="1" max="100" step="0.01">
+                <label for="limiteCritico${id}">Limite crítico (%)</label>
+                <input type="number" id="limiteCritico${id}" value="${escapar(componente.limiteCritico)}" min="1" max="100" step="0.01">
             </div>
 
             <div class="inputGroup">
-                <label for="monitoramento${placa.idPlaca}">Monitoramento</label>
-                <select id="monitoramento${placa.idPlaca}">${montarOpcoes(opcoesMonitoramento, componente.statusMonitoramento)}</select>
+                <label for="monitoramento${id}">Monitoramento</label>
+                <select id="monitoramento${id}">${montarOpcoes(opcoesMonitoramento, componente.statusMonitoramento)}</select>
             </div>
 
             <div class="inputGroup">
                 <label>Métricas monitoradas</label>
                 <span class="gaMetricas">${componente.metricas.length ? escapar(componente.metricas.join(", ")) : "Nenhuma"}</span>
             </div>
+        </div>
         `
     }
 
-    return html + "</div>"
+    return html
 }
 
 function montarCamposFmc(computador, posicao) {
@@ -265,7 +272,7 @@ function montarCamposFmc(computador, posicao) {
     `
 
     for (var i = 0; i < computador.placas.length; i++) {
-        html += montarCamposPlaca(computador.placas[i])
+        html += montarCamposPlaca(computador.placas[i], i + 1) 
     }
 
     return html
@@ -324,18 +331,19 @@ function salvarEdicao() {
         for (var j = 0; j < computador.placas.length; j++) {
             var placa = computador.placas[j]
             var idPlaca = placa.idPlaca
-            var componente = { idComponente: placa.componente.idComponente }
+            var componentes = []
 
             if (valorCampo(`placaNome${idPlaca}`).trim() == "" || valorCampo(`placaModelo${idPlaca}`).trim() == ""
                 || valorCampo(`placaNumeroSerie${idPlaca}`).trim() == "") {
                 vazio = true
             }
 
-            if (placa.componente.idComponente) {
-                var atencao = Number(valorCampo(`limiteAtencao${idPlaca}`))
-                var critico = Number(valorCampo(`limiteCritico${idPlaca}`))
+            for (var k = 0; k < placa.componentes.length; k++) {
+                var idComponente = placa.componentes[k].idComponente
+                var atencao = Number(valorCampo(`limiteAtencao${idComponente}`))
+                var critico = Number(valorCampo(`limiteCritico${idComponente}`))
 
-                if (valorCampo(`componenteModelo${idPlaca}`).trim() == "") {
+                if (valorCampo(`componenteModelo${idComponente}`).trim() == "") {
                     vazio = true
                 }
 
@@ -345,10 +353,13 @@ function salvarEdicao() {
                     return false
                 }
 
-                componente.modelo = valorCampo(`componenteModelo${idPlaca}`)
-                componente.statusMonitoramento = valorCampo(`monitoramento${idPlaca}`)
-                componente.limiteAtencao = atencao
-                componente.limiteCritico = critico
+                componentes.push({
+                    idComponente: idComponente,
+                    modelo: valorCampo(`componenteModelo${idComponente}`),
+                    statusMonitoramento: valorCampo(`monitoramento${idComponente}`),
+                    limiteAtencao: atencao,
+                    limiteCritico: critico
+                })
             }
 
             placas.push({
@@ -356,7 +367,7 @@ function salvarEdicao() {
                 nome: valorCampo(`placaNome${idPlaca}`),
                 modelo: valorCampo(`placaModelo${idPlaca}`),
                 numeroSerie: valorCampo(`placaNumeroSerie${idPlaca}`),
-                componente: componente
+                componentes: componentes
             })
         }
 
