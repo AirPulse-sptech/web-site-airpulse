@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/cadastroAeronave.css">
     <title>AirPulse - Cadastro de Aeronave</title>
+    <link rel="stylesheet" href="css/painel.css">
 </head>
 
 <body>
@@ -46,9 +47,18 @@
                     <span>Cadastrar Funcionário</span>
                 </a>
 
+                <a href="gerenciarFuncionario.html" class="navItem" id="itemGerenciarFuncionario">
+                    <i class="bi bi-gear navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Gerenciar Funcionário</span>
+                </a>
+
                 <a href="cadastroAeronave.html" class="navItem active" aria-current="page">
                     <i class="bi bi-airplane navIcon" style="font-size: 18px" aria-hidden="true"></i>
                     <span>Cadastrar Aeronave</span>
+                </a>
+                <a href="relatorioGestor.html" class="navItem" id="itemRelatorios">
+                    <i class="bi bi-file-earmark-text navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Relatórios</span>
                 </a>
 
                 <div class="navItem disabled">
@@ -86,14 +96,15 @@
                 </div>
             </header>
 
-            <main>
+            <main class="paginaInterna">
+                <h1 class="tituloCadastro">Cadastro de Aeronave</h1>
+
                 <div class="cardErro" id="cardErro">
                     <span id="mensagemErro"></span>
                 </div>
 
                 <div class="containerCadastro">
                     <div class="boxCadastro">
-                        <h1 class="tituloCadastro">Cadastro de Aeronave</h1>
                         <form class="formCadastro" id="formCadastro">
                             <div class="inputGroup">
                                 <label for="nome">Nome</label>

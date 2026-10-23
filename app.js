@@ -18,7 +18,10 @@ var usuarioRouter = require("./src/routes/usuario")
 var empresasRouter = require("./src/routes/empresas")
 var aeronaveRouter = require("./src/routes/aeronave")
 var computadorRouter = require("./src/routes/computador")
-
+var relatorioRouter = require("./src/routes/relatorio")
+var relatorioGestorRouter = require("./src/routes/relatorioGestor")
+var dashboardRelatorioRouter = require("./src/routes/dashboardRelatorio")
+var gerenciarAeronaveRouter = require("./src/routes/gerenciarAeronave")
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -31,6 +34,10 @@ app.use("/usuario", usuarioRouter)
 app.use("/empresas", empresasRouter)
 app.use("/aeronave", aeronaveRouter)
 app.use("/computador", computadorRouter)
+app.use("/relatorio", relatorioRouter)
+app.use("/relatorio", relatorioGestorRouter)
+app.use("/dashboardRelatorio", dashboardRelatorioRouter)
+app.use("/gerenciarAeronave", gerenciarAeronaveRouter)
 
 app.listen(portaApp, function () {
     console.log(`

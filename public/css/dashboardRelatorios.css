@@ -1,0 +1,179 @@
+.verde {
+    color: #0b9a5b;
+    background: #e2f8ee;
+}
+
+.dashboard .indicadoresRelatorios {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+}
+
+.indicadoresRelatorios .cartaoIndicador {
+    gap: 16px;
+}
+
+.indicadoresRelatorios .cartaoIndicador>div:last-child {
+    min-width: 0;
+}
+
+.dashboard .valorIndicador.textoLongo {
+    font-size: 20px;
+    letter-spacing: -.5px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+}
+
+.gradeRelatorios {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+}
+
+.gradeRelatorios .cartaoSituacao {
+    min-width: 0;
+}
+
+.areaGrafico {
+    position: relative;
+    height: 260px;
+    margin-top: 14px;
+}
+
+.areaGraficoLinha {
+    height: 280px;
+}
+
+.tabelaRolavel {
+    margin-top: 14px;
+    overflow-x: auto;
+}
+
+.tabelaAnalistas {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+}
+
+.tabelaAnalistas th {
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--bordaPainel);
+    color: var(--textoSuave);
+    font-size: 11px;
+    font-weight: 700;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.tabelaAnalistas td {
+    padding: 12px 14px;
+    border-bottom: 1px solid #edf1fb;
+    color: #495989;
+}
+
+.tabelaAnalistas tbody tr:last-child td {
+    border-bottom: 0;
+}
+
+.tabelaAnalistas td:first-child {
+    color: var(--textoPainel);
+    font-weight: 700;
+}
+
+.tabelaAnalistas td:nth-child(2) {
+    color: var(--textoPainel);
+    font-weight: 800;
+}
+
+.etiquetaCategoria {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 12px;
+    border: 1px solid var(--bordaPainel);
+    border-radius: 22px;
+    background: white;
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.dashboard .mensagemVazia {
+    margin-top: 14px;
+    color: var(--textoSuave);
+    font-size: 12px;
+    text-align: center;
+}
+
+.dashboard .cartaoSituacao,
+.dashboard .cartaoIndicador,
+.identificacaoServidor {
+    min-width: 0;
+}
+
+.identificacaoServidor,
+.indicadoresRelatorios p {
+    overflow-wrap: anywhere;
+}
+
+.tabelaRolavel:focus-visible {
+    outline: 3px solid #8cacff;
+    outline-offset: 3px;
+}
+
+@media (max-width: 1200px) {
+    .dashboard .indicadoresRelatorios {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .gradeRelatorios {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .dashboard .cabecalhoDashboard {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .dataDashboard span {
+        display: inline;
+        margin-right: 8px;
+    }
+
+        .barraServidor {
+        grid-column: 2 / -1;
+        grid-row: 2;
+    }
+
+    .totalServidor {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .tabelaAnalistas {
+        min-width: 520px;
+    }
+}
+
+@media (max-width: 600px) {
+    .dashboard .indicadoresRelatorios {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .areaGrafico,
+    .areaGraficoLinha {
+        height: 240px;
+    }
+
+        .totalServidor {
+        grid-column: 2;
+        grid-row: 2;
+        text-align: left;
+        white-space: normal;
+    }
+
+    .barraServidor {
+        grid-row: 3;
+    }
+}

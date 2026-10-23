@@ -3,6 +3,7 @@ var computadorModel = require("../models/computadorModel")
 
 const tiposFmc = ["MESTRE", "SPARE"]
 const statusComputador = ["ATIVO", "INATIVO", "MANUTENCAO"]
+
 const maximoPlacas = 10
 
 const metricasPermitidas = {
@@ -12,7 +13,6 @@ const metricasPermitidas = {
         { nome: "Frequência máxima", unidadeMedida: "GHz", descricao: "Frequência máxima suportada" },
         { nome: "Núcleos físicos", unidadeMedida: "qtd", descricao: "Núcleos reais do processador" },
         { nome: "Núcleos lógicos", unidadeMedida: "qtd", descricao: "Threads disponíveis para o sistema" }
-        // ALTERAÇÃO (escopo placas): saiu "Temperatura da CPU", que não é mais monitorada
     ],
     RAM: [
         { nome: "Memória total", unidadeMedida: "GB", descricao: "Capacidade instalada" },

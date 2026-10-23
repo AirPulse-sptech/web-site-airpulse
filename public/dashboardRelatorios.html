@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboardPrincipalAnalista.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboardRelatorios.css">
+    <link rel="stylesheet" href="css/painel.css">
+    <title>AirPulse - Relatórios</title>
+</head>
+
+<body>
+
+    <div class="appLayout">
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="dashboardGeral.html">
+                    <img class="brandLogoFull"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebarNav" aria-label="Menu principal"></nav>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
+                    </div>
+                </div>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+        <div class="mainWrapper">
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu"><i
+                            class="bi bi-list" aria-hidden="true"></i></button>
+                    <span class="topbarTitle">Produtividade Funcionarios</span>
+                </div>
+            </header>
+
+            <main class="conteudoPrincipal dashboard">
+                <header class="cabecalhoDashboard">
+                    <div>
+                        <h1>Dashboard - Relatórios</h1>
+                        <p>Acompanhe a produção de relatórios dos analistas e as ocorrências registradas nos servidores.
+                        </p>
+                    </div>
+                </header>
+
+                <section class="indicadores indicadoresRelatorios" aria-label="Resumo dos relatórios">
+                    <article class="cartaoIndicador">
+                        <div class="caixaIcone azul"><i class="bi bi-file-earmark-text icone" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h2>Total de relatórios</h2><strong class="valorIndicador" id="totalRelatorios">--</strong>
+                            <p>Registrados no sistema</p>
+                        </div>
+                    </article>
+                    <article class="cartaoIndicador">
+                        <div class="caixaIcone verde"><i class="bi bi-people icone" aria-hidden="true"></i></div>
+                        <div>
+                            <h2>Analistas ativos</h2><strong class="valorIndicador" id="analistasAtivos">--</strong>
+                            <p>Com acesso liberado ao sistema</p>
+                        </div>
+                    </article>
+                </section>
+
+                <section class="gradeRelatorios">
+                    <article class="cartaoSituacao" aria-labelledby="tituloProducaoAnalista">
+                        <div class="cabecalhoSecao">
+                            <h2 id="tituloProducaoAnalista">Produção por analista</h2>
+                            <p>Quantidade de relatórios produzidos por cada analista</p>
+                        </div>
+                        <div class="areaGrafico">
+                            <canvas id="graficoProducaoAnalista" role="img"
+                                aria-label="Gráfico de barras com a produção de relatórios por analista"></canvas>
+                        </div>
+                    </article>
+
+                </section>
+
+                <section class="cartaoSituacao" aria-labelledby="tituloHistoricoAtividade">
+                    <div class="cabecalhoSecao">
+                        <h2 id="tituloHistoricoAtividade">Histórico de atividade</h2>
+                        <p>Relatórios registrados por dia nos últimos 30 dias</p>
+                    </div>
+                    <div class="areaGrafico areaGraficoLinha">
+                        <canvas id="graficoHistoricoAtividade" role="img"
+                            aria-label="Gráfico de linha com os relatórios registrados por dia"></canvas>
+                    </div>
+                </section>
+
+                <section class="cartaoSituacao" aria-labelledby="tituloTabelaAnalistas">
+                    <div class="cabecalhoSecao">
+                        <h2 id="tituloTabelaAnalistas">Resumo por analista</h2>
+                        <p>Total de relatórios e categoria mais frequente de cada analista</p>
+                    </div>
+                    <div class="tabelaRolavel" tabindex="0" role="region" aria-labelledby="tituloTabelaAnalistas">
+                        <table class="tabelaAnalistas">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Analista</th>
+                                    <th scope="col">Total de relatórios</th>
+                                    <th scope="col">Categoria mais frequente</th>
+                                </tr>
+                            </thead>
+                            <tbody id="corpoTabelaAnalistas"></tbody>
+                        </table>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="js/sessao.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
+    <script src="js/dashboardRelatorios.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,373 @@
+/* Padrão visual das telas internas com menu lateral. */
+:root {
+    --painel-content-width: 1100px;
+    --painel-gap: 20px;
+    --painel-card-gap: 16px;
+    --painel-card-padding: 18px;
+    --painel-card-radius: 12px;
+}
+
+.appLayout #sidebar .navItem {
+    font-family: var(--fontBody);
+    font-size: 13px;
+    line-height: 1.5;
+    min-height: 40px;
+}
+
+.appLayout #sidebar .navIcon {
+    width: 18px;
+    height: 18px;
+    font-size: 18px;
+}
+
+.appLayout #sidebar .btnLogout {
+    font-family: var(--fontBody);
+    font-size: 13px;
+    min-height: 40px;
+}
+
+.appLayout .mainWrapper > main.paginaInterna {
+    width: min(94%, var(--painel-content-width));
+    margin: 0 auto;
+    padding: 24px 0 40px;
+    gap: var(--painel-gap);
+    font-family: var(--fontBody);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.paginaInterna :is(h1, h2, h3, h4, button, input, select, textarea, .cardNumero) {
+    font-family: var(--fontBody);
+}
+
+.paginaInterna h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: -.7px;
+    text-align: left;
+}
+
+.paginaInterna h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -.3px;
+}
+
+.paginaInterna :is(h3, h4) {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.paginaInterna :is(.subtitle, .gfSubtitulo, .rgSubtitulo, .eaSubtitulo, .subtituloAlertas) {
+    margin: 5px 0 0;
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 1.5;
+    text-align: left;
+}
+
+/* Alguns cabeçalhos têm o título e o subtítulo como filhos diretos do main. */
+.paginaInterna > h1 + :is(.subtitle, .rgSubtitulo, .eaSubtitulo) {
+    margin-top: calc(5px - var(--painel-gap));
+}
+
+.paginaInterna :is(.gfCabecalho, .cabecalhoPagina, .cabecalhoAlertas, .rgResumo, .cardsResumo, .gfFiltros, .eaFiltros, .barraFiltros) {
+    margin-bottom: 0;
+}
+
+.paginaInterna :is(.cabecalhoPagina, .gfFiltros, .rgFiltros, .eaFiltros, .formActions, .eaAcoes) {
+    gap: var(--painel-card-gap);
+    flex-wrap: wrap;
+}
+
+.paginaInterna :is(.grid, .formGrid, .reviewGrid, .formRelatorio, .colunaRelatorio, .colunaContexto, .rgResumo, .cardsResumo, .eaLista) {
+    gap: var(--painel-card-gap);
+}
+
+.paginaInterna .formGrid {
+    margin-bottom: var(--painel-gap);
+}
+
+.paginaInterna .containerCadastro {
+    min-height: 0;
+    min-width: 0;
+    align-items: flex-start;
+}
+
+.paginaInterna :is(.card, .boxCadastro, .cardResumo, .rgResumoCard, .eaFuncionario, .eaQuadro, .boxMapa) {
+    padding: var(--painel-card-padding);
+    border-radius: var(--painel-card-radius);
+}
+
+.paginaInterna :is(.card, .step) {
+    gap: var(--painel-card-gap);
+}
+
+.paginaInterna .boxCadastro form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--painel-card-gap);
+}
+
+.paginaInterna .boxCadastro .formGrid {
+    margin-bottom: 0;
+}
+
+.paginaInterna .inputGroup #nome {
+    margin-bottom: 0;
+}
+
+.paginaInterna .boxCadastro h1 {
+    margin-bottom: var(--painel-gap);
+}
+
+.paginaInterna :is(.field > label, .inputGroup > label, .filtroCampo > label, legend) {
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.5;
+}
+
+.paginaInterna :is(input:not([type="checkbox"]):not([type="radio"]):not([type="hidden"]):not([type="range"]):not([type="color"]), select),
+.paginaInterna #cargo.selectCargo {
+    min-height: 40px;
+    height: 40px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.paginaInterna :is(.filtroCampo select, .selectAgrupar) {
+    padding-right: 36px;
+}
+
+.paginaInterna textarea {
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.paginaInterna .field:has(> input.bloqueado)::after {
+    right: 12px;
+    bottom: 9px;
+    pointer-events: none;
+}
+
+.paginaInterna :is(.button, .btnVoltar, .btnProximo, .gfBtnEditar, .rgBtnVer, .eaBtnCard, .eaBtnGrande, .botaoAdicionarAnalista, .botaoEstrutura, .botaoAbrir) {
+    min-height: 36px;
+    height: auto;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.paginaInterna :is(.gfFiltro, .rgFiltro, .eaFiltro, button.filtro) {
+    min-height: 40px;
+    height: auto;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.paginaInterna :is(.helper, .descricao, .gfEmail, .rgAutor, .rgModelo, .rgResumoTexto, .eaModelo, .eaEmailFunc, .cardLabel, .cardLegenda, .statusRelatorio, .mapaSubtitulo, .listaRelatorios small) {
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.paginaInterna :is(.gfNome, .rgNomeRel, .rgAeronave, .eaNome) {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+.paginaInterna :is(.rgResumoCard, .cardResumo) {
+    min-height: 112px;
+    height: auto;
+    gap: var(--painel-card-gap);
+}
+
+.paginaInterna :is(.rgResumoNumero, .cardNumero) {
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.1;
+}
+
+.paginaInterna :is(.rgResumoIcone, .cardIcone) {
+    width: 48px;
+    height: 48px;
+    font-size: 28px;
+}
+
+.paginaInterna :is(.gfTabela, .rgTabela) {
+    border-radius: var(--painel-card-radius);
+}
+
+.paginaInterna :is(.gfLinha, .rgLinha) {
+    min-height: 88px;
+    padding: 14px 18px;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.paginaInterna :is(.gfLinhaTitulo, .rgLinhaTitulo) {
+    min-height: 44px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.paginaInterna .rgFiltros {
+    padding: var(--painel-card-padding);
+}
+
+.paginaInterna :is(.gfStatus, .rgTag, .eaStatus, .statusTag) {
+    min-height: 28px;
+    height: auto;
+    padding: 4px 10px;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.paginaInterna .gfAvatar {
+    width: 40px;
+    height: 40px;
+}
+
+.paginaInterna .eaFuncionario {
+    min-height: 112px;
+    height: auto;
+    gap: var(--painel-card-gap);
+    margin-bottom: 0;
+    flex-wrap: wrap;
+}
+
+.paginaInterna .eaAvatar {
+    width: 48px;
+    height: 48px;
+}
+
+.paginaInterna .eaStatus {
+    margin-left: 0;
+}
+
+.paginaInterna .eaTotal {
+    width: auto;
+    height: auto;
+    min-height: 36px;
+    padding: 8px 12px;
+    font-size: 12px;
+}
+
+.paginaInterna .eaCard {
+    min-height: 72px;
+    height: auto;
+    padding: 12px 16px;
+    border-radius: var(--painel-card-radius);
+    gap: 12px;
+}
+
+.paginaInterna .eaIcone {
+    width: 40px;
+    height: 40px;
+}
+
+.paginaInterna .eaLista {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr));
+}
+
+.paginaInterna .cabecalhoAlertas {
+    gap: 5px;
+}
+
+.paginaInterna .filtro {
+    min-width: 0;
+}
+
+.paginaInterna .eaVoltar {
+    margin-bottom: 0;
+}
+
+.paginaInterna .barraFiltros {
+    flex-wrap: wrap;
+}
+
+.paginaInterna .filtro:not(button) {
+    padding: 14px 18px;
+}
+
+.paginaInterna .mapaRotulo span {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.paginaInterna .cadastroProgress {
+    margin-block: 0;
+}
+
+@media (max-width: 768px) {
+    .appLayout .mainWrapper > main.paginaInterna {
+        width: 100%;
+        padding: 20px 16px 40px;
+    }
+
+    .paginaInterna :is(.gfBusca, .rgBusca, .eaBusca) {
+        min-width: 0;
+        max-width: none;
+        flex-basis: 100%;
+    }
+
+    .paginaInterna .cabecalhoPagina {
+        align-items: flex-start;
+    }
+
+    .paginaInterna .eaTotal {
+        width: 100%;
+        margin-left: 0;
+    }
+}
+
+@media (max-width: 600px) {
+    .paginaInterna h1 {
+        font-size: 25px;
+    }
+
+    .paginaInterna :is(.card, .boxCadastro, .cardResumo, .rgResumoCard, .eaFuncionario, .eaQuadro, .boxMapa) {
+        padding: 14px;
+    }
+
+    .paginaInterna :is(.rgResumoNumero, .cardNumero) {
+        font-size: 28px;
+    }
+
+    .paginaInterna :is(.rgResumo, .cardsResumo) {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .paginaInterna :is(.rgResumoIcone, .cardIcone) {
+        width: 36px;
+        height: 36px;
+    }
+
+    .paginaInterna .rgResumoCard {
+        gap: 10px;
+    }
+
+    .paginaInterna .formGrid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 420px) {
+    .paginaInterna :is(.rgResumo, .cardsResumo) {
+        grid-template-columns: 1fr;
+    }
+}

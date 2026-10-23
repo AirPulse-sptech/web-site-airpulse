@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/relatorioGestor.css">
+    <title>AirPulse - Relatórios</title>
+    <link rel="stylesheet" href="css/painel.css">
+</head>
+
+<body>
+
+    <div class="appLayout">
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="dashboardPrincipalAnalista.html">
+                    <img class="brandLogoFull"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebarNav">
+                <a href="dashboardPrincipalAnalista.html" class="navItem">
+                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Componentes</span>
+                </div>
+
+                <a href="cadastroFmc.html" class="navItem" id="itemCadastrarFmc">
+                    <i class="bi bi-hdd-rack navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar FMC</span>
+                </a>
+
+                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
+                    <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Funcionário</span>
+                </a>
+
+                <a href="gerenciarFuncionario.html" class="navItem" id="itemGerenciarFuncionario">
+                    <i class="bi bi-gear navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Gerenciar Funcionário</span>
+                </a>
+
+                <a href="cadastroAeronave.html" class="navItem">
+                    <i class="bi bi-airplane navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Aeronave</span>
+                </a>
+
+                <a href="relatorioGestor.html" class="navItem active" aria-current="page" id="itemRelatorios">
+                    <i class="bi bi-file-earmark-text navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Relatórios</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Chamados & Suporte</span>
+                </div>
+            </nav>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
+                    </div>
+                </div>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+        <div class="mainWrapper">
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Relatórios de análise</span>
+                </div>
+            </header>
+
+            <main class="rgConteudo paginaInterna">
+
+                <h1 class="rgTitulo">Relatórios de análise</h1>
+                <p class="rgSubtitulo">Acompanhe os relatórios publicados pelos analistas da sua empresa.</p>
+
+                <div class="rgResumo">
+                    <div class="rgResumoCard">
+                        <span class="rgResumoIcone atencao"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
+                        <div>
+                            <span class="rgResumoNumero" id="totalAtencao">0</span>
+                            <span class="rgResumoTexto">Em atenção</span>
+                        </div>
+                    </div>
+
+                    <div class="rgResumoCard">
+                        <span class="rgResumoIcone critico"><i class="bi bi-exclamation-octagon" aria-hidden="true"></i></span>
+                        <div>
+                            <span class="rgResumoNumero" id="totalCritico">0</span>
+                            <span class="rgResumoTexto">Críticos</span>
+                        </div>
+                    </div>
+
+                    <div class="rgResumoCard">
+                        <span class="rgResumoIcone categoria"><i class="bi bi-tag" aria-hidden="true"></i></span>
+                        <div>
+                            <span class="rgResumoNumero rgResumoCategoria" id="categoriaMaisFrequente">--</span>
+                            <span class="rgResumoTexto">Categoria mais frequente</span>
+                            <span class="rgResumoDetalhe" id="detalheCategoriaMaisFrequente">Sem relat&oacute;rios</span>
+                        </div>
+                    </div>
+                </div>
+
+                <section class="rgDistribuicao" aria-labelledby="tituloDistribuicaoCategoria">
+                    <div class="rgDistribuicaoCabecalho">
+                        <h2 id="tituloDistribuicaoCategoria">Distribui&ccedil;&atilde;o por categoria</h2>
+                        <p>Propor&ccedil;&atilde;o de relat&oacute;rios publicados em cada categoria</p>
+                    </div>
+                    <div class="rgDistribuicaoConteudo">
+                        <div class="rgGraficoRosca" id="graficoRoscaCategoria" role="img" aria-label="Distribui&ccedil;&atilde;o de relat&oacute;rios por categoria">
+                            <div class="rgCentroGrafico"><strong id="totalCentroGrafico">0</strong><span>Relat&oacute;rios</span></div>
+                        </div>
+                        <ul class="rgLegendaCategorias" id="legendaCategorias" aria-label="Categorias dos relat&oacute;rios"></ul>
+                    </div>
+                </section>
+
+                <div class="rgTabela">
+
+                    <div class="rgFiltros">
+                        <input type="text" class="rgBusca" id="busca" placeholder="Buscar por título ou analista">
+                        <select class="rgSelect" id="filtroAeronave">
+                            <option value="">Todas as aeronaves</option>
+                        </select>
+                        <button type="button" class="rgFiltro ativo" data-filtro="TODOS">Todos</button>
+                        <button type="button" class="rgFiltro" data-filtro="NORMAL">Normal</button>
+                        <button type="button" class="rgFiltro" data-filtro="ATENCAO">Atenção</button>
+                        <button type="button" class="rgFiltro" data-filtro="CRITICO">Crítico</button>
+                    </div>
+
+                    <div class="rgLinha rgLinhaTitulo">
+                        <span>RELATÓRIO</span>
+                        <span>AERONAVE</span>
+                        <span>PERÍODO</span>
+                        <span>CONCLUSÃO</span>
+                        <span>CRIADO EM</span>
+                        <span></span>
+                    </div>
+
+                    <div id="listaRelatorios"></div>
+
+                    <p class="rgVazio" id="semRelatorios" hidden>Nenhum relatório encontrado.</p>
+
+                    <div class="rgRodape">
+                        <span class="rgContagem" id="contagem"></span>
+                    </div>
+
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/sessao.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
+    <script src="js/relatorioGestor.js"></script>
+</body>
+
+</html>

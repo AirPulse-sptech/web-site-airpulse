@@ -18,7 +18,6 @@ const placasReplicadas = document.querySelector("#placasReplicadas")
 const modeloPlaca = document.querySelector("#modeloPlaca")
 const personalizarSpare = document.querySelector("#personalizarSpare")
 const maximoPlacas = 10
-
 const nomesStatus = { ATIVO: "Ativo", INATIVO: "Inativo", MANUTENCAO: "Em manutenção" }
 const nomesComponentes = { CPU: "CPU", RAM: "RAM", DISCO: "Armazenamento" }
 
@@ -359,7 +358,7 @@ function prepararSpare() {
   document.querySelector("#resumoMestre").innerHTML = `
     <div><dt>Nome</dt><dd>${valor("mestreNome")}</dd></div>
     <div><dt>Aeronave</dt><dd>${textoAeronave()}</dd></div>
-    <div><dt>Placas</dt><dd>${placas.length} ${placas.length === 1 ? "placa" : "placas"}</dd></div>
+    <div><dt>Placas</dt><dd>${placasMonitoradas.map(placa => placa.dataset.tipo).join(", ")}</dd></div>
     <div><dt>Status</dt><dd>${nomesStatus[statusSelecionado("mestre")]}</dd></div>`
 
   const seriesDigitadas = {}
@@ -491,8 +490,11 @@ function tabelaPlacas(placas) {
 
     return `
       <tr>
-        <td><strong>${escaparTexto(placa.nome)}</strong><small>${escaparTexto(placa.numeroSerie)}</small></td>
-        <td>${componentes}</td>
+        <td><strong>${placa.nome}</strong><small>${placa.numeroSerie}</small></td>
+        <td><strong>${componente.tipo}</strong><small>${componente.modelo}</small></td>
+        <td>${componente.metricas.length}</td>
+        <td class="valorAlerta">${componente.limiteAtencao}%</td>
+        <td class="valorCritico">${componente.limiteCritico}%</td>
       </tr>`
   })
 

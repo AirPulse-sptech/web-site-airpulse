@@ -20,4 +20,8 @@ router.get("/listar", function (req, res) {
   empresaController.listar(req, res)
 })
 
+router.get("/empresasCadastradas", function (req, res) {
+    empresaController.carregarEmpresas(req, res);
+});
+
 module.exports = router
