@@ -33,48 +33,13 @@
 
         <aside id="sidebar">
             <div class="sidebarHeader">
-                <a class="sidebarBrand" href="home.html">
+                <a class="sidebarBrand" href="dashboardGeral.html">
                     <img class="brandLogoFull"
                         src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
                 </a>
             </div>
 
-            <nav class="sidebarNav">
-                <a href="dashboardPrincipalAnalista.html" class="navItem">
-                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Dashboard</span>
-                </a>
-
-                <div class="navItem disabled">
-                    <i class="bi bi-cpu navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Componentes</span>
-                </div>
-
-                <a href="cadastroFmc.html" class="navItem" id="itemCadastrarFmc">
-                    <i class="bi bi-hdd-rack navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Cadastrar FMC</span>
-                </a>
-
-                <a href="cadastroFuncionario.html" class="navItem" id="itemCadastrarFuncionario">
-                    <i class="bi bi-people navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Cadastrar Funcionário</span>
-                </a>
-
-                <a href="gerenciarFuncionario.html" class="navItem active" aria-current="page" id="itemGerenciarFuncionario">
-                    <i class="bi bi-gear navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Gerenciar Funcionário</span>
-                </a>
-
-                <a href="cadastroAeronave.html" class="navItem">
-                    <i class="bi bi-airplane navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Cadastrar Aeronave</span>
-                </a>
-
-                <div class="navItem disabled">
-                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
-                    <span>Chamados & Suporte</span>
-                </div>
-            </nav>
+            <nav class="sidebarNav" aria-label="Menu principal"></nav>
 
             <div class="sidebarFooter">
                 <div class="userProfile">
@@ -95,6 +60,15 @@
         <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
         <div class="mainWrapper">
 
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Editar Usuário</span>
+                </div>
+            </header>
+
             <main class="eaConteudo paginaInterna">
 
                 <a href="gerenciarFuncionario.html" class="eaVoltar">← Voltar para usuários</a>
@@ -106,181 +80,34 @@
                 
 
                 <div class="eaQuadro">
-                <div class="eaFuncionario">
-                    <div class="eaAvatar">AS</div>
-                    <div>
-                        <span class="eaNomeFunc">Ana Souza</span>
-                        <span class="eaEmailFunc">ana.souza@empresa.com</span>
+                    <div class="eaFuncionario">
+                        <div class="eaAvatar" id="avatarFuncionario">--</div>
+                        <div>
+                            <span class="eaNomeFunc" id="nomeFuncionario">Carregando funcion&aacute;rio...</span>
+                            <span class="eaEmailFunc" id="emailFuncionario">&mdash;</span>
+                        </div>
+                        <span class="eaStatus" id="statusFuncionario">&mdash;</span>
+                        <span class="eaTotal" id="totalAeronaves">&mdash;</span>
                     </div>
-                    <span class="eaStatus">Ativo</span>
-                    <span class="eaTotal">5 aeronaves associadas</span>
-                </div>
-                <div class="eaFiltros">
-                    <input type="text" class="eaBusca" placeholder="Buscar aeronave, modelo ou identificação...">
-                    <button type="button" class="eaFiltro ativo">Todas</button>
-                    <button type="button" class="eaFiltro">Associadas</button>
-                    <button type="button" class="eaFiltro">Disponíveis</button>
-                </div>
-                    <div class="eaLista">
-                        <div class="eaCard associada">
-                            <div class="eaIcone">
-                                <svg class="eaSvg"><use href="#iconeAviao"></use></svg>
-                                <span class="eaCheck"><svg class="eaSvg"><use href="#iconeCheck"></use></svg></span>
-                            </div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PR-GOL</span>
-                                <span class="eaModelo">Boeing 737 • PR-GOL</span>
-                            </div>
-                            <button type="button" class="eaBtnCard remover">Remover</button>
-                        </div>
-
-                        <div class="eaCard associada">
-                            <div class="eaIcone">
-                                <svg class="eaSvg"><use href="#iconeAviao"></use></svg>
-                                <span class="eaCheck"><svg class="eaSvg"><use href="#iconeCheck"></use></svg></span>
-                            </div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PR-AZU</span>
-                                <span class="eaModelo">Airbus A320 • PR-AZU</span>
-                            </div>
-                            <button type="button" class="eaBtnCard remover">Remover</button>
-                        </div>
-
-                        <div class="eaCard associada">
-                            <div class="eaIcone">
-                                <svg class="eaSvg"><use href="#iconeAviao"></use></svg>
-                                <span class="eaCheck"><svg class="eaSvg"><use href="#iconeCheck"></use></svg></span>
-                            </div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PR-TAM</span>
-                                <span class="eaModelo">Embraer E195 • PR-TAM</span>
-                            </div>
-                            <button type="button" class="eaBtnCard remover">Remover</button>
-                        </div>
-
-                        <div class="eaCard associada">
-                            <div class="eaIcone">
-                                <svg class="eaSvg"><use href="#iconeAviao"></use></svg>
-                                <span class="eaCheck"><svg class="eaSvg"><use href="#iconeCheck"></use></svg></span>
-                            </div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PS-VPB</span>
-                                <span class="eaModelo">ATR 72 • PS-VPB</span>
-                            </div>
-                            <button type="button" class="eaBtnCard remover">Remover</button>
-                        </div>
-
-                        <div class="eaCard associada">
-                            <div class="eaIcone">
-                                <svg class="eaSvg"><use href="#iconeAviao"></use></svg>
-                                <span class="eaCheck"><svg class="eaSvg"><use href="#iconeCheck"></use></svg></span>
-                            </div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PT-MUA</span>
-                                <span class="eaModelo">Boeing 787 • PT-MUA</span>
-                            </div>
-                            <button type="button" class="eaBtnCard remover">Remover</button>
-                        </div>
-
-                        <!-- ===== Disponíveis ===== -->
-                        <div class="eaCard">
-                            <div class="eaIcone"><svg class="eaSvg"><use href="#iconeAviao"></use></svg></div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PR-GTB</span>
-                                <span class="eaModelo">Boeing 737 • PR-GTB</span>
-                            </div>
-                            <button type="button" class="eaBtnCard associar">Associar</button>
-                        </div>
-
-                        <div class="eaCard">
-                            <div class="eaIcone"><svg class="eaSvg"><use href="#iconeAviao"></use></svg></div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PR-MYA</span>
-                                <span class="eaModelo">Airbus A320 • PR-MYA</span>
-                            </div>
-                            <button type="button" class="eaBtnCard associar">Associar</button>
-                        </div>
-
-                        <div class="eaCard">
-                            <div class="eaIcone"><svg class="eaSvg"><use href="#iconeAviao"></use></svg></div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PS-AEA</span>
-                                <span class="eaModelo">Embraer E195 • PS-AEA</span>
-                            </div>
-                            <button type="button" class="eaBtnCard associar">Associar</button>
-                        </div>
-
-                        <div class="eaCard">
-                            <div class="eaIcone"><svg class="eaSvg"><use href="#iconeAviao"></use></svg></div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PP-PTO</span>
-                                <span class="eaModelo">ATR 72 • PP-PTO</span>
-                            </div>
-                            <button type="button" class="eaBtnCard associar">Associar</button>
-                        </div>
-
-                        <div class="eaCard">
-                            <div class="eaIcone"><svg class="eaSvg"><use href="#iconeAviao"></use></svg></div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PR-ABC</span>
-                                <span class="eaModelo">Boeing 767 • PR-ABC</span>
-                            </div>
-                            <button type="button" class="eaBtnCard associar">Associar</button>
-                        </div>
-
-                        <div class="eaCard">
-                            <div class="eaIcone"><svg class="eaSvg"><use href="#iconeAviao"></use></svg></div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PR-XYZ</span>
-                                <span class="eaModelo">Airbus A321 • PR-XYZ</span>
-                            </div>
-                            <button type="button" class="eaBtnCard associar">Associar</button>
-                        </div>
-
-                        <div class="eaCard">
-                            <div class="eaIcone"><svg class="eaSvg"><use href="#iconeAviao"></use></svg></div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PR-GUL</span>
-                                <span class="eaModelo">Boeing 737 • PR-GUL</span>
-                            </div>
-                            <button type="button" class="eaBtnCard associar">Associar</button>
-                        </div>
-
-                        <div class="eaCard">
-                            <div class="eaIcone"><svg class="eaSvg"><use href="#iconeAviao"></use></svg></div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PR-ONE</span>
-                                <span class="eaModelo">Airbus A330 • PR-ONE</span>
-                            </div>
-                            <button type="button" class="eaBtnCard associar">Associar</button>
-                        </div>
-
-                        <div class="eaCard">
-                            <div class="eaIcone"><svg class="eaSvg"><use href="#iconeAviao"></use></svg></div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PS-CDE</span>
-                                <span class="eaModelo">Embraer E175 • PS-CDE</span>
-                            </div>
-                            <button type="button" class="eaBtnCard associar">Associar</button>
-                        </div>
-
-                        <div class="eaCard">
-                            <div class="eaIcone"><svg class="eaSvg"><use href="#iconeAviao"></use></svg></div>
-                            <div class="eaInfo">
-                                <span class="eaNome">Aeronave PR-AIR</span>
-                                <span class="eaModelo">Boeing 777 • PR-AIR</span>
-                            </div>
-                            <button type="button" class="eaBtnCard associar">Associar</button>
-                        </div>
-
+                    <div class="eaFiltros">
+                        <input type="text" class="eaBusca" id="buscaAeronaves" disabled
+                            placeholder="Buscar aeronave, modelo ou identifica&ccedil;&atilde;o..."
+                            aria-label="Buscar aeronave, modelo ou identifica&ccedil;&atilde;o">
+                        <button type="button" class="eaFiltro ativo" data-associacao="TODAS" aria-pressed="true" disabled>Todas</button>
+                        <button type="button" class="eaFiltro" data-associacao="ASSOCIADAS" aria-pressed="false" disabled>Associadas</button>
+                        <button type="button" class="eaFiltro" data-associacao="DISPONIVEIS" aria-pressed="false" disabled>Dispon&iacute;veis</button>
                     </div>
+                    <p class="eaMensagem" id="mensagemEdicao" role="status" aria-live="polite">Carregando aeronaves...</p>
+                    <button type="button" class="eaBtnRecarregar" id="recarregarEdicao" hidden>Tentar novamente</button>
+                    <div class="eaLista" id="listaAeronaves" aria-busy="true"></div>
                 </div>
 
                 <div class="eaRodape">
-                    <span class="eaResumo">5 aeronaves associadas • 0 alterações pendentes</span>
+                    <span class="eaResumo" id="resumoAeronaves" aria-live="polite">Carregando associa&ccedil;&otilde;es...</span>
                     <div class="eaAcoes">
-                        <a href="gerenciarFuncionario.html" class="eaBtnGrande cancelar">Cancelar</a>
-                        <button type="button" class="eaBtnGrande salvar">Salvar alterações</button>
+                        <button type="button" class="eaBtnGrande inativar" id="inativarFuncionario" disabled>Inativar funcion&aacute;rio</button>
+                        <a href="gerenciarFuncionario.html" class="eaBtnGrande cancelar" id="cancelarEdicao">Cancelar</a>
+                        <button type="button" class="eaBtnGrande salvar" id="salvarAeronaves" disabled>Salvar altera&ccedil;&otilde;es</button>
                     </div>
                 </div>
 
@@ -292,6 +119,9 @@
     <script src="js/sessao.js"></script>
     <script>validarSessao()</script>
     <script src="js/menuLateral.js"></script>
+    <script src="js/funcionariosUi.js"></script>
+    <script src="js/editarUsuario.js"></script>
+    <script>iniciarEditarUsuario()</script>
 </body>
 
 </html>

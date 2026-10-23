@@ -24,13 +24,6 @@ function porcentagem(parte, total) {
     return Math.round((parte / total) * 100) + "%"
 }
 
-function mostrarData() {
-    var agora = new Date()
-    dataDashboard.innerHTML = `
-        <span>${agora.toLocaleDateString("pt-BR", { weekday: "short", day: "numeric", month: "long", year: "numeric" })}</span>
-        <span>${agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })}</span>
-    `
-}
 
 function mostrarIndicadores(dados) {
     var total = dados.resumo.totalRelatorios
@@ -190,8 +183,6 @@ function mostrarTabelaAnalistas(analistas) {
 
 function carregarDashboard() {
     if (!verificarSessao() || !podeAcessarPagina("dashboardRelatorios.html")) return
-
-    mostrarData()
 
     fetch(`/dashboardRelatorio/buscar/${sessionStorage.idUsuario}`)
         .then(function (resposta) {

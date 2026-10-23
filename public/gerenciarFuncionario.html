@@ -89,130 +89,47 @@
         <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
 
         <div class="mainWrapper">
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu" aria-controls="sidebar">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Gerenciar Funcionários</span>
+                </div>
+            </header>
 
             <main class="gfConteudo paginaInterna">
 
                 <div class="gfCabecalho">
                     <div>
-                        <h1 class="gfTitulo">Gerenciamento de Usuários</h1>
-                        <p class="gfSubtitulo">Acompanhe o status e os servidores de cada usuário.</p>
+                        <h1 class="gfTitulo">Gerenciamento de Funcionários</h1>
+                        <p class="gfSubtitulo">Acompanhe o status e as aeronaves de cada funcionário.</p>
                     </div>
                 </div>
 
                 <div class="gfFiltros">
-                    <input type="text" class="gfBusca" placeholder="Buscar por nome ou e-mail">
-                    <button type="button" class="gfFiltro ativo">Todos</button>
-                    <button type="button" class="gfFiltro">Ativos</button>
-                    <button type="button" class="gfFiltro">Inativos</button>
+                    <input type="text" class="gfBusca" id="buscaFuncionarios" disabled placeholder="Buscar por nome ou e-mail" aria-label="Buscar por nome ou e-mail">
+                    <button type="button" class="gfFiltro ativo" data-status="TODOS" aria-pressed="true" disabled>Todos</button>
+                    <button type="button" class="gfFiltro" data-status="ATIVOS" aria-pressed="false" disabled>Ativos</button>
+                    <button type="button" class="gfFiltro" data-status="INATIVOS" aria-pressed="false" disabled>Inativos</button>
                 </div>
 
                 <div class="gfTabela">
 
                     <div class="gfLinha gfLinhaTitulo">
-                        <span>USUÁRIO</span>
+                        <span>Funcionários</span>
                         <span>STATUS</span>
+                        <span>AÇÕES</span>
                         <span>AERONAVES</span>
-                        <span></span>
                     </div>
 
-                    <div class="gfLinha">
-                        <div class="gfUsuario">
-                            <div class="gfAvatar">AS</div>
-                            <div>
-                                <span class="gfNome">Ana Souza</span>
-                                <span class="gfEmail">ana.souza@empresa.com</span>
-                            </div>
-                        </div>
-                        <div><span class="gfStatus ativo">Ativo</span></div>
-                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
-                        <div><span class="gfAeronaves">9 aeronaves associadas</span></div>
-                    </div>
-
-                    <div class="gfLinha">
-                        <div class="gfUsuario">
-                            <div class="gfAvatar">BL</div>
-                            <div>
-                                <span class="gfNome">Bruno Lima</span>
-                                <span class="gfEmail">bruno.lima@empresa.com</span>
-                            </div>
-                        </div>
-                        <div><span class="gfStatus inativo">Inativo</span></div>
-                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
-                        <div><span class="gfAeronaves">5 aeronaves associadas</span></div>
-                    </div>
-
-                    <div class="gfLinha">
-                        <div class="gfUsuario">
-                            <div class="gfAvatar">CM</div>
-                            <div>
-                                <span class="gfNome">Carla Mendes</span>
-                                <span class="gfEmail">carla.mendes@empresa.com</span>
-                            </div>
-                        </div>
-                        <div><span class="gfStatus ativo">Ativo</span></div>
-                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
-                        <div><span class="gfAeronaves">3 aeronaves associadas</span></div>
-                    </div>
-
-                    <div class="gfLinha">
-                        <div class="gfUsuario">
-                            <div class="gfAvatar">DR</div>
-                            <div>
-                                <span class="gfNome">Diego Rocha</span>
-                                <span class="gfEmail">diego.rocha@empresa.com</span>
-                            </div>
-                        </div>
-                        <div><span class="gfStatus inativo">Inativo</span></div>
-                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
-                        <div><span class="gfAeronaves">8 aeronaves associadas</span></div>
-                    </div>
-
-                    <div class="gfLinha">
-                        <div class="gfUsuario">
-                            <div class="gfAvatar">EP</div>
-                            <div>
-                                <span class="gfNome">Elisa Prado</span>
-                                <span class="gfEmail">elisa.prado@empresa.com</span>
-                            </div>
-                        </div>
-                        <div><span class="gfStatus ativo">Ativo</span></div>
-                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
-                        <div><span class="gfAeronaves">2 aeronaves associadas</span></div>
-                    </div>
-
-                    <div class="gfLinha">
-                        <div class="gfUsuario">
-                            <div class="gfAvatar">FT</div>
-                            <div>
-                                <span class="gfNome">Felipe Torres</span>
-                                <span class="gfEmail">felipe.torres@empresa.com</span>
-                            </div>
-                        </div>
-                        <div><span class="gfStatus ativo">Ativo</span></div>
-                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
-                        <div><span class="gfAeronaves">3 aeronaves associadas</span></div>
-                    </div>
-
-                    <div class="gfLinha">
-                        <div class="gfUsuario">
-                            <div class="gfAvatar">GA</div>
-                            <div>
-                                <span class="gfNome">Gisele Alves</span>
-                                <span class="gfEmail">gisele.alves@empresa.com</span>
-                            </div>
-                        </div>
-                        <div><span class="gfStatus inativo">Inativo</span></div>
-                        <div><a href="EditarUsuario.html" class="gfBtnEditar">Editar</a></div>
-                        <div><span class="gfAeronaves">5 aeronaves associadas</span></div>
-                    </div>
+                    <div id="listaFuncionarios"></div>
+                    <p class="gfMensagem" id="mensagemFuncionarios" role="status" aria-live="polite">Carregando funcionários...</p>
+                    <button type="button" class="gfBtnRecarregar" id="recarregarFuncionarios" hidden>Tentar novamente</button>
 
                     <div class="gfRodape">
-                        <span class="gfContagem">Mostrando 1–7 de 24 usuários</span>
-                        <div class="gfPaginas">
-                            <button type="button" class="gfPagina ativo">1</button>
-                            <button type="button" class="gfPagina">2</button>
-                            <button type="button" class="gfPagina">3</button>
-                        </div>
+                        <span class="gfContagem" id="contagemFuncionarios" aria-live="polite"></span>
+                        <nav class="gfPaginas" id="paginasFuncionarios" aria-label="Páginas de funcionários"></nav>
                     </div>
 
                 </div>
@@ -224,6 +141,9 @@
     <script src="js/sessao.js"></script>
     <script>validarSessao()</script>
     <script src="js/menuLateral.js"></script>
+    <script src="js/funcionariosUi.js"></script>
+    <script src="js/gerenciarFuncionario.js"></script>
+    <script>iniciarGerenciarFuncionario()</script>
 </body>
 
 </html>
