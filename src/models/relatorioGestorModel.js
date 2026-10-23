@@ -2,7 +2,7 @@ var database = require("../database/config")
 
 function listarPublicados(idFuncionario) {
     var instrucaoSql = `
-        SELECT r.idRelatorio, r.titulo, r.criticidade,
+        SELECT r.idRelatorio, r.titulo, r.criticidade, r.categoria,
             a.nome AS aeronave, a.modelo,
             autor.nome AS autor,
             DATE_FORMAT(r.periodoInicio, '%d/%m/%Y') AS periodoInicio,
@@ -16,7 +16,13 @@ function listarPublicados(idFuncionario) {
         WHERE gestor.idFuncionario = ${idFuncionario}
             AND gestor.cargo = 'GESTOR'
             AND r.statusRelatorio = 'PUBLICADO'
-        ORDER BY r.dataCriacao DESC, r.idRelatorio DESC;
+        ORDER BY CASE r.criticidade
+            WHEN 'CRITICO' THEN 1
+            WHEN 'ATENCAO' THEN 2
+            WHEN 'NORMAL' THEN 3
+            ELSE 4
+        END,
+        r.dataCriacao DESC, r.idRelatorio DESC;
     `
     console.log("Executando a instrução SQL: \n" + instrucaoSql)
     return database.executar(instrucaoSql)

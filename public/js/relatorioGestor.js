@@ -7,6 +7,24 @@ var nomesConclusao = {
     CRITICO: "Crítico"
 }
 
+var nomesCategorias = {
+    DESEMPENHO: "Desempenho",
+    FALHA_HARDWARE: "Falha de hardware",
+    ARMAZENAMENTO: "Armazenamento",
+    MEMORIA_RAM: "Memória RAM",
+    PROCESSADOR: "Processador",
+    PERDA_CONEXAO: "Perda de conexão"
+}
+
+var coresCategorias = {
+    DESEMPENHO: "#0755ff",
+    FALHA_HARDWARE: "#ff354f",
+    ARMAZENAMENTO: "#ffa000",
+    MEMORIA_RAM: "#7b5cff",
+    PROCESSADOR: "#18be70",
+    PERDA_CONEXAO: "#12b5cb"
+}
+
 function escapar(texto) {
     return String(texto == undefined ? "" : texto)
         .replace(/&/g, "&amp;")
@@ -29,6 +47,7 @@ function carregarRelatorios() {
             relatorios = dados
             preencherAeronaves()
             atualizarResumo()
+            atualizarCategorias()
             atualizarTabela()
         })
         .catch(function (erro) {
@@ -58,24 +77,74 @@ function preencherAeronaves() {
 }
 
 function atualizarResumo() {
-    var normal = 0
     var atencao = 0
     var critico = 0
 
     for (var i = 0; i < relatorios.length; i++) {
-        if (relatorios[i].criticidade == "NORMAL") {
-            normal++
-        } else if (relatorios[i].criticidade == "ATENCAO") {
+        if (relatorios[i].criticidade == "ATENCAO") {
             atencao++
         } else if (relatorios[i].criticidade == "CRITICO") {
             critico++
         }
     }
 
-    document.getElementById("totalRelatorios").textContent = relatorios.length
-    document.getElementById("totalNormal").textContent = normal
     document.getElementById("totalAtencao").textContent = atencao
     document.getElementById("totalCritico").textContent = critico
+}
+
+function atualizarCategorias() {
+    var totais = {}
+
+    for (var i = 0; i < relatorios.length; i++) {
+        var categoria = relatorios[i].categoria
+        totais[categoria] = (totais[categoria] || 0) + 1
+    }
+
+    var distribuicao = []
+    var categorias = Object.keys(totais)
+    for (var j = 0; j < categorias.length; j++) {
+        distribuicao.push({ categoria: categorias[j], total: totais[categorias[j]] })
+    }
+    distribuicao.sort(function (a, b) {
+        return b.total - a.total || a.categoria.localeCompare(b.categoria)
+    })
+
+    var total = relatorios.length
+    var categoriaPrincipal = distribuicao[0]
+    var categoriaPrincipalEl = document.getElementById("categoriaMaisFrequente")
+    var detalheCategoriaEl = document.getElementById("detalheCategoriaMaisFrequente")
+    var grafico = document.getElementById("graficoRoscaCategoria")
+    var legenda = ""
+    var faixas = []
+    var inicio = 0
+
+    if (categoriaPrincipal) {
+        categoriaPrincipalEl.textContent = nomesCategorias[categoriaPrincipal.categoria] || categoriaPrincipal.categoria
+        detalheCategoriaEl.textContent = categoriaPrincipal.total + " relatórios · "
+            + Math.round(categoriaPrincipal.total / total * 100) + "%"
+    } else {
+        categoriaPrincipalEl.textContent = "Sem dados"
+        detalheCategoriaEl.textContent = "Sem relatórios publicados"
+    }
+
+    for (var k = 0; k < distribuicao.length; k++) {
+        var item = distribuicao[k]
+        var cor = coresCategorias[item.categoria] || "#9ca3af"
+        var fim = inicio + item.total / total * 360
+        var nome = nomesCategorias[item.categoria] || item.categoria
+        faixas.push(cor + " " + inicio + "deg " + fim + "deg")
+        inicio = fim
+        legenda += `<li><span class="rgPontoCategoria" style="--rgCategoriaCor: ${cor}"></span>
+            <span>${escapar(nome)}</span><strong>${item.total}</strong>
+            <span>${Math.round(item.total / total * 100)}%</span></li>`
+    }
+
+    grafico.style.background = faixas.length
+        ? "conic-gradient(" + faixas.join(", ") + ")"
+        : "conic-gradient(#eef0ff 0deg 360deg)"
+    document.getElementById("totalCentroGrafico").textContent = total
+    var legendaEl = document.getElementById("legendaCategorias")
+    legendaEl.innerHTML = legenda || '<li class="rgLegendaVazia">Sem relatórios publicados.</li>'
 }
 
 function filtrar() {

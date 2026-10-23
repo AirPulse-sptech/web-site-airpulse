@@ -20,29 +20,11 @@ function plural(quantidade, singular, pluralDaPalavra) {
     return quantidade + " " + (quantidade == 1 ? singular : pluralDaPalavra)
 }
 
-function porcentagem(parte, total) {
-    return Math.round((parte / total) * 100) + "%"
-}
-
 
 function mostrarIndicadores(dados) {
     var total = dados.resumo.totalRelatorios
     totalRelatorios.innerHTML = total
     analistasAtivos.innerHTML = dados.resumo.analistasAtivos
-
-    if (dados.distribuicaoCategoria.length > 0) {
-        var categoria = dados.distribuicaoCategoria[0]
-        categoriaMaisFrequente.innerHTML = nomesCategoria[categoria.categoria]
-        detalheCategoriaMaisFrequente.innerHTML =
-            plural(categoria.total, "relatório", "relatórios") + " · " + porcentagem(categoria.total, total)
-    }
-
-    if (dados.servidoresOcorrencias.length > 0) {
-        var servidor = dados.servidoresOcorrencias[0]
-        servidorMaisOcorrencias.innerHTML = servidor.nome
-        detalheServidorMaisOcorrencias.innerHTML =
-            servidor.modelo + " · " + plural(servidor.total, "ocorrência", "ocorrências")
-    }
 }
 
 function opcoesGrafico() {
@@ -72,34 +54,6 @@ function desenharProducaoAnalista(producao) {
         },
         options: opcoesGrafico()
     })
-}
-
-function desenharCategorias(distribuicao, total) {
-    var faixas = []
-    var legenda = ""
-    var inicio = 0
-
-    for (var i = 0; i < distribuicao.length; i++) {
-        var item = distribuicao[i]
-        var cor = coresCategoria[item.categoria]
-        var fim = inicio + (item.total / total) * 360
-
-        faixas.push(`${cor} ${inicio}deg ${fim}deg`)
-        inicio = fim
-
-        legenda += `
-            <li>
-                <span class="ponto" style="color: ${cor}"></span>
-                <span>${nomesCategoria[item.categoria]}</span>
-                <strong>${item.total}</strong>
-                <span>${porcentagem(item.total, total)}</span>
-            </li>
-        `
-    }
-
-    graficoRoscaCategoria.style.background = `conic-gradient(${faixas.join(", ")})`
-    totalCentroGrafico.innerHTML = total
-    legendaCategorias.innerHTML = legenda
 }
 
 function desenharHistorico(historico) {
@@ -132,29 +86,6 @@ function desenharHistorico(historico) {
         },
         options: opcoesGrafico()
     })
-}
-
-function mostrarServidores(servidores) {
-    var lista = ""
-
-    for (var i = 0; i < servidores.length; i++) {
-        var servidor = servidores[i]
-        var largura = (servidor.total / servidores[0].total) * 100
-
-        lista += `
-            <li class="cartaoServidor">
-                <span class="posicaoServidor">${i + 1}</span>
-                <div class="identificacaoServidor">
-                    <h3>${servidor.nome}</h3>
-                    <p>${servidor.modelo}</p>
-                </div>
-                <div class="barraServidor"><span style="width: ${largura}%"></span></div>
-                <strong class="totalServidor">${plural(servidor.total, "ocorrência", "ocorrências")}</strong>
-            </li>
-        `
-    }
-
-    listaServidores.innerHTML = lista
 }
 
 function mostrarTabelaAnalistas(analistas) {
@@ -194,9 +125,7 @@ function carregarDashboard() {
         .then(function (dados) {
             mostrarIndicadores(dados)
             desenharProducaoAnalista(dados.producaoAnalista)
-            desenharCategorias(dados.distribuicaoCategoria, dados.resumo.totalRelatorios)
             desenharHistorico(dados.historicoAtividade)
-            mostrarServidores(dados.servidoresOcorrencias)
             mostrarTabelaAnalistas(dados.tabelaAnalistas)
         })
         .catch(function (erro) {

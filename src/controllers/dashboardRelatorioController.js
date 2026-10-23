@@ -8,7 +8,6 @@ function buscarDashboardRelatorio(req, res) {
     } else {
         Promise.all([
             dashboardRelatorioModel.buscarResumo(idFuncionario),
-            dashboardRelatorioModel.buscarDistribuicaoCategoria(idFuncionario),
             dashboardRelatorioModel.buscarProducaoAnalista(idFuncionario),
             dashboardRelatorioModel.buscarHistoricoAtividade(idFuncionario),
             dashboardRelatorioModel.buscarServidoresOcorrencias(idFuncionario),
@@ -21,11 +20,10 @@ function buscarDashboardRelatorio(req, res) {
                     } else {
                         res.json({
                             resumo: resultados[0][0],
-                            distribuicaoCategoria: resultados[1],
-                            producaoAnalista: resultados[2],
-                            historicoAtividade: resultados[3],
-                            servidoresOcorrencias: resultados[4],
-                            tabelaAnalistas: resultados[5]
+                            producaoAnalista: resultados[1],
+                            historicoAtividade: resultados[2],
+                            servidoresOcorrencias: resultados[3],
+                            tabelaAnalistas: resultados[4]
                         })
                     }
                 }

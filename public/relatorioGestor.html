@@ -105,22 +105,6 @@
 
                 <div class="rgResumo">
                     <div class="rgResumoCard">
-                        <span class="rgResumoIcone"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
-                        <div>
-                            <span class="rgResumoNumero" id="totalRelatorios">0</span>
-                            <span class="rgResumoTexto">Relatórios publicados</span>
-                        </div>
-                    </div>
-
-                    <div class="rgResumoCard">
-                        <span class="rgResumoIcone normal"><i class="bi bi-check-circle" aria-hidden="true"></i></span>
-                        <div>
-                            <span class="rgResumoNumero" id="totalNormal">0</span>
-                            <span class="rgResumoTexto">Conclusão normal</span>
-                        </div>
-                    </div>
-
-                    <div class="rgResumoCard">
                         <span class="rgResumoIcone atencao"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
                         <div>
                             <span class="rgResumoNumero" id="totalAtencao">0</span>
@@ -135,7 +119,29 @@
                             <span class="rgResumoTexto">Críticos</span>
                         </div>
                     </div>
+
+                    <div class="rgResumoCard">
+                        <span class="rgResumoIcone categoria"><i class="bi bi-tag" aria-hidden="true"></i></span>
+                        <div>
+                            <span class="rgResumoNumero rgResumoCategoria" id="categoriaMaisFrequente">--</span>
+                            <span class="rgResumoTexto">Categoria mais frequente</span>
+                            <span class="rgResumoDetalhe" id="detalheCategoriaMaisFrequente">Sem relat&oacute;rios</span>
+                        </div>
+                    </div>
                 </div>
+
+                <section class="rgDistribuicao" aria-labelledby="tituloDistribuicaoCategoria">
+                    <div class="rgDistribuicaoCabecalho">
+                        <h2 id="tituloDistribuicaoCategoria">Distribui&ccedil;&atilde;o por categoria</h2>
+                        <p>Propor&ccedil;&atilde;o de relat&oacute;rios publicados em cada categoria</p>
+                    </div>
+                    <div class="rgDistribuicaoConteudo">
+                        <div class="rgGraficoRosca" id="graficoRoscaCategoria" role="img" aria-label="Distribui&ccedil;&atilde;o de relat&oacute;rios por categoria">
+                            <div class="rgCentroGrafico"><strong id="totalCentroGrafico">0</strong><span>Relat&oacute;rios</span></div>
+                        </div>
+                        <ul class="rgLegendaCategorias" id="legendaCategorias" aria-label="Categorias dos relat&oacute;rios"></ul>
+                    </div>
+                </section>
 
                 <div class="rgTabela">
 

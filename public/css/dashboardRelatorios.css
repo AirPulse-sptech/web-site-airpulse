@@ -4,7 +4,7 @@
 }
 
 .dashboard .indicadoresRelatorios {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
 }
 
@@ -25,7 +25,7 @@
 
 .gradeRelatorios {
     display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-columns: minmax(0, 1fr);
     gap: 16px;
 }
 
@@ -41,95 +41,6 @@
 
 .areaGraficoLinha {
     height: 280px;
-}
-
-.resumoCategorias {
-    grid-template-columns: 174px minmax(0, 1fr);
-}
-
-.legendaCategorias li {
-    grid-template-columns: 16px 1fr 28px 44px;
-    padding: 9px 0;
-}
-
-.legendaCategorias .ponto {
-    width: 14px;
-    height: 14px;
-}
-
-.listaServidores {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    padding: 0;
-    margin: 14px 0 0;
-    list-style: none;
-}
-
-.cartaoServidor {
-    display: grid;
-    grid-template-columns: 34px minmax(160px, 1fr) minmax(120px, 1.2fr) 110px;
-    align-items: center;
-    gap: 18px;
-    min-height: 58px;
-    padding: 10px 16px;
-    background: white;
-    border: 1px solid var(--bordaPainel);
-    border-radius: 10px;
-}
-
-.posicaoServidor {
-    display: grid;
-    place-items: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: #e4efff;
-    color: var(--azulPainel);
-    font-size: 12px;
-    font-weight: 800;
-}
-
-.cartaoServidor:first-child .posicaoServidor {
-    background: #ffe9ee;
-    color: var(--vermelhoSituacao);
-}
-
-.identificacaoServidor h3 {
-    font-size: 14px;
-    font-weight: 800;
-    letter-spacing: -.4px;
-    line-height: 1.3;
-}
-
-.identificacaoServidor p {
-    color: var(--textoSuave);
-    font-size: 11px;
-}
-
-.barraServidor {
-    height: 8px;
-    border-radius: 8px;
-    background: #edf1fb;
-    overflow: hidden;
-}
-
-.barraServidor span {
-    display: block;
-    height: 100%;
-    border-radius: 8px;
-    background: var(--azulPainel);
-}
-
-.cartaoServidor:first-child .barraServidor span {
-    background: var(--vermelhoSituacao);
-}
-
-.totalServidor {
-    color: var(--textoPainel);
-    font-size: 13px;
-    text-align: right;
-    white-space: nowrap;
 }
 
 .tabelaRolavel {
@@ -204,20 +115,6 @@
     overflow-wrap: anywhere;
 }
 
-.dashboard .resumoCategorias {
-    grid-template-columns: 160px minmax(0, 1fr);
-    gap: 16px;
-}
-
-.dashboard .legendaCategorias li {
-    grid-template-columns: 14px minmax(0, 1fr) auto auto;
-    gap: 8px;
-}
-
-.legendaCategorias li > span:nth-child(2) {
-    overflow-wrap: anywhere;
-}
-
 .tabelaRolavel:focus-visible {
     outline: 3px solid #8cacff;
     outline-offset: 3px;
@@ -244,13 +141,7 @@
         margin-right: 8px;
     }
 
-    .cartaoServidor {
-        grid-template-columns: 30px minmax(0, 1fr) auto;
-        gap: 10px;
-        padding: 12px;
-    }
-
-    .barraServidor {
+        .barraServidor {
         grid-column: 2 / -1;
         grid-row: 2;
     }
@@ -270,25 +161,12 @@
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .dashboard .resumoCategorias {
-        grid-template-columns: minmax(0, 1fr);
-    }
-
-    .resumoCategorias .graficoRosca {
-        width: 160px;
-        justify-self: center;
-    }
-
     .areaGrafico,
     .areaGraficoLinha {
         height: 240px;
     }
 
-    .cartaoServidor {
-        grid-template-columns: 30px minmax(0, 1fr);
-    }
-
-    .totalServidor {
+        .totalServidor {
         grid-column: 2;
         grid-row: 2;
         text-align: left;

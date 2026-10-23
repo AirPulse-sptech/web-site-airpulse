@@ -19,22 +19,6 @@ function buscarResumo(idFuncionario) {
     return database.executar(instrucaoSql)
 }
 
-function buscarDistribuicaoCategoria(idFuncionario) {
-    console.log("ACESSEI O RELATORIO MODEL \n function buscarDistribuicaoCategoria():", idFuncionario)
-
-    var instrucaoSql = `
-        SELECT r.categoria, COUNT(*) AS total
-        FROM relatorio r
-        JOIN aeronave a ON a.idAeronave = r.fkAeronave
-        JOIN funcionario g ON g.fkEmpresaFabricante = a.fkEmpresaFabricante
-        WHERE g.idFuncionario = ${idFuncionario}
-        GROUP BY r.categoria
-        ORDER BY total DESC, r.categoria ASC;
-    `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql)
-    return database.executar(instrucaoSql)
-}
-
 function buscarProducaoAnalista(idFuncionario) {
     console.log("ACESSEI O RELATORIO MODEL \n function buscarProducaoAnalista():", idFuncionario)
 
@@ -115,7 +99,6 @@ function buscarTabelaAnalistas(idFuncionario) {
 
 module.exports = {
     buscarResumo,
-    buscarDistribuicaoCategoria,
     buscarProducaoAnalista,
     buscarHistoricoAtividade,
     buscarServidoresOcorrencias,
