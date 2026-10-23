@@ -220,17 +220,43 @@
 
 .gfPaginas {
     display: flex;
+    flex-wrap: wrap;
     gap: 10px;
 }
 
 .gfPagina {
-    width: 48px;
+    min-width: 44px;
+    padding: 0 10px;
     height: 44px;
     border: 1px solid var(--gfBorda);
     border-radius: 10px;
     background-color: #fff;
     font-size: 13px;
     cursor: pointer;
+}
+
+.gfMensagem {
+    margin: 0;
+    padding: 24px;
+    color: var(--gfCinza);
+}
+
+.gfMensagem.erro {
+    color: #b91c1c;
+}
+
+.gfBtnRecarregar {
+    margin: 0 24px 24px;
+    padding: 10px 16px;
+    border: 1px solid var(--gfRoxo);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--gfRoxo);
+}
+
+.gfConteudo button:disabled {
+    cursor: default;
+    opacity: .55;
 }
 
 .gfPagina.ativo {

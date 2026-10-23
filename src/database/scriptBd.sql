@@ -57,6 +57,17 @@ CONSTRAINT ctAeronaveEmpresaFabricante
 FOREIGN KEY (fkEmpresaFabricante) REFERENCES empresaFabricante (idEmpresaFabricante)
 );
 
+CREATE TABLE funcionarioAeronave (
+fkFuncionario INT NOT NULL,
+fkAeronave INT NOT NULL,
+dataVinculo DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+PRIMARY KEY (fkFuncionario, fkAeronave),
+CONSTRAINT ctFuncionarioAeronaveFuncionario
+FOREIGN KEY (fkFuncionario) REFERENCES funcionario (idFuncionario),
+CONSTRAINT ctFuncionarioAeronaveAeronave
+FOREIGN KEY (fkAeronave) REFERENCES aeronave (idAeronave)
+);
+
 CREATE TABLE computador (
 idComputador INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 nome VARCHAR(45),

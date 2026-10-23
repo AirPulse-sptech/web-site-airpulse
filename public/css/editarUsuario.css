@@ -105,6 +105,55 @@
     background-color: var(--eaVerde);
 }
 
+.eaStatus.inativo {
+    background-color: #fee2e2;
+    color: #b91c1c;
+}
+
+.eaStatus.inativo::before {
+    background-color: var(--eaVermelho);
+}
+
+.eaMensagem,
+.eaVazio {
+    margin: 0;
+    color: var(--eaCinza);
+}
+
+.eaMensagem:not(.erro) {
+    color: #15803d;
+}
+
+.eaMensagem.erro {
+    color: #b91c1c;
+}
+
+.eaVazio {
+    grid-column: 1 / -1;
+    padding: 16px 0;
+}
+
+.eaBtnRecarregar {
+    align-self: flex-start;
+    padding: 10px 16px;
+    border: 1px solid var(--eaRoxo);
+    border-radius: 8px;
+    background: #fff;
+    color: var(--eaRoxo);
+}
+
+.eaConteudo button:disabled {
+    cursor: default;
+    opacity: .55;
+}
+
+.eaNomeFunc,
+.eaEmailFunc,
+.eaNome,
+.eaModelo {
+    overflow-wrap: anywhere;
+}
+
 .eaTotal {
     margin-left: auto;
     width: 280px;
@@ -306,6 +355,23 @@
     border: 1px solid var(--eaBorda);
     background-color: #fff;
     color: var(--eaRoxo);
+}
+
+.eaBtnGrande.inativar {
+    padding: 0 18px;
+    border: 1px solid #b42318;
+    background-color: #fff;
+    color: #b42318;
+}
+
+.eaBtnGrande.inativar:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+.eaBtnGrande.inativar.reativar {
+    border-color: #067647;
+    color: #067647;
 }
 
 .eaBtnGrande.salvar {
