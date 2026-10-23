@@ -277,8 +277,8 @@ INSERT INTO relatorio (
     (SELECT idAeronave FROM aeronave WHERE nome = 'PR-AER' LIMIT 1)
 ),
 (
-    'Temperatura do processador', DATE_SUB(CURDATE(), INTERVAL 7 DAY), DATE_SUB(CURDATE(), INTERVAL 1 DAY),
-    'Temperatura do processador apresentou picos curtos e requer observacao.',
+    'Uso do processador acima do alerta', DATE_SUB(CURDATE(), INTERVAL 7 DAY), DATE_SUB(CURDATE(), INTERVAL 1 DAY),
+    'Uso do processador apresentou picos curtos acima do limite de alerta e requer observacao.',
     'PUBLICADO', 'ATENCAO', 'PROCESSADOR', TIMESTAMP(DATE_SUB(CURDATE(), INTERVAL 1 DAY), '09:40:00'),
     (SELECT idAeronave FROM aeronave WHERE nome = 'PR-AER' LIMIT 1)
 ),

@@ -1100,3 +1100,119 @@ label.critico::before {
     font-size: 16px;
   }
 }
+
+
+.quantidadePlacas {
+  padding: 20px 28px;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 20px;
+}
+
+.quantidadePlacas .field {
+  width: 220px;
+  flex-shrink: 0;
+}
+
+.quantidadePlacas .helper {
+  padding-bottom: 14px;
+}
+
+.dadosPlaca {
+  padding-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  border-top: 1px solid var(--corBorda);
+}
+
+.cabecalhoComponentes h4 {
+  margin: 0 0 4px;
+  color: var(--corTextoSecundario);
+  font-size: 12px;
+  font-weight: 750;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.listaComponentesPlaca {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 14px;
+  align-items: start;
+}
+
+.componentePlaca {
+  min-width: 0;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  border: 1px solid var(--borderMedium);
+  border-radius: 14px;
+  background: var(--fundoPagina);
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.componentePlaca:has([data-monitorar-componente]:checked) {
+  border: 1.5px solid var(--corPrimaria);
+  background: var(--fundoSuperficie);
+}
+
+.monitorarComponente {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.monitorarComponente .bi {
+  color: var(--corPrimaria);
+  font-size: 17px;
+}
+
+.detalhesComponente {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.tituloMetricas {
+  margin-bottom: -6px !important;
+  font-size: 14px;
+  font-weight: 750;
+}
+
+.placaSpare h3 small {
+  overflow-wrap: anywhere;
+}
+
+.personalizarSpare {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (max-width: 1200px) {
+  .listaComponentesPlaca {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .quantidadePlacas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .quantidadePlacas .field {
+    width: 100%;
+  }
+
+  .quantidadePlacas .helper {
+    padding-bottom: 0;
+  }
+
+  .dadosPlaca {
+    grid-template-columns: 1fr;
+  }
+}

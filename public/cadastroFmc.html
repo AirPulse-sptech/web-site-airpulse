@@ -207,355 +207,26 @@
               </div>
             </div>
           </section>
-
+          
 
           <section class="step" data-step="2" hidden>
             <div class="cabecalhoSecao">
               <h2>Placas e componentes do FMC Mestre</h2>
               <p>
-                O FMC possui uma placa de CPU, uma de memória RAM e uma de armazenamento. Escolha quais placas serão
-                monitoradas e, para cada uma, cadastre o componente e as métricas.
+                Informe quantas placas o FMC possui. Cada placa pode ter CPU, memória RAM e armazenamento:
+                marque os componentes que serão monitorados em cada uma.
               </p>
             </div>
 
-            <div class="listaPlacas" id="placasMestre">
-
-              <article class="card placa" data-computador="mestre" data-tipo="CPU">
-                <header class="cabecalhoPlaca">
-                  <h3>
-                    <i class="bi bi-cpu" aria-hidden="true"></i>
-                    Placa de CPU
-                    <small>Placa 1 de 3 do FMC Mestre</small>
-                  </h3>
-
-                  <label class="monitorarPlaca">
-                    <input type="checkbox" name="mestreCpuMonitorarPlaca" checked data-monitorar-placa>
-                    Monitorar esta placa
-                  </label>
-                </header>
-
-                <div class="colunas">
-                  <div>
-                    <h4>Placa</h4>
-                    <p class="helper">Identificação física da placa no FMC.</p>
-                    <div class="field">
-                      <label for="mestreCpuPlacaNome">Nome da placa *</label>
-                      <input id="mestreCpuPlacaNome" name="mestreCpuPlacaNome" type="text" placeholder="Ex.: Placa CPU" maxlength="100" required>
-                    </div>
-                    <div class="field">
-                      <label for="mestreCpuPlacaModelo">Modelo da placa *</label>
-                      <input id="mestreCpuPlacaModelo" name="mestreCpuPlacaModelo" type="text" placeholder="Modelo / part number da placa" maxlength="100" required>
-                    </div>
-                    <div class="field">
-                      <label for="mestreCpuPlacaNumeroSerie">Número de série da placa *</label>
-                      <input id="mestreCpuPlacaNumeroSerie" name="mestreCpuPlacaNumeroSerie" type="text" placeholder="Número de série do fabricante" maxlength="45" data-serie-placa required>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4>Componente</h4>
-                    <p class="helper">Componente monitorado nesta placa.</p>
-                    <div class="linhaComponente">
-                      <div class="field">
-                        <label for="mestreCpuTipo">Tipo</label>
-                        <input id="mestreCpuTipo" type="text" value="CPU" class="bloqueado" readonly>
-                      </div>
-                      <div class="field">
-                        <label for="mestreCpuComponenteModelo">Modelo do componente *</label>
-                        <input id="mestreCpuComponenteModelo" name="mestreCpuComponenteModelo" type="text" placeholder="Modelo do processador" maxlength="100" required>
-                      </div>
-                    </div>
-
-                    <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso da CPU.</small></p>
-                    <div class="linhaLimites">
-                      <div class="field">
-                        <label for="mestreCpuLimiteAtencao" class="alerta">Alerta (%)</label>
-                        <input id="mestreCpuLimiteAtencao" name="mestreCpuLimiteAtencao" type="number" min="1" max="99" value="70"
-                          required data-limite="atencao">
-                      </div>
-                      <div class="field">
-                        <label for="mestreCpuLimiteCritico" class="critico">Crítico (%)</label>
-                        <input id="mestreCpuLimiteCritico" name="mestreCpuLimiteCritico" type="number" min="2" max="100" value="90"
-                          required data-limite="critico">
-                      </div>
-                    </div>
-                    <div class="barraLimites"></div>
-                    <p class="legendaLimites"></p>
-                  </div>
-
-                  <div>
-                    <h4>Métricas coletadas</h4>
-                    <p class="helper">Marque quais destas métricas serão monitoradas.</p>
-                    <div class="listaMetricas">
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreCpuMetricas" value="Percentual de uso" data-unidade="%"
-                          data-descricao="Uso de processamento no momento da coleta" checked>
-                        <strong>Percentual de uso</strong>
-                        <span class="unidade">%</span>
-                        <small>Uso de processamento no momento da coleta</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreCpuMetricas" value="Frequência atual" data-unidade="GHz"
-                          data-descricao="Frequência de operação no momento da coleta" checked>
-                        <strong>Frequência atual</strong>
-                        <span class="unidade">GHz</span>
-                        <small>Frequência de operação no momento da coleta</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreCpuMetricas" value="Frequência máxima" data-unidade="GHz"
-                          data-descricao="Frequência máxima suportada" checked>
-                        <strong>Frequência máxima</strong>
-                        <span class="unidade">GHz</span>
-                        <small>Frequência máxima suportada</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreCpuMetricas" value="Núcleos físicos" data-unidade="qtd"
-                          data-descricao="Núcleos reais do processador" checked>
-                        <strong>Núcleos físicos</strong>
-                        <span class="unidade">qtd</span>
-                        <small>Núcleos reais do processador</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreCpuMetricas" value="Núcleos lógicos" data-unidade="qtd"
-                          data-descricao="Threads disponíveis para o sistema" checked>
-                        <strong>Núcleos lógicos</strong>
-                        <span class="unidade">qtd</span>
-                        <small>Threads disponíveis para o sistema</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreCpuMetricas" value="Temperatura da CPU" data-unidade="°C"
-                          data-descricao="Temperatura do processador" checked>
-                        <strong>Temperatura da CPU</strong>
-                        <span class="unidade">°C</span>
-                        <small>Temperatura do processador</small>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </article>
-
-              <article class="card placa" data-computador="mestre" data-tipo="RAM">
-                <header class="cabecalhoPlaca">
-                  <h3>
-                    <i class="bi bi-memory" aria-hidden="true"></i>
-                    Placa de memória RAM
-                    <small>Placa 2 de 3 do FMC Mestre</small>
-                  </h3>
-
-                  <label class="monitorarPlaca">
-                    <input type="checkbox" name="mestreRamMonitorarPlaca" checked data-monitorar-placa>
-                    Monitorar esta placa
-                  </label>
-                </header>
-
-                <div class="colunas">
-                  <div>
-                    <h4>Placa</h4>
-                    <p class="helper">Identificação física da placa no FMC.</p>
-                    <div class="field">
-                      <label for="mestreRamPlacaNome">Nome da placa *</label>
-                      <input id="mestreRamPlacaNome" name="mestreRamPlacaNome" type="text" placeholder="Ex.: Placa RAM" maxlength="100" required>
-                    </div>
-                    <div class="field">
-                      <label for="mestreRamPlacaModelo">Modelo da placa *</label>
-                      <input id="mestreRamPlacaModelo" name="mestreRamPlacaModelo" type="text" placeholder="Modelo / part number da placa" maxlength="100" required>
-                    </div>
-                    <div class="field">
-                      <label for="mestreRamPlacaNumeroSerie">Número de série da placa *</label>
-                      <input id="mestreRamPlacaNumeroSerie" name="mestreRamPlacaNumeroSerie" type="text" placeholder="Número de série do fabricante" maxlength="45" data-serie-placa required>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4>Componente</h4>
-                    <p class="helper">Componente monitorado nesta placa.</p>
-                    <div class="linhaComponente">
-                      <div class="field">
-                        <label for="mestreRamTipo">Tipo</label>
-                        <input id="mestreRamTipo" type="text" value="RAM" class="bloqueado" readonly>
-                      </div>
-                      <div class="field">
-                        <label for="mestreRamComponenteModelo">Modelo do componente *</label>
-                        <input id="mestreRamComponenteModelo" name="mestreRamComponenteModelo" type="text" placeholder="Modelo da memória" maxlength="100" required>
-                      </div>
-                    </div>
-
-                    <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso da memória.</small></p>
-                    <div class="linhaLimites">
-                      <div class="field">
-                        <label for="mestreRamLimiteAtencao" class="alerta">Alerta (%)</label>
-                        <input id="mestreRamLimiteAtencao" name="mestreRamLimiteAtencao" type="number" min="1" max="99" value="70"
-                          required data-limite="atencao">
-                      </div>
-                      <div class="field">
-                        <label for="mestreRamLimiteCritico" class="critico">Crítico (%)</label>
-                        <input id="mestreRamLimiteCritico" name="mestreRamLimiteCritico" type="number" min="2" max="100" value="90"
-                          required data-limite="critico">
-                      </div>
-                    </div>
-                    <div class="barraLimites"></div>
-                    <p class="legendaLimites"></p>
-                  </div>
-
-                  <div>
-                    <h4>Métricas coletadas</h4>
-                    <p class="helper">Marque quais destas métricas serão monitoradas.</p>
-                    <div class="listaMetricas">
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreRamMetricas" value="Memória total" data-unidade="GB"
-                          data-descricao="Capacidade instalada" checked>
-                        <strong>Memória total</strong>
-                        <span class="unidade">GB</span>
-                        <small>Capacidade instalada</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreRamMetricas" value="Memória usada" data-unidade="GB"
-                          data-descricao="Memória ocupada pelo sistema" checked>
-                        <strong>Memória usada</strong>
-                        <span class="unidade">GB</span>
-                        <small>Memória ocupada pelo sistema</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreRamMetricas" value="Memória disponível" data-unidade="GB"
-                          data-descricao="Memória livre para uso" checked>
-                        <strong>Memória disponível</strong>
-                        <span class="unidade">GB</span>
-                        <small>Memória livre para uso</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreRamMetricas" value="Percentual de uso" data-unidade="%"
-                          data-descricao="Memória usada em relação ao total" checked>
-                        <strong>Percentual de uso</strong>
-                        <span class="unidade">%</span>
-                        <small>Memória usada em relação ao total</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreRamMetricas" value="Cache" data-unidade="GB"
-                          data-descricao="Memória reservada para cache" checked>
-                        <strong>Cache</strong>
-                        <span class="unidade">GB</span>
-                        <small>Memória reservada para cache</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreRamMetricas" value="Velocidade" data-unidade="MHz"
-                          data-descricao="Frequência dos módulos de memória" checked>
-                        <strong>Velocidade</strong>
-                        <span class="unidade">MHz</span>
-                        <small>Frequência dos módulos de memória</small>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </article>
-
-              <article class="card placa" data-computador="mestre" data-tipo="DISCO">
-                <header class="cabecalhoPlaca">
-                  <h3>
-                    <i class="bi bi-device-hdd" aria-hidden="true"></i>
-                    Placa de armazenamento
-                    <small>Placa 3 de 3 do FMC Mestre</small>
-                  </h3>
-
-                  <label class="monitorarPlaca">
-                    <input type="checkbox" name="mestreDiscoMonitorarPlaca" checked data-monitorar-placa>
-                    Monitorar esta placa
-                  </label>
-                </header>
-
-                <div class="colunas">
-                  <div>
-                    <h4>Placa</h4>
-                    <p class="helper">Identificação física da placa no FMC.</p>
-                    <div class="field">
-                      <label for="mestreDiscoPlacaNome">Nome da placa *</label>
-                      <input id="mestreDiscoPlacaNome" name="mestreDiscoPlacaNome" type="text" placeholder="Ex.: Placa Armazenamento" maxlength="100" required>
-                    </div>
-                    <div class="field">
-                      <label for="mestreDiscoPlacaModelo">Modelo da placa *</label>
-                      <input id="mestreDiscoPlacaModelo" name="mestreDiscoPlacaModelo" type="text" placeholder="Modelo / part number da placa" maxlength="100" required>
-                    </div>
-                    <div class="field">
-                      <label for="mestreDiscoPlacaNumeroSerie">Número de série da placa *</label>
-                      <input id="mestreDiscoPlacaNumeroSerie" name="mestreDiscoPlacaNumeroSerie" type="text" placeholder="Número de série do fabricante" maxlength="45" data-serie-placa required>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h4>Componente</h4>
-                    <p class="helper">Componente monitorado nesta placa.</p>
-                    <div class="linhaComponente">
-                      <div class="field">
-                        <label for="mestreDiscoTipo">Tipo</label>
-                        <input id="mestreDiscoTipo" type="text" value="Armazenamento" class="bloqueado" readonly>
-                      </div>
-                      <div class="field">
-                        <label for="mestreDiscoComponenteModelo">Modelo do componente *</label>
-                        <input id="mestreDiscoComponenteModelo" name="mestreDiscoComponenteModelo" type="text" placeholder="Modelo do armazenamento" maxlength="100" required>
-                      </div>
-                    </div>
-
-                    <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso do armazenamento.</small></p>
-                    <div class="linhaLimites">
-                      <div class="field">
-                        <label for="mestreDiscoLimiteAtencao" class="alerta">Alerta (%)</label>
-                        <input id="mestreDiscoLimiteAtencao" name="mestreDiscoLimiteAtencao" type="number" min="1" max="99" value="70"
-                          required data-limite="atencao">
-                      </div>
-                      <div class="field">
-                        <label for="mestreDiscoLimiteCritico" class="critico">Crítico (%)</label>
-                        <input id="mestreDiscoLimiteCritico" name="mestreDiscoLimiteCritico" type="number" min="2" max="100" value="90"
-                          required data-limite="critico">
-                      </div>
-                    </div>
-                    <div class="barraLimites"></div>
-                    <p class="legendaLimites"></p>
-                  </div>
-
-                  <div>
-                    <h4>Métricas coletadas</h4>
-                    <p class="helper">Marque quais destas métricas serão monitoradas.</p>
-                    <div class="listaMetricas">
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreDiscoMetricas" value="Capacidade total" data-unidade="GB"
-                          data-descricao="Espaço total de armazenamento" checked>
-                        <strong>Capacidade total</strong>
-                        <span class="unidade">GB</span>
-                        <small>Espaço total de armazenamento</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreDiscoMetricas" value="Em uso" data-unidade="GB"
-                          data-descricao="Espaço ocupado" checked>
-                        <strong>Em uso</strong>
-                        <span class="unidade">GB</span>
-                        <small>Espaço ocupado</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreDiscoMetricas" value="Disponível" data-unidade="GB"
-                          data-descricao="Espaço livre" checked>
-                        <strong>Disponível</strong>
-                        <span class="unidade">GB</span>
-                        <small>Espaço livre</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreDiscoMetricas" value="Percentual de uso" data-unidade="%"
-                          data-descricao="Espaço em uso em relação ao total" checked>
-                        <strong>Percentual de uso</strong>
-                        <span class="unidade">%</span>
-                        <small>Espaço em uso em relação ao total</small>
-                      </label>
-                      <label class="metrica">
-                        <input type="checkbox" name="mestreDiscoMetricas" value="Leitura / escrita" data-unidade="MB/s"
-                          data-descricao="Taxa de transferência do armazenamento" checked>
-                        <strong>Leitura / escrita</strong>
-                        <span class="unidade">MB/s</span>
-                        <small>Taxa de transferência do armazenamento</small>
-                      </label>
-                    </div>
-                  </div>
-                </div>
-              </article>
-
+            <div class="card quantidadePlacas">
+              <div class="field">
+                <label for="mestreQuantidadePlacas">Quantidade de placas *</label>
+                <input id="mestreQuantidadePlacas" type="number" min="1" max="10" value="1" required data-quantidade-placas="mestre">
+              </div>
+              <p class="helper">De 1 a 10 placas. Ao diminuir a quantidade, as últimas placas são removidas.</p>
             </div>
+
+            <div class="listaPlacas" id="placasMestre"></div>
           </section>
 
           
@@ -629,55 +300,23 @@
               <label class="replicar">
                 <input type="checkbox" id="replicarPlacas" checked>
                 <i class="bi bi-copy" aria-hidden="true"></i>
-                Replicar nome, modelo, componente, métricas e limites das placas do Mestre
+                Replicar placas, componentes, métricas e limites do Mestre
               </label>
 
-              <div class="listaPlacasSpare" id="placasReplicadas">
-
-                <div class="placaSpare" data-tipo="CPU">
-                  <h3>
-                    <i class="bi bi-cpu" aria-hidden="true"></i>
-                    Placa de CPU
-                    <small>Nome e modelo iguais ao Mestre</small>
-                  </h3>
-                  <p class="resumoPlaca"></p>
-                  <div class="field">
-                    <label for="spareCpuSerieReplicada">Número de série da placa *</label>
-                    <input id="spareCpuSerieReplicada" name="spareCpuSerieReplicada" type="text" placeholder="Nº de série da placa do Spare" maxlength="45" data-serie-placa required>
-                  </div>
-                </div>
-
-                <div class="placaSpare" data-tipo="RAM">
-                  <h3>
-                    <i class="bi bi-memory" aria-hidden="true"></i>
-                    Placa de memória RAM
-                    <small>Nome e modelo iguais ao Mestre</small>
-                  </h3>
-                  <p class="resumoPlaca"></p>
-                  <div class="field">
-                    <label for="spareRamSerieReplicada">Número de série da placa *</label>
-                    <input id="spareRamSerieReplicada" name="spareRamSerieReplicada" type="text" placeholder="Nº de série da placa do Spare" maxlength="45" data-serie-placa required>
-                  </div>
-                </div>
-
-                <div class="placaSpare" data-tipo="DISCO">
-                  <h3>
-                    <i class="bi bi-device-hdd" aria-hidden="true"></i>
-                    Placa de armazenamento
-                    <small>Nome e modelo iguais ao Mestre</small>
-                  </h3>
-                  <p class="resumoPlaca"></p>
-                  <div class="field">
-                    <label for="spareDiscoSerieReplicada">Número de série da placa *</label>
-                    <input id="spareDiscoSerieReplicada" name="spareDiscoSerieReplicada" type="text" placeholder="Nº de série da placa do Spare" maxlength="45" data-serie-placa required>
-                  </div>
-                </div>
-
-              </div>
+              <div class="listaPlacasSpare" id="placasReplicadas"></div>
             </div>
 
-            <div class="listaPlacas" id="placasSpare" hidden></div>
+            <div class="personalizarSpare" id="personalizarSpare" hidden>
+              <div class="card quantidadePlacas">
+                <div class="field">
+                  <label for="spareQuantidadePlacas">Quantidade de placas do Spare *</label>
+                  <input id="spareQuantidadePlacas" type="number" min="1" max="10" value="1" required data-quantidade-placas="spare">
+                </div>
+                <p class="helper">De 1 a 10 placas. Ao diminuir a quantidade, as últimas placas são removidas.</p>
+              </div>
 
+              <div class="listaPlacas" id="placasSpare"></div>
+            </div>
           </section>
 
           <section class="card step" data-step="4" hidden>
@@ -713,6 +352,252 @@
           </div>
 
         </form>
+
+        <template id="modeloPlaca">
+          <article class="card placa" data-computador="{{computador}}" data-numero="{{numero}}">
+            <header class="cabecalhoPlaca">
+              <h3>
+                <i class="bi bi-motherboard" aria-hidden="true"></i>
+                Placa {{numero}}
+                <small>FMC {{fmc}}</small>
+              </h3>
+            </header>
+
+            <div class="dadosPlaca">
+              <div class="field">
+                <label for="{{id}}PlacaNome">Nome da placa *</label>
+                <input id="{{id}}PlacaNome" type="text" placeholder="Ex.: Placa principal" maxlength="100" required data-campo="nome">
+              </div>
+              <div class="field">
+                <label for="{{id}}PlacaModelo">Modelo da placa *</label>
+                <input id="{{id}}PlacaModelo" type="text" placeholder="Modelo / part number da placa" maxlength="100" required data-campo="modelo">
+              </div>
+              <div class="field">
+                <label for="{{id}}PlacaNumeroSerie">Número de série da placa *</label>
+                <input id="{{id}}PlacaNumeroSerie" type="text" placeholder="Número de série do fabricante" maxlength="45" required data-campo="numeroSerie" data-serie-placa>
+              </div>
+            </div>
+
+            <div class="cabecalhoComponentes">
+              <h4>Componentes monitorados</h4>
+              <p class="helper">Marque os componentes desta placa que serão monitorados.</p>
+            </div>
+
+            <div class="listaComponentesPlaca">
+          <section class="componentePlaca" data-tipo="CPU">
+            <label class="monitorarComponente">
+              <input type="checkbox" name="{{id}}CpuMonitorar" data-monitorar-componente>
+              <i class="bi bi-cpu" aria-hidden="true"></i>
+              CPU
+            </label>
+
+            <div class="detalhesComponente" hidden>
+              <div class="field">
+                <label for="{{id}}CpuModelo">Modelo do componente *</label>
+                <input id="{{id}}CpuModelo" type="text" placeholder="Modelo do processador" maxlength="100" required data-campo="modeloComponente">
+              </div>
+
+              <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso da CPU.</small></p>
+              <div class="linhaLimites">
+                <div class="field">
+                  <label for="{{id}}CpuLimiteAtencao" class="alerta">Alerta (%)</label>
+                  <input id="{{id}}CpuLimiteAtencao" type="number" min="1" max="99" value="70" required data-limite="atencao">
+                </div>
+                <div class="field">
+                  <label for="{{id}}CpuLimiteCritico" class="critico">Crítico (%)</label>
+                  <input id="{{id}}CpuLimiteCritico" type="number" min="2" max="100" value="90" required data-limite="critico">
+                </div>
+              </div>
+              <div class="barraLimites"></div>
+              <p class="legendaLimites"></p>
+
+              <p class="tituloMetricas">Métricas coletadas</p>
+              <div class="listaMetricas">
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}CpuMetricas" value="Percentual de uso" data-unidade="%"
+                    data-descricao="Uso de processamento no momento da coleta" checked>
+                  <strong>Percentual de uso</strong>
+                  <span class="unidade">%</span>
+                  <small>Uso de processamento no momento da coleta</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}CpuMetricas" value="Frequência atual" data-unidade="GHz"
+                    data-descricao="Frequência de operação no momento da coleta" checked>
+                  <strong>Frequência atual</strong>
+                  <span class="unidade">GHz</span>
+                  <small>Frequência de operação no momento da coleta</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}CpuMetricas" value="Frequência máxima" data-unidade="GHz"
+                    data-descricao="Frequência máxima suportada" checked>
+                  <strong>Frequência máxima</strong>
+                  <span class="unidade">GHz</span>
+                  <small>Frequência máxima suportada</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}CpuMetricas" value="Núcleos físicos" data-unidade="qtd"
+                    data-descricao="Núcleos reais do processador" checked>
+                  <strong>Núcleos físicos</strong>
+                  <span class="unidade">qtd</span>
+                  <small>Núcleos reais do processador</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}CpuMetricas" value="Núcleos lógicos" data-unidade="qtd"
+                    data-descricao="Threads disponíveis para o sistema" checked>
+                  <strong>Núcleos lógicos</strong>
+                  <span class="unidade">qtd</span>
+                  <small>Threads disponíveis para o sistema</small>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="componentePlaca" data-tipo="RAM">
+            <label class="monitorarComponente">
+              <input type="checkbox" name="{{id}}RamMonitorar" data-monitorar-componente>
+              <i class="bi bi-memory" aria-hidden="true"></i>
+              Memória RAM
+            </label>
+
+            <div class="detalhesComponente" hidden>
+              <div class="field">
+                <label for="{{id}}RamModelo">Modelo do componente *</label>
+                <input id="{{id}}RamModelo" type="text" placeholder="Modelo da memória" maxlength="100" required data-campo="modeloComponente">
+              </div>
+
+              <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso da memória.</small></p>
+              <div class="linhaLimites">
+                <div class="field">
+                  <label for="{{id}}RamLimiteAtencao" class="alerta">Alerta (%)</label>
+                  <input id="{{id}}RamLimiteAtencao" type="number" min="1" max="99" value="70" required data-limite="atencao">
+                </div>
+                <div class="field">
+                  <label for="{{id}}RamLimiteCritico" class="critico">Crítico (%)</label>
+                  <input id="{{id}}RamLimiteCritico" type="number" min="2" max="100" value="90" required data-limite="critico">
+                </div>
+              </div>
+              <div class="barraLimites"></div>
+              <p class="legendaLimites"></p>
+
+              <p class="tituloMetricas">Métricas coletadas</p>
+              <div class="listaMetricas">
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}RamMetricas" value="Memória total" data-unidade="GB"
+                    data-descricao="Capacidade instalada" checked>
+                  <strong>Memória total</strong>
+                  <span class="unidade">GB</span>
+                  <small>Capacidade instalada</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}RamMetricas" value="Memória usada" data-unidade="GB"
+                    data-descricao="Memória ocupada pelo sistema" checked>
+                  <strong>Memória usada</strong>
+                  <span class="unidade">GB</span>
+                  <small>Memória ocupada pelo sistema</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}RamMetricas" value="Memória disponível" data-unidade="GB"
+                    data-descricao="Memória livre para uso" checked>
+                  <strong>Memória disponível</strong>
+                  <span class="unidade">GB</span>
+                  <small>Memória livre para uso</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}RamMetricas" value="Percentual de uso" data-unidade="%"
+                    data-descricao="Memória usada em relação ao total" checked>
+                  <strong>Percentual de uso</strong>
+                  <span class="unidade">%</span>
+                  <small>Memória usada em relação ao total</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}RamMetricas" value="Cache" data-unidade="GB"
+                    data-descricao="Memória reservada para cache" checked>
+                  <strong>Cache</strong>
+                  <span class="unidade">GB</span>
+                  <small>Memória reservada para cache</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}RamMetricas" value="Velocidade" data-unidade="MHz"
+                    data-descricao="Frequência dos módulos de memória" checked>
+                  <strong>Velocidade</strong>
+                  <span class="unidade">MHz</span>
+                  <small>Frequência dos módulos de memória</small>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          <section class="componentePlaca" data-tipo="DISCO">
+            <label class="monitorarComponente">
+              <input type="checkbox" name="{{id}}DiscoMonitorar" data-monitorar-componente>
+              <i class="bi bi-device-hdd" aria-hidden="true"></i>
+              Armazenamento
+            </label>
+
+            <div class="detalhesComponente" hidden>
+              <div class="field">
+                <label for="{{id}}DiscoModelo">Modelo do componente *</label>
+                <input id="{{id}}DiscoModelo" type="text" placeholder="Modelo do armazenamento" maxlength="100" required data-campo="modeloComponente">
+              </div>
+
+              <p class="tituloLimites">Limites de alerta <small>Aplicados ao percentual de uso do armazenamento.</small></p>
+              <div class="linhaLimites">
+                <div class="field">
+                  <label for="{{id}}DiscoLimiteAtencao" class="alerta">Alerta (%)</label>
+                  <input id="{{id}}DiscoLimiteAtencao" type="number" min="1" max="99" value="70" required data-limite="atencao">
+                </div>
+                <div class="field">
+                  <label for="{{id}}DiscoLimiteCritico" class="critico">Crítico (%)</label>
+                  <input id="{{id}}DiscoLimiteCritico" type="number" min="2" max="100" value="90" required data-limite="critico">
+                </div>
+              </div>
+              <div class="barraLimites"></div>
+              <p class="legendaLimites"></p>
+
+              <p class="tituloMetricas">Métricas coletadas</p>
+              <div class="listaMetricas">
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}DiscoMetricas" value="Capacidade total" data-unidade="GB"
+                    data-descricao="Espaço total de armazenamento" checked>
+                  <strong>Capacidade total</strong>
+                  <span class="unidade">GB</span>
+                  <small>Espaço total de armazenamento</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}DiscoMetricas" value="Em uso" data-unidade="GB"
+                    data-descricao="Espaço ocupado" checked>
+                  <strong>Em uso</strong>
+                  <span class="unidade">GB</span>
+                  <small>Espaço ocupado</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}DiscoMetricas" value="Disponível" data-unidade="GB"
+                    data-descricao="Espaço livre" checked>
+                  <strong>Disponível</strong>
+                  <span class="unidade">GB</span>
+                  <small>Espaço livre</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}DiscoMetricas" value="Percentual de uso" data-unidade="%"
+                    data-descricao="Espaço em uso em relação ao total" checked>
+                  <strong>Percentual de uso</strong>
+                  <span class="unidade">%</span>
+                  <small>Espaço em uso em relação ao total</small>
+                </label>
+                <label class="metrica">
+                  <input type="checkbox" name="{{id}}DiscoMetricas" value="Leitura / escrita" data-unidade="MB/s"
+                    data-descricao="Taxa de transferência do armazenamento" checked>
+                  <strong>Leitura / escrita</strong>
+                  <span class="unidade">MB/s</span>
+                  <small>Taxa de transferência do armazenamento</small>
+                </label>
+              </div>
+            </div>
+          </section>
+            </div>
+          </article>
+        </template>
+        <!-- FIM DA ALTERAÇÃO -->
 
       </main>
     </div>
