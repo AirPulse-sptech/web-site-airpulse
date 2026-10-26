@@ -11,10 +11,6 @@
   text-decoration: underline;
 }
 
-.cardEdicao + .cardEdicao {
-  margin-top: 20px;
-}
-
-.actions .button {
-  text-decoration: none;
+.cadastroProgress {
+  grid-template-columns: repeat(3, 1fr);
 }

@@ -178,7 +178,7 @@ CONSTRAINT ctFuncionarioRelatorioUnico UNIQUE (fkFuncionario, fkRelatorio)
 );
 
 INSERT INTO empresaFabricante (razaoSocial, nomeFantasia, cnpj, segmentoAtuacao, email, telefone, statusSistema, entradaSistema, fkEndereco)
-VALUES ('AirPulse', 'AirPulse', '00000000000100', 'Gestão Interna', 'air.pulse@airpulse.com', '11999999999', 1, NOW(), NULL);
+VALUES ('AirPulse', 'AirPulse', '00000000000100', 'Gestão Interna', 'air.pulse@airpulse.com', '11999999999', 'ATIVO', NOW(), NULL);
 
 INSERT INTO funcionario (
     nome,
@@ -199,7 +199,7 @@ INSERT INTO funcionario (
     '00000000000',
     'ADMIN',
     'urubu100',
-    'ATIVO',
+    1,
     NOW(),
     (SELECT idEmpresaFabricante FROM empresaFabricante WHERE cnpj = '00000000000100' LIMIT 1)
 );
