@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AirPulse - Editar Empresa</title>
+  <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="css/global.css">
+  <link rel="stylesheet" href="css/cadastroEmpresa.css">
+    <link rel="stylesheet" href="css/painel.css">
+  <link rel="stylesheet" href="css/editarEmpresa.css">
+</head>
+
+<body>
+
+  <div class="appLayout">
+
+    <aside id="sidebar">
+      <div class="sidebarHeader">
+        <a class="sidebarBrand" href="cadastroEmpresa.html">
+          <img class="brandLogoFull" src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg"
+            alt="AirPulse">
+        </a>
+      </div>
+
+      <nav class="sidebarNav">
+        <div class="navItem disabled">
+          <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Visão Geral</span>
+        </div>
+
+        <a href="cadastroEmpresa.html" class="navItem">
+          <i class="bi bi-building-add navIcon" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Cadastrar Empresa</span>
+        </a>
+
+        <a href="empresasCadastradas.html" class="navItem active" aria-current="page">
+          <i class="bi bi-buildings navIcon" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Empresas Cadastradas</span>
+        </a>
+
+        <div class="navItem disabled">
+          <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Chamados & Suporte</span>
+        </div>
+      </nav>
+
+      <div class="sidebarFooter">
+        <div class="userProfile">
+          <div class="userAvatar" id="userAvatar">--</div>
+          <div class="userDetails">
+            <span class="userName" id="userNameDisplay">Usuário</span>
+            <span class="userRole" id="userRoleDisplay"></span>
+          </div>
+        </div>
+
+        <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+          <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+          <span>Deslogar</span>
+        </button>
+      </div>
+    </aside>
+
+    <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+    <div class="mainWrapper">
+
+      <header class="topbar">
+        <div class="topbarLeft">
+          <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+            <i class="bi bi-list" aria-hidden="true"></i>
+          </button>
+          <span class="topbarTitle">Módulo de Cadastramento de Clientes</span>
+        </div>
+      </header>
+
+      <main class="paginaInterna">
+
+        <a class="voltarEmpresas" href="empresasCadastradas.html">← Voltar para empresas</a>
+
+        <h1>Editar Empresa Cliente</h1>
+
+        <p class="subtitle">
+          Os campos já vêm preenchidos com os dados atuais. Altere apenas o que precisar.
+        </p>
+
+        <ol class="cadastroProgress" id="progress">
+          <li class="active" data-progress="1">
+            <span class="circle">1</span>
+            <span>Dados da empresa</span>
+          </li>
+
+          <li data-progress="2">
+            <span class="circle">2</span>
+            <span>Endereço</span>
+          </li>
+
+          <li data-progress="3">
+            <span class="circle">3</span>
+            <span>Confirmação</span>
+          </li>
+        </ol>
+
+        <form id="companyForm" novalidate>
+
+          <section class="card step" data-step="1">
+            <h2>Dados da empresa</h2>
+
+            <div class="grid">
+
+              <div class="field full">
+                <label for="razaoSocial">Razão social *</label>
+                <input id="razaoSocial" name="razaoSocial" type="text" placeholder="Nome completo da empresa"
+                  required>
+                <p class="error" data-error="razaoSocial"></p>
+              </div>
+
+              <div class="field">
+                <label for="nomeFantasia">
+                  Nome fantasia <span class="optional">(opcional)</span>
+                </label>
+                <input id="nomeFantasia" name="nomeFantasia" type="text" placeholder="Nome comercial">
+                <p class="error" data-error="nomeFantasia"></p>
+              </div>
+
+              <div class="field">
+                <label for="cnpj">CNPJ *</label>
+                <input id="cnpj" name="cnpj" type="text" maxlength="18" placeholder="00.000.000/0001-00" required>
+                <p class="error" data-error="cnpj"></p>
+              </div>
+
+              <div class="field">
+                <label for="segmento">Segmento de atuação *</label>
+
+                <select id="segmento" name="segmento" required>
+                  <option value="">Selecione o segmento</option>
+                  <option>Fabricante de sistemas embarcados</option>
+                  <option>Fabricante de aeronaves</option>
+                  <option>Manutenção aeronáutica</option>
+                  <option>Operador aéreo</option>
+                  <option>Outro</option>
+                </select>
+
+                <p class="error" data-error="segmento"></p>
+              </div>
+
+              <div class="field">
+                <label for="emailEmpresa">E-mail corporativo da empresa *</label>
+                <input id="emailEmpresa" name="emailEmpresa" type="email" placeholder="contato@empresa.aero" required>
+                <p class="error" data-error="emailEmpresa"></p>
+              </div>
+
+              <div class="field">
+                <label for="telefone">Telefone da empresa *</label>
+                <input id="telefone" name="telefone" type="tel" maxlength="15" placeholder="(11) 90000-0000" required>
+                <p class="error" data-error="telefone"></p>
+              </div>
+
+            </div>
+          </section>
+
+          <section class="card step" data-step="2" hidden>
+            <h2>Endereço</h2>
+
+            <div class="grid">
+
+              <div class="field">
+                <label for="cep">CEP *</label>
+                <input id="cep" name="cep" type="text" maxlength="9" placeholder="00000-000" required>
+                <p class="error" data-error="cep"></p>
+              </div>
+
+              <div class="field full">
+                <label for="logradouro">Logradouro *</label>
+                <input id="logradouro" name="logradouro" type="text" placeholder="Rua, avenida, alameda..." required>
+                <p class="error" data-error="logradouro"></p>
+              </div>
+
+              <div class="field">
+                <label for="bairro">Bairro *</label>
+                <input id="bairro" name="bairro" type="text" placeholder="Bairro" required>
+                <p class="error" data-error="bairro"></p>
+              </div>
+
+              <div class="field">
+                <label for="numero">Número *</label>
+                <input id="numero" name="numero" type="text" placeholder="123 ou S/N" required>
+                <p class="error" data-error="numero"></p>
+              </div>
+
+              <div class="field">
+                <label for="complemento">
+                  Complemento <span class="optional">(opcional)</span>
+                </label>
+                <input id="complemento" name="complemento" type="text" placeholder="Sala, andar...">
+                <p class="error" data-error="complemento"></p>
+              </div>
+
+              <div class="field">
+                <label for="estado">Estado *</label>
+
+                <select id="estado" name="estado" required>
+                  <option value="">UF</option>
+                  <option value="AC">AC</option>
+                  <option value="AL">AL</option>
+                  <option value="AP">AP</option>
+                  <option value="AM">AM</option>
+                  <option value="BA">BA</option>
+                  <option value="CE">CE</option>
+                  <option value="DF">DF</option>
+                  <option value="ES">ES</option>
+                  <option value="GO">GO</option>
+                  <option value="MA">MA</option>
+                  <option value="MT">MT</option>
+                  <option value="MS">MS</option>
+                  <option value="MG">MG</option>
+                  <option value="PA">PA</option>
+                  <option value="PB">PB</option>
+                  <option value="PR">PR</option>
+                  <option value="PE">PE</option>
+                  <option value="PI">PI</option>
+                  <option value="RJ">RJ</option>
+                  <option value="RN">RN</option>
+                  <option value="RS">RS</option>
+                  <option value="RO">RO</option>
+                  <option value="RR">RR</option>
+                  <option value="SC">SC</option>
+                  <option value="SP">SP</option>
+                  <option value="SE">SE</option>
+                  <option value="TO">TO</option>
+                </select>
+
+                <p class="error" data-error="estado"></p>
+              </div>
+
+              <div class="field">
+                <label for="cidade">Cidade *</label>
+                <input id="cidade" name="cidade" type="text" placeholder="São Paulo" required>
+                <p class="error" data-error="cidade"></p>
+              </div>
+
+            </div>
+          </section>
+
+          <section class="card step" data-step="3" hidden>
+            <h2 class="reviewTitle">Confirme os dados informados</h2>
+            <div class="reviewGrid" id="reviewContent"></div>
+          </section>
+
+          <section class="card step" data-step="4" hidden>
+            <div class="successScreen">
+              <div class="successIcon"><i class="bi bi-check-lg" aria-hidden="true"></i></div>
+              <h2>Alterações salvas!</h2>
+              <p>
+                Os dados da empresa foram atualizados. Você será levado de volta para a lista de empresas.
+              </p>
+            </div>
+          </section>
+
+          <div class="actions" id="actions">
+            <button class="button buttonSecondary" id="backButton" type="button" hidden>
+              🠔 Voltar
+            </button>
+
+            <button class="button buttonPrimary" id="nextButton" type="button">
+              Próximo passo ➔
+            </button>
+          </div>
+
+        </form>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script src="js/sessao.js"></script>
+  <script>validarSessao();</script>
+  <script src="js/menuLateral.js"></script>
+  <script src="js/editarEmpresa.js"></script>
+</body>
+
+</html>

@@ -4,7 +4,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AirPulse - Empresas Cadastradas</title>
     <link rel="icon" href="assets/icon/logo-icon.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
         integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
@@ -16,6 +15,7 @@
     <link rel="stylesheet" href="css/cadastroEmpresa.css">
     <link rel="stylesheet" href="css/empresasCadastradas.css">
     <link rel="stylesheet" href="css/painel.css">
+    <title>AirPulse - Empresas Cadastradas</title>
 </head>
 
 <body>
@@ -40,7 +40,6 @@
                     <i class="bi bi-building-add navIcon" style="font-size: 18px" aria-hidden="true"></i>
                     <span>Cadastrar Empresa</span>
                 </a>
-
 
                 <a href="empresasCadastradas.html" class="navItem active" aria-current="page">
                     <i class="bi bi-buildings navIcon" style="font-size: 18px" aria-hidden="true"></i>
@@ -91,63 +90,35 @@
                 </p>
 
                 <section class="card">
+                    <div class="filtroEmpresas" role="group" aria-label="Filtrar empresas por status">
+                        <button type="button" class="filtroEmpresa ativo" id="filtroATIVO" onclick="filtrar('ATIVO')">Ativas</button>
+                        <button type="button" class="filtroEmpresa" id="filtroINATIVO" onclick="filtrar('INATIVO')">Inativas</button>
+                        <button type="button" class="filtroEmpresa" id="filtroTODAS" onclick="filtrar('TODAS')">Todas</button>
+                    </div>
+
                     <div class="empresaLinha cabecalhoTabela">
                         <div>Razão social</div>
                         <div>Nome fantasia</div>
                         <div>CNPJ</div>
                         <div>Segmento</div>
+                        <div>Status</div>
+                        <div>Ações</div>
                     </div>
 
                     <div id="linhasEmpresas"></div>
+
+                    <p class="semEmpresas" id="semEmpresas" hidden>Nenhuma empresa encontrada.</p>
                 </section>
 
-        </main>
-    </div>
+            </main>
+        </div>
 
     </div>
 
     <script src="js/sessao.js"></script>
     <script>validarSessao();</script>
     <script src="js/menuLateral.js"></script>
-    <script>
-
-        function carregarEmpresas() {
-            fetch('/empresas/empresasCadastradas')
-                .then(function (response) {
-                    if (response.ok) {
-                        response.json().then(function (resposta) {
-                            plotarEmpresas(resposta);
-                        });
-                    } else {
-                        console.error('Nenhum dado encontrado ou erro na API');
-                    }
-                })
-                .catch(function (error) {
-                    console.error(`Erro na obtenção dos dados: ${error.message}`);
-                });
-        }
-
-        function formatarCnpj(cnpj) {
-            return cnpj.replace(/^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/, "$1.$2.$3/$4-$5");
-        }
-
-        function plotarEmpresas(resposta) {
-            var linhasEmpresas = document.getElementById('linhasEmpresas');
-            linhasEmpresas.innerHTML = "";
-
-            for (let i = 0; i < resposta.length; i++) {
-                linhasEmpresas.innerHTML += `
-  <div class="empresaLinha">
-    <div data-label="Razão social">${resposta[i].razaoSocial}</div>
-    <div data-label="Nome fantasia">${resposta[i].nomeFantasia || "-"}</div>
-    <div data-label="CNPJ">${formatarCnpj(resposta[i].cnpj)}</div>
-    <div data-label="Segmento">${resposta[i].segmentoAtuacao}</div>
-  </div>`;
-            }
-        }
-
-        carregarEmpresas();
-    </script>
+    <script src="js/empresasCadastradas.js"></script>
 </body>
 
 </html>

@@ -1,0 +1,16 @@
+.voltarEmpresas {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--corPrimaria);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.voltarEmpresas:hover {
+  text-decoration: underline;
+}
+
+.cadastroProgress {
+  grid-template-columns: repeat(3, 1fr);
+}

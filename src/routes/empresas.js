@@ -24,4 +24,12 @@ router.get("/empresasCadastradas", function (req, res) {
     empresaController.carregarEmpresas(req, res);
 });
 
+router.put("/atualizar/:id", function (req, res) {
+    empresaController.atualizar(req, res)
+})
+
+router.put("/status/:id", function (req, res) {
+    empresaController.alterarStatus(req, res)
+})
+
 module.exports = router
