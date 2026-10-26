@@ -1,0 +1,20 @@
+.voltarEmpresas {
+  display: inline-block;
+  margin-bottom: 8px;
+  color: var(--corPrimaria);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+}
+
+.voltarEmpresas:hover {
+  text-decoration: underline;
+}
+
+.cardEdicao + .cardEdicao {
+  margin-top: 20px;
+}
+
+.actions .button {
+  text-decoration: none;
+}

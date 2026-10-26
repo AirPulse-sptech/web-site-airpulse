@@ -2,9 +2,35 @@
   width: 100%;
 }
 
+.filtroEmpresas {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.filtroEmpresa {
+  min-width: 96px;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid var(--borderMedium);
+  border-radius: 10px;
+  background: var(--fundoSuperficie);
+  color: var(--corTexto);
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 650;
+}
+
+.filtroEmpresa.ativo {
+  border-color: var(--corPrimaria);
+  background: var(--corPrimaria);
+  color: #fff;
+}
+
 .empresaLinha {
   display: grid;
-  grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr;
+  grid-template-columns: 2fr 1.5fr 1.5fr 1.5fr 1fr 1.6fr;
+  align-items: center;
   gap: 16px;
   padding: 14px 8px;
   border-bottom: 1px solid #e5e7eb;
@@ -20,12 +46,96 @@
 }
 
 .empresaLinha:not(.cabecalhoTabela):hover {
-  background-color: #f3f1ff; 
+  background-color: #f3f1ff;
+}
+
+.empresaLinha.inativa > div:nth-child(-n + 4) {
+  color: var(--corTextoSecundario);
 }
 
 .cabecalhoTabela {
   font-weight: 600;
   border-bottom: 2px solid #d1d5db;
+}
+
+.statusEmpresa {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.statusEmpresa::before {
+  content: "";
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+.statusEmpresa.ativo {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.statusEmpresa.inativo {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.acoesEmpresa {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.botaoEditarEmpresa,
+.botaoStatusEmpresa {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+  padding: 0 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.botaoEditarEmpresa {
+  border: 1px solid var(--corPrimaria);
+  background: #fff;
+  color: var(--corPrimaria);
+}
+
+.botaoEditarEmpresa:hover {
+  background: var(--azulSuave);
+  color: var(--corPrimaria);
+}
+
+.botaoStatusEmpresa.inativar {
+  border: 1px solid var(--corErro);
+  background: #fff;
+  color: var(--corErro);
+}
+
+.botaoStatusEmpresa.reativar {
+  border: 1px solid var(--corPrimaria);
+  background: var(--corPrimaria);
+  color: #fff;
+}
+
+.semEmpresas {
+  margin: 0;
+  padding: 32px 8px;
+  text-align: center;
+  color: var(--corTextoSecundario);
+  font-size: 14px;
 }
 
 @media (max-width: 900px) {
@@ -37,7 +147,7 @@
 
 @media (max-width: 600px) {
   .cabecalhoTabela {
-    display: none; 
+    display: none;
   }
 
   .empresaLinha {

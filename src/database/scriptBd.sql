@@ -23,6 +23,7 @@ telefone VARCHAR(20) NOT NULL,
 statusSistema VARCHAR(80) NOT NULL,
 entradaSistema DATETIME NOT NULL,
 fkEndereco INT,
+CONSTRAINT ctEmpresaFabricanteStatus CHECK (statusSistema IN ('ATIVO', 'INATIVO')),
 CONSTRAINT ctEmpresaFabricanteEndereco
 FOREIGN KEY (fkEndereco) REFERENCES endereco (idEndereco)
 );
@@ -198,7 +199,7 @@ INSERT INTO funcionario (
     '00000000000',
     'ADMIN',
     'urubu100',
-    1,
+    'ATIVO',
     NOW(),
     (SELECT idEmpresaFabricante FROM empresaFabricante WHERE cnpj = '00000000000100' LIMIT 1)
 );
@@ -211,7 +212,7 @@ INSERT INTO empresaFabricante (
     statusSistema, entradaSistema, fkEndereco
 ) VALUES (
     'AeroNova Sistemas Ltda.', 'AeroNova', '12345678000195', 'Sistemas aeronauticos',
-    'aeronova.airpulse.teste@gmail.com', '1130001000', 1, NOW(), LAST_INSERT_ID()
+    'aeronova.airpulse.teste@gmail.com', '1130001000', 'ATIVO', NOW(), LAST_INSERT_ID()
 );
 
 INSERT INTO funcionario (
