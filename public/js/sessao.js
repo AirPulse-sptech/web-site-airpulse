@@ -90,6 +90,7 @@ function atualizarMenu() {
             { pagina: "cadastroFuncionario.html", nome: "Cadastrar Funcionário", icone: "bi-people", id: "itemCadastrarFuncionario" },
             { pagina: "gerenciarFuncionario.html", nome: "Gerenciar Funcionário", icone: "bi-gear", id: "itemGerenciarFuncionario" },
             { pagina: "cadastroAeronave.html", nome: "Cadastrar Aeronave", icone: "bi-airplane" },
+            { pagina: "gerenciarAeronave.html", nome: "Gerenciar Aeronave", icone: "bi-airplane", id: "itemGerenciarAeronave" },
             { pagina: "relatorioGestor.html", nome: "Relatórios", icone: "bi-file-earmark-text", id: "itemRelatorios" },
             { pagina: "dashboardRelatorios.html", nome: "Produtividade Funcionarios", icone: "bi-file-earmark-bar-graph", id: "itemProdutividadeFuncionarios" }
         ]

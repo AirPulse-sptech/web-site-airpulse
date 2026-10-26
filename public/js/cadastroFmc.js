@@ -15,7 +15,9 @@ const replicar = document.querySelector("#replicarPlacas")
 const placasMestre = document.querySelector("#placasMestre")
 const placasSpare = document.querySelector("#placasSpare")
 const placasReplicadas = document.querySelector("#placasReplicadas")
-
+const modeloPlaca = document.querySelector("#modeloPlaca")
+const personalizarSpare = document.querySelector("#personalizarSpare")
+const maximoPlacas = 10
 const nomesStatus = { ATIVO: "Ativo", INATIVO: "Inativo", MANUTENCAO: "Em manutenção" }
 const nomesComponentes = { CPU: "CPU", RAM: "RAM", DISCO: "Armazenamento" }
 
@@ -135,22 +137,25 @@ function validarEtapa() {
 
   const placasDaEtapa = [...etapa.querySelectorAll(".placa")].filter(placa => !placa.closest("[hidden]"))
 
-  if (placasDaEtapa.length && !placasDaEtapa.some(monitorada)) {
-    placasDaEtapa[0].querySelector("[data-monitorar-placa]").setCustomValidity("Escolha pelo menos uma placa para monitorar.")
-  } else {
-    placasDaEtapa.forEach(placa => placa.querySelector("[data-monitorar-placa]").setCustomValidity(""))
-  }
+  placasDaEtapa.forEach(placa => {
+    const componentes = [...placa.querySelectorAll(".componentePlaca")]
+    const primeiroCheckbox = componentes[0].querySelector("[data-monitorar-componente]")
 
-  placasDaEtapa.filter(monitorada).forEach(placa => {
-    const { atencao, critico } = limites(placa)
-    placa.querySelector('[data-limite="critico"]').setCustomValidity(
-      critico <= atencao ? "O limite crítico deve ser maior que o limite de alerta." : ""
+    primeiroCheckbox.setCustomValidity(
+      componentes.some(monitorado) ? "" : "Marque pelo menos um componente para monitorar nesta placa."
     )
 
-    const primeiraMetrica = placa.querySelector(".metrica input")
-    primeiraMetrica.setCustomValidity(
-      placa.querySelector(".metrica input:checked") ? "" : "Marque pelo menos uma métrica para esta placa."
-    )
+    componentes.filter(monitorado).forEach(componente => {
+      const { atencao, critico } = limites(componente)
+      componente.querySelector('[data-limite="critico"]').setCustomValidity(
+        critico <= atencao ? "O limite crítico deve ser maior que o limite de alerta." : ""
+      )
+
+      const primeiraMetrica = componente.querySelector(".metrica input")
+      primeiraMetrica.setCustomValidity(
+        componente.querySelector(".metrica input:checked") ? "" : "Marque pelo menos uma métrica para este componente."
+      )
+    })
   })
 
   if (etapaAtual === 3) {
@@ -211,59 +216,127 @@ function formatarData(data) {
   return `${dia}/${mes}/${ano}`
 }
 
-function limites(placa) {
+function limites(componente) {
   return {
-    atencao: Number(placa.querySelector('[data-limite="atencao"]').value) || 0,
-    critico: Number(placa.querySelector('[data-limite="critico"]').value) || 0
+    atencao: Number(componente.querySelector('[data-limite="atencao"]').value) || 0,
+    critico: Number(componente.querySelector('[data-limite="critico"]').value) || 0
   }
 }
 
-function monitorada(placa) {
-  return placa.querySelector("[data-monitorar-placa]").checked
+function monitorado(componente) {
+  return componente.querySelector("[data-monitorar-componente]").checked
 }
 
-function metricasMarcadas(placa) {
-  return [...placa.querySelectorAll(".metrica input:checked")].map(campo => ({
+function metricasMarcadas(componente) {
+  return [...componente.querySelectorAll(".metrica input:checked")].map(campo => ({
     nome: campo.value,
     unidadeMedida: campo.dataset.unidade,
     descricao: campo.dataset.descricao
   }))
 }
 
+function campoPlaca(placa, nome) {
+  return placa.querySelector(`[data-campo="${nome}"]`).value.trim()
+}
+
 function placasDoSpare() {
   return replicar.checked ? placasMestre : placasSpare
 }
 
+function listaDe(computador) {
+  return computador === "mestre" ? placasMestre : placasSpare
+}
 
-function atualizarBarra(placa) {
-  const { atencao, critico } = limites(placa)
-  const barra = placa.querySelector(".barraLimites")
+function criarPlaca(computador, numero) {
+  const html = modeloPlaca.innerHTML
+    .replaceAll("{{id}}", `${computador}${numero}`)
+    .replaceAll("{{computador}}", computador)
+    .replaceAll("{{numero}}", numero)
+    .replaceAll("{{fmc}}", computador === "mestre" ? "Mestre" : "Spare")
+
+  const caixa = document.createElement("div")
+  caixa.innerHTML = html.trim()
+  const placa = caixa.firstElementChild
+
+  placa.querySelectorAll(".componentePlaca").forEach(componente => {
+    alternarComponente(componente)
+    atualizarBarra(componente)
+  })
+  return placa
+}
+
+function ajustarQuantidade(computador) {
+  const campo = document.querySelector(`#${computador}QuantidadePlacas`)
+  const lista = listaDe(computador)
+  const quantidade = Math.min(Math.max(Math.round(Number(campo.value)) || 1, 1), maximoPlacas)
+
+  let atuais = lista.querySelectorAll(".placa").length
+  while (atuais < quantidade) {
+    atuais++
+    lista.appendChild(criarPlaca(computador, atuais))
+  }
+  while (atuais > quantidade) {
+    lista.lastElementChild.remove()
+    atuais--
+  }
+}
+
+document.querySelectorAll("[data-quantidade-placas]").forEach(campo => {
+  campo.addEventListener("change", () => {
+    const quantidade = Math.min(Math.max(Math.round(Number(campo.value)) || 1, 1), maximoPlacas)
+    const atuais = listaDe(campo.dataset.quantidadePlacas).querySelectorAll(".placa").length
+
+    if (quantidade < atuais && !confirm(`As últimas ${atuais - quantidade} placa(s) e o que foi preenchido nelas serão removidos. Continuar?`)) {
+      campo.value = atuais
+      return
+    }
+
+    campo.value = quantidade
+    ajustarQuantidade(campo.dataset.quantidadePlacas)
+  })
+})
+
+
+function atualizarBarra(componente) {
+  const { atencao, critico } = limites(componente)
+  const barra = componente.querySelector(".barraLimites")
 
   barra.style.setProperty("--alerta", Math.min(atencao, 100))
   barra.style.setProperty("--critico", Math.min(Math.max(critico, atencao), 100))
 
-  placa.querySelector(".legendaLimites").innerHTML = `
+  componente.querySelector(".legendaLimites").innerHTML = `
     <span>Normal &lt; ${atencao}%</span>
     <span>Alerta ${atencao}–${Math.max(critico - 1, atencao)}%</span>
     <span>Crítico ≥ ${critico}%</span>`
 }
 
-function alternarPlaca(placa) {
-  const ligada = monitorada(placa)
-  placa.classList.toggle("naoMonitorada", !ligada)
+function alternarComponente(componente) {
+  const ligado = monitorado(componente)
+  const detalhes = componente.querySelector(".detalhesComponente")
 
-  placa.querySelectorAll(".colunas input").forEach(campo => {
-    campo.disabled = !ligada
+  detalhes.hidden = !ligado
+  detalhes.querySelectorAll("input").forEach(campo => {
+    campo.disabled = !ligado
   })
 }
 
 formulario.addEventListener("input", evento => {
-  if (evento.target.matches("[data-limite]")) atualizarBarra(evento.target.closest(".placa"))
+  if (evento.target.matches("[data-limite]")) atualizarBarra(evento.target.closest(".componentePlaca"))
 })
 
 formulario.addEventListener("change", evento => {
-  if (evento.target.matches("[data-monitorar-placa]")) alternarPlaca(evento.target.closest(".placa"))
+  if (evento.target.matches("[data-monitorar-componente]")) {
+    alternarComponente(evento.target.closest(".componentePlaca"))
+    evento.target.setCustomValidity("")
+  }
 })
+
+function resumoComponentes(placa) {
+  const marcados = [...placa.querySelectorAll(".componentePlaca")].filter(monitorado)
+  return marcados.length
+    ? marcados.map(componente => nomesComponentes[componente.dataset.tipo] || componente.dataset.tipo).join(" · ")
+    : "Nenhum componente marcado"
+}
 
 
 function prepararSpare() {
@@ -275,59 +348,86 @@ function prepararSpare() {
   if (!monitorarMestre.checked) {
     if (replicar.checked) {
       replicar.checked = false
-      alternarReplicacao()
     }
+    alternarReplicacao()
     return
   }
 
-  const placasMonitoradas = [...placasMestre.querySelectorAll(".placa")].filter(monitorada)
+  const placas = [...placasMestre.querySelectorAll(".placa")]
 
   document.querySelector("#resumoMestre").innerHTML = `
     <div><dt>Nome</dt><dd>${valor("mestreNome")}</dd></div>
     <div><dt>Aeronave</dt><dd>${textoAeronave()}</dd></div>
-    <div><dt>Placas</dt><dd>${placasMonitoradas.map(placa => nomesComponentes[placa.dataset.tipo] || placa.dataset.tipo).join(", ")}</dd></div>
+    <div><dt>Placas</dt><dd>${placas.length} ${placas.length === 1 ? "placa" : "placas"}</dd></div>
+    <!-- CORREÇÃO 1: a linha de cima usava "placasMonitoradas", que não existe mais (erro na etapa do Spare) -->
     <div><dt>Status</dt><dd>${nomesStatus[statusSelecionado("mestre")]}</dd></div>`
 
+  const seriesDigitadas = {}
+  placasReplicadas.querySelectorAll("[data-serie-replicada]").forEach(campo => {
+    seriesDigitadas[campo.dataset.serieReplicada] = campo.value
+  })
 
-    placasMestre.querySelectorAll(".placa").forEach(placa => {
-    const linha = placasReplicadas.querySelector(`.placaSpare[data-tipo="${placa.dataset.tipo}"]`)
-    const { atencao, critico } = limites(placa)
+  placasReplicadas.innerHTML = placas.map(placa => {
+    const numero = placa.dataset.numero
+    const nome = campoPlaca(placa, "nome") || `Placa ${numero}`
 
-    linha.hidden = !monitorada(placa)
-    linha.querySelector(".resumoPlaca").innerHTML = `
-      <span>${metricasMarcadas(placa).length} métricas</span>
-      <span><span class="valorAlerta">Alerta ${atencao}%</span> · <span class="valorCritico">Crítico ${critico}%</span></span>`
+    return `
+      <div class="placaSpare" data-numero="${numero}">
+        <h3>
+          <i class="bi bi-motherboard" aria-hidden="true"></i>
+          Placa ${numero}
+          <small>Igual a “${escaparTexto(nome)}” do Mestre</small>
+        </h3>
+        <p class="resumoPlaca"><span>${resumoComponentes(placa)}</span></p>
+        <div class="field">
+          <label for="spareSerieReplicada${numero}">Número de série da placa *</label>
+          <input id="spareSerieReplicada${numero}" type="text" placeholder="Nº de série da placa do Spare"
+            maxlength="45" data-serie-placa data-serie-replicada="${numero}" required>
+        </div>
+      </div>`
+  }).join("")
+
+  placasReplicadas.querySelectorAll("[data-serie-replicada]").forEach(campo => {
+    campo.value = seriesDigitadas[campo.dataset.serieReplicada] || ""
   })
 }
 
+function escaparTexto(texto) {
+  const div = document.createElement("div")
+  div.textContent = texto
+  return div.innerHTML
+}
 
 function alternarReplicacao() {
   placasReplicadas.hidden = !replicar.checked
-  placasSpare.hidden = replicar.checked
+  personalizarSpare.hidden = replicar.checked
 
   if (replicar.checked) return
 
-  placasSpare.innerHTML = placasMestre.innerHTML
-    .replaceAll('id="mestre', 'id="spare')
-    .replaceAll('for="mestre', 'for="spare')
-    .replaceAll('name="mestre', 'name="spare')
-    .replaceAll('data-computador="mestre"', 'data-computador="spare"')
-    .replaceAll("do FMC Mestre", "do FMC Spare")
+  if (!monitorarMestre.checked) {
+    if (!placasSpare.querySelector(".placa")) ajustarQuantidade("spare")
+    return
+  }
 
+  const quantidade = placasMestre.querySelectorAll(".placa").length
+  document.querySelector("#spareQuantidadePlacas").value = quantidade
+  placasSpare.innerHTML = ""
+  ajustarQuantidade("spare")
 
-    const camposMestre = placasMestre.querySelectorAll("input")
+  const camposMestre = placasMestre.querySelectorAll("input")
   placasSpare.querySelectorAll("input").forEach((campo, i) => {
     campo.value = camposMestre[i].value
     campo.checked = camposMestre[i].checked
   })
 
-
   placasSpare.querySelectorAll(".placa").forEach(placa => {
-    const linha = placasReplicadas.querySelector(`.placaSpare[data-tipo="${placa.dataset.tipo}"]`)
-    placa.querySelector("[data-serie-placa]").value = linha.querySelector("input").value
+    const serie = placasReplicadas.querySelector(`[data-serie-replicada="${placa.dataset.numero}"]`)
+    placa.querySelector('[data-campo="numeroSerie"]').value = serie ? serie.value : ""
 
-    alternarPlaca(placa)
-    atualizarBarra(placa)
+    placa.querySelectorAll(".componentePlaca").forEach(componente => {
+      alternarComponente(componente)
+      atualizarBarra(componente)
+    })
   })
 }
 
@@ -336,24 +436,23 @@ replicar.addEventListener("change", alternarReplicacao)
 
 function montarPlacas(computador) {
   const lista = computador === "mestre" ? placasMestre : placasDoSpare()
+  const usarLinhaReplicada = computador === "spare" && replicar.checked
 
-  return [...lista.querySelectorAll(".placa")].filter(monitorada).map(placa => {
-    const campo = sufixo => placa.querySelector(`[id$="${sufixo}"]`).value.trim()
-    const linhaReplicada = placasReplicadas.querySelector(`.placaSpare[data-tipo="${placa.dataset.tipo}"] input`)
-    const usarLinhaReplicada = computador === "spare" && replicar.checked
+  return [...lista.querySelectorAll(".placa")].map(placa => {
+    const linhaReplicada = placasReplicadas.querySelector(`[data-serie-replicada="${placa.dataset.numero}"]`)
 
     return {
-      nome: campo("PlacaNome"),
-      modelo: campo("PlacaModelo"),
-      numeroSerie: usarLinhaReplicada ? linhaReplicada.value.trim() : campo("PlacaNumeroSerie"),
-      componente: {
-        tipo: placa.dataset.tipo,
-        modelo: campo("ComponenteModelo"),
+      nome: campoPlaca(placa, "nome"),
+      modelo: campoPlaca(placa, "modelo"),
+      numeroSerie: usarLinhaReplicada && linhaReplicada ? linhaReplicada.value.trim() : campoPlaca(placa, "numeroSerie"),
+      componentes: [...placa.querySelectorAll(".componentePlaca")].filter(monitorado).map(componente => ({
+        tipo: componente.dataset.tipo,
+        modelo: componente.querySelector('[data-campo="modeloComponente"]').value.trim(),
         statusMonitoramento: "ATIVO",
-        limiteAtencao: limites(placa).atencao,
-        limiteCritico: limites(placa).critico,
-        metricas: metricasMarcadas(placa)
-      }
+        limiteAtencao: limites(componente).atencao,
+        limiteCritico: limites(componente).critico,
+        metricas: metricasMarcadas(componente)
+      }))
     }
   })
 }
@@ -382,22 +481,27 @@ function montarComputadores() {
 
 function tabelaPlacas(placas) {
   const linhas = placas.map(placa => {
-    const componente = placa.componente
+    const componentes = placa.componentes.map(componente => `
+      <small>
+        <strong>${nomesComponentes[componente.tipo] || componente.tipo}</strong> ${escaparTexto(componente.modelo)} ·
+        <span class="valorAlerta">${componente.limiteAtencao}%</span> /
+        <span class="valorCritico">${componente.limiteCritico}%</span> ·
+        ${componente.metricas.length} métricas
+      </small>`).join("")
 
     return `
       <tr>
-        <td><strong>${placa.nome}</strong><small>${placa.numeroSerie}</small></td>
-        <td><strong>${nomesComponentes[componente.tipo] || componente.tipo}</strong><small>${componente.modelo}</small></td>
-        <td>${componente.metricas.length}</td>
-        <td class="valorAlerta">${componente.limiteAtencao}%</td>
-        <td class="valorCritico">${componente.limiteCritico}%</td>
+        <td><strong>${escaparTexto(placa.nome)}</strong><small>${escaparTexto(placa.numeroSerie)}</small></td>
+        <td>${componentes}</td>
+        <!-- CORREÇÃO 2: estas duas linhas substituem as colunas antigas (um componente por placa),
+             que usavam "componente" fora do lugar e travavam a tela de confirmação -->
       </tr>`
   })
 
   return `
     <table>
       <thead>
-        <tr><th>Placa</th><th>Componente</th><th>Métricas</th><th>Alerta</th><th>Crítico</th></tr>
+        <tr><th>Placa</th><th>Componentes (alerta / crítico)</th></tr>
       </thead>
       <tbody>${linhas.join("")}</tbody>
     </table>`
@@ -428,11 +532,12 @@ function secaoRevisao(dados) {
 function montarRevisao() {
   const computadores = montarComputadores()
   const placas = computadores.flatMap(computador => computador.placas)
-  const metricas = placas.reduce((total, placa) => total + placa.componente.metricas.length, 0)
+  const componentes = placas.flatMap(placa => placa.componentes)
+  const metricas = componentes.reduce((total, componente) => total + componente.metricas.length, 0)
 
   document.querySelector("#resumoTotal").textContent =
     `Serão cadastrados ${computadores.length} ${computadores.length === 1 ? "computador" : "computadores"}, ` +
-    `${placas.length} placas, ${placas.length} componentes e ${metricas} métricas.`
+    `${placas.length} ${placas.length === 1 ? "placa" : "placas"}, ${componentes.length} componentes e ${metricas} métricas.`
 
   revisao.innerHTML = computadores.map(secaoRevisao).join("")
 }
@@ -504,5 +609,5 @@ const dataHoje = new Date(hoje.getTime() - hoje.getTimezoneOffset() * 60000).toI
 document.querySelector("#mestreEntradaSistema").value = dataHoje
 document.querySelector("#spareEntradaSistema").value = dataHoje
 
-placasMestre.querySelectorAll(".placa").forEach(atualizarBarra)
+ajustarQuantidade("mestre")
 carregarAeronaves()
