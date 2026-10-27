@@ -8,10 +8,10 @@ function buscarPorAeronave(fkAeronave) {
     return database.executar(instrucaoSql)
 }
 
-function cadastrarComputador(nome, tipoFmc, numeroSerie, modelo, statusComputador, dataInstalacao, entradaSistema, fkAeronave) {
+function cadastrarComputador(nome, tipoFmc, hostname, modelo, statusComputador, dataInstalacao, entradaSistema, fkAeronave) {
     var instrucaoSql = `
-        INSERT INTO computador (nome, tipoFmc, numeroSerie, modelo, statusComputador, dataInstalacao, entradaSistema, fkAeronave)
-        VALUES ('${nome}', '${tipoFmc}', '${numeroSerie}', '${modelo}', '${statusComputador}', '${dataInstalacao}', '${entradaSistema}', ${fkAeronave});
+        INSERT INTO computador (nome, tipoFmc, hostname, modelo, statusComputador, dataInstalacao, entradaSistema, fkAeronave)
+        VALUES ('${nome}', '${tipoFmc}', '${hostname}', '${modelo}', '${statusComputador}', '${dataInstalacao}', '${entradaSistema}', ${fkAeronave});
     `
     console.log("Executando a instrução SQL: \n" + instrucaoSql)
     return database.executar(instrucaoSql)
