@@ -178,8 +178,9 @@
                 </div>
 
                 <div class="field">
-                  <label for="mestreNumeroSerie">Número de série *</label>
-                  <input id="mestreNumeroSerie" name="mestreNumeroSerie" type="text" placeholder="Número de série do fabricante" maxlength="45" required>
+                  <label for="mestreHostname">Hostname *</label>
+                  <input id="mestreHostname" name="mestreHostname" type="text" placeholder="Ex.: fmc-pr-aer-mestre" maxlength="255"
+                    pattern="[A-Za-z0-9._\-]+" title="Use letras, números, ponto, hífen ou sublinhado, sem espaços." autocomplete="off" spellcheck="false" required>
                 </div>
 
                 <div class="field">
@@ -260,8 +261,9 @@
                 </div>
 
                 <div class="field">
-                  <label for="spareNumeroSerie">Número de série *</label>
-                  <input id="spareNumeroSerie" name="spareNumeroSerie" type="text" placeholder="Diferente do número de série do Mestre" maxlength="45" required>
+                  <label for="spareHostname">Hostname *</label>
+                  <input id="spareHostname" name="spareHostname" type="text" placeholder="Diferente do hostname do Mestre" maxlength="255"
+                    pattern="[A-Za-z0-9._\-]+" title="Use letras, números, ponto, hífen ou sublinhado, sem espaços." autocomplete="off" spellcheck="false" required>
                 </div>
 
                 <div class="field">
@@ -597,7 +599,6 @@
             </div>
           </article>
         </template>
-        <!-- FIM DA ALTERAÇÃO -->
 
       </main>
     </div>

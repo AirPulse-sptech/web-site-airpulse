@@ -159,10 +159,10 @@ function validarEtapa() {
   })
 
   if (etapaAtual === 3) {
-    const serieSpare = document.querySelector("#spareNumeroSerie")
-    serieSpare.setCustomValidity(
-      monitorarMestre.checked && mesmoTexto(serieSpare.value, valor("mestreNumeroSerie"))
-        ? "Informe um número de série diferente do FMC Mestre."
+    const hostnameSpare = document.querySelector("#spareHostname")
+    hostnameSpare.setCustomValidity(
+      monitorarMestre.checked && mesmoTexto(hostnameSpare.value, valor("mestreHostname"))
+        ? "Informe um hostname diferente do FMC Mestre."
         : ""
     )
 
@@ -461,7 +461,7 @@ function montarComputador(computador) {
   return {
     nome: valor(`${computador}Nome`),
     tipoFmc: computador === "mestre" ? "MESTRE" : "SPARE",
-    numeroSerie: valor(`${computador}NumeroSerie`),
+    hostname: valor(`${computador}Hostname`), // ALTERAÇÃO (hostname)
     modelo: valor(`${computador}Modelo`),
     statusComputador: statusSelecionado(computador),
     dataInstalacao: valor(`${computador}DataInstalacao`),
@@ -519,7 +519,7 @@ function secaoRevisao(dados) {
       <dl class="reviewList">
         <dt>Nome do computador</dt><dd>${dados.nome}</dd>
         <dt>Aeronave associada</dt><dd>${textoAeronave()}</dd>
-        <dt>Número de série</dt><dd>${dados.numeroSerie}</dd>
+        <dt>Hostname</dt><dd>${escaparTexto(dados.hostname)}</dd>
         <dt>Modelo</dt><dd>${dados.modelo}</dd>
         <dt>Data de instalação</dt><dd>${formatarData(dados.dataInstalacao)}</dd>
         <dt>Entrada no sistema</dt><dd>${formatarData(dados.entradaSistema)}</dd>

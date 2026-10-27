@@ -35,6 +35,11 @@ function limparTexto(valor) {
     return String(valor == undefined ? "" : valor).trim().replace(/\\/g, "\\\\").replace(/'/g, "''")
 }
 
+function hostnameValido(valor) {
+    var texto = String(valor || "").trim()
+    return texto.length <= 255 && /^[A-Za-z0-9._-]+$/.test(texto)
+}
+
 function dataValida(valor) {
     return /^\d{4}-\d{2}-\d{2}$/.test(valor || "")
 }
@@ -58,7 +63,8 @@ function validarComputadores(computadores) {
 
         if (!tiposFmc.includes(computador.tipoFmc)) return "Tipo de FMC inválido. Use MESTRE ou SPARE."
         if (!textoPreenchido(computador.nome)) return `O nome do ${fmc} está undefined!`
-        if (!textoPreenchido(computador.numeroSerie)) return `O número de série do ${fmc} está undefined!`
+        if (!textoPreenchido(computador.hostname)) return `O hostname do ${fmc} está undefined!`
+        if (!hostnameValido(computador.hostname)) return `Hostname do ${fmc} inválido. Use letras, números, ponto, hífen ou sublinhado, sem espaços (até 255 caracteres).`
         if (!textoPreenchido(computador.modelo)) return `O modelo do ${fmc} está undefined!`
         if (!statusComputador.includes(computador.statusComputador)) return `Status do ${fmc} inválido. Use ATIVO, INATIVO ou MANUTENCAO.`
         if (!dataValida(computador.dataInstalacao)) return `A data de instalação do ${fmc} está inválida!`
@@ -121,7 +127,7 @@ function cadastrarComputadorCompleto(computador, fkAeronave, criados) {
     return computadorModel.cadastrarComputador(
         limparTexto(computador.nome),
         computador.tipoFmc,
-        limparTexto(computador.numeroSerie),
+        limparTexto(computador.hostname), 
         limparTexto(computador.modelo),
         computador.statusComputador,
         computador.dataInstalacao,

@@ -73,7 +73,7 @@ CREATE TABLE computador (
 idComputador INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
 nome VARCHAR(45),
 tipoFmc VARCHAR(45),
-numeroSerie VARCHAR(45) NOT NULL,
+hostname VARCHAR(255) NOT NULL,
 modelo VARCHAR(100) NOT NULL,
 statusComputador VARCHAR(45) NOT NULL,
 dataInstalacao DATE NOT NULL,
@@ -84,7 +84,7 @@ FOREIGN KEY (fkAeronave) REFERENCES aeronave (idAeronave)
 );
 
 CREATE TABLE placa (
-idPlaca INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+idPlaca INT PRIMARY KEY UNIQUE NOT NULL AUTO_INCREMENT,
 nome VARCHAR(100),
 modelo VARCHAR(100),
 numeroSerie VARCHAR(45),
@@ -105,10 +105,6 @@ CONSTRAINT ctComponentePlaca
 FOREIGN KEY (fkPlaca) REFERENCES placa (idPlaca)
 );
 
-CREATE TABLE scriptPython (
-idScriptPython INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-texto TEXT
-);
 
 CREATE TABLE metrica (
 idMetrica INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -117,10 +113,7 @@ unidadeMedida VARCHAR(45),
 descricao VARCHAR(200),
 fkComponente INT NOT NULL,
 CONSTRAINT fkMetricaComponente1
-FOREIGN KEY (fkComponente) REFERENCES componente (idComponente),
-fkScriptPython INT NULL,
-CONSTRAINT fkMetricaScriptPython
-FOREIGN KEY (fkScriptPython) REFERENCES scriptPython (idScriptPython)
+FOREIGN KEY (fkComponente) REFERENCES componente (idComponente)
 );
 
 CREATE TABLE leitura (
