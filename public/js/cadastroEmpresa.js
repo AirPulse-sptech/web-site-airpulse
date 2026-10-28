@@ -117,7 +117,6 @@ function montarRevisao() {
         <dt>Nome fantasia:</dt><dd>${valor("nomeFantasia")}</dd>
         <dt>CNPJ:</dt><dd>${valor("cnpj")}</dd>
         <dt>Segmento:</dt><dd>${valor("segmento")}</dd>
-        <dt>E-mail:</dt><dd>${valor("emailEmpresa")}</dd>
       </dl>
     </div>
 
@@ -246,7 +245,6 @@ function cadastrarEmpresa() {
     nomeFantasiaServer: document.querySelector("#nomeFantasia")?.value || "",
     cnpjServer: cnpjLimpo,
     segmentoServer: document.querySelector("#segmento")?.value || "",
-    emailEmpresaServer: document.querySelector("#emailEmpresa")?.value || "",
     telefoneEmpresaServer: telefoneEmpresaLimpo,
 
     cepServer: cepLimpo,
@@ -283,9 +281,6 @@ function cadastrarEmpresa() {
     if (resposta.ok) {
       return resposta.json().then(function () {
         mostrarEtapa(5)
-        setTimeout(function () {
-          window.location.href = "login.html"
-        }, 4000)
       })
     } else {
       return resposta.text().then(function (textoErro) {

@@ -3,8 +3,7 @@ var database = require("../database/config")
 function listar(idFuncionario) {
     var instrucaoSql = `
         SELECT a.idAeronave, a.nome, a.modelo, a.numeroSerie, a.companhiaAerea, a.statusAeronave,
-            c.idComputador, c.nome AS nomeFmc, c.tipoFmc, c.modelo AS modeloFmc,
-            c.numeroSerie AS numeroSerieFmc, c.statusComputador,
+            c.idComputador, c.nome AS nomeFmc, c.tipoFmc, c.modelo AS modeloFmc, c.statusComputador,
             DATE_FORMAT(c.dataInstalacao, '%Y-%m-%d') AS dataInstalacao
         FROM aeronave a
             JOIN funcionario f ON f.fkEmpresaFabricante = a.fkEmpresaFabricante
@@ -101,12 +100,11 @@ function editarAeronave(idAeronave, nome, modelo, numeroSerie, companhiaAerea, s
     return database.executar(instrucaoSql)
 }
 
-function editarComputador(idComputador, fkAeronave, nome, modelo, numeroSerie, statusComputador, dataInstalacao) {
+function editarComputador(idComputador, fkAeronave, nome, modelo, statusComputador, dataInstalacao) {
     var instrucaoSql = `
         UPDATE computador SET
             nome = '${nome}',
             modelo = '${modelo}',
-            numeroSerie = '${numeroSerie}',
             statusComputador = '${statusComputador}',
             dataInstalacao = '${dataInstalacao}'
         WHERE idComputador = ${idComputador}

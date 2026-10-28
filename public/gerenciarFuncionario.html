@@ -107,6 +107,11 @@
                     </div>
                 </div>
 
+                <div class="gfAbas" role="group" aria-label="Cargo dos funcionários">
+                    <button type="button" class="gfFiltro ativo" data-cargo="ANALISTA" aria-pressed="true" disabled>Analistas</button>
+                    <button type="button" class="gfFiltro" data-cargo="GESTOR" aria-pressed="false" disabled>Gestores</button>
+                </div>
+
                 <div class="gfFiltros">
                     <input type="text" class="gfBusca" id="buscaFuncionarios" disabled placeholder="Buscar por nome ou e-mail" aria-label="Buscar por nome ou e-mail">
                     <button type="button" class="gfFiltro ativo" data-status="TODOS" aria-pressed="true" disabled>Todos</button>
@@ -120,7 +125,7 @@
                         <span>Funcionários</span>
                         <span>STATUS</span>
                         <span>AÇÕES</span>
-                        <span>AERONAVES</span>
+                        <span id="tituloAeronaves">AERONAVES</span>
                     </div>
 
                     <div id="listaFuncionarios"></div>

@@ -40,7 +40,7 @@ function cadastrar(req, res) {
   var nomeFantasia = req.body.nomeFantasiaServer
   var cnpj = req.body.cnpjServer
   var segmento = req.body.segmentoServer
-  var emailEmpresa = req.body.emailEmpresaServer
+  var emailEmpresa = req.body.emailEmpresaServer || ""
   var telefoneEmpresa = req.body.telefoneEmpresaServer
 
   var cep = req.body.cepServer
@@ -62,8 +62,6 @@ function cadastrar(req, res) {
     res.status(400).send("A razão social está undefined!")
   } else if (cnpj == undefined) {
     res.status(400).send("O CNPJ está undefined!")
-  } else if (emailEmpresa == undefined) {
-    res.status(400).send("O e-mail da empresa está undefined!")
   } else if (telefoneEmpresa == undefined) {
     res.status(400).send("O telefone da empresa está undefined!")
   } else if (cep == undefined) {

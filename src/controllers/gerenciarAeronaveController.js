@@ -123,7 +123,7 @@ function validarEdicao(dados) {
 
     for (var computador of dados.computadores) {
         if (!Number(computador.idComputador)) return "O id do FMC está undefined!"
-        if (!textoPreenchido(computador.nome) || !textoPreenchido(computador.modelo) || !textoPreenchido(computador.numeroSerie)) {
+        if (!textoPreenchido(computador.nome) || !textoPreenchido(computador.modelo)) {
             return "Preencha todos os campos dos FMCs."
         }
         if (!statusComputadorPermitidos.includes(computador.statusComputador)) return "Status do FMC inválido. Use ATIVO, INATIVO ou MANUTENCAO."
@@ -243,7 +243,6 @@ function editar(req, res) {
                                         idAeronave,
                                         limparTexto(computador.nome),
                                         limparTexto(computador.modelo),
-                                        limparTexto(computador.numeroSerie),
                                         computador.statusComputador,
                                         computador.dataInstalacao
                                     ).then(function () {

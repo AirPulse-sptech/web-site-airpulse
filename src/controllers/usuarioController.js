@@ -127,19 +127,42 @@ function listarFuncionarios(req, res) {
 }
 
 function inativarFuncionario(req, res) {
+    if (!validarAlteracaoStatus(req, res)) return
     return usuarioModel.inativarFuncionario(
         Number(req.params.idGestor),
         Number(req.params.idFuncionario)
-    ).then(() => res.json({ mensagem: "Funcionário inativado com sucesso." }))
+    ).then(resultado => {
+        if (!resultado.affectedRows) {
+            return res.status(403).json({ mensagem: "Conta não encontrada ou sem permissão para alterar seu status." })
+        }
+        return res.json({ mensagem: "Funcionário inativado com sucesso." })
+    })
         .catch(erro => responderErroGerenciamento(res, erro))
 }
 
 function ativarFuncionario(req, res) {
+    if (!validarAlteracaoStatus(req, res)) return
     return usuarioModel.ativarFuncionario(
         Number(req.params.idGestor),
         Number(req.params.idFuncionario)
-    ).then(() => res.json({ mensagem: "Funcionário ativado com sucesso." }))
+    ).then(resultado => {
+        if (!resultado.affectedRows) {
+            return res.status(403).json({ mensagem: "Conta não encontrada ou sem permissão para alterar seu status." })
+        }
+        return res.json({ mensagem: "Funcionário ativado com sucesso." })
+    })
         .catch(erro => responderErroGerenciamento(res, erro))
+}
+
+function validarAlteracaoStatus(req, res) {
+    const idGestor = Number(req.params.idGestor)
+    const idFuncionario = Number(req.params.idFuncionario)
+
+    if (idGestor === idFuncionario) {
+        res.status(403).json({ mensagem: "Você não pode alterar o status da própria conta." })
+        return false
+    }
+    return true
 }
 
 function buscarEdicaoFuncionario(req, res) {

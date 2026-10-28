@@ -5,7 +5,7 @@ function autenticar(email, senha) {
     var instrucaoSql = `
         SELECT idFuncionario AS id, nome, emailCorporativo AS email, cargo, fkEmpresaFabricante AS empresaId
         FROM funcionario
-        WHERE emailCorporativo = '${email}' AND senha = '${senha}';
+        WHERE emailCorporativo = '${email}' AND senha = '${senha}' AND statusSistema = '1';
     `
     console.log("Executando a instrução SQL: \n" + instrucaoSql)
     return database.executar(instrucaoSql)
@@ -40,7 +40,7 @@ function listarAnalistas(idFuncionario) {
 
 function listarFuncionarios(idGestor) {
     var instrucaoSql = `
-            SELECT f.idFuncionario, f.nome, f.emailCorporativo AS email, f.statusSistema,
+            SELECT f.idFuncionario, f.nome, f.emailCorporativo AS email, f.statusSistema, f.cargo,
                 COUNT(a.idAeronave) AS totalAeronaves
             FROM funcionario f
                 JOIN funcionario gestor ON gestor.fkEmpresaFabricante = f.fkEmpresaFabricante
@@ -48,8 +48,8 @@ function listarFuncionarios(idGestor) {
                 LEFT JOIN aeronave a ON a.idAeronave = fa.fkAeronave
                     AND a.fkEmpresaFabricante = f.fkEmpresaFabricante
             WHERE gestor.idFuncionario = ${idGestor} AND gestor.cargo = 'GESTOR'
-                AND gestor.statusSistema = '1' AND f.cargo = 'ANALISTA'
-            GROUP BY f.idFuncionario, f.nome, f.emailCorporativo, f.statusSistema
+                AND gestor.statusSistema = '1' AND f.cargo IN ('ANALISTA', 'GESTOR')
+            GROUP BY f.idFuncionario, f.nome, f.emailCorporativo, f.statusSistema, f.cargo
             ORDER BY CASE WHEN f.statusSistema = '1' THEN 0 ELSE 1 END,
                 f.nome, f.idFuncionario;
     `
@@ -66,7 +66,8 @@ function inativarFuncionario(idGestor, idFuncionario) {
             AND gestor.cargo = 'GESTOR'
             AND gestor.statusSistema = '1'
             AND funcionario.idFuncionario = ${idFuncionario}
-            AND funcionario.cargo = 'ANALISTA';
+            AND funcionario.cargo IN ('ANALISTA', 'GESTOR')
+            AND funcionario.idFuncionario <> gestor.idFuncionario;
     `
     return database.executar(instrucaoSql)
 }
@@ -81,7 +82,8 @@ function ativarFuncionario(idGestor, idFuncionario) {
             AND gestor.cargo = 'GESTOR'
             AND gestor.statusSistema = '1'
             AND funcionario.idFuncionario = ${idFuncionario}
-            AND funcionario.cargo = 'ANALISTA';
+            AND funcionario.cargo IN ('ANALISTA', 'GESTOR')
+            AND funcionario.idFuncionario <> gestor.idFuncionario;
     `
     return database.executar(instrucaoSql)
 }
