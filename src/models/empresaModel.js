@@ -28,10 +28,10 @@ function cadastrarEndereco(cep, logradouro, bairro, numero, complemento, estado,
   return database.executar(instrucaoSql)
 }
 
-function cadastrarEmpresa(razaoSocial, nomeFantasia, cnpj, segmento, email, telefone, fkEndereco) {
+function cadastrarEmpresa(razaoSocial, nomeFantasia, cnpj, segmento, telefone, fkEndereco) {
   var instrucaoSql = `
-    INSERT INTO empresaFabricante (razaoSocial, nomeFantasia, cnpj, segmentoAtuacao, email, telefone, statusSistema, entradaSistema, fkEndereco)
-    VALUES ('${razaoSocial}', '${nomeFantasia || ""}', '${cnpj}', '${segmento}', '${email}', '${telefone}', 'ATIVO', NOW(), ${fkEndereco});
+    INSERT INTO empresaFabricante (razaoSocial, nomeFantasia, cnpj, segmentoAtuacao, telefone, statusSistema, entradaSistema, fkEndereco)
+    VALUES ('${razaoSocial}', '${nomeFantasia || ""}', '${cnpj}', '${segmento}', '${telefone}', 'ATIVO', NOW(), ${fkEndereco});
   `
   return database.executar(instrucaoSql)
 }
@@ -77,14 +77,13 @@ function atualizarEndereco(idEndereco, cep, logradouro, bairro, numero, compleme
   return database.executar(instrucaoSql)
 }
 
-function atualizarEmpresa(id, razaoSocial, nomeFantasia, cnpj, segmento, email, telefone) {
+function atualizarEmpresa(id, razaoSocial, nomeFantasia, cnpj, segmento, telefone) {
   var instrucaoSql = `
     UPDATE empresaFabricante SET
       razaoSocial = '${razaoSocial}',
       nomeFantasia = '${nomeFantasia || ""}',
       cnpj = '${cnpj}',
       segmentoAtuacao = '${segmento}',
-      email = '${email}',
       telefone = '${telefone}'
     WHERE idEmpresaFabricante = ${id};
   `

@@ -110,7 +110,6 @@ function montarRevisao() {
         <dt>Nome fantasia:</dt><dd>${valor("nomeFantasia")}</dd>
         <dt>CNPJ:</dt><dd>${valor("cnpj")}</dd>
         <dt>Segmento:</dt><dd>${valor("segmento")}</dd>
-        <dt>E-mail:</dt><dd>${valor("emailEmpresa")}</dd>
         <dt>Telefone:</dt><dd>${valor("telefone")}</dd>
       </dl>
     </div>
@@ -236,7 +235,6 @@ function preencherCampos(empresa) {
   preencher("nomeFantasia", empresa.nomeFantasia)
   preencher("cnpj", empresa.cnpj)
   segmento.value = empresa.segmentoAtuacao
-  preencher("emailEmpresa", empresa.email)
   preencher("telefone", empresa.telefone)
 
   preencher("cep", empresa.cep)
@@ -258,7 +256,6 @@ function salvarAlteracoes() {
     nomeFantasiaServer: document.querySelector("#nomeFantasia")?.value || "",
     cnpjServer: cnpjLimpo,
     segmentoServer: document.querySelector("#segmento")?.value || "",
-    emailEmpresaServer: document.querySelector("#emailEmpresa")?.value || "",
     telefoneEmpresaServer: telefoneLimpo,
 
     cepServer: cepLimpo,

@@ -40,7 +40,6 @@ function cadastrar(req, res) {
   var nomeFantasia = req.body.nomeFantasiaServer
   var cnpj = req.body.cnpjServer
   var segmento = req.body.segmentoServer
-  var emailEmpresa = req.body.emailEmpresaServer || ""
   var telefoneEmpresa = req.body.telefoneEmpresaServer
 
   var cep = req.body.cepServer
@@ -98,7 +97,7 @@ function cadastrar(req, res) {
             .then((resultadoEndereco) => {
               var fkEndereco = resultadoEndereco.insertId
 
-              empresaModel.cadastrarEmpresa(razaoSocial, nomeFantasia, cnpj, segmento, emailEmpresa, telefoneEmpresa, fkEndereco)
+              empresaModel.cadastrarEmpresa(razaoSocial, nomeFantasia, cnpj, segmento, telefoneEmpresa, fkEndereco)
                 .then((resultadoEmpresa) => {
                   var fkEmpresa = resultadoEmpresa.insertId
 
@@ -160,7 +159,6 @@ function atualizar(req, res) {
   var nomeFantasia = req.body.nomeFantasiaServer
   var cnpj = req.body.cnpjServer
   var segmento = req.body.segmentoServer
-  var emailEmpresa = req.body.emailEmpresaServer
   var telefoneEmpresa = req.body.telefoneEmpresaServer
 
   var cep = req.body.cepServer
@@ -177,8 +175,6 @@ function atualizar(req, res) {
     res.status(400).send("O CNPJ está undefined!")
   } else if (segmento == undefined) {
     res.status(400).send("O segmento está undefined!")
-  } else if (emailEmpresa == undefined) {
-    res.status(400).send("O e-mail da empresa está undefined!")
   } else if (telefoneEmpresa == undefined) {
     res.status(400).send("O telefone da empresa está undefined!")
   } else if (cep == undefined) {
@@ -210,7 +206,7 @@ function atualizar(req, res) {
               } else {
                 empresaModel.atualizarEndereco(fkEndereco, cep, logradouro, bairro, numero, complemento, estado, cidade)
                   .then(() => {
-                    empresaModel.atualizarEmpresa(id, razaoSocial, nomeFantasia, cnpj, segmento, emailEmpresa, telefoneEmpresa)
+                    empresaModel.atualizarEmpresa(id, razaoSocial, nomeFantasia, cnpj, segmento, telefoneEmpresa)
                       .then(() => {
                         res.status(200).json({ mensagem: "Empresa atualizada com sucesso!" })
                       })
