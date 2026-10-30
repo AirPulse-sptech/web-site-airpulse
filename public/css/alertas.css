@@ -1,6 +1,6 @@
 :root {
-    --alertaCritico: #F02D2D;
-    --alertaModerado: #F5850B;
+    --alertaCritico: #e11d48;
+    --alertaModerado: #f97316;
 }
 
 .cabecalhoAlertas {
@@ -69,7 +69,7 @@
 .cardLabel {
     font-size: 13px;
     font-weight: 600;
-    color: var(--colorPrimary);
+    color: var(--textSecondary);
 }
 
 .cardNumero {
@@ -90,7 +90,7 @@
 
 .cardLegenda {
     font-size: 13px;
-    color: var(--colorPrimary);
+    color: var(--textSecondary);
 }
 
 .barraFiltros {
@@ -225,5 +225,104 @@
     background-color: var(--bgSurface);
     color: var(--colorPrimaryDark);
     cursor: pointer;
+}
+
+.periodoMapa {
+    margin: 20px 0 12px;
+}
+
+.mapaAlertas .mapaLinha {
+    grid-template-columns: 140px minmax(0, 1fr);
+}
+
+.mapaAlertas .mapaDatas {
+    grid-template-columns: repeat(var(--totalCelulas), minmax(0, 1fr));
+}
+
+.mapaAlertas .mapaCelulas {
+    min-width: 0;
+}
+
+.mapaAlertas .celula:focus-visible {
+    outline: 2px solid var(--colorPrimaryDark);
+    outline-offset: 2px;
+}
+
+.historicoAlertas {
+    margin-top: 20px;
+}
+
+.tabelaContainer {
+    overflow-x: auto;
+    margin: 16px 0;
+}
+
+.tabelaAlertas {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    color: var(--textPrimary);
+}
+
+.tabelaAlertas th,
+.tabelaAlertas td {
+    padding: 12px;
+    border-bottom: 1px solid var(--borderSoft);
+    text-align: left;
+}
+
+.tabelaAlertas th {
+    background: var(--bgSoft);
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.severidadeAlerta {
+    font-weight: 600;
+}
+
+.voltarMonitoramento {
+    display: inline-block;
+    margin-top: 12px;
+    color: var(--colorPrimary);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+@media (max-width: 1050px) {
+    .barraFiltros,
+    .mapaTopo,
+    .legenda {
+        flex-wrap: wrap;
+    }
+
+    .cardsResumo {
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    .filtroDivisor {
+        border-left: 0;
+    }
+
+    .boxMapa {
+        padding: 16px;
+    }
+
+    .mapaAlertas .mapaLinha {
+        grid-template-columns: minmax(0, 1fr);
+        row-gap: 6px;
+    }
+
+    .mapaAlertas .mapaDatas {
+        grid-column: 1;
+        grid-row: auto;
+        font-size: 9px;
+    }
+
+    .mapaAlertas .mapaRotulo {
+        width: fit-content;
+    }
 }
 

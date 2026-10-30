@@ -81,8 +81,8 @@
             <main class="conteudoAnalise dashboard">
                 <header class="cabecalhoAnalise">
                     <div>
-                        <h1>Aeronave PR-GOL</h1>
-                        <p>Compare os equipamentos monitorados e identifique o FMC afetado.</p>
+                        <h1 id="tituloAeronave">Aeronave PR-GOL</h1>
+                        <p>Dados demonstrativos · Última coleta às 23:59 · Atenção: 70% · Crítico: 90%</p>
                     </div>
                 </header>
                 <section class="indicadoresAnalise" aria-label="Resumo dos equipamentos">
@@ -90,207 +90,26 @@
                         <div class="iconeIndicador laranja"><i class="bi bi-cpu iconeAnalise" aria-hidden="true"></i>
                         </div>
                         <div>
-                            <h2>Placas em alerta</h2><strong class="valorIndicador">2 <span>/ 8</span></strong>
+                            <h2>Placas em alerta agora</h2><strong class="valorIndicador" id="totalPlacasAlerta">—</strong>
                         </div>
                     </article>
                     <article class="cartaoIndicador">
                         <div class="iconeIndicador vermelho"><i class="bi bi-exclamation-triangle iconeAnalise"
                                 aria-hidden="true"></i></div>
                         <div>
-                            <h2>Alertas críticos</h2><strong class="valorIndicador critico">1</strong>
+                            <h2>Críticos nas últimas 24 horas</h2><strong class="valorIndicador critico" id="totalCriticosFmc">—</strong>
                         </div>
                     </article>
                 </section>
-                <section class="gradeFmc" aria-label="Comparação dos computadores de gerenciamento de voo">
-                    <article class="cartaoFmc" aria-labelledby="tituloFmc1">
-                        <header class="cabecalhoFmc">
-                            <div class="iconeFmc"><i class="bi bi-box iconeAnalise" aria-hidden="true"></i></div>
-                            <div>
-                                <h2 id="tituloFmc1">FMC 1</h2>
-                                <p>Identificação FMC-001 · Posição 1</p>
-                            </div>
-                            <span class="seloFmc comAlertas"><span class="pontoStatus" aria-hidden="true"></span>Com
-                                alertas</span>
-                        </header>
-                        <div class="metricasFmc">
-                            <div class="metricaFmc">
-                                <div class="iconeMetrica"><i class="bi bi-cpu iconeAnalise" aria-hidden="true"></i>
-                                </div>
-                                <dl>
-                                    <dt>Placas monitoradas</dt>
-                                    <dd>4</dd>
-                                </dl>
-                            </div>
-                            <div class="metricaFmc">
-                                <div class="iconeMetrica"><i class="bi bi-bell iconeAnalise" aria-hidden="true"></i>
-                                </div>
-                                <dl>
-                                    <dt>Alertas ativos</dt>
-                                    <dd>2</dd>
-                                </dl>
-                            </div>
-                            <div class="metricaFmc">
-                                <div class="iconeMetrica"><i class="bi bi-database iconeAnalise" aria-hidden="true"></i>
-                                </div>
-                                <dl>
-                                    <dt>Última coleta</dt>
-                                    <dd><span class="coletaAtualizada"><span class="pontoStatus"
-                                                aria-hidden="true"></span>Atualizada</span><time
-                                            datetime="2026-09-29T14:32:10">29 set às 14:32</time></dd>
-                                </dl>
-                            </div>
-                        </div>
-                        <h3 class="tituloPlacas">Placas monitoradas neste FMC</h3>
-                        <ul class="listaPlacas">
-                            <li>
-                                <a class="placaMonitorada critico" id="placaCritica" href="telaAnalista.html"
-                                    aria-label="Ver detalhes da placa P01 do FMC 1, status Crítico">
-                                    <span class="pontoStatus" aria-hidden="true"></span>
-                                    <div class="dadosPlaca">
-                                        <div class="cabecalhoPlaca">
-                                            <h4>P01</h4><span class="seloPlaca">Crítico</span>
-                                        </div>
-                                        <p class="recursosPlaca"><span>Uso elevado de CPU · Máximo registrado: 78,2%</span></p>
-                                    </div>
-                                    <i class="bi bi-chevron-right iconeAnalise" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="placaMonitorada atencao" href="telaAnalista.html"
-                                    aria-label="Ver detalhes da placa P02 - RAM do FMC 1, status Atenção">
-                                    <span class="pontoStatus" aria-hidden="true"></span>
-                                    <div class="dadosPlaca">
-                                        <div class="cabecalhoPlaca">
-                                            <h4>P02 - RAM</h4><span class="seloPlaca">Atenção</span>
-                                        </div>
-                                        <p class="recursosPlaca"><span>Uso elevado de RAM · Máximo registrado: 55,89%</span></p>
-                                    </div>
-                                    <i class="bi bi-chevron-right iconeAnalise" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="placaMonitorada normal" href="telaAnalista.html"
-                                    aria-label="Ver detalhes da placa P03 - COMUNICAÇÃO do FMC 1, status Normal">
-                                    <span class="pontoStatus" aria-hidden="true"></span>
-                                    <div class="dadosPlaca">
-                                        <div class="cabecalhoPlaca">
-                                            <h4>P03 - COMUNICAÇÃO</h4><span class="seloPlaca">Normal</span>
-                                        </div>
-                                    </div>
-                                    <i class="bi bi-chevron-right iconeAnalise" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="placaMonitorada normal" href="telaAnalista.html"
-                                    aria-label="Ver detalhes da placa P04 - I/O do FMC 1, status Normal">
-                                    <span class="pontoStatus" aria-hidden="true"></span>
-                                    <div class="dadosPlaca">
-                                        <div class="cabecalhoPlaca">
-                                            <h4>P04 - I/O</h4><span class="seloPlaca">Normal</span>
-                                        </div>
-                                    </div>
-                                    <i class="bi bi-chevron-right iconeAnalise" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </article>
-                    <article class="cartaoFmc" aria-labelledby="tituloFmc2">
-                        <header class="cabecalhoFmc">
-                            <div class="iconeFmc"><i class="bi bi-box iconeAnalise" aria-hidden="true"></i></div>
-                            <div>
-                                <h2 id="tituloFmc2">FMC 2</h2>
-                                <p>Identificação FMC-002 · Posição 2</p>
-                            </div>
-                            <span class="seloFmc semAlertas"><span class="pontoStatus" aria-hidden="true"></span>Sem
-                                alertas</span>
-                        </header>
-                        <div class="metricasFmc">
-                            <div class="metricaFmc">
-                                <div class="iconeMetrica"><i class="bi bi-cpu iconeAnalise" aria-hidden="true"></i>
-                                </div>
-                                <dl>
-                                    <dt>Placas monitoradas</dt>
-                                    <dd>4</dd>
-                                </dl>
-                            </div>
-                            <div class="metricaFmc">
-                                <div class="iconeMetrica"><i class="bi bi-bell iconeAnalise" aria-hidden="true"></i>
-                                </div>
-                                <dl>
-                                    <dt>Alertas ativos</dt>
-                                    <dd>0</dd>
-                                </dl>
-                            </div>
-                            <div class="metricaFmc">
-                                <div class="iconeMetrica"><i class="bi bi-database iconeAnalise" aria-hidden="true"></i>
-                                </div>
-                                <dl>
-                                    <dt>Última coleta</dt>
-                                    <dd><span class="coletaAtualizada"><span class="pontoStatus"
-                                                aria-hidden="true"></span>Atualizada</span><time
-                                            datetime="2026-09-29T14:32:10">29 set às 14:32</time></dd>
-                                </dl>
-                            </div>
-                        </div>
-                        <h3 class="tituloPlacas">Placas monitoradas neste FMC</h3>
-                        <ul class="listaPlacas">
-                            <li>
-                                <a class="placaMonitorada normal" href="telaAnalista.html"
-                                    aria-label="Ver detalhes da placa P01 - CPU do FMC 2, status Normal">
-                                    <span class="pontoStatus" aria-hidden="true"></span>
-                                    <div class="dadosPlaca">
-                                        <div class="cabecalhoPlaca">
-                                            <h4>P01 - CPU</h4><span class="seloPlaca">Normal</span>
-                                        </div>
-                                    </div>
-                                    <i class="bi bi-chevron-right iconeAnalise" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="placaMonitorada normal" href="telaAnalista.html"
-                                    aria-label="Ver detalhes da placa P02 - RAM do FMC 2, status Normal">
-                                    <span class="pontoStatus" aria-hidden="true"></span>
-                                    <div class="dadosPlaca">
-                                        <div class="cabecalhoPlaca">
-                                            <h4>P02 - RAM</h4><span class="seloPlaca">Normal</span>
-                                        </div>
-                                    </div>
-                                    <i class="bi bi-chevron-right iconeAnalise" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="placaMonitorada normal" href="telaAnalista.html"
-                                    aria-label="Ver detalhes da placa P03 - COMUNICAÇÃO do FMC 2, status Normal">
-                                    <span class="pontoStatus" aria-hidden="true"></span>
-                                    <div class="dadosPlaca">
-                                        <div class="cabecalhoPlaca">
-                                            <h4>P03 - COMUNICAÇÃO</h4><span class="seloPlaca">Normal</span>
-                                        </div>
-                                    </div>
-                                    <i class="bi bi-chevron-right iconeAnalise" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                            <li>
-                                <a class="placaMonitorada normal" href="telaAnalista.html"
-                                    aria-label="Ver detalhes da placa P04 - I/O do FMC 2, status Normal">
-                                    <span class="pontoStatus" aria-hidden="true"></span>
-                                    <div class="dadosPlaca">
-                                        <div class="cabecalhoPlaca">
-                                            <h4>P04 - I/O</h4><span class="seloPlaca">Normal</span>
-                                        </div>
-                                    </div>
-                                    <i class="bi bi-chevron-right iconeAnalise" aria-hidden="true"></i>
-                                </a>
-                            </li>
-                        </ul>
-                    </article>
-                </section>
+                <section class="gradeFmc" id="listaFmcs" aria-label="Comparação dos computadores de gerenciamento de voo"></section>
             </main>
         </div>
     </div>
     <script src="js/sessao.js"></script>
     <script>validarSessao();</script>
     <script src="js/menuLateral.js"></script>
+    <script src="js/dadosPlaca.js"></script>
+    <script src="js/dashboardAnaliseFmcAnalista.js"></script>
 </body>
 
 </html>

@@ -11,7 +11,7 @@
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/dashboardFmcPrincipal.css">
     <link rel="stylesheet" href="css/dashboard.css">
-    <title>AirPulse - Dashboard</title>
+    <title>AirPulse - Monitoramento da placa</title>
     <link rel="stylesheet" href="css/painel.css">
 </head>
 
@@ -77,148 +77,54 @@
                     <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
                         <i class="bi bi-list" aria-hidden="true"></i>
                     </button>
-                    <span class="topbarTitle">Dashboard</span>
+                    <span class="topbarTitle">Monitoramento da placa</span>
                 </div>
             </header>
 
             <main class="painel dashboard">
                 <div>
-                    <h1>FMC principal</h1>
-                    <p class="subtitulo">PR-GOL · Boeing 737 · Monitoramento individual do equipamento</p>
+                    <h1>Monitoramento da placa</h1>
+                    <p class="subtitulo">Placa P01 · FMC 1 · PR-GOL · Boeing 737</p>
                 </div>
 
-                <section class="gradeIndicadores">
-                    <div class="cartao">
-                        <div class="indicadorTopo"><span>Uso da CPU</span><span class="selo critico">Crítico</span>
-                        </div>
-                        <div class="indicadorValor critico">12,6%</div>
-                        <div class="indicadorTexto critico">Limite de 70%</div>
-                        <div class="barra">
-                            <div class="criticoFundo" style="width:12.6%"></div>
-                        </div>
-                    </div>
-                    <div class="cartao">
-                        <div class="indicadorTopo"><span>Uso da RAM</span><span class="selo moderado">Moderado</span>
-                        </div>
-                        <div class="indicadorValor moderado">48,9%</div>
-                        <div class="indicadorTexto moderado">Limite de 70%</div>
-                        <div class="barra">
-                            <div class="moderadoFundo" style="width:48.9%"></div>
-                        </div>
-                    </div>
-                    <div class="cartao">
-                        <div class="indicadorTopo"><span>Uso do Armazenamento</span><span class="selo normal">Normal</span>
-                        </div>
-                        <div class="indicadorValor normal">53,4%</div>
-                        <div class="indicadorTexto normal">Abaixo do limite de 70%</div>
-                        <div class="barra">
-                            <div class="normalFundo" style="width:53.4%"></div>
-                        </div>
-                    </div>
-
-                </section>
+                <section class="gradeIndicadores" id="indicadoresPlaca" aria-label="Uso atual dos componentes"></section>
 
                 <section class="gradeMeio">
+
+                    <div class="cartao">
+                        <div class="alertasTopo">
+                            <span class="tituloCard" id="tituloAlertasPeriodo">Alertas nas últimas 24 horas</span>
+                            <a class="btnHistoricoAlertas" href="alertas.html">Histórico de alertas</a>
+                        </div>
+                        <div id="alertasPlaca"></div>
+                    </div>
 
                     <div class="cartao">
                         <div class="graficoTopo">
                             <div>
                                 <span class="tituloCard">Consumo de recursos</span>
-                                <p class="subtitulo">Histórico das últimas 24 horas deste FMC</p>
+                                <p class="subtitulo" id="descricaoPeriodoGrafico">Leituras a cada minuto · Picos por período</p>
                             </div>
-                            <div class="abas">
-                                <button class="ativa" type="button">CPU</button>
-                                <button type="button">RAM</button>
-                                <button type="button">Armazenamento</button>
+                            <div class="abas" id="abasComponentes" aria-label="Componente do gráfico">
+                                <button class="ativa" type="button" data-componente="cpu" aria-pressed="true">CPU</button>
+                                <button type="button" data-componente="ram" aria-pressed="false">RAM</button>
+                                <button type="button" data-componente="disco" aria-pressed="false">Armazenamento</button>
                             </div>
+                        </div>
+                        <div class="periodosGrafico" role="group" aria-label="Período dos dados">
+                            <span>Período</span>
+                            <button type="button" data-periodo="1" aria-pressed="false">1 hora</button>
+                            <button type="button" data-periodo="6" aria-pressed="false">6 horas</button>
+                            <button class="selecionado" type="button" data-periodo="24" aria-pressed="true">24 horas</button>
                         </div>
                         <div class="graficoArea">
-                            <svg viewBox="0 0 620 260" font-size="11" fill="#6b7280">
-
-                                <g stroke="#e5e7eb">
-                                    <line x1="40" y1="10" x2="600" y2="10" />
-                                    <line x1="40" y1="65" x2="600" y2="65" />
-                                    <line x1="40" y1="120" x2="600" y2="120" />
-                                    <line x1="40" y1="175" x2="600" y2="175" />
-                                    <line x1="40" y1="230" x2="600" y2="230" />
-                                </g>
-                                <text x="34" y="14" text-anchor="end">100%</text>
-                                <text x="34" y="69" text-anchor="end">75%</text>
-                                <text x="34" y="124" text-anchor="end">50%</text>
-                                <text x="34" y="179" text-anchor="end">25%</text>
-                                <text x="34" y="234" text-anchor="end">0%</text>
-
-                                <polygon fill="#e11d48" fill-opacity=".15"
-                                    points="40.0,206.68 85.8,213.94 131.6,192.16 177.4,197.66 223.2,211.30 269.0,141.34 314.8,152.12 360.6,145.52 406.4,207.12 452.2,197.88 498.0,70.94 543.8,196.12 589.6,202.28 589.6,230 40,230" />
-                                <polyline fill="none" stroke="#e11d48" stroke-width="2.5" stroke-linejoin="round"
-                                    points="40.0,206.68 85.8,213.94 131.6,192.16 177.4,197.66 223.2,211.30 269.0,141.34 314.8,152.12 360.6,145.52 406.4,207.12 452.2,197.88 498.0,70.94 543.8,196.12 589.6,202.28" />
-
-                                <line x1="40" y1="76" x2="600" y2="76" stroke="#e11d48" stroke-dasharray="6 4" />
-                                <text x="46" y="70" fill="#e11d48">Limite (70%)</text>
-
-                                <circle cx="498.0" cy="70.94" r="5" fill="#e11d48" />
-                                <text x="498.0" y="58.94" text-anchor="middle" fill="#1a1f5c" font-weight="700">72,3% ·
-                                    20:00</text>
-
-                                <text x="40" y="250">00:00</text>
-                                <text x="131.6" y="250" text-anchor="middle">04:00</text>
-                                <text x="223.2" y="250" text-anchor="middle">08:00</text>
-                                <text x="314.8" y="250" text-anchor="middle">12:00</text>
-                                <text x="406.4" y="250" text-anchor="middle">16:00</text>
-                                <text x="498" y="250" text-anchor="middle">20:00</text>
-                                <text x="600" y="250" text-anchor="end">Agora</text>
-                            </svg>
+                            <svg id="graficoComponente" viewBox="0 0 620 280" font-size="11" fill="#6b7280" role="img" aria-labelledby="tituloGrafico descricaoGrafico"></svg>
                         </div>
                     </div>
 
-                    <div class="cartao">
-                        <div class="alertasTopo">
-                            <span class="tituloCard">Alertas deste FMC</span>
-                            <a class="btnHistoricoAlertas" href="alertas.html">Histórico de alertas</a>
-                        </div>
-                        <a class="alerta critico" href="alertas.html">
-                            <div>CPU acima do limite<small>Hoje às 14:32</small></div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span>
-                        </a>
-                        <a class="alerta moderado" href="alertas.html">
-                            <div>Uso de RAM elevado<small>Hoje às 12:15</small></div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span>
-                        </a>
-                        <a class="alerta moderado" href="alertas.html">
-                            <div>Armazenamento em crescimento<small>Hoje às 09:48</small></div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span>
-                        </a>
-                        <a class="alerta moderado" href="alertas.html">
-                            <div>CPU oscilando acima de 50%<small>Hoje às 08:21</small></div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span>
-                        </a>
-                    </div>
                 </section>
 
-                <section class="gradeDetalhes">
-                    <details class="cartao detalhe">
-                        <summary><span>Detalhes da CPU</span><span>⌄</span></summary>
-                        <div class="detalheLista">
-                            <div><span>Percentual de uso</span><b>12,6%</b></div>
-                            <div><span>Média da sessão</span><b>27,51%</b></div>
-                            <div><span>Pico da sessão</span><b>78,2%</b></div>
-                        </div>
-                    </details>
-
-                    <details class="cartao detalhe">
-                        <summary><span>Detalhes da RAM</span><span>⌄</span></summary>
-                        <div class="detalheLista">
-                            <div><span>Percentual de uso</span><b>48,9%</b></div>
-                            <div><span>Média da sessão</span><b>50,58%</b></div>
-                            <div><span>Pico da sessão</span><b>55,89%</b></div>
-                        </div>
-                    </details>
-
-                    <details class="cartao detalhe">
-                        <summary><span>Detalhes do Armazenamento</span><span>⌄</span></summary>
-                        <div class="detalheLista">
-                            <div><span>Percentual de uso</span><b>53,4%</b></div>
-                            <div><span>Média da sessão</span><b>52,7%</b></div>
-                            <div><span>Pico da sessão</span><b>53,4%</b></div>
-                        </div>
-                    </details>
-                </section>
+                <section class="gradeDetalhes" id="detalhesPlaca" aria-label="Estatísticas do último voo"></section>
             </main>
         </div>
     </div>
@@ -226,6 +132,8 @@
     <script src="js/sessao.js"></script>
     <script>validarSessao();</script>
     <script src="js/menuLateral.js"></script>
+    <script src="js/dadosPlaca.js"></script>
+    <script src="js/telaAnalista.js"></script>
 </body>
 
 </html>

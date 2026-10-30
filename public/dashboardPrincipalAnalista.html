@@ -87,63 +87,53 @@
                 <header class="cabecalhoDashboard">
                     <div>
                         <h1>Dashboard - Visão Geral</h1>
-                        <p>Acompanhe em tempo real o status das aeronaves monitoradas no sistema AirPulse.</p>
+                        <p>Dados demonstrativos · Estado atual às 23:59 e ocorrências nas últimas 24 horas.</p>
                     </div>
                 </header>
                 <section class="indicadores" aria-label="Resumo do monitoramento">
                     <article class="cartaoIndicador">
                         <div class="caixaIcone laranja"><i class="bi bi-bell icone" aria-hidden="true"></i></div>
                         <div>
-                            <h2>Alertas ativos</h2><strong class="valorIndicador">03</strong>
-                            <p>2 aviões · 1 crítico</p>
+                            <h2>Alertas nas últimas 24 horas</h2><strong class="valorIndicador" id="totalAlertasGeral">—</strong>
+                            <p id="resumoAlertasGeral"></p>
                         </div>
                     </article>
                     <article class="cartaoIndicador">
                         <div class="caixaIcone vermelho"><i class="bi bi-exclamation-triangle icone"
                                 aria-hidden="true"></i></div>
                         <div>
-                            <h2>Alertas críticos</h2><strong class="valorIndicador">01</strong>
-                            <p>FMC secundário (PR-GOL)</p>
+                            <h2>Críticos nas últimas 24 horas</h2><strong class="valorIndicador" id="totalCriticosGeral">—</strong>
+                            <p id="resumoCriticosGeral"></p>
                         </div>
                     </article>
                 </section>
                 <section class="cartaoSituacao" aria-labelledby="tituloSituacao">
                     <div class="cabecalhoSecao">
                         <h2 id="tituloSituacao">Status das Aeronaves</h2>
-                        <p>Visão geral da condição operacional das aeronaves monitoradas</p>
+                        <p>Estado na última coleta · Ocorrências anteriores permanecem no histórico de alertas.</p>
                     </div>
                     <div class="resumoSituacao">
-                        <div class="graficoRosca" role="img"
-                            aria-label="4 aeronaves: 1 normal (25%), 2 em atenção (50%) e 1 crítica (25%).">
-                            <div class="centroGrafico"><strong>4</strong><span>Aeronaves</span></div>
+                        <div class="graficoRosca" id="graficoSituacao" role="img" aria-label="Resumo do estado atual das aeronaves">
+                            <div class="centroGrafico"><strong id="totalAeronaves">—</strong><span id="rotuloTotalAeronaves">Aeronaves</span></div>
                         </div>
-                        <ul class="legendaGrafico" aria-label="Status das aeronaves">
-                            <li><span class="ponto normal"></span><span>Normal</span><strong>1</strong><span>25%</span>
-                            </li>
-                            <li><span
-                                    class="ponto atencao"></span><span>Atenção</span><strong>2</strong><span>50%</span>
-                            </li>
-                            <li><span
-                                    class="ponto critico"></span><span>Crítico</span><strong>1</strong><span>25%</span>
-                            </li>
-                        </ul>
+                        <ul class="legendaGrafico" id="legendaSituacao" aria-label="Status das aeronaves"></ul>
                     </div>
                 </section>
                 <section class="secaoAeronaves" aria-labelledby="tituloAeronaves">
                     <div class="cabecalhoAeronaves">
                         <div>
                             <h2 id="tituloAeronaves">Aeronaves</h2>
-                            <p>Lista de aeronaves monitoradas e seu status em tempo real</p>
+                            <p>Aeronaves presentes na base demonstrativa · Atenção: 70% · Crítico: 90%</p>
                         </div>
                         <div class="filtrosAeronaves" role="group" aria-label="Filtros de status">
                             <button class="botaoFiltro selecionado" data-status="todos" type="button"
-                                aria-pressed="true">Todos (4)</button>
+                                aria-pressed="true">Todos (—)</button>
                             <button class="botaoFiltro" data-status="critico" type="button" aria-pressed="false"><span
-                                    class="ponto critico"></span>Crítico (1)</button>
+                                    class="ponto critico"></span>Crítico (—)</button>
                             <button class="botaoFiltro" data-status="atencao" type="button" aria-pressed="false"><span
-                                    class="ponto atencao"></span>Atenção (2)</button>
+                                    class="ponto atencao"></span>Atenção (—)</button>
                             <button class="botaoFiltro" data-status="normal" type="button" aria-pressed="false"><span
-                                    class="ponto normal"></span>Normal (1)</button>
+                                    class="ponto normal"></span>Normal (—)</button>
                         </div>
                     </div>
                     <div class="campoBusca"><i class="bi bi-search icone" aria-hidden="true"></i><label
@@ -163,7 +153,7 @@
                             <div class="situacaoAeronave">
                                 <span class="etiquetaSituacao"><span class="ponto"></span><span
                                         class="nomeStatus"></span></span>
-                                <p class="tempoEstado">Há <time></time> neste estado</p>
+                                <p class="tempoEstado">Desde <time></time> neste estado</p>
                             </div>
                             <div class="ultimaAtualizacao"><span>Última atualização</span><time></time></div>
                             <a class="botaoDetalhes" href="dashboardAnaliseFmcAnalista.html">Abrir detalhes <i
@@ -179,6 +169,7 @@
     <script src="js/sessao.js"></script>
     <script>validarSessao();</script>
     <script src="js/menuLateral.js"></script>
+    <script src="js/dadosPlaca.js"></script>
     <script src="js/dashboardPrincipalAnalista.js"></script>
 </body>
 

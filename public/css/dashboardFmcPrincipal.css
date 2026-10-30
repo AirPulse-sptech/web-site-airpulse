@@ -38,7 +38,7 @@
 
 .gradeMeio {
     display: grid;
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: 16px;
 }
 
@@ -131,18 +131,44 @@
     gap: 10px;
 }
 
-.abas button {
+.abas button,
+.periodosGrafico button {
     border: none;
     background: #eef0fb;
     color: #4b5563;
     padding: 7px 14px;
     font-size: 13px;
     border-radius: 10px;
+    cursor: pointer;
 }
 
-.abas button.ativa {
+.abas button.ativa,
+.periodosGrafico button.selecionado {
     background: #3b3ff0;
     color: #fff;
+}
+
+.periodosGrafico {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.periodosGrafico > span {
+    margin-right: 4px;
+    font-size: 12px;
+    color: var(--textSecondary);
+}
+
+.periodosGrafico button {
+    min-height: 36px;
+}
+
+.periodosGrafico button:focus-visible {
+    outline: 2px solid var(--colorPrimaryDark);
+    outline-offset: 3px;
 }
 
 .graficoArea {
@@ -153,6 +179,10 @@
     width: 100%;
     height: auto;
     display: block;
+}
+
+.gradeMeio > .cartao {
+    min-width: 0;
 }
 
 .alertasTopo {
@@ -245,10 +275,4 @@
 
 .detalheLista b {
     color: #3b3ff0;
-}
-
-@media (max-width: 900px) {
-    .gradeMeio {
-        grid-template-columns: 1fr;
-    }
 }

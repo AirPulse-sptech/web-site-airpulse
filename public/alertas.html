@@ -22,7 +22,7 @@
 
         <aside id="sidebar">
             <div class="sidebarHeader">
-                <a class="sidebarBrand" href="home.html">
+                <a class="sidebarBrand" href="dashboardPrincipalAnalista.html">
                     <img class="brandLogoFull"
                         src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
                 </a>
@@ -86,9 +86,9 @@
 
             <main class="paginaInterna">
                 <div class="cabecalhoAlertas">
-                    <h1 class="tituloAlertas">Alertas do FMC</h1>
-                    <span class="subtituloAlertas">PR-GOL &nbsp;•&nbsp; FMC Principal &nbsp;•&nbsp; P01 &nbsp;•&nbsp; Monitoramento de
-                        alertas</span>
+                    <h1 class="tituloAlertas">Alertas da placa</h1>
+                    <span class="subtituloAlertas">Placa P01 · FMC 1 · PR-GOL · Boeing 737</span>
+                    <span class="subtituloAlertas" id="referenciaHistorico">Dados demonstrativos · Última coleta às 23:59 · Atenção: 70% · Crítico: 90%</span>
                 </div>
 
                 <div class="cardsResumo">
@@ -98,8 +98,8 @@
                         </div>
                         <div class="cardTexto">
                             <span class="cardLabel">Total de alertas</span>
-                            <span class="cardNumero">14</span>
-                            <span class="cardLegenda">Últimos 7 dias</span>
+                            <span class="cardNumero" id="totalAlertas">—</span>
+                            <span class="cardLegenda" id="periodoResumo">Últimas 24 horas</span>
                         </div>
                     </div>
 
@@ -109,8 +109,8 @@
                         </div>
                         <div class="cardTexto">
                             <span class="cardLabel">Críticos</span>
-                            <span class="cardNumero textoCritico">4</span>
-                            <span class="cardLegenda">29% do total</span>
+                            <span class="cardNumero textoCritico" id="totalCriticos">—</span>
+                            <span class="cardLegenda" id="percentualCriticos">—</span>
                         </div>
                     </div>
 
@@ -119,9 +119,9 @@
                             <i class="bi bi-exclamation-triangle" style="font-size: 26px" aria-hidden="true"></i>
                         </div>
                         <div class="cardTexto">
-                            <span class="cardLabel">Moderados</span>
-                            <span class="cardNumero textoModerado">7</span>
-                            <span class="cardLegenda">50% do total</span>
+                            <span class="cardLabel">Atenção</span>
+                            <span class="cardNumero textoModerado" id="totalAtencao">—</span>
+                            <span class="cardLegenda" id="percentualAtencao">—</span>
                         </div>
                     </div>
                 </div>
@@ -130,10 +130,12 @@
                     <div class="filtro">
                         <i class="bi bi-calendar3 filtroIcone" style="font-size: 24px" aria-hidden="true"></i>
                         <div class="filtroCampo">
-                            <label>Período</label>
-                            <select>
-                                <option>Últimos 7 dias</option>
-                                <option>Últimos 30 dias</option>
+                            <label for="filtroPeriodo">Período</label>
+                            <select id="filtroPeriodo">
+                                <option value="24">Últimas 24 horas</option>
+                                <option value="6">Últimas 6 horas</option>
+                                <option value="7d">1 semana (7 dias)</option>
+                                <option value="30d">1 mês (30 dias)</option>
                             </select>
                         </div>
                     </div>
@@ -141,22 +143,22 @@
                     <div class="filtro filtroDivisor">
                         <i class="bi bi-box filtroIcone" style="font-size: 24px" aria-hidden="true"></i>
                         <div class="filtroCampo">
-                            <label>Componente</label>
-                            <select>
-                                <option>Todos</option>
-                                <option>Armazenamento</option>
-                                <option>RAM</option>
-                                <option>CPU</option>
+                            <label for="filtroComponente">Componente</label>
+                            <select id="filtroComponente">
+                                <option value="todos">Todos</option>
+                                <option value="disco">Armazenamento</option>
+                                <option value="ram">RAM</option>
+                                <option value="cpu">CPU</option>
                             </select>
                         </div>
                     </div>
 
                     <div class="filtro filtroDivisor">
                         <div class="filtroCampo">
-                            <label>Severidade</label>
+                            <label>Limites de alerta</label>
                             <div class="chips">
-                                <span class="chip"><span class="ponto pontoCritico"></span>Crítico</span>
-                                <span class="chip"><span class="ponto pontoModerado"></span>Moderado</span>
+                                <span class="chip"><span class="ponto pontoCritico"></span>Crítico ≥ 90%</span>
+                                <span class="chip"><span class="ponto pontoModerado"></span>Atenção ≥ 70%</span>
                             </div>
                         </div>
                     </div>
@@ -166,8 +168,7 @@
                     <div class="mapaTopo">
                         <div>
                             <h2 class="mapaTitulo">Mapa de calor de componentes</h2>
-                            <span class="mapaSubtitulo">Visualize a frequência de alertas por componente ao longo do
-                                período selecionado.</span>
+                            <span class="mapaSubtitulo" id="descricaoMapaAlertas">Estado de cada componente por hora, usando as mesmas leituras do monitoramento da placa.</span>
                         </div>
 
                         <div class="legenda">
@@ -178,58 +179,24 @@
                         </div>
                     </div>
 
-                    <div class="mapaFerramentas">
-                        <span class="agruparLabel">Agrupar por</span>
-                        <select class="selectAgrupar">
-                            <option>Componente</option>
-                            <option>Severidade</option>
-                        </select>
-                        <button class="btnLista" type="button" aria-label="Modo lista">
-                            <i class="bi bi-list-ul" style="font-size: 18px" aria-hidden="true"></i>
-                        </button>
-                    </div>
-
-                    <div class="mapa">
-                        <div class="mapaLinha">
-                            <div></div>
-                            <div class="mapaDatas">
-                                <span>26/08</span>
-                                <span>27/08</span>
-                                <span>28/08</span>
-                                <span>29/08</span>
-                                <span>30/08</span>
-                                <span>31/08</span>
-                                <span>01/09</span>
-                                <span>02/09</span>
-                            </div>
-                            <div></div>
-                        </div>
-                        <div class="mapaLinha">
-                            <div class="mapaRotulo">
-                                <i class="bi bi-hdd" style="font-size: 20px" aria-hidden="true"></i>
-                                <span>Armazenamento</span>
-                            </div>
-                            <div class="mapaCelulas" id="celulasDisco"></div>
-                            <button class="mapaSeta" type="button" aria-label="Ver detalhes do armazenamento"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
-                        </div>
-                        <div class="mapaLinha">
-                            <div class="mapaRotulo">
-                                <i class="bi bi-memory" style="font-size: 20px" aria-hidden="true"></i>
-                                <span>RAM</span>
-                            </div>
-                            <div class="mapaCelulas" id="celulasRam"></div>
-                            <button class="mapaSeta" type="button" aria-label="Ver detalhes da RAM"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
-                        </div>
-                        <div class="mapaLinha">
-                            <div class="mapaRotulo">
-                                <i class="bi bi-cpu" style="font-size: 20px" aria-hidden="true"></i>
-                                <span>CPU</span>
-                            </div>
-                            <div class="mapaCelulas" id="celulasCpu"></div>
-                            <button class="mapaSeta" type="button" aria-label="Ver detalhes da CPU"><i class="bi bi-chevron-right" aria-hidden="true"></i></button>
-                        </div>
-                    </div>
+                    <p class="mapaSubtitulo periodoMapa" id="periodoMapa">Últimas 24 horas · Uma célula por hora</p>
+                    <div class="mapa mapaAlertas" id="mapaAlertas" aria-label="Estado dos componentes por hora"></div>
                 </div>
+
+                <section class="boxMapa historicoAlertas" aria-labelledby="tituloHistorico">
+                    <h2 class="mapaTitulo" id="tituloHistorico">Histórico de ocorrências</h2>
+                    <p class="mapaSubtitulo">Uma ocorrência é registrada ao entrar em atenção ou crítico. As cores do mapa representam o estado em cada hora, incluindo períodos normais.</p>
+                    <div class="tabelaContainer">
+                        <table class="tabelaAlertas">
+                            <thead>
+                                <tr><th scope="col">Data e horário</th><th scope="col">Componente</th><th scope="col">Severidade</th><th scope="col">Uso registrado</th><th scope="col">Limite atingido</th><th scope="col">Estado</th></tr>
+                            </thead>
+                            <tbody id="historicoAlertas"></tbody>
+                        </table>
+                    </div>
+                    <p class="mapaSubtitulo" id="semAlertas" hidden>Nenhum alerta no período e componente selecionados.</p>
+                    <a class="voltarMonitoramento" href="telaAnalista.html">Voltar ao monitoramento da placa</a>
+                </section>
             </main>
         </div>
 
@@ -238,6 +205,7 @@
     <script src="js/sessao.js"></script>
     <script>validarSessao();</script>
     <script src="js/menuLateral.js"></script>
+    <script src="js/dadosPlaca.js"></script>
     <script src="js/alertas.js"></script>
 </body>
 

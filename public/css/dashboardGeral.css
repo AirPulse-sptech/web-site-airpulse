@@ -199,13 +199,11 @@
 }
 
 @container dash (min-width: 620px) and (max-width: 959px) {
-    .kpis { grid-template-columns: repeat(6, minmax(0, 1fr)); }
-    .k { grid-column: span 2; }
-    .k:nth-child(n+4) { grid-column: span 3; }
+    .kpis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @container dash (min-width: 960px) {
-    .kpis { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+    .kpis { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
 
 .dashboard-grid {
@@ -713,6 +711,14 @@
 
 .dr-row span:first-child { color: var(--textSecondary); }
 .dr-row span:last-child  { font-weight: 600; text-align: right; }
+
+.dr-row small {
+    display: block;
+    margin-top: 3px;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--textSecondary);
+}
 
 .dr-action {
     display: flex;
