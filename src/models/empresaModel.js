@@ -36,10 +36,10 @@ function cadastrarEmpresa(razaoSocial, nomeFantasia, cnpj, segmento, telefone, f
   return database.executar(instrucaoSql)
 }
 
-function cadastrarRepresentante(nome, email, telefone, cpf, cargo, senha, fkEmpresa) {
+function cadastrarRepresentante(nome, dataNascimento, email, telefone, cpf, cargo, senha, fkEmpresa) {
   var instrucaoSql = `
-    INSERT INTO funcionario (nome, emailCorporativo, telefone, cpf, cargo, senha, statusSistema, entradaSistema, fkEmpresaFabricante)
-    VALUES ('${nome}', '${email}', '${telefone}', '${cpf}', '${cargo}', '${senha}', 1, NOW(), ${fkEmpresa});
+    INSERT INTO funcionario (nome, dataNascimento, emailCorporativo, telefone, cpf, cargo, senha, statusSistema, entradaSistema, fkEmpresaFabricante)
+    VALUES ('${nome}', '${dataNascimento}', '${email}', '${telefone}', '${cpf}', '${cargo}', '${senha}', 1, NOW(), ${fkEmpresa});
   `
   return database.executar(instrucaoSql)
 }

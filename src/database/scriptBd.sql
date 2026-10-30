@@ -175,7 +175,7 @@ INSERT INTO empresaFabricante (
     razaoSocial, nomeFantasia, cnpj, segmentoAtuacao, telefone,
     statusSistema, entradaSistema, fkEndereco
 ) VALUES (
-    'AeroNova Sistemas Ltda.', 'AeroNova', '12345678000195', 'Sistemas aeronáuticos',
+    'AeroNova Sistemas Ltda.', 'AeroNova', '12345678000195', 'Fabricante de computadores de bordo',
     '1130001000', 'ATIVO', NOW(), 1
 );
 

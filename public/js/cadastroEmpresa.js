@@ -142,6 +142,7 @@ function montarRevisao() {
       </div>
       <dl class="reviewList">
         <dt>Nome:</dt><dd>${valor("responsavel")}</dd>
+        <dt>Data de nascimento:</dt><dd>${valor("dataNascimentoResponsavel").split("-").reverse().join("/")}</dd>
         <dt>E-mail:</dt><dd>${valor("emailResponsavel")}</dd>
         <dt>Telefone:</dt><dd>${valor("telefone")}</dd>
         <dt>Cargo:</dt><dd>${valor("cargo")}</dd>
@@ -256,6 +257,7 @@ function cadastrarEmpresa() {
     cidadeServer: document.querySelector("#cidade")?.value || "",
 
     nomeResponsavelServer: document.querySelector("#responsavel")?.value || "",
+    dataNascimentoResponsavelServer: document.querySelector("#dataNascimentoResponsavel")?.value || "",
     emailResponsavelServer: document.querySelector("#emailResponsavel")?.value || "",
     telefoneResponsavelServer: telefoneResponsavelLimpo,
     cargoResponsavelServer: document.querySelector("#cargo")?.value || "",

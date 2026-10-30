@@ -51,6 +51,7 @@ function cadastrar(req, res) {
   var cidade = req.body.cidadeServer
 
   var nomeResponsavel = req.body.nomeResponsavelServer
+  var dataNascimentoResponsavel = req.body.dataNascimentoResponsavelServer
   var emailResponsavel = req.body.emailResponsavelServer
   var telefoneResponsavel = req.body.telefoneResponsavelServer
   var cargoResponsavel = req.body.cargoResponsavelServer
@@ -77,6 +78,8 @@ function cadastrar(req, res) {
     res.status(400).send("A cidade está undefined!")
   } else if (nomeResponsavel == undefined) {
     res.status(400).send("O nome do responsável está undefined!")
+  } else if (!dataNascimentoResponsavel) {
+    res.status(400).send("A data de nascimento do responsável deve ser informada!")
   } else if (emailResponsavel == undefined) {
     res.status(400).send("O e-mail do responsável está undefined!")
   } else if (telefoneResponsavel == undefined) {
@@ -101,7 +104,7 @@ function cadastrar(req, res) {
                 .then((resultadoEmpresa) => {
                   var fkEmpresa = resultadoEmpresa.insertId
 
-                  empresaModel.cadastrarRepresentante(nomeResponsavel, emailResponsavel, telefoneResponsavel, cpfResponsavel, cargoResponsavel, senhaResponsavel, fkEmpresa)
+                  empresaModel.cadastrarRepresentante(nomeResponsavel, dataNascimentoResponsavel, emailResponsavel, telefoneResponsavel, cpfResponsavel, cargoResponsavel, senhaResponsavel, fkEmpresa)
                     .then((resultadoRepresentante) => {
                       res.status(201).json({
                         mensagem: "Empresa, endereço e responsável cadastrados com sucesso!",
