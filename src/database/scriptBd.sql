@@ -183,7 +183,7 @@ INSERT INTO funcionario (
     nome, dataNascimento, emailCorporativo, telefone, cpf, cargo, senha,
     statusSistema, entradaSistema, fkEmpresaFabricante
 ) VALUES (
-    'Vírginia', '1992-08-20', 'virginia@gmail.com', '11970001002', '11144477735',
+    'Liziane', '1992-08-20', 'liziane@gmail.com', '11970001002', '11144477735',
     'GESTOR', 'urubu100', '1', NOW(), 1
 );
 

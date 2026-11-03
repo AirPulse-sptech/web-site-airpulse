@@ -72,16 +72,15 @@ function desenharHistorico(historico) {
     }
 
     new Chart(graficoHistoricoAtividade, {
-        type: "line",
+        type: "bar",
         data: {
             labels: dias,
             datasets: [{
                 label: "Relatórios",
                 data: totais,
-                borderColor: "#0755ff",
-                backgroundColor: "rgb(7 85 255 / 10%)",
-                fill: true,
-                tension: 0.2
+                backgroundColor: "#0755ff",
+                borderRadius: 6,
+                maxBarThickness: 28
             }]
         },
         options: opcoesGrafico()

@@ -121,8 +121,7 @@ function desenharGrafico(chave) {
         ${[100, 75, 50, 25, 0].map(valor => `
             <line x1="46" y1="${y(valor)}" x2="602" y2="${y(valor)}" stroke="#e5e7eb" />
             <text x="36" y="${y(valor) + 4}" text-anchor="end">${valor}%</text>`).join("")}
-        <polygon fill="#4F46E5" fill-opacity=".1" points="${coordenadas} 602,230 46,230" />
-        <polyline fill="none" stroke="#4F46E5" stroke-width="1.5" stroke-linejoin="round" points="${coordenadas}" />
+        <polyline fill="none" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${coordenadas}" />
         ${pontos.map((ponto, indice) => `<circle cx="${x(indice)}" cy="${y(ponto.valor)}" r="1.6" fill="#4F46E5" data-minuto="${ponto.minuto}"><title>${intervalo === 1 ? "Leitura" : "Pico"}: ${formatarNumero(ponto.valor, 2)}% às ${formatarHora(ponto.minuto / 60)}${intervalo === 1 ? "" : ` · Intervalo ${formatarHora(ponto.inicio / 60)}–${formatarHora(ponto.fim / 60)}`}</title></circle>`).join("")}
         <line x1="46" y1="${y(componente.limiteAtencao)}" x2="602" y2="${y(componente.limiteAtencao)}" stroke="#f97316" stroke-width="1" stroke-dasharray="4 3" />
         <text x="52" y="${y(componente.limiteAtencao) - 6}" fill="#f97316">Atenção (${componente.limiteAtencao}%)</text>
