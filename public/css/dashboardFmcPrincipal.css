@@ -156,7 +156,7 @@
     margin-top: 16px;
 }
 
-.periodosGrafico > span {
+.periodosGrafico>span {
     margin-right: 4px;
     font-size: 12px;
     color: var(--textSecondary);
@@ -181,7 +181,7 @@
     display: block;
 }
 
-.gradeMeio > .cartao {
+.gradeMeio>.cartao {
     min-width: 0;
 }
 
@@ -191,6 +191,18 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 10px;
+}
+
+#alertasPlaca {
+    max-height: min(280px, 40vh);
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    margin-top: 10px;
+    padding: 4px;
+}
+
+#alertasPlaca .alerta:first-child {
+    margin-top: 0;
 }
 
 .btnHistoricoAlertas {

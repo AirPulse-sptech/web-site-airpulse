@@ -87,7 +87,10 @@ function montarDetalhes() {
 
 function montarAlertas() {
     const inicio = obterJanelaLeituras(dadosPlaca.componentes.cpu).inicio
-    const alertas = listarAlertasPlaca().filter(alerta => alerta.minuto >= inicio)
+    const prioridadeSeveridade = { critico: 0, moderado: 1 }
+    const alertas = listarAlertasPlaca()
+        .filter(alerta => alerta.minuto >= inicio)
+        .sort((a, b) => prioridadeSeveridade[a.status.classe] - prioridadeSeveridade[b.status.classe] || b.minuto - a.minuto)
     document.getElementById("tituloAlertasPeriodo").textContent = `Alertas · ${descreverPeriodo()}`
     document.getElementById("alertasPlaca").innerHTML = alertas.length ? alertas.map(alerta => `
         <a class="alerta ${alerta.status.classe}" href="alertas.html">
@@ -110,7 +113,7 @@ function desenharGrafico(chave) {
     const fim = inicio + quantidadeLeituras - 1
     const alinhamentoPico = indicePico === 0 ? "start" : indicePico === pontos.length - 1 ? "end" : "middle"
     const agrupamento = intervalo === 1 ? "uma leitura por minuto" : `pico de cada ${intervalo} minutos`
-    const passoRotulos = { 1: 5, 6: 6, 24: 8 }[estadoTelaAnalista.periodo]
+    const passoRotulos = estadoTelaAnalista.periodo === 24 ? 60 / intervalo : { 1: 5, 6: 6 }[estadoTelaAnalista.periodo]
     document.getElementById("descricaoPeriodoGrafico").textContent = `${descreverPeriodo()} · ${formatarHora(inicio / 60)}–${formatarHora(fim / 60)} · ${pontos.length} pontos · ${agrupamento}`
 
     grafico.innerHTML = `<title id="tituloGrafico">Uso de ${componente.nome} · ${descreverPeriodo()}</title>
@@ -118,17 +121,17 @@ function desenharGrafico(chave) {
         ${[100, 75, 50, 25, 0].map(valor => `
             <line x1="46" y1="${y(valor)}" x2="602" y2="${y(valor)}" stroke="#e5e7eb" />
             <text x="36" y="${y(valor) + 4}" text-anchor="end">${valor}%</text>`).join("")}
-        <polygon fill="#4F46E5" fill-opacity=".15" points="${coordenadas} 602,230 46,230" />
-        <polyline fill="none" stroke="#4F46E5" stroke-width="2.5" stroke-linejoin="round" points="${coordenadas}" />
-        ${pontos.map((ponto, indice) => `<circle cx="${x(indice)}" cy="${y(ponto.valor)}" r="3" fill="#4F46E5" data-minuto="${ponto.minuto}"><title>${intervalo === 1 ? "Leitura" : "Pico"}: ${formatarNumero(ponto.valor, 2)}% às ${formatarHora(ponto.minuto / 60)}${intervalo === 1 ? "" : ` · Intervalo ${formatarHora(ponto.inicio / 60)}–${formatarHora(ponto.fim / 60)}`}</title></circle>`).join("")}
-        <line x1="46" y1="${y(componente.limiteAtencao)}" x2="602" y2="${y(componente.limiteAtencao)}" stroke="#f97316" stroke-width="1.5" stroke-dasharray="6 4" />
+        <polygon fill="#4F46E5" fill-opacity=".1" points="${coordenadas} 602,230 46,230" />
+        <polyline fill="none" stroke="#4F46E5" stroke-width="1.5" stroke-linejoin="round" points="${coordenadas}" />
+        ${pontos.map((ponto, indice) => `<circle cx="${x(indice)}" cy="${y(ponto.valor)}" r="1.6" fill="#4F46E5" data-minuto="${ponto.minuto}"><title>${intervalo === 1 ? "Leitura" : "Pico"}: ${formatarNumero(ponto.valor, 2)}% às ${formatarHora(ponto.minuto / 60)}${intervalo === 1 ? "" : ` · Intervalo ${formatarHora(ponto.inicio / 60)}–${formatarHora(ponto.fim / 60)}`}</title></circle>`).join("")}
+        <line x1="46" y1="${y(componente.limiteAtencao)}" x2="602" y2="${y(componente.limiteAtencao)}" stroke="#f97316" stroke-width="1" stroke-dasharray="4 3" />
         <text x="52" y="${y(componente.limiteAtencao) - 6}" fill="#f97316">Atenção (${componente.limiteAtencao}%)</text>
-        <line x1="46" y1="${y(componente.limiteCritico)}" x2="602" y2="${y(componente.limiteCritico)}" stroke="#e11d48" stroke-width="1.5" stroke-dasharray="6 4" />
+        <line x1="46" y1="${y(componente.limiteCritico)}" x2="602" y2="${y(componente.limiteCritico)}" stroke="#e11d48" stroke-width="1" stroke-dasharray="4 3" />
         <text x="52" y="${y(componente.limiteCritico) - 6}" fill="#e11d48">Crítico (${componente.limiteCritico}%)</text>
-        <circle cx="${x(indicePico)}" cy="${y(pico)}" r="5" fill="#4F46E5" />
+        <circle cx="${x(indicePico)}" cy="${y(pico)}" r="3" fill="#4F46E5" />
         <text x="${x(indicePico)}" y="${y(pico) + (pico >= 85 ? 20 : -12)}" text-anchor="${alinhamentoPico}" fill="#1a1f5c" font-weight="700">${formatarNumero(pico, 2)}% · ${formatarHora(minutoPico / 60)}</text>
-        ${pontos.map((ponto, indice) => indice % passoRotulos === 0 || indice === pontos.length - 1
-            ? `<text x="${x(indice)}" y="246" text-anchor="end" transform="rotate(-55 ${x(indice)} 246)">${formatarHora((indice === pontos.length - 1 ? ponto.fim : ponto.inicio) / 60)}</text>` : "").join("")}`
+        ${pontos.map((ponto, indice) => indice % passoRotulos === 0 || (estadoTelaAnalista.periodo !== 24 && indice === pontos.length - 1)
+        ? `<text x="${x(indice)}" y="246" text-anchor="end" transform="rotate(-55 ${x(indice)} 246)">${formatarHora((estadoTelaAnalista.periodo !== 24 && indice === pontos.length - 1 ? ponto.fim : ponto.inicio) / 60)}</text>` : "").join("")}`
 }
 
 function inicializarTelaAnalista() {
