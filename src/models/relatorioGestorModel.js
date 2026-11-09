@@ -2,7 +2,11 @@ var database = require("../database/config")
 
 function listarPublicados(idFuncionario) {
     var instrucaoSql = `
-        SELECT r.idRelatorio, r.titulo, r.criticidade, r.categoria,
+        SELECT r.idRelatorio, r.titulo, r.criticidade, r.categoria, r.fkAeronave,
+            r.statusAnalise, r.erroAnalise,
+            (r.statusAnalise IN ('PENDENTE', 'ERRO') OR (r.statusAnalise = 'PROCESSANDO'
+                AND r.dataProcessamentoAnalise < DATE_SUB(NOW(), INTERVAL 2 MINUTE))) AS podeAnalisar,
+            DATE_FORMAT(r.dataCriacao, '%Y-%m-%d') AS dataCriacaoISO,
             a.nome AS aeronave, a.modelo,
             autor.nome AS autor,
             DATE_FORMAT(r.periodoInicio, '%d/%m/%Y') AS periodoInicio,

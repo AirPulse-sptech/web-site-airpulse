@@ -1,6 +1,7 @@
 var aeronaveModel = require("../models/aeronaveModel")
 var usuarioModel = require("../models/usuarioModel")
 var relatorioModel = require("../models/relatorioModel")
+var analiseRelatorioController = require("./analiseRelatorioController")
 
 const statusPermitidos = ["RASCUNHO", "EM_REVISAO", "PUBLICADO"]
 const criticidadesPermitidas = ["NORMAL", "ATENCAO", "CRITICO"]
@@ -169,6 +170,9 @@ function cadastrar(req, res) {
                             idRelatorio: idRelatorio,
                             statusRelatorio: dados.statusRelatorio
                         })
+                        if (dados.statusRelatorio === "PUBLICADO"){
+                            analiseRelatorioController.aoPublicar(idRelatorio)
+                        } 
                     })
                     .catch(function (erro) {
                         console.log(erro)
@@ -249,6 +253,7 @@ function atualizar(req, res) {
                                     idRelatorio: idRelatorio,
                                     statusRelatorio: dados.statusRelatorio
                                 })
+                                if (dados.statusRelatorio === "PUBLICADO") analiseRelatorioController.aoPublicar(idRelatorio)
                             })
                     })
             })
@@ -258,8 +263,8 @@ function atualizar(req, res) {
 
 module.exports = {
     listarAnteriores,
-    listarMeus,    
-    buscarDetalhe,  
+    listarMeus,
+    buscarDetalhe,
     cadastrar,
     atualizar
 }

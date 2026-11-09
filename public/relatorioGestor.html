@@ -12,9 +12,9 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/relatorioGestor.css">
     <title>AirPulse - Relatórios</title>
     <link rel="stylesheet" href="css/painel.css">
+    <link rel="stylesheet" href="css/relatorioGestor.css">
 </head>
 
 <body>
@@ -100,67 +100,160 @@
 
             <main class="rgConteudo paginaInterna">
 
-                <h1 class="rgTitulo">Relatórios de análise</h1>
-                <p class="rgSubtitulo">Acompanhe os relatórios publicados pelos analistas da sua empresa.</p>
+                <div class="rgCabecalho">
+                    <div>
+                        <h1 class="rgTitulo">Relatórios de análise</h1>
+                        <p class="rgSubtitulo">Entenda os pontos de atenção da frota e consulte as recomendações dos
+                            analistas.</p>
+                    </div>
+                    <a class="rgAtalho" href="#tituloRelatoriosPublicados">Ver relatórios <i class="bi bi-arrow-down"
+                            aria-hidden="true"></i></a>
+                </div>
+
+                <section class="rgPainel rgFiltrosGlobais" aria-label="Filtros da dashboard">
+                    <div class="rgCampo"><label for="filtroPeriodo">Período de criação</label><select
+                            id="filtroPeriodo">
+                            <option value="7">Últimos 7 dias</option>
+                            <option value="30">Últimos 30 dias</option>
+                            <option value="90">Últimos 90 dias</option>
+                            <option value="TODOS">Todo o histórico</option>
+                        </select></div>
+                    <div class="rgCampo"><label for="filtroAeronave">Aeronave</label><select id="filtroAeronave">
+                            <option value="">Todas as aeronaves</option>
+                        </select></div>
+                    <div class="rgCampo"><label for="filtroCriticidade">Criticidade do relatório</label><select
+                            id="filtroCriticidade">
+                            <option value="TODOS">Todas as criticidades</option>
+                            <option value="CRITICO">Crítico</option>
+                            <option value="ATENCAO">Atenção</option>
+                            <option value="NORMAL">Normal</option>
+                        </select></div>
+                    <div class="rgCampo"><label for="filtroComponente">Componente citado</label><select
+                            id="filtroComponente">
+                            <option value="">Todos os componentes</option>
+                        </select></div>
+                    <button class="rgLimpar" id="limparFiltros" type="button" onclick="limparFiltrosRelatorios()">Limpar filtros</button>
+                </section>
+                <p class="rgContexto" id="contextoFiltros" role="status">Carregando relatórios…</p>
+                <p class="rgErro" id="erroRelatorios" role="alert" hidden></p>
 
                 <div class="rgResumo">
                     <div class="rgResumoCard">
-                        <span class="rgResumoIcone atencao"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span>
+                        <span class="rgResumoIcone atencao"><i class="bi bi-exclamation-triangle"
+                                aria-hidden="true"></i></span>
                         <div>
-                            <span class="rgResumoNumero" id="totalAtencao">0</span>
-                            <span class="rgResumoTexto">Em atenção</span>
+                            <span class="rgResumoNumero" id="totalAtencao">—</span>
+                            <span class="rgResumoTexto">Relatórios em atenção</span>
                         </div>
                     </div>
 
                     <div class="rgResumoCard">
-                        <span class="rgResumoIcone critico"><i class="bi bi-exclamation-octagon" aria-hidden="true"></i></span>
+                        <span class="rgResumoIcone critico"><i class="bi bi-exclamation-octagon"
+                                aria-hidden="true"></i></span>
                         <div>
-                            <span class="rgResumoNumero" id="totalCritico">0</span>
-                            <span class="rgResumoTexto">Críticos</span>
+                            <span class="rgResumoNumero" id="totalCritico">—</span>
+                            <span class="rgResumoTexto">Relatórios críticos</span>
                         </div>
                     </div>
 
-                    <div class="rgResumoCard">
-                        <span class="rgResumoIcone categoria"><i class="bi bi-tag" aria-hidden="true"></i></span>
-                        <div>
-                            <span class="rgResumoNumero rgResumoCategoria" id="categoriaMaisFrequente">--</span>
-                            <span class="rgResumoTexto">Categoria mais frequente</span>
-                            <span class="rgResumoDetalhe" id="detalheCategoriaMaisFrequente">Sem relat&oacute;rios</span>
-                        </div>
+                    <div class="rgResumoCard"><span class="rgResumoIcone"><i class="bi bi-airplane"
+                                aria-hidden="true"></i></span>
+                        <div><span class="rgResumoNumero" id="totalAeronavesCriticas">—</span><span
+                                class="rgResumoTexto">Aeronaves citadas em críticos</span></div>
                     </div>
                 </div>
 
-                <section class="rgDistribuicao" aria-labelledby="tituloDistribuicaoCategoria">
+                <section class="rgCobertura" aria-labelledby="tituloCobertura">
+                    <span class="rgResumoIcone"><i class="bi bi-file-earmark-check" aria-hidden="true"></i></span>
+                    <div>
+                        <h2 id="tituloCobertura">Cobertura da análise dos textos</h2>
+                        <p id="coberturaAnalise">Aguardando relatórios.</p>
+                        <p class="rgNota">As informações refletem o texto dos relatórios e não confirmam a condição
+                            atual da aeronave.</p>
+                        <p id="mensagemAnalise" role="status" hidden></p>
+                    </div>
+                    <button class="rgLimpar" id="analisarPendentes" type="button" onclick="analisarRelatoriosPendentes()" disabled>Analisar pendentes</button>
+                    <button class="rgLimpar rgAtualizar" id="atualizarAnalises" type="button" onclick="atualizarAnalisesRelatorios()">Atualizar</button>
+                </section>
+
+                <section class="rgPainel" aria-labelledby="tituloPontosAtencao">
+                    <div class="rgSecaoCabecalho">
+                        <div>
+                            <h2 id="tituloPontosAtencao">Pontos de atenção</h2>
+                            <p>Componentes, sintomas e recomendações encontrados nos relatórios.</p>
+                        </div><span class="rgSelo">Críticos primeiro</span>
+                    </div>
+                    <div class="rgRolavel" role="region" aria-labelledby="tituloPontosAtencao" tabindex="0">
+                        <table class="rgTabelaPontos">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Aeronave / relatório</th>
+                                    <th scope="col">Componente / sintoma</th>
+                                    <th scope="col">Criticidade</th>
+                                    <th scope="col">Situação no texto</th>
+                                    <th scope="col">Recomendação e evidência</th>
+                                </tr>
+                            </thead>
+                            <tbody id="pontosAtencao"></tbody>
+                        </table>
+                    </div>
+                    <p class="rgVazio" id="semPontos">Aguardando relatórios.</p>
+                </section>
+
+                <div class="rgGradePadroes">
+                    <section class="rgPainel" aria-labelledby="tituloComponentes">
+                        <div class="rgSecaoCabecalho">
+                            <div>
+                                <h2 id="tituloComponentes">Componentes mencionados</h2>
+                                <p>Relatórios distintos por componente.</p>
+                            </div><i class="bi bi-cpu" aria-hidden="true"></i>
+                        </div>
+                        <ul class="rgBarras" id="componentesMencionados"></ul>
+                        <p class="rgVazio" id="semComponentes">Aguardando análises dos textos.</p>
+                    </section>
+                    <section class="rgPainel" aria-labelledby="tituloSintomas">
+                        <div class="rgSecaoCabecalho">
+                            <div>
+                                <h2 id="tituloSintomas">Sintomas recorrentes</h2>
+                                <p>Menções semelhantes em dois ou mais relatórios.</p>
+                            </div><i class="bi bi-arrow-repeat" aria-hidden="true"></i>
+                        </div>
+                        <ul class="rgRecorrencias" id="sintomasRecorrentes"></ul>
+                        <p class="rgVazio" id="semSintomas">Aguardando análises dos textos.</p>
+                    </section>
+                </div>
+
+                <section class="rgDistribuicao rgPainel" aria-labelledby="tituloDistribuicaoCategoria">
                     <div class="rgDistribuicaoCabecalho">
                         <h2 id="tituloDistribuicaoCategoria">Distribui&ccedil;&atilde;o por categoria</h2>
                         <p>Propor&ccedil;&atilde;o de relat&oacute;rios publicados em cada categoria</p>
                     </div>
                     <div class="rgDistribuicaoConteudo">
-                        <div class="rgGraficoRosca" id="graficoRoscaCategoria" role="img" aria-label="Distribui&ccedil;&atilde;o de relat&oacute;rios por categoria">
-                            <div class="rgCentroGrafico"><strong id="totalCentroGrafico">0</strong><span>Relat&oacute;rios</span></div>
+                        <div class="rgGraficoRosca" id="graficoRoscaCategoria" role="img"
+                            aria-label="Distribui&ccedil;&atilde;o de relat&oacute;rios por categoria">
+                            <div class="rgCentroGrafico"><strong
+                                    id="totalCentroGrafico">0</strong><span>Relat&oacute;rios</span></div>
                         </div>
-                        <ul class="rgLegendaCategorias" id="legendaCategorias" aria-label="Categorias dos relat&oacute;rios"></ul>
+                        <ul class="rgLegendaCategorias" id="legendaCategorias"
+                            aria-label="Categorias dos relat&oacute;rios"></ul>
                     </div>
                 </section>
 
-                <div class="rgTabela">
-
-                    <div class="rgFiltros">
-                        <input type="text" class="rgBusca" id="busca" placeholder="Buscar por título ou analista">
-                        <select class="rgSelect" id="filtroAeronave">
-                            <option value="">Todas as aeronaves</option>
-                        </select>
-                        <button type="button" class="rgFiltro ativo" data-filtro="TODOS">Todos</button>
-                        <button type="button" class="rgFiltro" data-filtro="NORMAL">Normal</button>
-                        <button type="button" class="rgFiltro" data-filtro="ATENCAO">Atenção</button>
-                        <button type="button" class="rgFiltro" data-filtro="CRITICO">Crítico</button>
+                <div class="rgCabecalhoRelatorios">
+                    <h2 id="tituloRelatoriosPublicados">Relatórios publicados</h2>
+                    <div class="rgCampo rgCampoBusca">
+                        <label for="busca">Buscar relatórios</label>
+                        <input type="search" class="rgBusca" id="busca" aria-label="Buscar por título ou analista"
+                            placeholder="Buscar por título ou analista">
                     </div>
+                </div>
+                <div class="rgTabela" role="region" aria-labelledby="tituloRelatoriosPublicados">
 
                     <div class="rgLinha rgLinhaTitulo">
                         <span>RELATÓRIO</span>
                         <span>AERONAVE</span>
                         <span>PERÍODO</span>
-                        <span>CONCLUSÃO</span>
+                        <span>CRITICIDADE</span>
                         <span>CRIADO EM</span>
                         <span></span>
                     </div>

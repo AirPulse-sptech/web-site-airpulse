@@ -3,6 +3,10 @@ var router = express.Router()
 
 var relatorioGestorController = require("../controllers/relatorioGestorController")
 
+router.post("/gestor/analise/:idRelatorio/:idFuncionario", function (req, res) {
+    relatorioGestorController.analisar(req, res)
+})
+
 router.get("/gestor/:idFuncionario", function (req, res) {
     relatorioGestorController.listarPublicados(req, res)
 })

@@ -140,6 +140,9 @@ titulo VARCHAR(150) NOT NULL,
 periodoInicio DATE NOT NULL,
 periodoFim DATE NOT NULL,
 texto MEDIUMTEXT NOT NULL,
+statusAnalise VARCHAR(15) NOT NULL DEFAULT 'PENDENTE',
+dataProcessamentoAnalise DATETIME,
+erroAnalise VARCHAR(255),
 statusRelatorio VARCHAR(45) NOT NULL DEFAULT 'RASCUNHO',
 criticidade VARCHAR(45),
 categoria VARCHAR(20) NOT NULL,
@@ -149,9 +152,24 @@ CONSTRAINT ctRelatorioStatus CHECK (statusRelatorio IN ('RASCUNHO', 'EM_REVISAO'
 CONSTRAINT ctRelatorioCriticidade CHECK (criticidade IN ('NORMAL', 'ATENCAO', 'CRITICO')),
 CONSTRAINT ctRelatorioCategoria CHECK (categoria IN ('DESEMPENHO', 'FALHA_HARDWARE', 'ARMAZENAMENTO', 'MEMORIA_RAM', 'PROCESSADOR', 'PERDA_CONEXAO')),
 CONSTRAINT ctRelatorioPeriodo CHECK (periodoFim >= periodoInicio),
+CONSTRAINT ctRelatorioAnalise CHECK (statusAnalise IN ('PENDENTE', 'PROCESSANDO', 'CONCLUIDO', 'ERRO')),
 CONSTRAINT fkRelatorioAeronave
 FOREIGN KEY (fkAeronave) REFERENCES aeronave (idAeronave),
 INDEX idxRelatorioStatusCategoria (statusRelatorio, categoria)
+);
+
+CREATE TABLE analiseRelatorio (
+idAnalise INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+fkRelatorio INT NOT NULL,
+componente VARCHAR(60) NOT NULL,
+sintoma VARCHAR(150) NOT NULL,
+situacao VARCHAR(20) NOT NULL,
+recomendacao TEXT,
+trechoEvidencia TEXT NOT NULL,
+dataAnalise DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+CONSTRAINT ctAnaliseSituacao CHECK (situacao IN ('IDENTIFICADO', 'SUSPEITO', 'CORRIGIDO', 'NAO_INFORMADO')),
+CONSTRAINT fkAnaliseRelatorio FOREIGN KEY (fkRelatorio) REFERENCES relatorio (idRelatorio) ON DELETE CASCADE,
+INDEX idxAnaliseRelatorio (fkRelatorio)
 );
 
 CREATE TABLE funcionarioRelatorio (
