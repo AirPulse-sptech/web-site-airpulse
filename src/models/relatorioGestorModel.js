@@ -7,6 +7,7 @@ function listarPublicados(idFuncionario) {
             (r.statusAnalise IN ('PENDENTE', 'ERRO') OR (r.statusAnalise = 'PROCESSANDO'
                 AND r.dataProcessamentoAnalise < DATE_SUB(NOW(), INTERVAL 2 MINUTE))) AS podeAnalisar,
             DATE_FORMAT(r.dataCriacao, '%Y-%m-%d') AS dataCriacaoISO,
+            UNIX_TIMESTAMP(r.dataCriacao) * 1000 AS dataCriacaoTimestamp,
             a.nome AS aeronave, a.modelo,
             autor.nome AS autor,
             DATE_FORMAT(r.periodoInicio, '%d/%m/%Y') AS periodoInicio,

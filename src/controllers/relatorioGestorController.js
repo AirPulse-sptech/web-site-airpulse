@@ -2,6 +2,7 @@ var relatorioGestorModel = require("../models/relatorioGestorModel")
 var relatorioModel = require("../models/relatorioModel")
 var analiseRelatorioModel = require("../models/analiseRelatorioModel")
 var analiseRelatorioController = require("./analiseRelatorioController")
+var alertaRelatorioModel = require("../models/alertaRelatorioModel")
 
 function listarPublicados(req, res) {
     var idFuncionario = Number(req.params.idFuncionario)
@@ -73,9 +74,11 @@ function buscarDetalhe(req, res) {
 
                 var relatorio = resultado[0]
 
-                return relatorioModel.listarVinculados(idRelatorio).then(function (vinculados) {
+                return Promise.all([relatorioModel.listarVinculados(idRelatorio), alertaRelatorioModel.listarVinculos(idRelatorio)]).then(function (resultados) {
+                    var vinculados = resultados[0]
                     relatorio.autor = vinculados.find(function (pessoa) { return pessoa.papel == "AUTOR" }) || null
                     relatorio.coautores = vinculados.filter(function (pessoa) { return pessoa.papel == "COAUTOR" })
+                    relatorio.alertas = resultados[1]
                     res.status(200).json(relatorio)
                 })
             })

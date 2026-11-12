@@ -1,19 +1,20 @@
-var aeronaveModel = require("../models/aeronaveModel")
-var usuarioModel = require("../models/usuarioModel")
 var relatorioModel = require("../models/relatorioModel")
 var analiseRelatorioController = require("./analiseRelatorioController")
+var alertaRelatorioController = require("./alertaRelatorioController")
+var alertaRelatorioModel = require("../models/alertaRelatorioModel")
+var usuarioModel = require("../models/usuarioModel")
 
 const statusPermitidos = ["RASCUNHO", "EM_REVISAO", "PUBLICADO"]
 const criticidadesPermitidas = ["NORMAL", "ATENCAO", "CRITICO"]
 const categoriasPermitidas = ["DESEMPENHO", "FALHA_HARDWARE", "ARMAZENAMENTO", "MEMORIA_RAM", "PROCESSADOR", "PERDA_CONEXAO"]
 const limiteTexto = 50000
 
-function limparTexto(valor) {
-    return String(valor == undefined ? "" : valor).trim().replace(/\\/g, "\\\\").replace(/'/g, "''")
+function dataValida(valor) {
+    return alertaRelatorioController.dataValida(valor)
 }
 
-function dataValida(valor) {
-    return /^\d{4}-\d{2}-\d{2}$/.test(valor || "")
+function limparTexto(valor) {
+    return String(valor == undefined ? "" : valor).trim().replace(/\\/g, "\\\\").replace(/'/g, "''")
 }
 
 function erroBanco(res, mensagem) {
@@ -69,9 +70,11 @@ function buscarDetalhe(req, res) {
 
                 var relatorio = resultado[0]
 
-                return relatorioModel.listarVinculados(idRelatorio).then(function (vinculados) {
+                return Promise.all([relatorioModel.listarVinculados(idRelatorio), alertaRelatorioModel.listarVinculos(idRelatorio)]).then(function (resultados) {
+                    var vinculados = resultados[0]
                     relatorio.autor = vinculados.find(function (pessoa) { return pessoa.papel == "AUTOR" }) || null
                     relatorio.coautores = vinculados.filter(function (pessoa) { return pessoa.papel == "COAUTOR" })
+                    relatorio.alertas = resultados[1]
                     res.status(200).json(relatorio)
                 })
             })
@@ -109,156 +112,110 @@ function lerDados(req) {
         statusRelatorio: req.body.statusServer,
         criticidade: req.body.criticidadeServer || null,
         categoria: req.body.categoriaServer,
+        alertas: req.body.alertasServer === undefined ? [] : req.body.alertasServer,
         coautores: Array.isArray(req.body.coautoresServer)
             ? req.body.coautoresServer.map(Number).filter(Boolean)
             : []
     }
 }
 
-function filtrarCoautores(idFuncionario, coautores) {
-    return usuarioModel.listarAnalistas(idFuncionario).then(function (analistas) {
-        var permitidos = analistas.map(function (analista) { return analista.id })
-        return [...new Set(coautores)].filter(function (id) { return permitidos.includes(id) })
+function prepararEdicao(dados, idRelatorio) {
+    if (!idRelatorio) return Promise.resolve({ papel: "AUTOR", coautores: [], alertas: [] })
+    return relatorioModel.buscarVinculo(idRelatorio, dados.idFuncionario).then(function (vinculos) {
+        if (vinculos.length == 0) throw Object.assign(new Error("Você não é autor nem coautor deste relatório."), { status: 403 })
+        if (vinculos[0].statusRelatorio == "PUBLICADO") {
+            throw Object.assign(new Error("Este relatório já foi publicado e não pode mais ser alterado."), { status: 409 })
+        }
+        return Promise.all([relatorioModel.listarVinculados(idRelatorio), alertaRelatorioModel.listarVinculos(idRelatorio)])
+            .then(function (resultados) {
+                return {
+                    papel: vinculos[0].papel,
+                    coautores: resultados[0].filter(function (pessoa) { return pessoa.papel == "COAUTOR" }).map(function (pessoa) { return pessoa.id }),
+                    alertas: resultados[1]
+                }
+            })
     })
 }
 
-function textoCriticidade(criticidade) {
-    return criticidade ? `'${criticidade}'` : "NULL"
+function salvarParticipantes(dados, idRelatorio, papel) {
+    if (papel != "AUTOR") return Promise.resolve()
+    return usuarioModel.listarAnalistas(dados.idFuncionario).then(function (analistas) {
+        var permitidos = analistas.map(function (analista) { return analista.id })
+        var coautores = [...new Set(dados.coautores)].filter(function (id) { return permitidos.includes(id) })
+        return relatorioModel.salvarCoautores(idRelatorio, coautores)
+    })
+}
+
+function gravarRelatorio(dados, idRelatorio, alertas, anterior) {
+    var novo = !idRelatorio
+    var iniciar = Promise.resolve()
+    if (novo) {
+        iniciar = relatorioModel.cadastrar(limparTexto(dados.titulo), dados.periodoInicio, dados.periodoFim,
+            limparTexto(dados.texto), "RASCUNHO", dados.criticidade ? `'${dados.criticidade}'` : "NULL", dados.categoria, dados.fkAeronave)
+            .then(function (resultado) {
+                idRelatorio = resultado.insertId
+                return relatorioModel.vincularFuncionarios(idRelatorio, [{ idFuncionario: dados.idFuncionario, papel: "AUTOR" }])
+            })
+    }
+    return iniciar
+        .then(function () { return salvarParticipantes(dados, idRelatorio, anterior.papel) })
+        .then(function () { return alertaRelatorioModel.salvarVinculos(idRelatorio, alertas) })
+        .then(function () {
+            return relatorioModel.atualizar(idRelatorio, limparTexto(dados.titulo), dados.periodoInicio, dados.periodoFim,
+                limparTexto(dados.texto), dados.statusRelatorio, dados.criticidade ? `'${dados.criticidade}'` : "NULL", dados.categoria, dados.fkAeronave)
+        })
+        .then(function (resultado) {
+            if (!resultado.affectedRows) throw Object.assign(new Error("O relatório já foi publicado. Recarregue a página."), { status: 409 })
+            return idRelatorio
+        })
+        .catch(function (erro) {
+            if (!idRelatorio) throw erro
+            // Não deixa um relatório sem autor no banco
+            var desfazer = novo ? relatorioModel.excluir(idRelatorio) : Promise.all([
+                anterior.papel == "AUTOR" ? relatorioModel.salvarCoautores(idRelatorio, anterior.coautores) : Promise.resolve(),
+                alertaRelatorioModel.salvarVinculos(idRelatorio, anterior.alertas)
+            ])
+            return desfazer.catch(function () {
+                throw Object.assign(new Error("Não foi possível concluir a gravação nem restaurar todos os vínculos. Revise o relatório antes de publicar."), { status: 500 })
+            }).then(function () { throw erro })
+        })
+}
+
+function salvar(req, res, idRelatorio) {
+    var dados = lerDados(req)
+    var erroValidacao = validarRelatorio(dados)
+    if (!Number.isSafeInteger(dados.idFuncionario) || dados.idFuncionario <= 0
+        || !Number.isSafeInteger(dados.fkAeronave) || dados.fkAeronave <= 0
+        || (idRelatorio !== null && (!Number.isSafeInteger(idRelatorio) || idRelatorio <= 0))) {
+        return res.status(400).json({ mensagem: "Informe funcionário, aeronave e relatório válidos." })
+    }
+    if (erroValidacao) return res.status(400).json({ mensagem: erroValidacao })
+    return alertaRelatorioModel.contexto(dados.idFuncionario, "ANALISTA", dados.fkAeronave)
+        .then(function () { return prepararEdicao(dados, idRelatorio) })
+        .then(function (anterior) {
+            return alertaRelatorioController.validarSelecao(dados, idRelatorio).then(function (alertas) {
+                return gravarRelatorio(dados, idRelatorio, alertas, anterior)
+            })
+        })
+        .then(function (id) {
+            res.status(idRelatorio ? 200 : 201).json({
+                mensagem: dados.statusRelatorio == "PUBLICADO" ? "Relatório publicado!" : "Rascunho salvo!",
+                idRelatorio: id, statusRelatorio: dados.statusRelatorio
+            })
+            if (dados.statusRelatorio == "PUBLICADO") analiseRelatorioController.aoPublicar(id)
+        })
+        .catch(function (erro) {
+            console.log("Erro ao salvar relatório:", erro.code || erro.name)
+            res.status(erro.status || 500).json({ mensagem: erro.status ? erro.message : "Não foi possível salvar o relatório. Tente novamente." })
+        })
 }
 
 function cadastrar(req, res) {
-    var dados = lerDados(req)
-    var erroValidacao = validarRelatorio(dados)
-
-    if (!dados.idFuncionario) {
-        res.status(400).send("O id do funcionário está undefined!")
-    } else if (erroValidacao) {
-        res.status(400).send(erroValidacao)
-    } else {
-        aeronaveModel.buscarAnalistaDaAeronave(dados.idFuncionario, dados.fkAeronave)
-            .then(function (resultadoAnalista) {
-                if (resultadoAnalista.length == 0) {
-                    res.status(403).json({ mensagem: "Apenas analistas da empresa dona da aeronave podem criar relatórios." })
-                    return
-                }
-
-                var idRelatorio = null
-
-                return relatorioModel.cadastrar(
-                    limparTexto(dados.titulo),
-                    dados.periodoInicio,
-                    dados.periodoFim,
-                    limparTexto(dados.texto),
-                    dados.statusRelatorio,
-                    textoCriticidade(dados.criticidade),
-                    dados.categoria,
-                    dados.fkAeronave
-                )
-                    .then(function (resultadoRelatorio) {
-                        idRelatorio = resultadoRelatorio.insertId
-                        return filtrarCoautores(dados.idFuncionario, dados.coautores)
-                    })
-                    .then(function (coautores) {
-                        var vinculos = [{ idFuncionario: dados.idFuncionario, papel: "AUTOR" }].concat(
-                            coautores.map(function (id) { return { idFuncionario: id, papel: "COAUTOR" } })
-                        )
-                        return relatorioModel.vincularFuncionarios(idRelatorio, vinculos)
-                    })
-                    .then(function () {
-                        res.status(201).json({
-                            mensagem: dados.statusRelatorio == "PUBLICADO" ? "Relatório publicado!" : "Rascunho salvo!",
-                            idRelatorio: idRelatorio,
-                            statusRelatorio: dados.statusRelatorio
-                        })
-                        if (dados.statusRelatorio === "PUBLICADO"){
-                            analiseRelatorioController.aoPublicar(idRelatorio)
-                        } 
-                    })
-                    .catch(function (erro) {
-                        console.log(erro)
-                        console.log("\nHouve um erro ao cadastrar o relatório! Erro: ", erro.sqlMessage)
-
-                        // Não deixa um relatório sem autor no banco
-                        var desfazer = idRelatorio ? relatorioModel.excluir(idRelatorio) : Promise.resolve()
-                        desfazer
-                            .catch(function (erroExclusao) { console.log("Não foi possível desfazer:", erroExclusao.sqlMessage) })
-                            .then(function () { res.status(500).json(erro.sqlMessage) })
-                    })
-            })
-            .catch(erroBanco(res, "Houve um erro ao conferir o analista!"))
-    }
+    return salvar(req, res, null)
 }
 
 function atualizar(req, res) {
-    var idRelatorio = Number(req.params.idRelatorio)
-    var dados = lerDados(req)
-    var erroValidacao = validarRelatorio(dados)
-
-    if (!idRelatorio) {
-        res.status(400).send("O id do relatório está undefined!")
-    } else if (!dados.idFuncionario) {
-        res.status(400).send("O id do funcionário está undefined!")
-    } else if (erroValidacao) {
-        res.status(400).send(erroValidacao)
-    } else {
-        relatorioModel.buscarVinculo(idRelatorio, dados.idFuncionario)
-            .then(function (resultadoVinculo) {
-                if (resultadoVinculo.length == 0) {
-                    res.status(403).json({ mensagem: "Você não é autor nem coautor deste relatório." })
-                    return
-                }
-
-                if (resultadoVinculo[0].statusRelatorio == "PUBLICADO") {
-                    res.status(409).json({ mensagem: "Este relatório já foi publicado e não pode mais ser alterado." })
-                    return
-                }
-
-                var papel = resultadoVinculo[0].papel
-
-                return aeronaveModel.buscarAnalistaDaAeronave(dados.idFuncionario, dados.fkAeronave)
-                    .then(function (resultadoAnalista) {
-                        if (resultadoAnalista.length == 0) {
-                            res.status(403).json({ mensagem: "A aeronave escolhida não é da sua empresa." })
-                            return
-                        }
-
-                        return relatorioModel.atualizar(
-                            idRelatorio,
-                            limparTexto(dados.titulo),
-                            dados.periodoInicio,
-                            dados.periodoFim,
-                            limparTexto(dados.texto),
-                            dados.statusRelatorio,
-                            textoCriticidade(dados.criticidade),
-                            dados.categoria,
-                            dados.fkAeronave
-                        )
-                            .then(function () {
-                                if (papel != "AUTOR") return
-
-                                return relatorioModel.removerCoautores(idRelatorio)
-                                    .then(function () {
-                                        return filtrarCoautores(dados.idFuncionario, dados.coautores)
-                                    })
-                                    .then(function (coautores) {
-                                        if (coautores.length == 0) return
-                                        return relatorioModel.vincularFuncionarios(idRelatorio, coautores.map(function (id) {
-                                            return { idFuncionario: id, papel: "COAUTOR" }
-                                        }))
-                                    })
-                            })
-                            .then(function () {
-                                res.status(200).json({
-                                    mensagem: dados.statusRelatorio == "PUBLICADO" ? "Relatório publicado!" : "Rascunho salvo!",
-                                    idRelatorio: idRelatorio,
-                                    statusRelatorio: dados.statusRelatorio
-                                })
-                                if (dados.statusRelatorio === "PUBLICADO") analiseRelatorioController.aoPublicar(idRelatorio)
-                            })
-                    })
-            })
-            .catch(erroBanco(res, "Houve um erro ao atualizar o relatório!"))
-    }
+    return salvar(req, res, Number(req.params.idRelatorio))
 }
 
 module.exports = {

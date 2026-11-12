@@ -35,6 +35,79 @@ let alterado = false
 let meusRelatorios = []
 let filtroAtual = "TODOS"
 let aeronavesCarregadas = Promise.resolve()
+let alertasDisponiveis = []
+let alertasSalvos = []
+let alertasSelecionados = new Set()
+let consultaAlertas = 0
+
+function alertaNoContexto(alerta) {
+  const dia = new Intl.DateTimeFormat("en-CA", { timeZone: "America/Sao_Paulo", year: "numeric", month: "2-digit", day: "2-digit" }).format(new Date(alerta.ts_abertura))
+  return String(alerta.aeronave_id) === selectAeronave.value && dia >= campoInicio.value && dia <= campoFim.value
+}
+
+function mostrarAlertasRelatorio() {
+  const lista = document.querySelector("#listaAlertasRelatorio")
+  lista.replaceChildren()
+  const alertas = new Map([...alertasDisponiveis, ...alertasSalvos].filter(alertaNoContexto).map(a => [a.alerta_id, a]))
+  for (const alerta of alertas.values()) {
+    const linha = document.createElement("label")
+    linha.className = "alertaRelatorio"
+    const caixa = document.createElement("input")
+    caixa.type = "checkbox"
+    caixa.value = alerta.alerta_id
+    caixa.checked = alertasSelecionados.has(alerta.alerta_id)
+    caixa.disabled = somenteLeitura
+    caixa.addEventListener("change", () => {
+      if (caixa.checked) alertasSelecionados.add(alerta.alerta_id)
+      else alertasSelecionados.delete(alerta.alerta_id)
+      alterado = true
+      atualizarContagemAlertas()
+    })
+    const resumo = document.createElement("span")
+    const titulo = document.createElement("strong")
+    titulo.textContent = `${alerta.nivel === "CRITICO" ? "Crítico" : "Atenção"} · ${alerta.metrica} · FMC ${alerta.tipo_fmc}`
+    const detalhe = document.createElement("small")
+    detalhe.textContent = `${alerta.hostname} · Placa ${alerta.placa_serie} · Abertura: ${new Date(alerta.ts_abertura).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })} (Brasília)`
+    resumo.append(titulo, detalhe)
+    linha.append(caixa, resumo)
+    lista.appendChild(linha)
+  }
+  atualizarContagemAlertas()
+}
+
+function atualizarContagemAlertas() {
+  document.querySelector("#estadoAlertasRelatorio").textContent = `${alertasSelecionados.size} alerta(s) selecionado(s). Abertura no período analisado, em horário de Brasília.`
+}
+
+function carregarAlertasRelatorio() {
+  const consulta = ++consultaAlertas
+  const estado = document.querySelector("#estadoAlertasRelatorio")
+  const preservados = [...new Map([...alertasDisponiveis, ...alertasSalvos].map(a => [a.alerta_id, a])).values()].filter(alertaNoContexto)
+  alertasDisponiveis = preservados
+  if (!somenteLeitura) {
+    const idsNoContexto = new Set(preservados.map(a => a.alerta_id))
+    alertasSelecionados = new Set([...alertasSelecionados].filter(id => idsNoContexto.has(id)))
+  }
+  mostrarAlertasRelatorio()
+  if (!selectAeronave.value || !campoInicio.value || !campoFim.value || campoFim.value < campoInicio.value) {
+    estado.textContent = "Escolha uma aeronave e um período válido."
+    return Promise.resolve()
+  }
+  if (somenteLeitura) return Promise.resolve()
+  estado.textContent = "Carregando alertas…"
+  const parametros = new URLSearchParams({ inicio: campoInicio.value, fim: campoFim.value })
+  return buscarJson(`/relatorio/alertas/${selectAeronave.value}/${idUsuario}?${parametros}`)
+    .then(alertas => {
+      if (consulta !== consultaAlertas) return
+      alertasDisponiveis = alertas
+      mostrarAlertasRelatorio()
+      if (!alertas.length && !preservados.length) estado.textContent = "Nenhum alerta disponível para esta aeronave no período."
+    })
+    .catch(() => {
+      if (consulta !== consultaAlertas) return
+      estado.textContent = "Não foi possível carregar os alertas. Tente atualizar. Os vínculos já salvos foram preservados."
+    })
+}
 
 const estruturaSugerida = `Resumo
 [Em poucas linhas, qual é a situação da aeronave no período.]
@@ -171,6 +244,7 @@ function carregarAeronaves() {
 }
 
 function atualizarPainel() {
+  carregarAlertasRelatorio()
   const aeronave = aeronaves.find(item => String(item.id) === selectAeronave.value)
 
   document.querySelector("#painelVazio").hidden = !!aeronave
@@ -330,6 +404,7 @@ function definirSomenteLeitura(ativo) {
   document.querySelectorAll(".atalhosPeriodo .atalho").forEach(botao => { botao.hidden = ativo })
   atualizarListaAnalistas()
   atualizarContador()
+  mostrarAlertasRelatorio()
 }
 
 function mostrarStatus(status) {
@@ -363,6 +438,8 @@ function novoRelatorio() {
   formulario.reset()
   idRelatorio = null
   coautores = []
+  alertasSalvos = []
+  alertasSelecionados.clear()
   autor = { id: Number(idUsuario), nome: nomeUsuario }
   papelUsuario = "AUTOR"
   alterado = false
@@ -444,6 +521,8 @@ function abrirRelatorio(id) {
       papelUsuario = relatorio.papel
       autor = relatorio.autor || { id: null, nome: "Sem autor" }
       coautores = relatorio.coautores.map(pessoa => ({ id: pessoa.id, nome: pessoa.nome }))
+      alertasSalvos = relatorio.alertas || []
+      alertasSelecionados = new Set(alertasSalvos.map(a => a.alerta_id))
 
       selectAeronave.value = String(relatorio.fkAeronave)
       document.querySelector("#titulo").value = relatorio.titulo
@@ -457,8 +536,8 @@ function abrirRelatorio(id) {
       if (opcaoCategoria) opcaoCategoria.checked = true
 
       validarPeriodo()
-      atualizarPainel()
       mostrarStatus(relatorio.statusRelatorio)
+      atualizarPainel()
       document.querySelector("#rascunhoSalvo").hidden = true
       alterado = false
       renderizarMeusRelatorios()
@@ -518,7 +597,8 @@ function montarDados(status) {
     criticidadeServer: criticidade ? criticidade.value : "",
     categoriaServer: categoria ? categoria.value : "",
     statusServer: status,
-    coautoresServer: coautores.map(analista => analista.id)
+    coautoresServer: coautores.map(analista => analista.id),
+    alertasServer: [...alertasSelecionados]
   }
 }
 
@@ -545,6 +625,8 @@ function salvarRelatorio(status) {
       if (resposta.ok) {
         return resposta.json().then(function (dados) {
           idRelatorio = dados.idRelatorio
+          alertasSalvos = [...new Map([...alertasDisponiveis, ...alertasSalvos].map(a => [a.alerta_id, a])).values()]
+            .filter(a => alertasSelecionados.has(a.alerta_id))
           alterado = false
           mostrarStatus(dados.statusRelatorio)
 
@@ -584,10 +666,12 @@ function salvarRelatorio(status) {
 
 texto.addEventListener("input", atualizarContador)
 document.querySelector("#botaoEstrutura").addEventListener("click", inserirEstrutura)
-campoInicio.addEventListener("change", validarPeriodo)
-campoFim.addEventListener("change", validarPeriodo)
+campoInicio.addEventListener("change", () => { validarPeriodo(); carregarAlertasRelatorio() })
+campoFim.addEventListener("change", () => { validarPeriodo(); carregarAlertasRelatorio() })
+document.querySelector("#atualizarAlertasRelatorio").addEventListener("click", carregarAlertasRelatorio)
 document.querySelectorAll(".atalho").forEach(botao => botao.addEventListener("click", () => {
   aplicarAtalho(botao)
+  carregarAlertasRelatorio()
   alterado = true
 }))
 selectAeronave.addEventListener("change", atualizarPainel)
