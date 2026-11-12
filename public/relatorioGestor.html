@@ -156,25 +156,25 @@
                             <span class="rgResumoNumero" id="quantidadeCoberturaAlertas">—</span>
                             <p class="rgKpiDetalhe" id="resumoCoberturaAlertas">Carregando alertas…</p>
                         </div>
-                        <div class="rgKpiRodape"><span class="rgKpiRotulo">Meta de documentação</span><div class="rgKpiMetaLinha"><span class="rgKpiMeta">100% dos alertas</span><span id="metaCobertura">—</span></div><button class="rgKpiTentar" type="button" id="tentarCobertura" onclick="carregarCoberturaAlertas()" hidden>Tentar novamente</button></div>
-                        <div class="rgKpiProporcao"><div class="rgKpiEscala"><span>Cobertura no período</span><strong id="percentualCoberturaAlertas" hidden>—</strong></div><div class="rgKpiProgresso" id="progressoCobertura" role="progressbar" aria-label="Cobertura dos alertas" aria-valuemin="0" aria-valuemax="100" hidden><span id="barraCobertura"></span></div></div>
+                        <div class="rgKpiRodape rgKpiMetaCompacta"><span id="metaCobertura">—</span><button class="rgKpiTentar" type="button" id="tentarCobertura" onclick="carregarCoberturaAlertas()" hidden>Tentar novamente</button></div>
+                        <div class="rgKpiProporcao"><div class="rgKpiEscala"><strong id="percentualCoberturaAlertas" hidden>—</strong><span>de cobertura no período</span></div><div class="rgKpiProgresso" id="progressoCobertura" role="progressbar" aria-label="Cobertura dos alertas" aria-valuemin="0" aria-valuemax="100" hidden><span id="barraCobertura"></span></div></div>
                     </article>
                     <article class="rgResumoCard rgKpiAtencao">
                         <div class="rgKpiCabecalho"><h2>Em atenção</h2><span class="rgResumoIcone atencao"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span></div>
                         <div class="rgKpiValor"><span class="rgResumoNumero" id="totalAtencao">—</span><p class="rgKpiDetalhe">relatórios em atenção</p></div>
-                        <div class="rgKpiRodape"><span class="rgKpiRotulo">Comparação por hora</span><span class="rgKpiVariacao" id="variacaoAtencao">—</span><span id="horaAtencao">Comparando horas…</span></div>
+                        <div class="rgKpiRodape rgKpiComparacao" aria-label="Comparação por hora"><span class="rgKpiVariacao" id="variacaoAtencao">—</span><span id="horaAtencao">Comparando horas…</span></div>
                         <div class="rgKpiProporcao"><span id="proporcaoAtencao">—</span><meter id="medidorAtencao" min="0" max="100" value="0" aria-label="Proporção de relatórios em atenção" hidden></meter></div>
                     </article>
                     <article class="rgResumoCard rgKpiCritico">
                         <div class="rgKpiCabecalho"><h2>Críticos</h2><span class="rgResumoIcone critico"><i class="bi bi-exclamation-octagon" aria-hidden="true"></i></span></div>
                         <div class="rgKpiValor"><span class="rgResumoNumero" id="totalCritico">—</span><p class="rgKpiDetalhe">relatórios críticos</p></div>
-                        <div class="rgKpiRodape"><span class="rgKpiRotulo">Comparação por hora</span><span class="rgKpiVariacao" id="variacaoCritico">—</span><span id="horaCritico">Comparando horas…</span></div>
+                        <div class="rgKpiRodape rgKpiComparacao" aria-label="Comparação por hora"><span class="rgKpiVariacao" id="variacaoCritico">—</span><span id="horaCritico">Comparando horas…</span></div>
                         <div class="rgKpiProporcao"><span id="proporcaoCritico">—</span><meter id="medidorCritico" min="0" max="100" value="0" aria-label="Proporção de relatórios críticos" hidden></meter></div>
                     </article>
                     <article class="rgResumoCard rgKpiAeronaves">
                         <div class="rgKpiCabecalho"><h2>Aeronaves citadas</h2><span class="rgResumoIcone"><i class="bi bi-airplane" aria-hidden="true"></i></span></div>
                         <div class="rgKpiValor"><span class="rgResumoNumero" id="totalAeronavesCriticas">—</span><p class="rgKpiDetalhe">em relatórios críticos</p></div>
-                        <div class="rgKpiRodape"><span class="rgKpiRotulo">Comparação por hora</span><span class="rgKpiVariacao" id="variacaoAeronaves">—</span><span id="horaAeronaves">Comparando horas…</span></div>
+                        <div class="rgKpiRodape rgKpiComparacao" aria-label="Comparação por hora"><span class="rgKpiVariacao" id="variacaoAeronaves">—</span><span id="horaAeronaves">Comparando horas…</span></div>
                         <div class="rgKpiProporcao"><span id="proporcaoAeronaves">—</span><meter id="medidorAeronaves" min="0" max="100" value="0" aria-label="Proporção de aeronaves citadas em relatórios críticos" hidden></meter></div>
                     </article>
                 </section>

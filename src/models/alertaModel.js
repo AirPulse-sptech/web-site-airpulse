@@ -2,12 +2,18 @@ var s3 = require("@aws-sdk/client-s3")
 
 function listar(computadores, cliente) {
     if (computadores.length == 0) return Promise.resolve([])
-    var bucket = process.env.AWS_S3_BUCKET
-    if (!bucket || !process.env.AWS_REGION) {
-        return Promise.reject(new Error("Configure AWS_REGION e AWS_S3_BUCKET no ambiente do servidor."))
+    var bucket = process.env.aws_s3_bucket || process.env.AWS_S3_BUCKET
+    var regiao = process.env.aws_region || process.env.AWS_REGION
+    if (!bucket || !regiao) {
+        return Promise.reject(new Error("Configure aws_region e aws_s3_bucket no ambiente do servidor."))
     }
-    var conexao = cliente || new s3.S3Client({ region: process.env.AWS_REGION, maxAttempts: 2 })
-    var prefixo = (process.env.AWS_S3_ALERTAS_PREFIX || "03-gold/").replace(/\/?$/, "/")
+    var credenciais = process.env.aws_access_key_id ? {
+        accessKeyId: process.env.aws_access_key_id,
+        secretAccessKey: process.env.aws_secret_access_key,
+        sessionToken: process.env.aws_session_token
+    } : undefined
+    var conexao = cliente || new s3.S3Client({ region: regiao, credentials: credenciais, maxAttempts: 2 })
+    var prefixo = (process.env.aws_s3_alertas_prefix || process.env.AWS_S3_ALERTAS_PREFIX || "03-gold/").replace(/\/?$/, "/")
     var hostnames = [...new Set(computadores.map(function (computador) { return computador.hostname }))]
     var eventos = []
     var sinal = AbortSignal.timeout(45000)

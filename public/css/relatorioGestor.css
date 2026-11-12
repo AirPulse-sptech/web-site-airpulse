@@ -186,7 +186,7 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 18px;
+    gap: 14px;
     min-height: 244px;
     padding: 20px;
     background: var(--bgSurface);
@@ -206,19 +206,32 @@
 .rgKpiCritico { --rgKpiCor: var(--colorError); }
 .rgKpiAeronaves { --rgKpiCor: var(--colorPrimaryDark); }
 .rgConteudo :is(.rgKpiAtencao, .rgKpiCritico, .rgKpiAeronaves) .rgResumoNumero { color: var(--rgKpiCor); }
+.rgConteudo .rgResumoCobertura[data-estado="pendente"] .rgResumoNumero { color: var(--colorError); }
+.rgConteudo .rgResumoCobertura[data-estado="completo"] .rgResumoNumero { color: var(--colorSuccess); }
 .rgKpiDetalhe { margin: 6px 0 0; color: #39415a; font-size: 14px; line-height: 1.5; }
-.rgKpiRodape { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 7px; min-height: 108px; box-sizing: border-box; margin-top: auto; padding: 12px; border: 1px solid #e0e3ef; border-radius: 8px; background: #f4f5fa; color: #39415a; font-size: 13px; line-height: 1.5; }
+.rgKpiRodape { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 7px; box-sizing: border-box; margin-top: 0; padding: 12px; border: 1px solid #e0e3ef; border-radius: 8px; background: #f4f5fa; color: #39415a; font-size: 13px; line-height: 1.5; }
 .rgKpiRotulo { color: #303750; font-size: 12px; font-weight: 700; }
 .rgKpiMetaLinha { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
 .rgKpiMeta { color: var(--colorPrimaryDark); font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.rgKpiRodape.rgKpiMetaCompacta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 8px 10px; font-size: 14px; }
+.rgKpiMetaCompacta .rgKpiMeta { font-size: 12px; }
+.rgResumoCobertura .rgKpiMetaCompacta #metaCobertura { padding: 0; background: transparent; font-size: inherit; }
+.rgResumoCobertura[data-estado="pendente"] .rgKpiMetaCompacta { background: #fde7eb; border-color: #f4bac4; }
+.rgResumoCobertura[data-estado="pendente"] .rgKpiMetaCompacta #metaCobertura { color: #a31b2a; }
+.rgResumoCobertura[data-estado="completo"] .rgKpiMetaCompacta { background: #dff3e8; border-color: #add9c1; }
+.rgResumoCobertura[data-estado="completo"] .rgKpiMetaCompacta #metaCobertura { color: #086343; }
 #metaCobertura { padding: 3px 7px; border-radius: 5px; font-size: 13px; font-weight: 600; }
-.rgKpiVariacao { padding: 3px 8px; border-radius: 5px; background: #e4e7f0; font-size: 14px; font-weight: 700; color: #303750; }
-.rgKpiVariacao[data-tendencia="alta"] { color: #a31b2a; background: #fde7eb; }
-.rgKpiVariacao[data-tendencia="baixa"] { color: #086343; background: #dff3e8; }
+.rgKpiRodape.rgKpiComparacao { display: block; padding: 8px 10px; border-color: transparent; background: #e4e7f0; color: #303750; font-size: 14px; line-height: 1.6; }
+.rgKpiRodape:is(.rgKpiMetaCompacta, .rgKpiComparacao) { min-height: 76px; align-content: center; }
+.rgKpiVariacao { margin-right: 4px; font-weight: 700; }
+.rgKpiComparacao:has([data-tendencia="alta"]) { color: #a31b2a; background: #fde7eb; }
+.rgKpiComparacao:has([data-tendencia="baixa"]) { color: #086343; background: #dff3e8; }
+.rgKpiVariacao[data-tendencia="alta"]::before { content: "↑ "; }
+.rgKpiVariacao[data-tendencia="baixa"]::before { content: "↓ "; }
 .rgKpiProgresso { height: 6px; overflow: hidden; border-radius: 4px; background: var(--borderSoft); }
 .rgKpiProgresso span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--colorPrimary); }
-.rgKpiProporcao { display: grid; gap: 8px; color: #39415a; font-size: 13px; font-weight: 600; line-height: 1.5; }
-.rgKpiEscala { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.rgKpiProporcao { display: grid; gap: 8px; margin-top: auto; color: #39415a; font-size: 13px; font-weight: 600; line-height: 1.5; }
+.rgKpiEscala { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px; }
 .rgKpiEscala strong { color: var(--colorPrimaryDark); font-variant-numeric: tabular-nums; }
 .rgKpiProporcao meter { display: block; width: 100%; height: 6px; border: 0; border-radius: 4px; background: var(--borderSoft); appearance: none; }
 .rgKpiProporcao meter::-webkit-meter-bar { height: 6px; border: 0; border-radius: 4px; background: var(--borderSoft); }

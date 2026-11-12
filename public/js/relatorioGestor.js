@@ -253,9 +253,9 @@ function mostrarVariacaoHora(sufixo, horas, campo) {
     var atual = horas.ultima[campo]
     var antes = horas.anterior[campo]
     var diferenca = atual - antes
-    variacao.textContent = diferenca > 0 ? "↑ " + diferenca + " a mais" : diferenca < 0 ? "↓ " + Math.abs(diferenca) + " a menos" : atual ? "Quantidade mantida" : "Sem novos registros"
+    variacao.textContent = diferenca > 0 ? diferenca + " a mais" : diferenca < 0 ? Math.abs(diferenca) + " a menos" : atual ? "Quantidade mantida" : "Sem novos registros"
     variacao.dataset.tendencia = diferenca > 0 ? "alta" : diferenca < 0 ? "baixa" : "igual"
-    referencia.textContent = atual || antes ? `${atual} na última hora · ${antes} na anterior` : "Nas últimas 2 horas"
+    referencia.textContent = atual || antes ? "Em relação à última hora" : "Nas últimas 2 horas"
     referencia.title = `${atual} na última hora · ${antes} na hora anterior`
 }
 
