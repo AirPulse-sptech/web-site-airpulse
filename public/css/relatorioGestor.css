@@ -182,64 +182,47 @@
     .rgCampo { flex-basis: 100%; }
 }
 
+.rgConteudo .rgResumo { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 14px; }
 .rgConteudo .rgResumoCard {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 14px;
-    min-height: 244px;
-    padding: 20px;
+    gap: 12px;
+    min-height: 194px;
+    padding: 22px 20px;
     background: var(--bgSurface);
     border: 1px solid var(--rgBorda);
     border-radius: var(--painel-card-radius);
-    box-shadow: 0 3px 12px rgba(26, 35, 126, .035);
+    box-shadow: none;
 }
-
-.rgResumoCobertura[data-estado="completo"] #metaCobertura { color: var(--colorSuccess); background: #e4f5ed; }
-.rgResumoCobertura[data-estado="pendente"] #metaCobertura { color: #9a3412; background: #fff0df; }
-.rgResumoCobertura[data-estado="completo"] .rgKpiProgresso span { background: var(--colorSuccess); }
-.rgKpiTentar { border: 0; padding: 4px 0; background: transparent; color: var(--colorPrimaryDark); font: inherit; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
-.rgKpiCabecalho { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
-.rgConteudo .rgKpiCabecalho h2 { margin: 0; color: var(--textPrimary); font-size: 15px; font-weight: 700; line-height: 1.4; letter-spacing: 0; }
-.rgKpiValor { min-width: 0; }
-.rgKpiAtencao { --rgKpiCor: #c2410c; }
+.rgKpiCabecalho { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+.rgConteudo .rgKpiCabecalho h2 { margin: 0; color: #45456e; font-size: 15px; font-weight: 600; line-height: 1.4; letter-spacing: 0; }
+.rgKpiAtencao { --rgKpiCor: #b85b09; }
 .rgKpiCritico { --rgKpiCor: var(--colorError); }
 .rgKpiAeronaves { --rgKpiCor: var(--colorPrimaryDark); }
-.rgConteudo :is(.rgKpiAtencao, .rgKpiCritico, .rgKpiAeronaves) .rgResumoNumero { color: var(--rgKpiCor); }
-.rgConteudo .rgResumoCobertura[data-estado="pendente"] .rgResumoNumero { color: var(--colorError); }
-.rgConteudo .rgResumoCobertura[data-estado="completo"] .rgResumoNumero { color: var(--colorSuccess); }
-.rgKpiDetalhe { margin: 6px 0 0; color: #39415a; font-size: 14px; line-height: 1.5; }
-.rgKpiRodape { display: flex; flex-direction: column; align-items: flex-start; justify-content: flex-start; gap: 7px; box-sizing: border-box; margin-top: 0; padding: 12px; border: 1px solid #e0e3ef; border-radius: 8px; background: #f4f5fa; color: #39415a; font-size: 13px; line-height: 1.5; }
-.rgKpiRotulo { color: #303750; font-size: 12px; font-weight: 700; }
-.rgKpiMetaLinha { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 8px; }
-.rgKpiMeta { color: var(--colorPrimaryDark); font-size: 14px; font-weight: 700; font-variant-numeric: tabular-nums; }
-.rgKpiRodape.rgKpiMetaCompacta { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 4px 8px; padding: 8px 10px; font-size: 14px; }
-.rgKpiMetaCompacta .rgKpiMeta { font-size: 12px; }
-.rgResumoCobertura .rgKpiMetaCompacta #metaCobertura { padding: 0; background: transparent; font-size: inherit; }
-.rgResumoCobertura[data-estado="pendente"] .rgKpiMetaCompacta { background: #fde7eb; border-color: #f4bac4; }
-.rgResumoCobertura[data-estado="pendente"] .rgKpiMetaCompacta #metaCobertura { color: #a31b2a; }
-.rgResumoCobertura[data-estado="completo"] .rgKpiMetaCompacta { background: #dff3e8; border-color: #add9c1; }
-.rgResumoCobertura[data-estado="completo"] .rgKpiMetaCompacta #metaCobertura { color: #086343; }
-#metaCobertura { padding: 3px 7px; border-radius: 5px; font-size: 13px; font-weight: 600; }
-.rgKpiRodape.rgKpiComparacao { display: block; padding: 8px 10px; border-color: transparent; background: #e4e7f0; color: #303750; font-size: 14px; line-height: 1.6; }
-.rgKpiRodape:is(.rgKpiMetaCompacta, .rgKpiComparacao) { min-height: 76px; align-content: center; }
-.rgKpiVariacao { margin-right: 4px; font-weight: 700; }
-.rgKpiComparacao:has([data-tendencia="alta"]) { color: #a31b2a; background: #fde7eb; }
-.rgKpiComparacao:has([data-tendencia="baixa"]) { color: #086343; background: #dff3e8; }
-.rgKpiVariacao[data-tendencia="alta"]::before { content: "↑ "; }
-.rgKpiVariacao[data-tendencia="baixa"]::before { content: "↓ "; }
-.rgKpiProgresso { height: 6px; overflow: hidden; border-radius: 4px; background: var(--borderSoft); }
+.rgConteudo .rgResumoCard .rgResumoNumero { color: var(--rgKpiCor, var(--colorPrimaryDark)); font-size: 42px; font-weight: 600; line-height: 1; }
+.rgKpiValorCobertura { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px; }
+.rgConteudo .rgResumoCard .rgKpiDetalhe { margin: 0; color: #535374; font-size: 13px; line-height: 1.5; }
+.rgKpiValorCobertura .rgKpiDetalhe { color: #62626e; }
+.rgKpiProgresso { height: 7px; overflow: hidden; border-radius: 4px; background: #e8e4fb; }
 .rgKpiProgresso span { display: block; height: 100%; width: 0; border-radius: inherit; background: var(--colorPrimary); }
-.rgKpiProporcao { display: grid; gap: 8px; margin-top: auto; color: #39415a; font-size: 13px; font-weight: 600; line-height: 1.5; }
-.rgKpiEscala { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px; }
-.rgKpiEscala strong { color: var(--colorPrimaryDark); font-variant-numeric: tabular-nums; }
-.rgKpiProporcao meter { display: block; width: 100%; height: 6px; border: 0; border-radius: 4px; background: var(--borderSoft); appearance: none; }
-.rgKpiProporcao meter::-webkit-meter-bar { height: 6px; border: 0; border-radius: 4px; background: var(--borderSoft); }
-.rgKpiProporcao meter::-webkit-meter-optimum-value { border-radius: 4px; background: var(--rgKpiCor); }
-.rgKpiProporcao meter::-moz-meter-bar { border-radius: 4px; background: var(--rgKpiCor); }
-.rgConteudo .rgKpiCabecalho .rgResumoIcone { width: 34px; height: 34px; border-radius: 9px; font-size: 18px; }
-@media (min-width: 601px) and (max-width: 1250px) {
+.rgKpiCoberturaRodape { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 12px; color: #535374; font-size: 13px; line-height: 1.5; }
+.rgResumoCobertura[data-estado="pendente"] #metaCobertura { color: #b83b0b; }
+.rgResumoCobertura[data-estado="completo"] #metaCobertura { color: var(--colorSuccess); }
+.rgKpiComparacao { color: #62626e; font-size: 14px; line-height: 1.5; }
+.rgKpiVariacao { margin-right: 4px; color: #535374; font-variant-numeric: tabular-nums; }
+.rgKpiVariacao[data-tendencia="alta"] { color: var(--rgKpiCor); }
+.rgKpiVariacao[data-tendencia="baixa"] { color: var(--colorSuccess); }
+.rgKpiVariacao[data-tendencia="alta"]::before { content: "↗ "; }
+.rgKpiVariacao[data-tendencia="baixa"]::before { content: "↘ "; }
+.rgKpiAeronaves .rgKpiVariacao[data-tendencia="alta"] { color: var(--colorPrimary); }
+.rgKpiTentar { align-self: flex-start; border: 0; padding: 0; background: transparent; color: var(--colorPrimaryDark); font: inherit; font-size: 13px; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.rgConteudo .rgKpiCabecalho .rgResumoIcone { flex: 0 0 20px; width: 20px; height: 20px; border-radius: 0; background: transparent; color: var(--rgKpiCor, var(--colorPrimary)); font-size: 19px; }
+@media (max-width: 1100px) {
     .rgConteudo .rgResumo { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+    .rgConteudo .rgResumo { grid-template-columns: 1fr; }
 }
 
 .rgResumoIcone {
@@ -559,7 +542,7 @@
     }
 
     .rgPainelRecorrencias .rgRecorrencias { grid-template-columns: 1fr; }
-    .rgConteudo .rgResumoCard { min-height: 230px; }
+
     .rgSintomaCabecalho { flex-wrap: wrap; }
     .rgSintomaNome { flex-basis: calc(100% - 46px); }
     .rgSintomaContagem { margin-left: 46px; }

@@ -261,6 +261,12 @@ textarea::placeholder {
   color: #79819c;
 }
 
+.campoDataBrasil { display: flex; align-items: center; gap: 6px; }
+.campoDataBrasil input[type="text"] { min-width: 0; flex: 1; }
+.campoDataBrasil input[type="date"] { flex: 0 0 44px; width: 44px; padding: 0 10px; }
+.campoDataBrasil input[type="date"]::-webkit-datetime-edit { display: none; }
+.campoDataBrasil input[type="date"]::-webkit-calendar-picker-indicator { cursor: pointer; margin: 0; padding: 4px; }
+
 input:not([type="radio"]):focus,
 select:focus,
 textarea:focus {

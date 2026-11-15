@@ -34,6 +34,7 @@ function carregarCoberturaAlertas() {
     atualizarCarregamento()
     numero.textContent = "—"
     numero.hidden = true
+    document.getElementById("legendaCobertura").hidden = true
     quantidade.textContent = "—"
     resumo.textContent = "Carregando alertas…"
     progresso.hidden = true
@@ -50,9 +51,10 @@ function carregarCoberturaAlertas() {
             preencherAeronaves()
             numero.textContent = dados.total ? (Math.floor(dados.percentual * 10) / 10).toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "%" : "—"
             numero.hidden = !dados.total
-            quantidade.textContent = dados.total ? `${dados.cobertos} de ${dados.total}` : "—"
+            document.getElementById("legendaCobertura").hidden = !dados.total
+            quantidade.textContent = dados.total ? `${dados.cobertos}/${dados.total}` : "—"
             resumo.textContent = dados.total
-                ? "alertas documentados"
+                ? "documentados"
                 : "Nenhum alerta no período"
             progresso.hidden = !dados.total
             progresso.setAttribute("aria-valuenow", dados.total ? dados.percentual : 0)
@@ -144,8 +146,7 @@ function mostrarErroRelatorios() {
         ;["listaRelatorios", "pontosAtencao", "componentesMencionados", "sintomasRecorrentes", "legendaCategorias"].forEach(function (id) { document.getElementById(id).replaceChildren() })
         ;["Atencao", "Critico", "Aeronaves"].forEach(function (sufixo) { mostrarVariacaoHora(sufixo, null) })
         ;["Atencao", "Critico", "Aeronaves"].forEach(function (sufixo) {
-            document.getElementById("medidor" + sufixo).hidden = true
-            document.getElementById("proporcao" + sufixo).textContent = "Dados indisponíveis"
+            if (sufixo !== "Aeronaves") document.getElementById("proporcao" + sufixo).textContent = "Dados indisponíveis"
         })
         ;["semPontos", "semComponentes", "semSintomas"].forEach(function (id) {
             document.getElementById(id).hidden = false
@@ -184,12 +185,10 @@ function preencherAeronaves() {
 
 function atualizarResumo(visiveis) {
     var aeronaves = new Set()
-    var aeronavesCitadas = new Set()
     var atencao = 0
     var critico = 0
 
     for (var i = 0; i < visiveis.length; i++) {
-        aeronavesCitadas.add(String(visiveis[i].fkAeronave || visiveis[i].aeronave))
         if (visiveis[i].criticidade == "ATENCAO") {
             atencao++
         } else if (visiveis[i].criticidade == "CRITICO") {
@@ -198,12 +197,11 @@ function atualizarResumo(visiveis) {
         }
     }
 
-    document.getElementById("totalAeronavesCriticas").textContent = aeronaves.size
-    document.getElementById("totalAtencao").textContent = atencao
-    document.getElementById("totalCritico").textContent = critico
+    document.getElementById("totalAeronavesCriticas").textContent = String(aeronaves.size).padStart(2, "0")
+    document.getElementById("totalAtencao").textContent = String(atencao).padStart(2, "0")
+    document.getElementById("totalCritico").textContent = String(critico).padStart(2, "0")
     atualizarProporcao("Atencao", atencao, visiveis.length, "dos relatórios")
     atualizarProporcao("Critico", critico, visiveis.length, "dos relatórios")
-    atualizarProporcao("Aeronaves", aeronaves.size, aeronavesCitadas.size, "das aeronaves citadas")
     var horas = resumirUltimasHoras(visiveis, Date.now())
     mostrarVariacaoHora("Atencao", horas, "atencao")
     mostrarVariacaoHora("Critico", horas, "critico")
@@ -212,10 +210,6 @@ function atualizarResumo(visiveis) {
 
 function atualizarProporcao(sufixo, quantidade, total, legenda) {
     var percentual = total ? quantidade / total * 100 : 0
-    var medidor = document.getElementById("medidor" + sufixo)
-    medidor.value = percentual
-    medidor.hidden = total == 0
-    medidor.setAttribute("aria-valuetext", `${quantidade} de ${total} · ${legenda}`)
     document.getElementById("proporcao" + sufixo).textContent = total
         ? percentual.toLocaleString("pt-BR", { maximumFractionDigits: 1 }) + "% " + legenda
         : "Sem dados no período"
@@ -253,9 +247,9 @@ function mostrarVariacaoHora(sufixo, horas, campo) {
     var atual = horas.ultima[campo]
     var antes = horas.anterior[campo]
     var diferenca = atual - antes
-    variacao.textContent = diferenca > 0 ? diferenca + " a mais" : diferenca < 0 ? Math.abs(diferenca) + " a menos" : atual ? "Quantidade mantida" : "Sem novos registros"
+    variacao.textContent = diferenca > 0 ? "+" + diferenca : diferenca < 0 ? String(diferenca) : atual ? "0" : "Sem novos registros"
     variacao.dataset.tendencia = diferenca > 0 ? "alta" : diferenca < 0 ? "baixa" : "igual"
-    referencia.textContent = atual || antes ? "Em relação à última hora" : "Nas últimas 2 horas"
+    referencia.textContent = atual || antes ? "na última hora" : "nas últimas 2 horas"
     referencia.title = `${atual} na última hora · ${antes} na hora anterior`
 }
 

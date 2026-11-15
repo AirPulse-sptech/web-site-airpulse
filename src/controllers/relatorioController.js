@@ -5,8 +5,8 @@ var alertaRelatorioModel = require("../models/alertaRelatorioModel")
 var usuarioModel = require("../models/usuarioModel")
 
 const statusPermitidos = ["RASCUNHO", "EM_REVISAO", "PUBLICADO"]
-const criticidadesPermitidas = ["NORMAL", "ATENCAO", "CRITICO"]
-const categoriasPermitidas = ["DESEMPENHO", "FALHA_HARDWARE", "ARMAZENAMENTO", "MEMORIA_RAM", "PROCESSADOR", "PERDA_CONEXAO"]
+const criticidadesPermitidas = ["ATENCAO", "CRITICO"]
+const categoriasPermitidas = ["DESEMPENHO", "FALHA_HARDWARE", "PERDA_CONEXAO"]
 const limiteTexto = 50000
 
 function dataValida(valor) {
@@ -91,7 +91,7 @@ function validarRelatorio(dados) {
     if (dados.periodoFim < dados.periodoInicio) return "O fim do período não pode ser antes do início."
     if (dados.texto.length > limiteTexto) return `A análise pode ter no máximo ${limiteTexto} caracteres.`
     if (!categoriasPermitidas.includes(dados.categoria)) return "Escolha uma categoria válida."
-    if (dados.criticidade && !criticidadesPermitidas.includes(dados.criticidade)) return "Conclusão inválida. Use NORMAL, ATENCAO ou CRITICO."
+    if (dados.criticidade && !criticidadesPermitidas.includes(dados.criticidade)) return "Escolha Atenção ou Crítico como conclusão da análise."
 
     if (dados.statusRelatorio == "PUBLICADO") {
         if (!dados.texto) return "Escreva a análise antes de publicar."

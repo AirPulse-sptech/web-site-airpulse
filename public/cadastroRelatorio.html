@@ -130,13 +130,19 @@
                                 </div>
 
                                 <div class="field">
-                                    <label for="periodoInicio">Início do período *</label>
-                                    <input id="periodoInicio" name="periodoInicio" type="date" required>
+                                    <label for="periodoInicioTexto">Início do período *</label>
+                                    <div class="campoDataBrasil">
+                                        <input id="periodoInicioTexto" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" maxlength="10" required aria-label="Início do período, dia/mês/ano">
+                                        <input id="periodoInicio" name="periodoInicio" type="date" required aria-label="Selecionar início do período no calendário">
+                                    </div>
                                 </div>
 
                                 <div class="field">
-                                    <label for="periodoFim">Fim do período *</label>
-                                    <input id="periodoFim" name="periodoFim" type="date" required>
+                                    <label for="periodoFimTexto">Fim do período *</label>
+                                    <div class="campoDataBrasil">
+                                        <input id="periodoFimTexto" type="text" inputmode="numeric" placeholder="dd/mm/aaaa" maxlength="10" required aria-label="Fim do período, dia/mês/ano">
+                                        <input id="periodoFim" name="periodoFim" type="date" required aria-label="Selecionar fim do período no calendário">
+                                    </div>
                                 </div>
 
                                 <div class="field full atalhosPeriodo">
@@ -151,9 +157,7 @@
                                 <fieldset class="field full conclusao">
                                     <legend>Conclusão da análise *</legend>
                                     <div class="opcoesConclusao">
-                                        <label><input type="radio" name="criticidade" value="NORMAL" required>
-                                            Normal</label>
-                                        <label><input type="radio" name="criticidade" value="ATENCAO"> Atenção</label>
+                                        <label><input type="radio" name="criticidade" value="ATENCAO" required> Atenção</label>
                                         <label><input type="radio" name="criticidade" value="CRITICO"> Crítico</label>
                                     </div>
                                 </fieldset>
@@ -165,12 +169,6 @@
                                             Desempenho</label>
                                         <label><input type="radio" name="categoria" value="FALHA_HARDWARE"> Falha de
                                             hardware</label>
-                                        <label><input type="radio" name="categoria" value="ARMAZENAMENTO">
-                                            Armazenamento</label>
-                                        <label><input type="radio" name="categoria" value="MEMORIA_RAM"> Memória
-                                            RAM</label>
-                                        <label><input type="radio" name="categoria" value="PROCESSADOR">
-                                            Processador</label>
                                         <label><input type="radio" name="categoria" value="PERDA_CONEXAO"> Perda de
                                             conexão</label>
                                     </div>

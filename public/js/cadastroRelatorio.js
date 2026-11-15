@@ -151,6 +151,14 @@ function dataParaTexto(valor) {
   return `${dia}/${mes}/${ano}`
 }
 
+function dataTextoParaCampo(valor) {
+  const partes = /^(\d{2})\/(\d{2})\/(\d{4})$/.exec(valor)
+  if (!partes || Number(partes[3]) === 0) return ""
+  const iso = `${partes[3]}-${partes[2]}-${partes[1]}`
+  const data = new Date(iso + "T00:00:00Z")
+  return !Number.isNaN(data.getTime()) && data.toISOString().slice(0, 10) === iso ? iso : ""
+}
+
 
 
 function atualizarContador() {
@@ -172,6 +180,10 @@ function inserirEstrutura() {
 
 
 function validarPeriodo() {
+  ;[campoInicio, campoFim].forEach(campo => {
+    const exibicao = document.querySelector("#" + campo.id + "Texto")
+    if (!exibicao.validity.customError) exibicao.value = campo.value ? dataParaTexto(campo.value) : ""
+  })
   campoFim.min = campoInicio.value
   campoFim.setCustomValidity(campoInicio.value && campoFim.value && campoFim.value < campoInicio.value
     ? "O fim do período não pode ser antes do início."
@@ -191,6 +203,8 @@ function validarPeriodo() {
 }
 
 function definirPeriodo(inicio, fim) {
+  document.querySelector("#periodoInicioTexto").setCustomValidity("")
+  document.querySelector("#periodoFimTexto").setCustomValidity("")
   campoInicio.value = dataParaCampo(inicio)
   campoFim.value = dataParaCampo(fim)
 }
@@ -568,7 +582,7 @@ document.querySelector("#listaMeusRelatorios").addEventListener("click", functio
 function validarParaSalvar(status) {
   const campos = status === "PUBLICADO"
     ? [...formulario.querySelectorAll("input, select, textarea")]
-    : [selectAeronave, document.querySelector("#titulo"), campoInicio, campoFim,
+    : [selectAeronave, document.querySelector("#titulo"), document.querySelector("#periodoInicioTexto"), document.querySelector("#periodoFimTexto"), campoInicio, campoFim,
     formulario.querySelector('input[name="categoria"]')]
     
 
@@ -666,8 +680,22 @@ function salvarRelatorio(status) {
 
 texto.addEventListener("input", atualizarContador)
 document.querySelector("#botaoEstrutura").addEventListener("click", inserirEstrutura)
-campoInicio.addEventListener("change", () => { validarPeriodo(); carregarAlertasRelatorio() })
-campoFim.addEventListener("change", () => { validarPeriodo(); carregarAlertasRelatorio() })
+;[campoInicio, campoFim].forEach(campo => {
+  const exibicao = document.querySelector("#" + campo.id + "Texto")
+  campo.addEventListener("change", () => {
+    exibicao.setCustomValidity("")
+    validarPeriodo()
+    carregarAlertasRelatorio()
+  })
+  exibicao.addEventListener("input", () => {
+    const data = dataTextoParaCampo(exibicao.value)
+    campo.value = data
+    const valida = Boolean(data && campo.value === data)
+    exibicao.setCustomValidity(exibicao.value && !valida ? "Informe uma data válida no formato dd/mm/aaaa." : "")
+    if (valida || !exibicao.value) validarPeriodo()
+  })
+  exibicao.addEventListener("change", carregarAlertasRelatorio)
+})
 document.querySelector("#atualizarAlertasRelatorio").addEventListener("click", carregarAlertasRelatorio)
 document.querySelectorAll(".atalho").forEach(botao => botao.addEventListener("click", () => {
   aplicarAtalho(botao)
