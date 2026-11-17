@@ -146,7 +146,7 @@
                 </div>
                 <div class="rgErro" id="erroRelatorios" role="alert" hidden>
                     <span id="mensagemErroRelatorios"></span>
-                    <button type="button" class="rgLimpar" onclick="carregarRelatorios()">Tentar novamente</button>
+                    <button type="button" class="rgLimpar" onclick="carregarRelatorios(true)">Tentar novamente</button>
                 </div>
 
                 <section class="rgResumo" id="indicadoresRelatorios" aria-label="Indicadores dos relatórios" aria-busy="true">
@@ -155,7 +155,7 @@
                         <div class="rgKpiValor rgKpiValorCobertura"><span class="rgResumoNumero" id="quantidadeCoberturaAlertas">—</span><span class="rgKpiDetalhe" id="resumoCoberturaAlertas">Carregando alertas…</span></div>
                         <div class="rgKpiProgresso" id="progressoCobertura" role="progressbar" aria-label="Cobertura dos alertas" aria-valuemin="0" aria-valuemax="100" hidden><span id="barraCobertura"></span></div>
                         <div class="rgKpiCoberturaRodape"><span><span id="percentualCoberturaAlertas" hidden>—</span><span id="legendaCobertura" hidden> de cobertura</span></span><span id="metaCobertura">—</span></div>
-                        <button class="rgKpiTentar" type="button" id="tentarCobertura" onclick="carregarCoberturaAlertas()" hidden>Tentar novamente</button>
+                        <button class="rgKpiTentar" type="button" id="tentarCobertura" onclick="carregarCoberturaAlertas(true)" hidden>Tentar novamente</button>
                     </article>
                     <article class="rgResumoCard rgKpiAtencao">
                         <div class="rgKpiCabecalho"><h2>Em atenção</h2><span class="rgResumoIcone"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span></div>
@@ -202,7 +202,6 @@
                                     <th scope="col">Aeronave / relatório</th>
                                     <th scope="col">Componente / sintoma</th>
                                     <th scope="col">Criticidade</th>
-                                    <th scope="col">Situação no texto</th>
                                     <th scope="col">Recomendação e evidência</th>
                                 </tr>
                             </thead>

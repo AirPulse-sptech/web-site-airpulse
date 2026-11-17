@@ -9,6 +9,42 @@ var atualizacaoEmAndamento = false
 var ultimaAtualizacao = null
 var paginaRelatorios = 1
 
+function buscarDadosGestor(url, atualizar, validar) {
+    var usuario = sessionStorage.getItem("idUsuario")
+    var chave = "relatorioGestor:v1:" + usuario + ":" + url
+    try {
+        var salvo = JSON.parse(sessionStorage.getItem(chave))
+        if (!atualizar && salvo && Date.now() >= salvo.atualizadoEm && Date.now() - salvo.atualizadoEm < 60000 && validar(salvo.dados)) {
+            return Promise.resolve(salvo)
+        }
+        sessionStorage.removeItem(chave)
+    } catch (erro) { }
+
+    var consulta = fetch(url, { cache: "no-store" })
+        .then(function (resposta) {
+            if (!resposta.ok) throw new Error("Não foi possível carregar os dados do gestor.")
+            return resposta.json()
+        })
+        .then(function (dados) {
+            if (sessionStorage.getItem("idUsuario") !== usuario) throw new Error("A sessão foi alterada. Carregue a página novamente.")
+            if (!validar(dados)) throw new Error("Resposta inválida do servidor.")
+            var resultado = { dados: dados, atualizadoEm: Date.now() }
+            try {
+                var chaves = Object.keys(sessionStorage).filter(function (item) { return item.startsWith("relatorioGestor:v1:") })
+                chaves.forEach(function (item) {
+                    try {
+                        var entrada = JSON.parse(sessionStorage.getItem(item))
+                        if (!entrada || !Number.isFinite(entrada.atualizadoEm) || Date.now() - entrada.atualizadoEm >= 60000) sessionStorage.removeItem(item)
+                    } catch (erro) { sessionStorage.removeItem(item) }
+                })
+                if (chaves.length >= 25) sessionStorage.removeItem(chaves[0])
+                sessionStorage.setItem(chave, JSON.stringify(resultado))
+            } catch (erro) {}
+            return resultado
+        })
+    return consulta
+}
+
 function atualizarCarregamento() {
     var visiveis = filtrar()
     var pagina = obterPaginaRelatorios(visiveis, paginaRelatorios)
@@ -21,7 +57,7 @@ function atualizarCarregamento() {
     document.getElementById("proximaPaginaRelatorios").disabled = relatoriosCarregando || pagina.pagina == pagina.totalPaginas
 }
 
-function carregarCoberturaAlertas() {
+function carregarCoberturaAlertas(atualizar) {
     var consulta = ++consultaCobertura
     var numero = document.getElementById("percentualCoberturaAlertas")
     var quantidade = document.getElementById("quantidadeCoberturaAlertas")
@@ -40,12 +76,12 @@ function carregarCoberturaAlertas() {
     progresso.hidden = true
     meta.textContent = "Aguardando dados"
     var filtros = new URLSearchParams({ dias: document.getElementById("filtroPeriodo").value, aeronave: document.getElementById("filtroAeronave").value })
-    return fetch(`/relatorio/gestor/cobertura/${sessionStorage.getItem("idUsuario")}?${filtros}`)
-        .then(function (resposta) {
-            if (!resposta.ok) throw new Error("Cobertura indisponível")
-            return resposta.json()
-        })
-        .then(function (dados) {
+    return buscarDadosGestor(`/relatorio/gestor/cobertura/${sessionStorage.getItem("idUsuario")}?${filtros}`, atualizar === true, function (dados) {
+        return dados && Array.isArray(dados.aeronaves) && Number.isFinite(dados.total) && Number.isFinite(dados.cobertos)
+            && Number.isFinite(dados.pendentes) && (dados.total === 0 || Number.isFinite(dados.percentual))
+    })
+        .then(function (resultado) {
+            var dados = resultado.dados
             if (consulta !== consultaCobertura) return
             aeronavesCobertura = dados.aeronaves
             preencherAeronaves()
@@ -100,24 +136,17 @@ var coresCategorias = {
     PERDA_CONEXAO: "#A5B4FC"
 }
 
-function carregarRelatorios() {
+function carregarRelatorios(atualizar) {
     if (relatoriosCarregando) return Promise.resolve()
     relatoriosCarregando = true
     atualizarCarregamento()
     var idFuncionario = sessionStorage.getItem("idUsuario")
 
-    return fetch(`/relatorio/gestor/${idFuncionario}`)
-        .then(function (resposta) {
-            if (!resposta.ok) {
-                throw new Error("Erro ao buscar os relatórios.")
-            }
-            return resposta.json()
-        })
-        .then(function (dados) {
-            if (!Array.isArray(dados)) throw new Error("Resposta inválida de relatórios.")
-            relatorios = dados
+    return buscarDadosGestor(`/relatorio/gestor/${idFuncionario}`, atualizar === true, Array.isArray)
+        .then(function (resultado) {
+            relatorios = resultado.dados
             relatoriosComErro = false
-            ultimaAtualizacao = new Date()
+            ultimaAtualizacao = new Date(resultado.atualizadoEm)
             document.getElementById("erroRelatorios").hidden = true
             preencherAeronaves()
             preencherComponentes()
@@ -455,7 +484,6 @@ function atualizarAnalises(visiveis) {
             : `${concluidos.length} de ${visiveis.length} analisados` + (pendentes ? ` · ${pendentes} pendentes` : "")
             + (processando ? ` · ${processando} em processamento` : "") + (erros ? ` · ${erros} com erro` : "")
 
-    var situacoes = { IDENTIFICADO: "Identificado", SUSPEITO: "Suspeito", CORRIGIDO: "Corrigido", NAO_INFORMADO: "Não informado" }
     var componenteSelecionado = document.getElementById("filtroComponente").value
     var pontos = document.getElementById("pontosAtencao")
     pontos.innerHTML = ""
@@ -470,7 +498,6 @@ function atualizarAnalises(visiveis) {
                 <td data-label="Aeronave e relatório"><strong class="rgPontoAeronave"></strong><small class="rgPontoTitulo"></small><a href="${link}">Ver relatório</a></td>
                 <td data-label="Componente e sintoma"><strong class="rgPontoComponente"></strong><small class="rgPontoSintoma"></small></td>
                 <td data-label="Criticidade"><span class="rgTag ${nomesConclusao[relatorio.criticidade] ? relatorio.criticidade.toLowerCase() : ""}"></span></td>
-                <td data-label="Situação no texto" class="rgPontoSituacao"></td>
                 <td data-label="Recomendação"><span class="rgPontoRecomendacao"></span>
                 <details><summary>Consultar evidência</summary><blockquote></blockquote><a href="${link}">Ler análise completa</a></details></td>`
             linha.querySelector(".rgPontoAeronave").textContent = relatorio.aeronave || ""
@@ -479,7 +506,6 @@ function atualizarAnalises(visiveis) {
             linha.querySelector(".rgPontoComponente").textContent = analise.componente || "Não informado"
             linha.querySelector(".rgPontoSintoma").textContent = analise.sintoma || "Não informado"
             linha.querySelector(".rgTag").textContent = nomesConclusao[relatorio.criticidade] || "Não informada"
-            linha.querySelector(".rgPontoSituacao").textContent = situacoes[analise.situacao] || "Não informado"
             linha.querySelector(".rgPontoRecomendacao").textContent = analise.recomendacao || "Recomendação não informada."
             linha.querySelector("blockquote").textContent = analise.trechoEvidencia || "Trecho de evidência não disponível."
             pontos.appendChild(linha)
@@ -594,7 +620,7 @@ function processarAnalises(ids) {
         })
         .then(function () {
             analiseEmAndamento = false
-            return carregarRelatorios()
+            return carregarRelatorios(true)
         })
 }
 
@@ -603,12 +629,12 @@ function analisarRelatoriosPendentes() {
 }
 
 function atualizarAnalisesRelatorios() {
-    if (analiseEmAndamento || atualizacaoEmAndamento) return Promise.resolve()
+    if (analiseEmAndamento || atualizacaoEmAndamento || relatoriosCarregando || coberturaCarregando) return Promise.resolve()
     atualizacaoEmAndamento = true
     var botao = document.getElementById("atualizarAnalises")
     botao.disabled = true
     botao.textContent = "Atualizando…"
-    return Promise.all([carregarRelatorios(), carregarCoberturaAlertas()]).finally(function () {
+    return Promise.all([carregarRelatorios(true), carregarCoberturaAlertas(true)]).finally(function () {
         atualizacaoEmAndamento = false
         botao.disabled = false
         botao.innerHTML = '<i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Atualizar'
@@ -643,4 +669,5 @@ function limparFiltrosRelatorios() {
 if (verificarSessao() && podeAcessarPagina("relatorioGestor.html")) {
     carregarRelatorios()
     carregarCoberturaAlertas()
+    setInterval(atualizarAnalisesRelatorios, 60000)
 }
