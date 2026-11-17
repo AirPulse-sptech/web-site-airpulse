@@ -100,9 +100,9 @@
 .rgLimpar:hover { background: var(--borderSoft); }
 .rgConteudo :is(button, a, select, input, summary, .rgRolavel):focus-visible { outline: 3px solid var(--colorPrimaryLight); outline-offset: 3px; }
 .rgConteudo .rgBuscaGlobal input:focus-visible { outline: none; box-shadow: none; }
-.rgContexto { font-size: 12px; color: var(--rgCinza); margin: -8px 0 0; }
-.rgContextoBarra { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px 20px; }
-.rgContextoBarra .rgContexto { margin: 0; }
+.rgDescricao { margin: 8px 0 0; color: var(--rgCinza); font-size: 14px; line-height: 1.5; }
+.rgContexto { font-size: 12px; color: var(--rgCinza); margin: 10px 0 0; line-height: 1.5; }
+.rgContextoBarra { display: flex; align-items: center; justify-content: flex-end; flex-wrap: wrap; gap: 10px 20px; }
 .rgRegras { position: relative; font-size: 12px; color: var(--rgCinza); }
 .rgRegras summary { list-style: none; display: flex; align-items: center; gap: 7px; color: var(--colorPrimaryDark); cursor: pointer; }
 .rgRegras summary::-webkit-details-marker { display: none; }
@@ -124,11 +124,10 @@
 .rgSecaoCabecalho > i { color: var(--rgRoxo); font-size: 20px; }
 .rgSelo { flex-shrink: 0; background: var(--rgRoxoClaro); color: var(--colorPrimaryDark); border-radius: 20px; padding: 5px 10px; font-size: 11px; font-weight: 600; }
 .rgRolavel { max-height: 560px; overflow: auto; scrollbar-gutter: stable; margin-top: 18px; }
-.rgTabelaPontos { width: 100%; border-collapse: collapse; font-size: 13px; min-width: 850px; }
+.rgTabelaPontos { width: 100%; table-layout: fixed; border-collapse: collapse; font-size: 13px; min-width: 850px; }
 .rgTabelaPontos th { position: sticky; top: 0; z-index: 1; background: var(--rgRoxoClaro); color: var(--colorPrimaryDark); font-size: 11px; padding: 12px; font-weight: 600; text-align: left; }
 .rgTabelaPontos td { vertical-align: top; border-bottom: 1px solid var(--rgBorda); padding: 16px 12px; color: var(--rgTextoCor); overflow-wrap: anywhere; }
-.rgTabelaPontos th:first-child { width: 20%; }
-.rgTabelaPontos th:last-child { width: 30%; }
+.rgTabelaPontos th { width: 25%; }
 .rgTabelaPontos td > strong, .rgTabelaPontos td > small { display: block; }
 .rgTabelaPontos small { color: var(--rgCinza); margin: 6px 0; }
 .rgTabelaPontos a, .rgTabelaPontos summary { color: var(--rgRoxo); font-weight: 600; font-size: 12px; }
@@ -571,6 +570,57 @@
     .rgPaginacao .rgLimpar { padding: 8px; gap: 4px; }
 }
 
+.rgEsqueleto { display: none; }
+.rgCarregando { display: flex; flex-direction: column; gap: 16px; }
+.rgCarregando > .rgEsqueleto {
+    display: grid;
+    gap: 14px;
+    min-height: 120px;
+    order: 1;
+}
+.rgCarregando > :not(.rgEsqueleto):not(.rgKpiCabecalho):not(.rgSecaoCabecalho):not(.rgDistribuicaoCabecalho) {
+    display: none;
+}
+.rgEsqueleto span {
+    display: block;
+    height: 14px;
+    border-radius: 6px;
+    background: var(--borderSoft);
+    animation: rgEsqueletoPulso 1.6s ease-in-out infinite;
+}
+.rgEsqueleto > span:first-child { width: 65%; height: 32px; }
+.rgEsqueleto > span:last-child { width: 80%; }
+.rgResumoCard > .rgEsqueleto { min-height: 100px; }
+.rgCarregando > .rgEsqueletoGrafico { grid-template-columns: 140px minmax(0, 1fr); align-items: center; }
+.rgEsqueletoGrafico > .rgEsqueletoRosca:first-child {
+    width: 140px;
+    height: 140px;
+    border: 22px solid var(--borderSoft);
+    border-radius: 50%;
+    background: transparent;
+}
+.rgEsqueletoGrafico > div { display: grid; gap: 16px; }
+.rgCarregando > .rgEsqueletoTabela { gap: 0; }
+.rgEsqueletoTabela { padding: 0 20px; }
+.rgEsqueletoTabela > div {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1.4fr 1fr 1fr 1fr;
+    align-items: center;
+    gap: 20px;
+    min-height: 82px;
+    border-bottom: 1px solid var(--borderSoft);
+}
+.rgEsqueletoTabela > div:last-child { border-bottom: 0; }
+.rgEsqueletoPontos { padding: 0; }
+.rgEsqueletoPontos > div { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+@keyframes rgEsqueletoPulso {
+    0%, 100% { opacity: .45; }
+    50% { opacity: 1; }
+}
+@media (max-width: 768px) {
+    .rgEsqueletoTabela > div { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 20px 0; }
+}
 @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
+    .rgEsqueleto span { animation: none; }
 }

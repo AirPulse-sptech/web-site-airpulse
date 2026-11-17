@@ -46,15 +46,22 @@ function buscarDadosGestor(url, atualizar, validar) {
 }
 
 function atualizarCarregamento() {
+    var carregando = relatoriosCarregando || coberturaCarregando
     var visiveis = filtrar()
     var pagina = obterPaginaRelatorios(visiveis, paginaRelatorios)
-    document.getElementById("indicadoresRelatorios").setAttribute("aria-busy", relatoriosCarregando || coberturaCarregando)
-    document.getElementById("cardCobertura").setAttribute("aria-busy", coberturaCarregando)
-    document.getElementById("resultadosRelatorios").setAttribute("aria-busy", relatoriosCarregando)
-    document.querySelector("#erroRelatorios button").disabled = relatoriosCarregando
-    document.getElementById("analisarPendentes").disabled = relatoriosCarregando || relatoriosComErro || analiseEmAndamento || !visiveis.some(podeAnalisar)
-    document.getElementById("paginaAnteriorRelatorios").disabled = relatoriosCarregando || pagina.pagina == 1
-    document.getElementById("proximaPaginaRelatorios").disabled = relatoriosCarregando || pagina.pagina == pagina.totalPaginas
+    document.getElementById("conteudoRelatorios").setAttribute("aria-busy", carregando)
+    document.getElementById("indicadoresRelatorios").setAttribute("aria-busy", carregando)
+    document.querySelectorAll("[data-carregamento-relatorios], #cardCobertura").forEach(function (area) {
+        area.classList.toggle("rgCarregando", carregando)
+        area.setAttribute("aria-busy", carregando)
+    })
+    document.querySelectorAll(".rgFiltrosGlobais, .rgCobertura").forEach(function (area) { area.inert = carregando })
+    document.querySelectorAll(".rgFiltrosGlobais input, .rgFiltrosGlobais select, .rgFiltrosGlobais button").forEach(function (controle) { controle.disabled = carregando })
+    document.querySelector("#erroRelatorios button").disabled = carregando
+    document.getElementById("atualizarAnalises").disabled = carregando || atualizacaoEmAndamento
+    document.getElementById("analisarPendentes").disabled = carregando || relatoriosComErro || analiseEmAndamento || !visiveis.some(podeAnalisar)
+    document.getElementById("paginaAnteriorRelatorios").disabled = carregando || pagina.pagina == 1
+    document.getElementById("proximaPaginaRelatorios").disabled = carregando || pagina.pagina == pagina.totalPaginas
 }
 
 function carregarCoberturaAlertas(atualizar) {

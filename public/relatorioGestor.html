@@ -99,6 +99,8 @@
                 <div class="rgCabecalho">
                     <div>
                         <h1 class="rgTitulo">Relatórios de análise</h1>
+                        <p class="rgDescricao">Acompanhe os relatórios da equipe e os alertas documentados.</p>
+                        <p class="rgContexto" id="contextoFiltros" role="status">Carregando relatórios…</p>
                     </div>
                     <a class="rgAtalho" href="#tituloRelatoriosPublicados">Ver relatórios <i class="bi bi-arrow-down"
                             aria-hidden="true"></i></a>
@@ -138,7 +140,6 @@
                     </div>
                 </section>
                 <div class="rgContextoBarra">
-                    <p class="rgContexto" id="contextoFiltros" role="status">Carregando relatórios…</p>
                     <details class="rgRegras">
                         <summary><i class="bi bi-info-circle" aria-hidden="true"></i> Sobre os indicadores</summary>
                         <p>A cobertura usa a abertura dos alertas e os filtros de período e aeronave. A meta é documentar 100% dos alertas em relatórios publicados. Cada alerta conta uma vez.<br><br>As variações comparam criações nos últimos 60 minutos com os 60 minutos anteriores, dentro dos filtros. Vermelho indica aumento de registros de risco; verde indica redução. Quantidades iguais ficam neutras. Menos registros não comprovam resolução dos problemas. Relatórios são filtrados pela data de criação. Uma citação crítica não confirma a condição atual da aeronave.</p>
@@ -150,26 +151,30 @@
                 </div>
 
                 <section class="rgResumo" id="indicadoresRelatorios" aria-label="Indicadores dos relatórios" aria-busy="true">
-                    <article class="rgResumoCard rgResumoCobertura" id="cardCobertura" aria-label="Cobertura dos alertas" role="status" aria-busy="true">
+                    <article class="rgResumoCard rgResumoCobertura rgCarregando" id="cardCobertura" aria-label="Cobertura dos alertas" role="status" aria-busy="true">
+                        <div class="rgEsqueleto" aria-hidden="true"><span></span><span></span><span></span></div>
                         <div class="rgKpiCabecalho"><h2>Cobertura de alertas</h2><span class="rgResumoIcone"><i class="bi bi-bell" aria-hidden="true"></i></span></div>
                         <div class="rgKpiValor rgKpiValorCobertura"><span class="rgResumoNumero" id="quantidadeCoberturaAlertas">—</span><span class="rgKpiDetalhe" id="resumoCoberturaAlertas">Carregando alertas…</span></div>
                         <div class="rgKpiProgresso" id="progressoCobertura" role="progressbar" aria-label="Cobertura dos alertas" aria-valuemin="0" aria-valuemax="100" hidden><span id="barraCobertura"></span></div>
                         <div class="rgKpiCoberturaRodape"><span><span id="percentualCoberturaAlertas" hidden>—</span><span id="legendaCobertura" hidden> de cobertura</span></span><span id="metaCobertura">—</span></div>
                         <button class="rgKpiTentar" type="button" id="tentarCobertura" onclick="carregarCoberturaAlertas(true)" hidden>Tentar novamente</button>
                     </article>
-                    <article class="rgResumoCard rgKpiAtencao">
+                    <article class="rgResumoCard rgKpiAtencao rgCarregando" data-carregamento-relatorios aria-busy="true">
+                        <div class="rgEsqueleto" aria-hidden="true"><span></span><span></span><span></span></div>
                         <div class="rgKpiCabecalho"><h2>Em atenção</h2><span class="rgResumoIcone"><i class="bi bi-exclamation-triangle" aria-hidden="true"></i></span></div>
                         <span class="rgResumoNumero" id="totalAtencao">—</span>
                         <p class="rgKpiDetalhe" id="proporcaoAtencao">—</p>
                         <div class="rgKpiComparacao" aria-label="Comparação por hora"><span class="rgKpiVariacao" id="variacaoAtencao">—</span><span id="horaAtencao">Comparando horas…</span></div>
                     </article>
-                    <article class="rgResumoCard rgKpiCritico">
+                    <article class="rgResumoCard rgKpiCritico rgCarregando" data-carregamento-relatorios aria-busy="true">
+                        <div class="rgEsqueleto" aria-hidden="true"><span></span><span></span><span></span></div>
                         <div class="rgKpiCabecalho"><h2>Relatórios críticos</h2><span class="rgResumoIcone"><i class="bi bi-exclamation-octagon" aria-hidden="true"></i></span></div>
                         <span class="rgResumoNumero" id="totalCritico">—</span>
                         <p class="rgKpiDetalhe" id="proporcaoCritico">—</p>
                         <div class="rgKpiComparacao" aria-label="Comparação por hora"><span class="rgKpiVariacao" id="variacaoCritico">—</span><span id="horaCritico">Comparando horas…</span></div>
                     </article>
-                    <article class="rgResumoCard rgKpiAeronaves">
+                    <article class="rgResumoCard rgKpiAeronaves rgCarregando" data-carregamento-relatorios aria-busy="true">
+                        <div class="rgEsqueleto" aria-hidden="true"><span></span><span></span><span></span></div>
                         <div class="rgKpiCabecalho"><h2>Aeronaves citadas</h2><span class="rgResumoIcone"><i class="bi bi-airplane" aria-hidden="true"></i></span></div>
                         <span class="rgResumoNumero" id="totalAeronavesCriticas">—</span>
                         <p class="rgKpiDetalhe">Em relatórios críticos</p>
@@ -188,7 +193,8 @@
                     <button class="rgLimpar rgAtualizar" id="atualizarAnalises" type="button" onclick="atualizarAnalisesRelatorios()"><i class="bi bi-arrow-clockwise" aria-hidden="true"></i> Atualizar</button>
                 </section>
 
-                <section class="rgPainel" aria-labelledby="tituloPontosAtencao">
+                <section class="rgCarregando rgPainel" aria-labelledby="tituloPontosAtencao" data-carregamento-relatorios aria-busy="true">
+                        <div class="rgEsqueleto rgEsqueletoTabela rgEsqueletoPontos" aria-hidden="true"><div><span></span><span></span><span></span><span></span></div><div><span></span><span></span><span></span><span></span></div><div><span></span><span></span><span></span><span></span></div></div>
                     <div class="rgSecaoCabecalho">
                         <div>
                             <h2 id="tituloPontosAtencao">Pontos de atenção</h2>
@@ -212,14 +218,16 @@
                 </section>
 
                 <div class="rgGradePadroes">
-                    <section class="rgDistribuicao rgPainel" aria-labelledby="tituloDistribuicaoCategoria">
+                    <section class="rgCarregando rgDistribuicao rgPainel" aria-labelledby="tituloDistribuicaoCategoria" data-carregamento-relatorios aria-busy="true">
+                        <div class="rgEsqueleto rgEsqueletoGrafico" aria-hidden="true"><span class="rgEsqueletoRosca"></span><div><span></span><span></span><span></span></div></div>
                         <div class="rgDistribuicaoCabecalho"><h2 id="tituloDistribuicaoCategoria">Distribuição por categoria</h2></div>
                         <div class="rgDistribuicaoConteudo">
                             <div class="rgGraficoRosca" id="graficoRoscaCategoria" role="img" aria-label="Distribuição de relatórios por categoria"><div class="rgCentroGrafico"><strong id="totalCentroGrafico">0</strong><span>Relatórios</span></div></div>
                             <ul class="rgLegendaCategorias" id="legendaCategorias" aria-label="Categorias dos relatórios"></ul>
                         </div>
                     </section>
-                    <section class="rgPainel" aria-labelledby="tituloComponentes">
+                    <section class="rgCarregando rgPainel" aria-labelledby="tituloComponentes" data-carregamento-relatorios aria-busy="true">
+                        <div class="rgEsqueleto" aria-hidden="true"><span></span><span></span><span></span></div>
                         <div class="rgSecaoCabecalho">
                             <div>
                                 <h2 id="tituloComponentes">Componentes mencionados</h2>
@@ -229,7 +237,8 @@
                         <ul class="rgBarras" id="componentesMencionados"></ul>
                         <p class="rgVazio" id="semComponentes">Aguardando análises dos textos.</p>
                     </section>
-                    <section class="rgPainel rgPainelRecorrencias" aria-labelledby="tituloSintomas">
+                    <section class="rgCarregando rgPainel rgPainelRecorrencias" aria-labelledby="tituloSintomas" data-carregamento-relatorios aria-busy="true">
+                        <div class="rgEsqueleto" aria-hidden="true"><span></span><span></span><span></span></div>
                         <div class="rgSecaoCabecalho">
                             <div>
                                 <h2 id="tituloSintomas">Sintomas recorrentes</h2>
@@ -245,7 +254,8 @@
                     <h2 id="tituloRelatoriosPublicados">Relatórios publicados</h2>
                     <span class="rgSelo" id="totalResultados">Carregando…</span>
                 </div>
-                <section class="rgTabela" aria-labelledby="tituloRelatoriosPublicados" id="resultadosRelatorios" aria-busy="true">
+                <section class="rgTabela rgCarregando" aria-labelledby="tituloRelatoriosPublicados" id="resultadosRelatorios" data-carregamento-relatorios aria-busy="true">
+                    <div class="rgEsqueleto rgEsqueletoTabela" aria-hidden="true"><div><span></span><span></span><span></span><span></span><span></span><span></span></div><div><span></span><span></span><span></span><span></span><span></span><span></span></div><div><span></span><span></span><span></span><span></span><span></span><span></span></div></div>
                     <div class="rgTabelaScroll" id="tabelaRelatorios">
                         <table class="rgTabelaRelatorios">
                             <caption class="rgLeitor">Relatórios publicados, ordenados por criticidade e data</caption>
