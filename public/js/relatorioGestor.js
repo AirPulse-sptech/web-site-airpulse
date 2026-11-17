@@ -97,12 +97,12 @@ function carregarCoberturaAlertas(atualizar) {
             document.getElementById("legendaCobertura").hidden = !dados.total
             quantidade.textContent = dados.total ? `${dados.cobertos}/${dados.total}` : "—"
             resumo.textContent = dados.total
-                ? "documentados"
+                ? "Alertas documentados"
                 : "Nenhum alerta no período"
             progresso.hidden = !dados.total
             progresso.setAttribute("aria-valuenow", dados.total ? dados.percentual : 0)
             document.getElementById("barraCobertura").style.width = (dados.total ? dados.percentual : 0) + "%"
-            meta.textContent = !dados.total ? "Sem alertas" : dados.pendentes ? `${dados.pendentes} pendentes` : "Meta atingida"
+            meta.textContent = !dados.total ? "Sem alertas" : dados.pendentes ? `${dados.pendentes} alerta${dados.pendentes === 1 ? "" : "s"} pendente${dados.pendentes === 1 ? "" : "s"}` : "Meta atingida"
             document.getElementById("cardCobertura").dataset.estado = !dados.total ? "vazio" : dados.pendentes ? "pendente" : "completo"
         })
         .catch(function () {
@@ -233,9 +233,9 @@ function atualizarResumo(visiveis) {
         }
     }
 
-    document.getElementById("totalAeronavesCriticas").textContent = String(aeronaves.size).padStart(2, "0")
-    document.getElementById("totalAtencao").textContent = String(atencao).padStart(2, "0")
-    document.getElementById("totalCritico").textContent = String(critico).padStart(2, "0")
+    document.getElementById("totalAeronavesCriticas").textContent = String(aeronaves.size)
+    document.getElementById("totalAtencao").textContent = String(atencao)
+    document.getElementById("totalCritico").textContent = String(critico)
     atualizarProporcao("Atencao", atencao, visiveis.length, "dos relatórios")
     atualizarProporcao("Critico", critico, visiveis.length, "dos relatórios")
     var horas = resumirUltimasHoras(visiveis, Date.now())
@@ -283,9 +283,13 @@ function mostrarVariacaoHora(sufixo, horas, campo) {
     var atual = horas.ultima[campo]
     var antes = horas.anterior[campo]
     var diferenca = atual - antes
-    variacao.textContent = diferenca > 0 ? "+" + diferenca : diferenca < 0 ? String(diferenca) : atual ? "0" : "Sem novos registros"
+    var quantidade = Math.abs(diferenca)
+    var unidade = sufixo === "Aeronaves" ? "aeronave" : "relatório"
+    variacao.textContent = diferenca
+        ? `${quantidade} ${unidade}${quantidade === 1 ? "" : "s"} a ${diferenca > 0 ? "mais" : "menos"}`
+        : atual || antes ? "Sem variação" : "Sem novos registros"
     variacao.dataset.tendencia = diferenca > 0 ? "alta" : diferenca < 0 ? "baixa" : "igual"
-    referencia.textContent = atual || antes ? "na última hora" : "nas últimas 2 horas"
+    referencia.textContent = atual || antes ? "Em relação à última hora" : "Nas últimas 2 horas"
     referencia.title = `${atual} na última hora · ${antes} na hora anterior`
 }
 
