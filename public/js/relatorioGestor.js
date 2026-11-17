@@ -8,6 +8,7 @@ var relatoriosComErro = false
 var atualizacaoEmAndamento = false
 var ultimaAtualizacao = null
 var paginaRelatorios = 1
+const componentesMonitorados = ["Processador", "Memória RAM", "Armazenamento", "Conexão", "Hardware"]
 
 function buscarDadosGestor(url, atualizar, validar) {
     var usuario = sessionStorage.getItem("idUsuario")
@@ -426,12 +427,17 @@ function analisesDoRelatorio(relatorio) {
         ? relatorio.analises : []
 }
 
+function nomeComponente(componente) {
+    if (componente === "Hardware") return "Hardware não especificado"
+    return componente === "Conexão" ? "Rede/Comunicação" : componente || "Não informado"
+}
+
 function preencherComponentes() {
     var selecionado = document.getElementById("filtroComponente").value
     var componentes = new Set()
     relatorios.forEach(function (relatorio) {
         analisesDoRelatorio(relatorio).forEach(function (analise) {
-            if (analise.componente) componentes.add(analise.componente)
+            if (componentesMonitorados.includes(analise.componente)) componentes.add(analise.componente)
         })
     })
     var select = document.getElementById("filtroComponente")
@@ -439,7 +445,7 @@ function preencherComponentes() {
     Array.from(componentes).sort().forEach(function (nome) {
         var opcao = document.createElement("option")
         opcao.value = nome
-        opcao.textContent = nome
+        opcao.textContent = nomeComponente(nome)
         select.appendChild(opcao)
     })
     if (componentes.has(selecionado)) document.getElementById("filtroComponente").value = selecionado
@@ -514,13 +520,13 @@ function atualizarAnalises(visiveis) {
             linha.querySelector(".rgPontoAeronave").textContent = relatorio.aeronave || ""
             linha.querySelector(".rgPontoTitulo").textContent = relatorio.titulo || ""
             linha.querySelector("a").setAttribute("aria-label", "Ver relatório: " + (relatorio.titulo || "Sem título"))
-            linha.querySelector(".rgPontoComponente").textContent = analise.componente || "Não informado"
+            linha.querySelector(".rgPontoComponente").textContent = nomeComponente(analise.componente)
             linha.querySelector(".rgPontoSintoma").textContent = analise.sintoma || "Não informado"
             linha.querySelector(".rgTag").textContent = nomesConclusao[relatorio.criticidade] || "Não informada"
             linha.querySelector(".rgPontoRecomendacao").textContent = analise.recomendacao || "Recomendação não informada."
             linha.querySelector("blockquote").textContent = analise.trechoEvidencia || "Trecho de evidência não disponível."
             pontos.appendChild(linha)
-            if (analise.componente) {
+            if (componentesMonitorados.includes(analise.componente)) {
                 if (!componentes.has(analise.componente)) componentes.set(analise.componente, new Set())
                 componentes.get(analise.componente).add(relatorio.idRelatorio)
             }
@@ -544,7 +550,7 @@ function atualizarAnalises(visiveis) {
     ranking.forEach(function (item) {
         var linha = document.createElement("li")
         linha.innerHTML = `<div class="rgBarraTitulo"><span></span><strong>${item[1].size} relatório(s)</strong></div><div class="rgTrilho" aria-hidden="true"><div class="rgPreenchimento" style="width:${item[1].size / maior * 100}%"></div></div>`
-        linha.querySelector("span").textContent = item[0]
+        linha.querySelector("span").textContent = nomeComponente(item[0])
         listaComponentes.appendChild(linha)
     })
     document.getElementById("semComponentes").hidden = ranking.length > 0

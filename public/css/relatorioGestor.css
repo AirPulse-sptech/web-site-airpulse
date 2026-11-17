@@ -267,6 +267,8 @@
 }
 
 .rgDistribuicao {
+    display: flex;
+    flex-direction: column;
     margin: 0;
     padding: var(--painel-card-padding);
     background: var(--bgSurface);
@@ -283,8 +285,10 @@
 
 .rgDistribuicaoConteudo {
     display: grid;
+    flex: 1;
     grid-template-columns: 140px minmax(0, 1fr);
     align-items: center;
+    align-content: center;
     gap: 20px;
     margin-top: 24px;
 }
