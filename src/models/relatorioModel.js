@@ -1,4 +1,5 @@
 var database = require("../database/config")
+var mysql = require("mysql2")
 
 function listarAnteriores(idAeronave, idFuncionario) {
     var instrucaoSql = `
@@ -101,7 +102,7 @@ function atualizar(idRelatorio, titulo, periodoInicio, periodoFim, texto, status
             criticidade = ${criticidade},
             categoria = '${categoria}',
             fkAeronave = ${fkAeronave}
-        WHERE idRelatorio = ${idRelatorio};
+        WHERE idRelatorio = ${idRelatorio} AND statusRelatorio <> 'PUBLICADO';
     `
     console.log("Executando a instrução SQL: \n" + instrucaoSql)
     return database.executar(instrucaoSql)
@@ -128,6 +129,27 @@ function removerCoautores(idRelatorio) {
     return database.executar(instrucaoSql)
 }
 
+function salvarCoautores(idRelatorio, idsFuncionarios) {
+    var inserir = Promise.resolve()
+    if (idsFuncionarios.length > 0) {
+        var valores = idsFuncionarios.map(function (id) {
+            return `(CURDATE(), 'COAUTOR', ${Number(id)}, ${Number(idRelatorio)})`
+        })
+        var instrucaoSql = `
+            INSERT INTO funcionarioRelatorio (dataVinculo, papel, fkFuncionario, fkRelatorio)
+            VALUES ${valores.join(", ")}
+            ON DUPLICATE KEY UPDATE fkFuncionario = VALUES(fkFuncionario);
+        `
+        inserir = database.executar(instrucaoSql)
+    }
+    return inserir.then(function () {
+        var instrucaoSql = idsFuncionarios.length > 0
+            ? mysql.format("DELETE FROM funcionarioRelatorio WHERE fkRelatorio = ? AND papel = 'COAUTOR' AND fkFuncionario NOT IN (?);", [idRelatorio, idsFuncionarios])
+            : mysql.format("DELETE FROM funcionarioRelatorio WHERE fkRelatorio = ? AND papel = 'COAUTOR';", [idRelatorio])
+        return database.executar(instrucaoSql)
+    })
+}
+
 function excluir(idRelatorio) {
     return database.executar(`DELETE FROM funcionarioRelatorio WHERE fkRelatorio = ${idRelatorio};`)
         .then(function () {
@@ -145,5 +167,6 @@ module.exports = {
     atualizar,
     vincularFuncionarios,
     removerCoautores,
+    salvarCoautores,
     excluir
 }

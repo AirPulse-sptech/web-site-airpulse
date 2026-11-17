@@ -56,6 +56,21 @@ function carregarRelatorio() {
 }
 
 function preencherRelatorio(relatorio) {
+    var alertas = document.getElementById("alertasAbordados")
+    alertas.replaceChildren()
+    for (var alerta of relatorio.alertas || []) {
+        var item = document.createElement("div")
+        item.className = "alertaRelatorio"
+        var resumo = document.createElement("span")
+        var titulo = document.createElement("strong")
+        titulo.textContent = `${alerta.nivel === "CRITICO" ? "Crítico" : "Atenção"} · ${alerta.metrica} · FMC ${alerta.tipo_fmc}`
+        var detalhe = document.createElement("small")
+        detalhe.textContent = `${alerta.hostname} · Placa ${alerta.placa_serie} · Abertura: ${new Date(alerta.ts_abertura).toLocaleString("pt-BR", { timeZone: "America/Sao_Paulo" })} (Brasília)`
+        resumo.append(titulo, detalhe)
+        item.appendChild(resumo)
+        alertas.appendChild(item)
+    }
+    if (!alertas.children.length) alertas.textContent = "Nenhum alerta vinculado a este relatório."
     document.getElementById("subtitulo").textContent = `Relatório publicado, criado em ${relatorio.dataCriacao}.`
     document.getElementById("aeronave").value = `${relatorio.aeronave} · ${relatorio.modelo}`
     document.getElementById("titulo").value = relatorio.titulo
