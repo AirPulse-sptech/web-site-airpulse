@@ -4,6 +4,7 @@ const dadosPlaca = {
     aeronave: "PR-GOL",
     modeloAeronave: "Boeing 737",
     dataReferencia: "2026-10-29",
+    saude: { atual: 58, anterior: 79, limiteAtencao: 70, limiteCritico: 40 },
     ciclosVoo: [
         { inicio: 0, fim: 5, fase: "Desligado", cor: "#94a3b8" },
         { inicio: 6, fim: 6, fase: "Decolagem", cor: "#7B74EE" },
@@ -18,18 +19,21 @@ const dadosPlaca = {
         cpu: {
             nome: "CPU", titulo: "Uso da CPU", detalhe: "Detalhes da CPU",
             limiteAtencao: 70, limiteCritico: 90,
+            detalhesVoo: { pico: 95, horarioPico: "23:59", fasePico: "Pouso", percentil95: 88.8, minutosAcimaCritico: 15 },
             leituras: [0, 0, 0, 0, 0, 0, 78.2, 48.6, 49.1, 48.8, 49.3, 88.2,
                 0, 0, 0, 0, 0, 0, 82, 49.5, 50.2, 49.8, 50.4, 95]
         },
         ram: {
             nome: "RAM", titulo: "Uso da RAM", detalhe: "Detalhes da RAM",
             limiteAtencao: 70, limiteCritico: 90,
+            detalhesVoo: { pico: 68, horarioPico: "21:15", fasePico: "Cruzeiro", percentil95: 66.4, minutosAcimaCritico: 0 },
             leituras: [0, 0, 0, 0, 0, 0, 68, 49.2, 49.8, 49.4, 49.7, 92.4,
                 0, 0, 0, 0, 0, 0, 66, 49.3, 49.9, 49.5, 50.1, 68]
         },
         disco: {
             nome: "Armazenamento", titulo: "Uso de armazenamento", detalhe: "Detalhes do Armazenamento",
             limiteAtencao: 70, limiteCritico: 90,
+            detalhesVoo: { pico: 60.7, horarioPico: "23:59", fasePico: "Pouso", percentil95: 60.64, minutosAcimaCritico: 0 },
             usoDiaAnterior: 52.7,
             leituras: [52.7, 53, 53.4, 53.7, 54.1, 54.4, 54.8, 55.1,
                 55.5, 55.8, 56.2, 56.5, 56.9, 57.2, 57.6, 57.9,

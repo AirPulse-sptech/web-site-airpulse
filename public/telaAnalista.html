@@ -83,8 +83,7 @@
 
             <main class="painel dashboard">
                 <div>
-                    <h1>Monitoramento da placa</h1>
-                    <p class="subtitulo">Placa P01 · FMC 1 · PR-GOL · Boeing 737</p>
+                    <h1>Monitoramento de recursos</h1>
                 </div>
 
                 <section class="gradeIndicadores" id="indicadoresPlaca" aria-label="Uso atual dos componentes"></section>
@@ -118,6 +117,11 @@
                             <button class="selecionado" type="button" data-periodo="24" aria-pressed="true">24 horas</button>
                         </div>
                         <div class="graficoArea">
+                            <div class="legendaPrevisao" aria-label="Legenda do gráfico">
+                                <span><i class="legendaReal"></i>Real</span>
+                                <span><i class="legendaLinhaPrevista"></i>Previsão</span>
+                                <span><i class="legendaFaixa"></i>Faixa de incerteza</span>
+                            </div>
                             <svg id="graficoComponente" viewBox="0 0 620 280" font-size="8.5" fill="#6b7280" role="img" aria-labelledby="tituloGrafico descricaoGrafico"></svg>
                         </div>
                     </div>
