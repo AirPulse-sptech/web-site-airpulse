@@ -32,7 +32,7 @@
 
 .gradeIndicadores {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 16px;
 }
 
@@ -47,6 +47,135 @@
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
     gap: 16px;
     align-items: start;
+}
+
+/* Cartões de recursos no padrão visual da dashboard de referência. */
+.painel.dashboard > div:first-child h1 {
+    color: #292d83;
+    font-size: 19px;
+    letter-spacing: 0;
+}
+
+.dashboard #indicadoresPlaca > .cartao {
+    min-width: 0;
+    min-height: 212px;
+    padding: 16px;
+    border: 1px solid #e1e4f0;
+    border-radius: 11px;
+    box-shadow: 0 2px 8px rgba(31, 41, 95, .04);
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard #indicadoresPlaca .indicadorTopo {
+    color: #34415f;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.indicadorIcone {
+    width: 23px;
+    height: 23px;
+    display: inline-grid;
+    place-items: center;
+    border: 1px solid currentColor;
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.indicadorIcone.critico {
+    background: #fff0f3;
+}
+
+.indicadorIcone.moderado {
+    background: #fff4e8;
+}
+
+.indicadorIcone.normal {
+    background: #eaf8ef;
+}
+
+.dashboard #indicadoresPlaca .indicadorValor {
+    margin: 8px 0 2px;
+    font-size: 36px;
+    line-height: 1.1;
+}
+
+.dashboard #indicadoresPlaca .indicadorTexto {
+    color: #3f4d6d;
+    font-size: 12px;
+}
+
+.dashboard #indicadoresPlaca .statusIndicador {
+    font-weight: 600;
+}
+
+.dashboard #indicadoresPlaca .limitesIndicador {
+    margin-top: 3px;
+    color: #71809d;
+}
+
+.dashboard #indicadoresPlaca .indicadorPrevisao {
+    margin-top: 5px;
+    color: #f97316;
+    font-size: 12px;
+}
+
+.dashboard #indicadoresPlaca .indicadorRodape {
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid #e8eaf2;
+}
+
+.dashboard #indicadoresPlaca .indicadorComparacao {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #71809d;
+    font-size: 11px;
+}
+
+.dashboard #indicadoresPlaca .indicadorComparacao i,
+.dashboard #indicadoresPlaca .indicadorComparacao strong {
+    color: #f97316;
+}
+
+.dashboard #indicadoresPlaca .indicadorComparacao strong {
+    font-size: 13px;
+}
+
+.dashboard #indicadoresPlaca .cartaoSaude .indicadorComparacao {
+    align-items: flex-start;
+    color: #f97316;
+    line-height: 1.4;
+}
+
+.dashboard #indicadoresPlaca .cartaoSaude .indicadorComparacao strong {
+    color: inherit;
+    font-size: 11px;
+    font-weight: 500;
+}
+
+.dashboard #indicadoresPlaca .cartaoSaude .indicadorValor small {
+    font-size: 18px;
+    letter-spacing: 0;
+}
+
+.dashboard #indicadoresPlaca .cartaoSaude .barra {
+    height: 7px;
+    margin-top: 9px;
+}
+
+@media (max-width: 900px) {
+    .gradeIndicadores {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 520px) {
+    .gradeIndicadores {
+        grid-template-columns: 1fr;
+    }
 }
 
 .indicadorTopo {
@@ -175,6 +304,40 @@
     margin-top: 12px;
 }
 
+.legendaPrevisao {
+    display: flex;
+    justify-content: flex-end;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin: 0 8px 4px;
+    color: #68738c;
+    font-size: 11px;
+}
+
+.legendaPrevisao span {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.legendaPrevisao i {
+    display: inline-block;
+    width: 18px;
+    height: 0;
+    border-top: 2px solid #4F46E5;
+}
+
+.legendaPrevisao .legendaLinhaPrevista {
+    border-top-style: dashed;
+}
+
+.legendaPrevisao .legendaFaixa {
+    height: 8px;
+    border: 0;
+    border-radius: 2px;
+    background: rgba(79, 70, 229, .18);
+}
+
 .graficoArea svg {
     width: 100%;
     height: auto;
@@ -273,8 +436,18 @@
     display: none;
 }
 
+.detalhe summary i {
+    color: #303b72;
+    font-size: 12px;
+    transition: transform .2s ease;
+}
+
+.detalhe[open] summary i {
+    transform: rotate(180deg);
+}
+
 .detalheLista {
-    margin-top: 12px;
+    margin-top: 10px;
 }
 
 .detalheLista div {
@@ -287,4 +460,24 @@
 
 .detalheLista b {
     color: #3b3ff0;
+    white-space: nowrap;
+}
+
+.detalheLista .detalhePico {
+    align-items: center;
+}
+
+.detalheLista small {
+    display: block;
+    color: #8a91a3;
+    font-size: 11px;
+}
+
+.dashboard .detalhe {
+    border-radius: 15px;
+}
+
+.dashboard .detalheLista div {
+    padding: 9px 0;
+    color: #3e4657;
 }
