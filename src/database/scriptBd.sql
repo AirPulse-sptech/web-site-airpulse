@@ -1,4 +1,4 @@
-CREATE DATABASE airpulse;
+CREATE DATABASE IF NOT EXISTS airpulse;
 USE airpulse;
 
 CREATE TABLE endereco (

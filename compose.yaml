@@ -1,0 +1,55 @@
+name: airpulse
+
+services:
+  app:
+    image: gabrielfarina/airpulse-node:1.0.0
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      AMBIENTE_PROCESSO: producao
+      APP_HOST: 0.0.0.0
+      APP_PORT: "3333"
+      DB_HOST: db
+      DB_PORT: "3306"
+      DB_DATABASE: airpulse
+      DB_USER: airpulse
+      DB_PASSWORD: ${AIRPULSE_DB_PASSWORD:?Execute bash deploy.sh}
+    ports:
+      - "3333:3333"
+    depends_on:
+      db:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3333/').then(response => { if (!response.ok) process.exit(1) }).catch(() => process.exit(1))"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    restart: unless-stopped
+
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_HOST: localhost
+      MYSQL_ROOT_PASSWORD: ${AIRPULSE_MYSQL_ROOT_PASSWORD:?Execute bash deploy.sh}
+      MYSQL_DATABASE: airpulse
+      MYSQL_USER: airpulse
+      MYSQL_PASSWORD: ${AIRPULSE_DB_PASSWORD:?Execute bash deploy.sh}
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./src/database/scriptBd.sql:/docker-entrypoint-initdb.d/01-airpulse.sql:ro
+    healthcheck:
+      test:
+        - CMD-SHELL
+        - >-
+          MYSQL_PWD="$$MYSQL_PASSWORD" mysql --protocol=TCP --host=127.0.0.1
+          --user="$$MYSQL_USER" --database="$$MYSQL_DATABASE"
+          --execute="SELECT 1 FROM relatorioAlerta LIMIT 0"
+      interval: 5s
+      timeout: 5s
+      start_period: 30s
+      retries: 30
+    restart: unless-stopped
+
+volumes:
+  mysql-data:

@@ -5,4 +5,9 @@ node_modules
 .git
 .env
 .env.dev
+.env.compose
+.env.compose.*
 .venv/
+deploy.sh
+src/database/*.sql
+src/database/*.mwb
