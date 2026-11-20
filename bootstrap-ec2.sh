@@ -11,6 +11,10 @@ if ! command -v git >/dev/null; then
   packages+=(git)
 fi
 
+if ! command -v curl >/dev/null; then
+  packages+=(curl)
+fi
+
 if ! docker compose version >/dev/null 2>&1; then
   packages+=(docker.io docker-compose-v2)
 fi
@@ -41,8 +45,8 @@ if [[ ! -d "$project_dir/.git" ]]; then
   git clone --branch "$branch" --single-branch "$repository" "$project_dir"
 fi
 
-if [[ ! -f "$project_dir/deploy.sh" || ! -f "$project_dir/compose.yaml" ]]; then
-  echo "O clone em $project_dir precisa do deploy.sh e do compose.yaml da branch $branch." >&2
+if [[ ! -f "$project_dir/deploy.sh" || ! -f "$project_dir/compose.ec2.yaml" ]]; then
+  echo "Atualize o clone em $project_dir com os arquivos de deploy da branch $branch." >&2
   exit 1
 fi
 
@@ -54,7 +58,7 @@ if [[ -f .env.compose && ! -L .env.compose && ! -O .env.compose ]]; then
 fi
 
 if id -nG | grep -qw docker; then
-  exec bash ./deploy.sh
+  exec bash ./deploy.sh --ec2
 fi
 
-exec sg docker -c 'exec bash ./deploy.sh'
+exec sg docker -c 'exec bash ./deploy.sh --ec2'

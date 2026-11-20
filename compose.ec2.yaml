@@ -1,0 +1,4 @@
+services:
+  db:
+    ports:
+      - "${AIRPULSE_DB_BIND_IP:?Execute bash deploy.sh --ec2}:3306:3306"
