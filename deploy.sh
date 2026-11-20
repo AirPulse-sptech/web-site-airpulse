@@ -24,5 +24,5 @@ fi
 
 compose=(docker compose --env-file .env.compose)
 "${compose[@]}" config --quiet
-"${compose[@]}" up --build --wait --wait-timeout 240
+"${compose[@]}" up -d
 "${compose[@]}" ps
