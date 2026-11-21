@@ -1,0 +1,54 @@
+# docker-compose.yml
+services:
+
+  mysql:
+    image: mysql:8.0.37
+    container_name: airpulse_bd
+    restart: "no"
+    environment:
+      - MYSQL_ROOT_PASSWORD=Urubu100
+      - MYSQL_DATABASE=airpulse
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_volume:/var/lib/mysql
+      # Roda só quando o volume está vazio (1ª subida ou após --reset-db).
+      # Mesmo caminho relativo no repo local e na EC2 (o deploy.sh espelha a pasta).
+      - ./src/database/scriptBd.sql:/docker-entrypoint-initdb.d/01-scriptBd.sql:ro
+    networks:
+      - airpulse_net
+
+  node:
+    image: mateusloualmeida/airpulse_deploy:airpulse
+    container_name: airpulse_node_prod
+    restart: "no"
+    ports:
+      - "3333:3333"
+    environment:
+      - AMBIENTE_PROCESSO=producao
+      - DB_HOST=airpulse_bd
+      - DB_PORT=3306
+      - DB_DATABASE=airpulse
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - APP_PORT=3333
+      - APP_HOST=0.0.0.0
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - aws_access_key_id=${aws_access_key_id}
+      - aws_secret_access_key=${aws_secret_access_key}
+      - aws_session_token=${aws_session_token}
+    depends_on:
+      - mysql
+    networks:
+      - airpulse_net
+
+
+networks:
+  airpulse_net:
+    external: true
+
+volumes:
+  mysql_volume:
+    external: true
