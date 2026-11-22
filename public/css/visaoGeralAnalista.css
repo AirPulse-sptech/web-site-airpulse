@@ -25,6 +25,9 @@
     --vgNormalTexto: #067a45;
     --vgNormalFundo: #e5fbef;
     --vgNormalTinta: #effaf4;
+    --vgSemDadosPonto: #9aa3bf;
+    --vgSemDadosTexto: #5a6380;
+    --vgSemDadosFundo: #eef0f6;
     --vgKpiCritico: #e11d48;
     --vgKpiCriticoFundo: #fff1f2;
     --vgKpiAtencao: #f97316;
@@ -414,14 +417,17 @@
 .vgPonto.critico { background: var(--vgCriticoPonto); }
 .vgPonto.atencao { background: var(--vgAtencaoPonto); }
 .vgPonto.normal { background: var(--vgNormalPonto); }
+.vgPonto.semDados { background: var(--vgSemDadosPonto); }
 
 .vgBarra.critico { background: var(--vgCriticoPonto); }
 .vgBarra.atencao { background: var(--vgAtencaoPonto); }
 .vgBarra.normal { background: var(--vgNormalPonto); }
+.vgBarra.semDados { background: var(--vgSemDadosPonto); }
 
 .vgColunaBarra.critico strong { color: var(--vgCriticoTexto); }
 .vgColunaBarra.atencao strong { color: var(--vgAtencaoTexto); }
 .vgColunaBarra.normal strong { color: var(--vgNormalTexto); }
+.vgColunaBarra.semDados strong { color: var(--vgSemDadosTexto); }
 
 .vgEtiqueta {
     display: inline-flex;
@@ -443,6 +449,7 @@
 .vgEtiqueta.critico { color: var(--vgCriticoTexto); background: var(--vgCriticoFundo); }
 .vgEtiqueta.atencao { color: var(--vgAtencaoTexto); background: var(--vgAtencaoFundo); }
 .vgEtiqueta.normal { color: var(--vgNormalTexto); background: var(--vgNormalFundo); }
+.vgEtiqueta.semDados { color: var(--vgSemDadosTexto); background: var(--vgSemDadosFundo); }
 
 
 .vgSecaoAeronaves {
@@ -642,141 +649,283 @@
 
 .vgPainelFmcs {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
     gap: 14px;
     padding: 16px 20px 20px;
     border-top: 1px solid #eef0f8;
 }
 
-.vgCardFmc {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 18px 20px;
-    border: 1px solid var(--vgBordaCard);
-    border-radius: 12px;
-    background: #fbfcff;
+.vgSemFmc {
+    font-size: 13px;
+    color: var(--vgTextoSuave);
+}
+
+.vgCartaoFmc {
+    min-width: 0;
+    padding: 12px 16px 16px;
+    border: 1px solid #f3f7ff;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #101044;
 }
 
 .vgCabecalhoFmc {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 8px 12px;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e8efff;
+}
+
+.vgIconeFmc {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #eff3ff;
+    color: #1400ff;
+    font-size: 22px;
 }
 
 .vgCabecalhoFmc h4 {
-    font-size: 17px;
-    font-weight: 700;
+    margin-bottom: 4px !important;
+    font-size: 16px;
+    font-weight: 800;
 }
 
 .vgCabecalhoFmc p {
-    margin-top: 3px;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #6e80c6;
+}
+
+.vgSeloFmc {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-left: auto;
+    padding: 7px 11px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.vgSeloFmc.comAlertas {
+    color: #ff003c;
+    background: #fff1f5;
+}
+
+.vgSeloFmc.semAlertas {
+    color: #00a66a;
+    background: #edf9f4;
+}
+
+.vgSeloFmc.semDados {
+    color: var(--vgSemDadosTexto);
+    background: var(--vgSemDadosFundo);
+}
+
+.vgPontoStatus {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.vgMetricasFmc {
+    display: grid;
+    grid-template-columns: 1fr 1.12fr;
+    gap: 10px;
+    margin: 0;
+    padding: 12px 4px;
+}
+
+.vgMetricaFmc {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+}
+
+.vgMetricaFmc + .vgMetricaFmc {
+    padding-left: 10px;
+    border-left: 1px solid #e8efff;
+}
+
+.vgIconeMetrica {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: #f1f5ff;
+    color: #1400ff;
+    font-size: 20px;
+}
+
+.vgMetricaFmc dl {
+    margin: 0;
+}
+
+.vgMetricaFmc dt {
+    margin-bottom: 4px;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #6e80c6;
+}
+
+.vgMetricaFmc dd {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.vgColetaAtualizada {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #00a66a;
+}
+
+.vgColetaAtualizada.semDados {
+    color: var(--vgSemDadosTexto);
+}
+
+.vgMetricaFmc time {
+    display: block;
+    margin-top: 2px;
+    font-size: 10px;
+    font-weight: 400;
+    color: #6e80c6;
+}
+
+.vgTituloPlacas {
+    margin: 1px 0 6px !important;
     font-size: 13px;
-    color: var(--vgTextoSuave);
+    font-weight: 800;
 }
 
 .vgListaPlacas {
     display: flex;
     flex-direction: column;
-    gap: 14px;
+    gap: 5px;
 }
 
-.vgPlaca {
+.vgPlacaMonitorada {
     display: flex;
-    flex-direction: column;
-    gap: 8px;
-}
-
-.vgTituloPlaca {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 4px 8px;
-    font-size: 13px;
-}
-
-.vgTituloPlaca strong {
-    color: var(--vgTexto);
-}
-
-.vgTituloPlaca .critico { color: var(--vgCriticoTexto); font-weight: 600; }
-.vgTituloPlaca .atencao { color: var(--vgAtencaoTexto); font-weight: 600; }
-.vgTituloPlaca .normal { color: var(--vgNormalTexto); font-weight: 600; }
-
-.vgComponente {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-.vgComponenteTopo {
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 8px;
-    font-size: 13px;
-    color: var(--vgTextoCard);
-}
-
-.vgComponenteTopo strong {
-    font-size: 15px;
-    color: var(--vgTexto);
-}
-
-.vgComponente.critico .vgComponenteTopo strong { color: var(--vgCriticoTexto); }
-.vgComponente.atencao .vgComponenteTopo strong { color: var(--vgAtencaoTexto); }
-
-.vgTrilho {
-    position: relative;
-    height: 8px;
-    border-radius: 4px;
-    background: #eceff8;
-}
-
-.vgPreenchimento {
-    height: 100%;
-    border-radius: 4px;
-}
-
-.vgComponente.critico .vgPreenchimento { background: var(--vgCriticoPonto); }
-.vgComponente.atencao .vgPreenchimento { background: var(--vgAtencaoPonto); }
-.vgComponente.normal .vgPreenchimento { background: var(--vgNormalPonto); }
-
-.vgMarcaLimite {
-    position: absolute;
-    top: -3px;
-    bottom: -3px;
-    width: 2px;
-}
-
-.vgMarcaLimite.atencao { background: var(--vgAtencaoPonto); }
-.vgMarcaLimite.critico { background: var(--vgCriticoPonto); }
-
-.vgDetalhePlaca {
-    font-size: 12px;
-    color: var(--vgTextoSuave);
-}
-
-.vgBotaoMonitoramento {
-    align-self: flex-start;
-    display: inline-flex;
     align-items: center;
-    gap: 8px;
-    min-height: 44px;
-    padding: 0 16px;
-    border-radius: 10px;
-    background: var(--vgAzul);
-    color: #ffffff;
-    font-size: 14px;
-    font-weight: 600;
+    gap: 20px;
+    min-height: 62px;
+    padding: 10px 14px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: #effaf6;
+    color: #00a66a;
     text-decoration: none;
 }
 
-.vgBotaoMonitoramento:hover {
-    background: #0440c4;
-    color: #ffffff;
+.vgPlacaMonitorada:hover {
+    border-color: currentColor;
+}
+
+.vgPlacaMonitorada.critico {
+    color: #ff003c;
+    background: #fff3f6;
+}
+
+.vgPlacaMonitorada.atencao {
+    color: #ff8000;
+    background: #fff7ed;
+}
+
+.vgPlacaMonitorada.semDados {
+    color: var(--vgSemDadosPonto);
+    background: #f4f5f9;
+}
+
+.vgPlacaMonitorada > .vgPontoStatus {
+    width: 15px;
+    height: 15px;
+}
+
+.vgDadosPlaca {
+    min-width: 0;
+}
+
+.vgCabecalhoPlaca {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.vgCabecalhoPlaca h5 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 800;
+    color: #101044;
+}
+
+.critico .vgCabecalhoPlaca h5,
+.atencao .vgCabecalhoPlaca h5 {
+    color: #ff003c;
+}
+
+.vgSeloPlaca {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #00a66a;
+    background: #ddf5eb;
+}
+
+.critico .vgSeloPlaca {
+    color: #ff003c;
+    background: #ffe1e9;
+}
+
+.atencao .vgSeloPlaca {
+    color: #ff8000;
+    background: #ffeddb;
+}
+
+.semDados .vgSeloPlaca {
+    color: var(--vgSemDadosTexto);
+    background: var(--vgSemDadosFundo);
+}
+
+.vgRecursosPlaca {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #6e80c6;
+}
+
+.vgRecursosPlaca span + span {
+    margin-left: 12px;
+    padding-left: 12px;
+    border-left: 1px solid #b8c6e5;
+}
+
+.vgPlacaMonitorada > .bi-chevron-right {
+    margin-left: auto;
+    font-size: 16px;
+    color: #1488ff;
 }
 
 .vgMensagemVazia {
@@ -797,6 +946,19 @@
 }
 
 @media (max-width: 600px) {
+    .vgMetricasFmc {
+        grid-template-columns: 1fr;
+    }
+
+    .vgMetricaFmc + .vgMetricaFmc {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .vgPlacaMonitorada {
+        gap: 12px;
+    }
+
     .vgCabecalho h1 {
         font-size: 26px;
     }

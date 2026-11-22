@@ -156,11 +156,28 @@ function montarFrota(linhas, leituras, alertas) {
     }
 }
 
+function explicarErroAws(erro) {
+    var nome = erro.name || erro.code || ""
+    if (["ExpiredToken", "ExpiredTokenException", "InvalidToken", "InvalidAccessKeyId", "SignatureDoesNotMatch", "CredentialsProviderError", "UnrecognizedClientException"].includes(nome)) {
+        return "As credenciais AWS do .env expiraram ou são inválidas. Atualize aws_access_key_id, aws_secret_access_key e aws_session_token e reinicie o servidor."
+    }
+    if (nome == "AccessDenied") return "As credenciais AWS do .env não têm permissão de leitura no bucket configurado."
+    if (nome == "NoSuchBucket") return "O bucket informado em aws_s3_bucket não existe."
+    if (["ENOTFOUND", "EAI_AGAIN", "ECONNREFUSED", "ETIMEDOUT", "TimeoutError", "AbortError"].includes(nome)) {
+        return "O servidor não conseguiu acessar a AWS. Confira a conexão com a internet."
+    }
+    if (/aws_region|aws_s3_bucket/.test(erro.message || "")) return erro.message
+    return "Não foi possível ler os dados do bucket gold. Veja o erro no terminal do servidor."
+}
+
 function responderErro(res, erro) {
-    console.log("Erro ao montar a visão geral do analista:", erro.code || erro.name, erro.message)
-    var mensagem = "Não foi possível carregar a visão geral. Confira a conexão com o banco e a configuração AWS."
-    return res.status(erro.status || (erro.code && erro.code.startsWith("ER_") ? 500 : 503))
-        .json({ mensagem: erro.status ? erro.message : mensagem })
+    console.log("Erro ao montar a visão geral do analista:", typeof erro == "string" ? erro : (erro.code || erro.name), erro.message || "")
+    if (erro.status) return res.status(erro.status).json({ mensagem: erro.message })
+    var mensagem = "Não foi possível carregar a visão geral. Veja o erro completo no terminal do servidor."
+    if (typeof erro == "string") mensagem = `Erro de configuração do servidor: ${erro}`
+    else if (["ECONNREFUSED", "ER_ACCESS_DENIED_ERROR", "ER_BAD_DB_ERROR", "ENOTFOUND"].includes(erro.code)) mensagem = "O servidor não conseguiu conectar ao banco de dados. Confira as variáveis DB_ do .env."
+    else if (erro.code == "ER_NO_SUCH_TABLE" || erro.code == "ER_BAD_FIELD_ERROR") mensagem = "O banco está desatualizado. Rode novamente o scriptBd.sql."
+    return res.status(erro.code && erro.code.startsWith("ER_") ? 500 : 503).json({ mensagem: mensagem })
 }
 
 function buscarVisaoGeral(req, res) {
@@ -170,16 +187,33 @@ function buscarVisaoGeral(req, res) {
     }
     return alertaRelatorioModel.contexto(idFuncionario, "ANALISTA", null)
         .then(function (contexto) {
+            var avisos = new Set()
+            function semGold(origem) {
+                return function (erro) {
+                    console.log(`Erro ao ler ${origem} no S3:`, erro.name || erro.code, erro.message)
+                    avisos.add(explicarErroAws(erro))
+                    return []
+                }
+            }
             return Promise.all([
                 dashboardAnalistaModel.buscarEstrutura(contexto.empresaId),
-                metricaModel.listarUltimaColeta(contexto.computadores),
+                metricaModel.listarUltimaColeta(contexto.computadores).catch(semGold("métricas")),
                 alertaModel.listar(contexto.computadores).then(function (eventos) {
                     return alertaRelatorioController.consolidar(eventos, contexto.computadores)
-                })
-            ])
+                }).catch(semGold("alertas"))
+            ]).then(function (resultados) {
+                if (avisos.size == 0 && contexto.computadores.length > 0 && resultados[1].length == 0) {
+                    avisos.add("Nenhuma métrica foi encontrada no bucket gold para os hostnames cadastrados ("
+                        + contexto.computadores.map(function (computador) { return computador.hostname }).join(", ")
+                        + "). Confira se o hostname de cada FMC no banco é igual ao das pastas hostname= do S3.")
+                }
+                var visaoGeral = montarFrota(resultados[0], resultados[1], resultados[2])
+                visaoGeral.avisos = Array.from(avisos)
+                return visaoGeral
+            })
         })
-        .then(function (resultados) {
-            res.status(200).json(montarFrota(resultados[0], resultados[1], resultados[2]))
+        .then(function (visaoGeral) {
+            res.status(200).json(visaoGeral)
         })
         .catch(function (erro) { responderErro(res, erro) })
 }
@@ -187,5 +221,6 @@ function buscarVisaoGeral(req, res) {
 module.exports = {
     buscarVisaoGeral,
     montarFrota,
-    classificar
+    classificar,
+    explicarErroAws
 }

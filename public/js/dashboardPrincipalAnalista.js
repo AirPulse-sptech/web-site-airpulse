@@ -1,16 +1,8 @@
-const NOMES_STATUS = { critico: "Crítico", atencao: "Atenção", normal: "Normal" }
-const PESO_STATUS = { normal: 0, atencao: 1, critico: 2 }
-
-function normalizarStatus(classe) {
-    return classe === "moderado" ? "atencao" : classe
-}
-
-function piorStatus(lista) {
-    return lista.reduce((pior, status) => PESO_STATUS[status] > PESO_STATUS[pior] ? status : pior, "normal")
-}
+const NOMES_STATUS = { critico: "Crítico", atencao: "Atenção", normal: "Normal", semDados: "Sem dados" }
+const PESO_STATUS = { semDados: -1, normal: 0, atencao: 1, critico: 2 }
 
 function escaparHtml(texto) {
-    return String(texto).replace(/[&<>"']/g, caractere => ({
+    return String(texto ?? "").replace(/[&<>"']/g, caractere => ({
         "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;"
     })[caractere])
 }
@@ -19,70 +11,34 @@ function plural(quantidade, singular, pluralTexto) {
     return `${quantidade} ${quantidade === 1 ? singular : pluralTexto}`
 }
 
+function formatarNumero(valor, casas = 1) {
+    return Number(valor).toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas })
+}
 
-function montarFrotaVisaoGeral() {
-    const ultimaHora = horarioUltimaLeitura()
-    const ultimoMinuto = Math.round(ultimaHora * 60)
-
-    return obterFrotaDemonstrativa().map(aeronave => {
-        const fmcs = aeronave.fmcs.map(fmc => {
-            const placas = fmc.placas.map(placa => {
-                const componentes = Object.entries(placa.componentes).map(([chave, componente]) => {
-                    const leituras = obterLeiturasMinuto(componente)
-                    const valor = leituras[Math.min(ultimoMinuto, leituras.length - 1)]
-                    return {
-                        chave,
-                        nome: componente.nome,
-                        valor,
-                        limiteAtencao: componente.limiteAtencao,
-                        limiteCritico: componente.limiteCritico,
-                        status: normalizarStatus(obterStatus(valor, componente).classe)
-                    }
-                })
-                const alertas = listarAlertasPlaca(placa)
-                return {
-                    identificacao: placa.identificacao,
-                    componentes,
-                    status: piorStatus(componentes.map(componente => componente.status)),
-                    ocorrencias: alertas.length,
-                    criticas: alertas.filter(alerta => alerta.status.classe === "critico").length
-                }
-            })
-            return {
-                nome: fmc.nome,
-                identificacao: fmc.identificacao,
-                posicao: fmc.posicao,
-                chave: `${aeronave.identificacao}|${fmc.identificacao}`,
-                placas,
-                status: piorStatus(placas.map(placa => placa.status)),
-                ocorrencias: placas.reduce((total, placa) => total + placa.ocorrencias, 0)
-            }
-        })
-        const resumo = resumirAeronaveAtual(aeronave)
-        return {
-            identificacao: aeronave.identificacao,
-            modelo: aeronave.modelo,
-            operador: aeronave.operador,
-            fmcs,
-            status: piorStatus(fmcs.map(fmc => fmc.status)),
-            inicioEstado: resumo.inicioEstado
-        }
-    })
+function formatarHorario(dataIso) {
+    if (!dataIso) return "--:--"
+    const data = new Date(dataIso)
+    const hora = data.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", timeZone: "America/Sao_Paulo" })
+    const dia = data.toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", timeZone: "America/Sao_Paulo" })
+    const hoje = new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "2-digit", timeZone: "America/Sao_Paulo" })
+    return dia === hoje ? hora : `${dia} ${hora}`
 }
 
 function contarPorStatus(lista) {
-    const contagem = { critico: 0, atencao: 0, normal: 0 }
+    const contagem = { critico: 0, atencao: 0, normal: 0, semDados: 0 }
     for (const item of lista) contagem[item.status]++
     return contagem
 }
 
-
+function estaEmAlerta(item) {
+    return item.status === "critico" || item.status === "atencao"
+}
 
 function preencherKpis(frota) {
     const fmcs = frota.flatMap(aeronave => aeronave.fmcs)
     const placas = fmcs.flatMap(fmc => fmc.placas)
-    const fmcsEmAlerta = fmcs.filter(fmc => fmc.status !== "normal")
-    const placasEmAlerta = placas.filter(placa => placa.status !== "normal")
+    const fmcsEmAlerta = fmcs.filter(estaEmAlerta)
+    const placasEmAlerta = placas.filter(estaEmAlerta)
 
     document.getElementById("vgFmcsAlerta").textContent = fmcsEmAlerta.length
     document.getElementById("vgFmcsTotal").textContent = `De ${fmcs.length} FMCs monitorados`
@@ -98,14 +54,12 @@ function preencherKpis(frota) {
     for (const placa of placas) {
         for (const componente of placa.componentes) {
             porComponente[componente.nome] ??= 0
-            if (componente.status !== "normal") porComponente[componente.nome]++
+            if (estaEmAlerta(componente)) porComponente[componente.nome]++
         }
     }
-    document.getElementById("vgPlacasPorComponente").textContent =
-        Object.entries(porComponente).map(([nome, quantidade]) => `${nome} ${quantidade}`).join(" · ")
+    const resumo = Object.entries(porComponente).map(([nome, quantidade]) => `${nome} ${quantidade}`).join(" · ")
+    document.getElementById("vgPlacasPorComponente").textContent = resumo || "Nenhum componente cadastrado"
 }
-
-
 
 function desenharGraficoEstado(frota, unidade) {
     const fmcs = frota.flatMap(aeronave => aeronave.fmcs)
@@ -118,13 +72,14 @@ function desenharGraficoEstado(frota, unidade) {
     const contagem = contarPorStatus(base.lista)
     const total = base.lista.length
 
-    const maior = Math.max(contagem.critico, contagem.atencao, contagem.normal, 1)
+    const status = ["critico", "atencao", "normal"]
+    if (contagem.semDados > 0) status.push("semDados")
+
+    const maior = Math.max(...status.map(chave => contagem[chave]), 1)
     const passo = maior <= 4 ? 1 : maior <= 10 ? 2 : 5
     const topo = Math.ceil(maior / passo) * passo
     const marcas = []
     for (let valor = 0; valor <= topo; valor += passo) marcas.push(valor)
-
-    const status = ["critico", "atencao", "normal"]
 
     document.getElementById("vgEixoY").innerHTML = marcas
         .map(valor => `<span style="bottom: ${valor / topo * 100}%">${valor}</span>`).join("")
@@ -156,11 +111,10 @@ function desenharGraficoEstado(frota, unidade) {
         status.map(chave => `${contagem[chave]} ${NOMES_STATUS[chave].toLowerCase()}`).join(", "))
 }
 
-
-
 function montarResumoFmc(fmc) {
+    if (fmc.status === "semDados") return "Sem coleta registrada"
     const foraDoLimite = fmc.placas.flatMap(placa => placa.componentes)
-        .filter(componente => componente.status !== "normal")
+        .filter(estaEmAlerta)
         .sort((a, b) => PESO_STATUS[b.status] - PESO_STATUS[a.status] || b.valor - a.valor)
     return foraDoLimite.length
         ? foraDoLimite.slice(0, 2).map(componente => `${componente.nome} ${formatarNumero(componente.valor, 0)}%`).join(" · ")
@@ -168,76 +122,99 @@ function montarResumoFmc(fmc) {
 }
 
 function montarBotaoFmc(aeronave, fmc, aberto) {
-    return `<button type="button" class="vgBotaoFmc ${fmc.status}" data-fmc="${escaparHtml(fmc.chave)}"
+    return `<button type="button" class="vgBotaoFmc ${fmc.status}" data-fmc="${fmc.idComputador}"
             aria-expanded="${aberto}"
-            aria-label="${aberto ? "Recolher" : "Ver placas do"} ${escaparHtml(fmc.nome)} da aeronave ${escaparHtml(aeronave.identificacao)}, estado ${NOMES_STATUS[fmc.status]}">
+            aria-label="${aberto ? "Recolher" : "Ver placas do"} ${escaparHtml(fmc.nome)} da aeronave ${escaparHtml(aeronave.nome)}, estado ${NOMES_STATUS[fmc.status]}">
         <span class="vgPonto ${fmc.status}"></span>
         <span class="vgTextoFmc"><span>${escaparHtml(fmc.nome)}</span><small>${escaparHtml(montarResumoFmc(fmc))}</small></span>
         <i class="bi bi-chevron-down" aria-hidden="true"></i>
     </button>`
 }
 
-function montarComponente(componente) {
-    return `<div class="vgComponente ${componente.status}">
-        <div class="vgComponenteTopo">
-            <span>${escaparHtml(componente.nome)}</span>
-            <strong>${formatarNumero(componente.valor)}%</strong>
-        </div>
-        <div class="vgTrilho" aria-hidden="true">
-            <div class="vgPreenchimento" style="width: ${Math.min(componente.valor, 100)}%"></div>
-            <span class="vgMarcaLimite atencao" style="left: ${componente.limiteAtencao}%"></span>
-            <span class="vgMarcaLimite critico" style="left: ${componente.limiteCritico}%"></span>
-        </div>
-    </div>`
+function montarRecursosPlaca(placa) {
+    const recursos = placa.componentes.map(componente =>
+        `<span>${escaparHtml(componente.nome)}: ${componente.valor === null ? "sem dados" : `${formatarNumero(componente.valor, 0)}%`}</span>`)
+    return recursos.length ? `<p class="vgRecursosPlaca">${recursos.join("")}</p>` : ""
+}
+
+function montarOcorrenciasPlaca(placa) {
+    const texto = placa.ocorrencias
+        ? `${plural(placa.ocorrencias, "ocorrência", "ocorrências")} nas últimas 24h · ${plural(placa.criticas, "crítica", "críticas")}`
+        : "Sem alertas nas últimas 24 horas"
+    return `<p class="vgRecursosPlaca"><span>${texto}</span></p>`
+}
+
+function montarSeloFmc(fmc) {
+    if (fmc.status === "semDados") return `<span class="vgSeloFmc semDados"><span class="vgPontoStatus" aria-hidden="true"></span>Sem dados</span>`
+    const emAlerta = estaEmAlerta(fmc)
+    return `<span class="vgSeloFmc ${emAlerta ? "comAlertas" : "semAlertas"}"><span class="vgPontoStatus" aria-hidden="true"></span>${emAlerta ? "Em alerta agora" : "Normal agora"}</span>`
 }
 
 function montarCardFmc(aeronave, fmc) {
-    const ocorrencias = fmc.ocorrencias ? `${plural(fmc.ocorrencias, "alerta", "alertas")} em 24h` : "sem alertas em 24h"
-    return `<article class="vgCardFmc">
+    const coleta = fmc.ultimaColeta
+        ? `<span class="vgColetaAtualizada"><span class="vgPontoStatus" aria-hidden="true"></span>Atualizada</span><time datetime="${escaparHtml(fmc.ultimaColeta)}">${formatarHorario(fmc.ultimaColeta)}</time>`
+        : `<span class="vgColetaAtualizada semDados"><span class="vgPontoStatus" aria-hidden="true"></span>Sem coleta</span>`
+    return `<article class="vgCartaoFmc" aria-labelledby="vgTituloFmc${fmc.idComputador}">
         <header class="vgCabecalhoFmc">
-            <div>
-                <h4>${escaparHtml(fmc.nome)} · ${escaparHtml(aeronave.identificacao)}</h4>
-                <p>${escaparHtml(fmc.identificacao)} · Posição ${fmc.posicao} · coleta ${formatarHora(horarioUltimaLeitura())} · ${ocorrencias}</p>
-            </div>
-            <span class="vgEtiqueta ${fmc.status}"><span class="vgPonto ${fmc.status}"></span>${NOMES_STATUS[fmc.status]}</span>
+            <div class="vgIconeFmc"><i class="bi bi-box" aria-hidden="true"></i></div>
+            <div><h4 id="vgTituloFmc${fmc.idComputador}">${escaparHtml(fmc.nome)}</h4><p>Identificação ${escaparHtml(fmc.hostname)} · ${escaparHtml(fmc.tipoFmc)}</p></div>
+            ${montarSeloFmc(fmc)}
         </header>
+        <div class="vgMetricasFmc">
+            <div class="vgMetricaFmc">
+                <div class="vgIconeMetrica"><i class="bi bi-bell" aria-hidden="true"></i></div>
+                <dl><dt>Ocorrências nas últimas 24h</dt><dd>${fmc.ocorrencias}</dd></dl>
+            </div>
+            <div class="vgMetricaFmc">
+                <div class="vgIconeMetrica"><i class="bi bi-database" aria-hidden="true"></i></div>
+                <dl><dt>Última coleta</dt><dd>${coleta}</dd></dl>
+            </div>
+        </div>
+        <h5 class="vgTituloPlacas">Placas monitoradas neste FMC</h5>
         <ul class="vgListaPlacas">
-            ${fmc.placas.map(placa => `
-                <li class="vgPlaca">
-                    <div class="vgTituloPlaca">
-                        <strong>Placa ${escaparHtml(placa.identificacao)}</strong>
-                        <span class="${placa.status}">· ${NOMES_STATUS[placa.status]}</span>
-                    </div>
-                    ${placa.componentes.map(montarComponente).join("")}
-                    <span class="vgDetalhePlaca">${placa.ocorrencias
-                        ? `${plural(placa.ocorrencias, "ocorrência", "ocorrências")} nas últimas 24h · ${plural(placa.criticas, "crítica", "críticas")}`
-                        : "Sem ocorrências nas últimas 24h"}</span>
-                </li>`).join("")}
+            ${fmc.placas.length ? fmc.placas.map(placa => `
+                <li>
+                    <a class="vgPlacaMonitorada ${placa.status}" href="telaAnalista.html"
+                        aria-label="Ver detalhes da placa ${escaparHtml(placa.nome)} do ${escaparHtml(fmc.nome)} da aeronave ${escaparHtml(aeronave.nome)}, estado atual ${NOMES_STATUS[placa.status]}">
+                        <span class="vgPontoStatus" aria-hidden="true"></span>
+                        <div class="vgDadosPlaca">
+                            <div class="vgCabecalhoPlaca"><h5>${escaparHtml(placa.nome)}</h5><span class="vgSeloPlaca">${NOMES_STATUS[placa.status]}</span></div>
+                            ${montarRecursosPlaca(placa)}
+                            ${montarOcorrenciasPlaca(placa)}
+                        </div>
+                        <i class="bi bi-chevron-right" aria-hidden="true"></i>
+                    </a>
+                </li>`).join("") : `<li class="vgRecursosPlaca">Nenhuma placa cadastrada neste FMC.</li>`}
         </ul>
-        <a class="vgBotaoMonitoramento" href="telaAnalista.html"
-            aria-label="Abrir monitoramento de recursos do ${escaparHtml(fmc.nome)} da aeronave ${escaparHtml(aeronave.identificacao)}">
-            Abrir monitoramento de recursos <i class="bi bi-chevron-right" aria-hidden="true"></i>
-        </a>
     </article>`
 }
 
+function montarSituacaoAeronave(aeronave) {
+    if (aeronave.alertaAbertoDesde && estaEmAlerta(aeronave)) return `Em alerta desde ${formatarHorario(aeronave.alertaAbertoDesde)}`
+    if (aeronave.ultimaColeta) return `Última coleta ${formatarHorario(aeronave.ultimaColeta)}`
+    return "Sem coleta registrada"
+}
+
 function montarCardAeronave(aeronave, fmcsAbertos) {
-    const abertos = aeronave.fmcs.filter(fmc => fmcsAbertos.has(fmc.chave))
+    const abertos = aeronave.fmcs.filter(fmc => fmcsAbertos.has(String(fmc.idComputador)))
+    const detalhes = [aeronave.modelo, aeronave.companhiaAerea].filter(Boolean).map(escaparHtml).join(" · ")
     return `<li class="vgCardAeronave">
         <div class="vgLinhaAeronave">
             <div class="vgIdentificacao">
                 <div class="vgIconeAeronave"><i class="bi bi-airplane-fill" aria-hidden="true"></i></div>
                 <div>
-                    <h3>Aeronave ${escaparHtml(aeronave.identificacao)}</h3>
-                    <p>${escaparHtml(aeronave.modelo)} · ${escaparHtml(aeronave.operador)}</p>
+                    <h3>Aeronave ${escaparHtml(aeronave.nome)}</h3>
+                    <p>${detalhes}</p>
                 </div>
             </div>
             <div class="vgFmcs">
-                ${aeronave.fmcs.map(fmc => montarBotaoFmc(aeronave, fmc, fmcsAbertos.has(fmc.chave))).join("")}
+                ${aeronave.fmcs.length
+                    ? aeronave.fmcs.map(fmc => montarBotaoFmc(aeronave, fmc, fmcsAbertos.has(String(fmc.idComputador)))).join("")
+                    : `<span class="vgSemFmc">Nenhum FMC cadastrado</span>`}
             </div>
             <div class="vgSituacaoAeronave">
                 <span class="vgEtiqueta ${aeronave.status}"><span class="vgPonto ${aeronave.status}"></span>${NOMES_STATUS[aeronave.status]}</span>
-                <span>Neste estado desde ${formatarHora(aeronave.inicioEstado)}</span>
+                <span>${montarSituacaoAeronave(aeronave)}</span>
             </div>
         </div>
         ${abertos.length ? `<div class="vgPainelFmcs">${abertos.map(fmc => montarCardFmc(aeronave, fmc)).join("")}</div>` : ""}
@@ -245,15 +222,11 @@ function montarCardAeronave(aeronave, fmcsAbertos) {
 }
 
 function normalizarTexto(texto) {
-    return texto.normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
+    return String(texto ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase()
 }
 
-
-
-function inicializarDashboardPrincipalAnalista() {
-    if (!verificarSessao() || !podeAcessarPagina("dashboardPrincipalAnalista.html")) return
-
-    const frota = montarFrotaVisaoGeral()
+function iniciarTela(dados) {
+    const frota = dados.aeronaves
     const estado = { unidade: "aeronaves", filtro: "todos", busca: "", fmcsAbertos: new Set() }
 
     const lista = document.getElementById("vgListaAeronaves")
@@ -262,7 +235,11 @@ function inicializarDashboardPrincipalAnalista() {
     const botoesUnidade = document.querySelectorAll(".vgSeletorUnidade button")
     const busca = document.getElementById("vgBuscaAeronave")
 
-    const horaColeta = formatarHora(horarioUltimaLeitura())
+    const aviso = document.getElementById("vgAviso")
+    aviso.textContent = (dados.avisos || []).join(" ")
+    aviso.hidden = !aviso.textContent
+
+    const horaColeta = formatarHorario(dados.ultimaColeta)
     document.getElementById("vgHoraColeta").textContent = horaColeta
     document.getElementById("vgHoraGrafico").textContent = horaColeta
 
@@ -270,9 +247,12 @@ function inicializarDashboardPrincipalAnalista() {
         const termo = normalizarTexto(estado.busca.trim())
         const visiveis = frota
             .filter(aeronave => estado.filtro === "todos" || aeronave.status === estado.filtro)
-            .filter(aeronave => !termo || normalizarTexto(`${aeronave.identificacao} ${aeronave.modelo} ${aeronave.operador}`).includes(termo))
+            .filter(aeronave => !termo || normalizarTexto(`${aeronave.nome} ${aeronave.modelo} ${aeronave.companhiaAerea}`).includes(termo))
             .sort((a, b) => PESO_STATUS[b.status] - PESO_STATUS[a.status])
         lista.innerHTML = visiveis.map(aeronave => montarCardAeronave(aeronave, estado.fmcsAbertos)).join("")
+        mensagemVazia.textContent = frota.length
+            ? "Nenhuma aeronave encontrada para os filtros selecionados."
+            : "Nenhuma aeronave cadastrada para a sua empresa."
         mensagemVazia.hidden = visiveis.length > 0
     }
 
@@ -284,7 +264,6 @@ function inicializarDashboardPrincipalAnalista() {
         }
     }
 
- 
     const contagemAeronaves = contarPorStatus(frota)
     for (const filtro of filtros) {
         const status = filtro.dataset.status
@@ -312,7 +291,6 @@ function inicializarDashboardPrincipalAnalista() {
         renderizarLista()
     })
 
-
     lista.addEventListener("click", evento => {
         const botao = evento.target.closest(".vgBotaoFmc")
         if (!botao) return
@@ -328,4 +306,33 @@ function inicializarDashboardPrincipalAnalista() {
     renderizarLista()
 }
 
-inicializarDashboardPrincipalAnalista()
+function mostrarErro(mensagem) {
+    const mensagemVazia = document.getElementById("vgMensagemVazia")
+    mensagemVazia.textContent = mensagem
+    mensagemVazia.hidden = false
+}
+
+function carregarDashboardPrincipalAnalista() {
+    if (!verificarSessao() || !podeAcessarPagina("dashboardPrincipalAnalista.html")) return
+
+    const mensagemVazia = document.getElementById("vgMensagemVazia")
+    mensagemVazia.textContent = "Carregando a última coleta..."
+    mensagemVazia.hidden = false
+
+    fetch(`/dashboardAnalista/visaoGeral/${sessionStorage.idUsuario}`)
+        .then(function (resposta) {
+            return resposta.json().catch(() => ({})).then(function (dados) {
+                if (!resposta.ok) throw new Error(dados.mensagem || `Erro ${resposta.status} ao buscar a visão geral`)
+                return dados
+            })
+        })
+        .then(function (dados) {
+            iniciarTela(dados)
+        })
+        .catch(function (erro) {
+            console.log(`#ERRO: ${erro}`)
+            mostrarErro(erro.message)
+        })
+}
+
+carregarDashboardPrincipalAnalista()
