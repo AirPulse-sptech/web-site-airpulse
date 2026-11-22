@@ -1,6 +1,7 @@
 node_modules
 .github
 .git
+.gitattributes
 .env
 .env.dev
 .env.compose.*
@@ -8,4 +9,4 @@ node_modules
 src/database/*.sql
 src/database/*.mwb
 deploy.sh
-tutorialDocker.md
+airpulse_deploy_guia_rapido.docx

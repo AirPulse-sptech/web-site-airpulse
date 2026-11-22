@@ -114,26 +114,7 @@ USE airpulse;
         FOREIGN KEY (fkComponente) REFERENCES componente (idComponente)
         );
 
-        CREATE TABLE leitura (
-        idLeitura INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-        valor DECIMAL(14,2) NOT NULL,
-        dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        fkMetrica INT NOT NULL,
-        CONSTRAINT fkLeituraMetrica
-        FOREIGN KEY (fkMetrica) REFERENCES metrica (idMetrica)
-        );
-
-        CREATE TABLE alerta (
-        idAlerta INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-        nivel VARCHAR(10) NOT NULL,
-        valor DECIMAL(14,2) NOT NULL,
-        dataHora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-        fkLeitura INT NOT NULL,
-        CONSTRAINT ctAlertaNivel CHECK (nivel IN ('ATENCAO', 'CRITICO')),
-        CONSTRAINT fkAlertaLeitura
-        FOREIGN KEY (fkLeitura) REFERENCES leitura (idLeitura)
-        );
-
+    
         CREATE TABLE relatorio (
         idRelatorio INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
         titulo VARCHAR(150) NOT NULL,
