@@ -12,10 +12,9 @@
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/global.css">
-    <link rel="stylesheet" href="css/dashboardPrincipalAnalista.css">
-    <link rel="stylesheet" href="css/dashboard.css">
-    <title>AirPulse - Visão Geral</title>
     <link rel="stylesheet" href="css/painel.css">
+    <link rel="stylesheet" href="css/visaoGeralAnalista.css">
+    <title>AirPulse - Visão Geral</title>
 </head>
 
 <body>
@@ -83,85 +82,99 @@
                 </div>
             </header>
 
-            <main class="conteudoPrincipal dashboard">
-                <header class="cabecalhoDashboard">
-                    <div>
-                        <h1>Dashboard - Visão Geral</h1>
-                        <p>Dados demonstrativos · Estado atual às 23:59 e ocorrências nas últimas 24 horas.</p>
-                    </div>
+            <main class="vgConteudo">
+                <header class="vgCabecalho">
+                    <h1>Dashboard - Visão Geral</h1>
+                    <p>Quais FMCs precisam da sua análise agora · Estado atual às <time id="vgHoraColeta">--:--</time>
+                        e ocorrências nas últimas 24 horas</p>
                 </header>
-                <section class="indicadores" aria-label="Resumo do monitoramento">
-                    <article class="cartaoIndicador">
-                        <div class="caixaIcone laranja"><i class="bi bi-bell icone" aria-hidden="true"></i></div>
-                        <div>
-                            <h2>Alertas nas últimas 24 horas</h2><strong class="valorIndicador" id="totalAlertasGeral">—</strong>
-                            <p id="resumoAlertasGeral"></p>
-                        </div>
-                    </article>
-                    <article class="cartaoIndicador">
-                        <div class="caixaIcone vermelho"><i class="bi bi-exclamation-triangle icone"
-                                aria-hidden="true"></i></div>
-                        <div>
-                            <h2>Críticos nas últimas 24 horas</h2><strong class="valorIndicador" id="totalCriticosGeral">—</strong>
-                            <p id="resumoCriticosGeral"></p>
-                        </div>
-                    </article>
+
+                <section class="vgSecao" aria-labelledby="vgTituloSituacao">
+                    <h2 class="vgTituloSecao" id="vgTituloSituacao">Situação agora</h2>
+                    <div class="vgGradeKpi">
+                        <article class="vgCardKpi">
+                            <div class="vgCardKpiTopo">
+                                <h3>FMCs em alerta</h3>
+                                <span class="vgIconeKpi critico"><i class="bi bi-box" aria-hidden="true"></i></span>
+                            </div>
+                            <strong class="vgValorKpi critico" id="vgFmcsAlerta">—</strong>
+                            <p class="vgDescricaoKpi" id="vgFmcsTotal">—</p>
+                            <div class="vgRodapeKpi">
+                                <strong class="critico" id="vgFmcsCriticos">—</strong>
+                                <strong class="atencao" id="vgFmcsAtencao">—</strong>
+                                <span>Na última coleta</span>
+                            </div>
+                        </article>
+
+                        <article class="vgCardKpi">
+                            <div class="vgCardKpiTopo">
+                                <h3>Placas em alerta agora</h3>
+                                <span class="vgIconeKpi atencao"><i class="bi bi-pci-card" aria-hidden="true"></i></span>
+                            </div>
+                            <strong class="vgValorKpi atencao" id="vgPlacasAlerta">—</strong>
+                            <p class="vgDescricaoKpi" id="vgPlacasTotal">—</p>
+                            <div class="vgRodapeKpi">
+                                <strong id="vgPlacasPorComponente">—</strong>
+                                <span>Por componente</span>
+                            </div>
+                        </article>
+                    </div>
                 </section>
-                <section class="cartaoSituacao" aria-labelledby="tituloSituacao">
-                    <div class="cabecalhoSecao">
-                        <h2 id="tituloSituacao">Status das Aeronaves</h2>
-                        <p>Estado na última coleta · Ocorrências anteriores permanecem no histórico de alertas.</p>
-                    </div>
-                    <div class="resumoSituacao">
-                        <div class="graficoRosca" id="graficoSituacao" role="img" aria-label="Resumo do estado atual das aeronaves">
-                            <div class="centroGrafico"><strong id="totalAeronaves">—</strong><span id="rotuloTotalAeronaves">Aeronaves</span></div>
+
+                <section class="vgCardEstado" aria-labelledby="vgTituloEstado">
+                    <div class="vgCabecalhoEstado">
+                        <div>
+                            <h2 class="vgTituloSecao" id="vgTituloEstado">Estado na última coleta</h2>
+                            <p class="vgSubtitulo">Coleta das <time id="vgHoraGrafico">--:--</time> · limites de atenção
+                                e crítico de cada componente</p>
                         </div>
-                        <ul class="legendaGrafico" id="legendaSituacao" aria-label="Status das aeronaves"></ul>
+                        <div class="vgSeletorUnidade" role="group" aria-label="Contar por">
+                            <button type="button" data-unidade="aeronaves" aria-pressed="true" class="selecionado">Aeronaves</button>
+                            <button type="button" data-unidade="fmcs" aria-pressed="false">FMCs</button>
+                            <button type="button" data-unidade="placas" aria-pressed="false">Placas</button>
+                        </div>
+                    </div>
+
+                    <div class="vgCorpoEstado">
+                        <figure class="vgGrafico" id="vgGrafico" role="img" aria-label="Estado na última coleta">
+                            <div class="vgEixoY" id="vgEixoY" aria-hidden="true"></div>
+                            <div class="vgAreaGrafico">
+                                <div class="vgPlot" id="vgPlot"></div>
+                                <div class="vgEixoX" id="vgEixoX" aria-hidden="true"></div>
+                            </div>
+                        </figure>
+
+                        <div class="vgResumoEstado">
+                            <span>Total monitorado</span>
+                            <strong><span id="vgTotalMonitorado">—</span> <small id="vgUnidadeMonitorada"></small></strong>
+                            <ul id="vgLegendaEstado"></ul>
+                        </div>
                     </div>
                 </section>
-                <section class="secaoAeronaves" aria-labelledby="tituloAeronaves">
-                    <div class="cabecalhoAeronaves">
+
+                <section class="vgSecao vgSecaoAeronaves" aria-labelledby="vgTituloAeronaves">
+                    <div class="vgCabecalhoAeronaves">
                         <div>
-                            <h2 id="tituloAeronaves">Aeronaves</h2>
-                            <p>Aeronaves presentes na base demonstrativa · Atenção: 70% · Crítico: 90%</p>
+                            <h2 class="vgTituloSecao" id="vgTituloAeronaves">Todas as aeronaves</h2>
+                            <p class="vgSubtitulo">Clique em um FMC para ver as placas e abrir o monitoramento de recursos</p>
                         </div>
-                        <div class="filtrosAeronaves" role="group" aria-label="Filtros de status">
-                            <button class="botaoFiltro selecionado" data-status="todos" type="button"
-                                aria-pressed="true">Todos (—)</button>
-                            <button class="botaoFiltro" data-status="critico" type="button" aria-pressed="false"><span
-                                    class="ponto critico"></span>Crítico (—)</button>
-                            <button class="botaoFiltro" data-status="atencao" type="button" aria-pressed="false"><span
-                                    class="ponto atencao"></span>Atenção (—)</button>
-                            <button class="botaoFiltro" data-status="normal" type="button" aria-pressed="false"><span
-                                    class="ponto normal"></span>Normal (—)</button>
+                        <div class="vgFiltros" role="group" aria-label="Filtros de status">
+                            <button class="vgFiltro selecionado" data-status="todos" type="button" aria-pressed="true">Todas (—)</button>
+                            <button class="vgFiltro critico" data-status="critico" type="button" aria-pressed="false">Crítico (—)</button>
+                            <button class="vgFiltro atencao" data-status="atencao" type="button" aria-pressed="false">Atenção (—)</button>
+                            <button class="vgFiltro normal" data-status="normal" type="button" aria-pressed="false">Normal (—)</button>
                         </div>
                     </div>
-                    <div class="campoBusca"><i class="bi bi-search icone" aria-hidden="true"></i><label
-                            class="textoAcessivel" for="buscaAeronave">Buscar aeronave, modelo ou
-                            identificação</label><input id="buscaAeronave" type="search"
-                            placeholder="Buscar aeronave, modelo ou identificação..."></div>
-                    <ul class="listaAeronaves" id="listaAeronaves"></ul>
-                    <template id="modeloCartaoAeronave">
-                        <li class="cartaoAeronave">
-                            <div class="caixaIcone azul"><i class="bi bi-airplane-fill icone" aria-hidden="true"></i>
-                            </div>
-                            <div class="identificacaoAeronave">
-                                <h3></h3>
-                                <p><span class="modeloAeronave"></span> <span aria-hidden="true">·</span> <span
-                                        class="matriculaAeronave"></span></p>
-                            </div>
-                            <div class="situacaoAeronave">
-                                <span class="etiquetaSituacao"><span class="ponto"></span><span
-                                        class="nomeStatus"></span></span>
-                                <p class="tempoEstado">Desde <time></time> neste estado</p>
-                            </div>
-                            <div class="ultimaAtualizacao"><span>Última atualização</span><time></time></div>
-                            <a class="botaoDetalhes" href="dashboardAnaliseFmcAnalista.html">Abrir detalhes <i
-                                    class="bi bi-chevron-right icone" aria-hidden="true"></i></a>
-                        </li>
-                    </template>
-                    <p class="mensagemVazia" id="mensagemVazia" role="status" hidden>Nenhuma aeronave encontrada para os
-                        filtros selecionados.</p>
+
+                    <label class="vgBusca">
+                        <i class="bi bi-search" aria-hidden="true"></i>
+                        <span class="vgTextoAcessivel">Buscar aeronave, modelo ou companhia</span>
+                        <input id="vgBuscaAeronave" type="search" placeholder="Buscar aeronave, modelo ou companhia...">
+                    </label>
+
+                    <ul class="vgListaAeronaves" id="vgListaAeronaves"></ul>
+                    <p class="vgMensagemVazia" id="vgMensagemVazia" role="status" hidden>Nenhuma aeronave encontrada para
+                        os filtros selecionados.</p>
                 </section>
             </main>
         </div>
