@@ -5,3 +5,5 @@ node_modules
 .env
 .env.dev
 .venv/
+deploy.sh
+tutorialDocker.md

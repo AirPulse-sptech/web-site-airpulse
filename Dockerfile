@@ -5,4 +5,4 @@ RUN npm install
 COPY . .
 COPY .env.example .env
 EXPOSE 3333
-CMD ["node", "app"]
+CMD ["node", "app.js"]
