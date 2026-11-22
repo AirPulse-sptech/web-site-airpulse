@@ -1,14 +1,13 @@
 var database = require("../database/config")
+var mysql = require("mysql2")
 
 function autenticar(email, senha) {
-    console.log("ACESSEI O USUARIO MODEL \n \n\t\t >> Se aqui der erro de 'Error: connect ECONNREFUSED',\n \t\t >> verifique suas credenciais de acesso ao banco\n \t\t >> e se o servidor de seu BD está rodando corretamente. \n\n function entrar(): ", email, senha)
     var instrucaoSql = `
         SELECT idFuncionario AS id, nome, emailCorporativo AS email, cargo, fkEmpresaFabricante AS empresaId
         FROM funcionario
-        WHERE emailCorporativo = '${email}' AND senha = '${senha}' AND statusSistema = '1';
+        WHERE emailCorporativo = ? AND senha = ? AND statusSistema = '1'
     `
-    console.log("Executando a instrução SQL: \n" + instrucaoSql)
-    return database.executar(instrucaoSql)
+    return database.executar(mysql.format(instrucaoSql, [email, senha]))
 }
 
 function cadastrar(nome, email, dtNascimento, cpf, cargo, senha, telefone, idFuncionarioAdm) {
