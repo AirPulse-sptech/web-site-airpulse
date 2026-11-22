@@ -1,4 +1,5 @@
 var database = require("../database/config")
+var mysql = require("mysql2")
 
 function buscarPorAeronave(fkAeronave) {
     var instrucaoSql = `
@@ -86,7 +87,27 @@ function buscarMonitoramento(idAeronave, idFuncionario) {
     return database.executar(instrucaoSql)
 }
 
+function buscarPlacasDoAgente(hostname, idFuncionario) {
+    var instrucaoSql = mysql.format(`
+        SELECT DISTINCT TRIM(p.nome) AS nome
+        FROM placa p
+        JOIN computador c ON c.idComputador = p.fkComputador
+        JOIN aeronave a ON a.idAeronave = c.fkAeronave
+        JOIN funcionario f ON f.fkEmpresaFabricante = a.fkEmpresaFabricante
+        JOIN componente co ON co.fkPlaca = p.idPlaca
+        WHERE LOWER(TRIM(c.hostname)) = ?
+          AND f.idFuncionario = ?
+          AND f.statusSistema = '1'
+          AND f.cargo IN ('ADMIN', 'GESTOR', 'ANALISTA')
+          AND co.statusMonitoramento = 'ATIVO'
+          AND TRIM(p.nome) <> ''
+        ORDER BY nome
+    `, [hostname, idFuncionario])
+    return database.executar(instrucaoSql)
+}
+
 module.exports = {
+    buscarPlacasDoAgente,
     buscarMonitoramento,
     buscarPorAeronave,
     cadastrarComputador,

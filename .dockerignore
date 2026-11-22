@@ -1,9 +1,11 @@
 node_modules
-
 .github
 .git
 .env
 .env.dev
+.env.compose.*
 .venv/
+src/database/*.sql
+src/database/*.mwb
 deploy.sh
 tutorialDocker.md
