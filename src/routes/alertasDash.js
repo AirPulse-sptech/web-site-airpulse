@@ -1,7 +1,7 @@
 var express = require("express")
 var router = express.Router()
 
-var alertasController = require("../controllers/alertasController")
+var alertasController = require("../controllers/alertasDashController")
 
 router.post("/cadastrar", function (req, res) {
     alertasController.cadastrar(req, res)

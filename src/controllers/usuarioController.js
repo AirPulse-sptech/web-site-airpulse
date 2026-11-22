@@ -1,51 +1,43 @@
 var usuarioModel = require("../models/usuarioModel")
+const computadorModel = require("../models/computadorModel")
 const cargos = ["ADMIN", "GESTOR", "ANALISTA"]
 
-function autenticar(req, res) {
-    var email = req.body.emailServer
-    var senha = req.body.senhaServer
-
-    if (email == undefined) {
-        res.status(400).send("Seu email está undefined!")
-    } else if (senha == undefined) {
-        res.status(400).send("Sua senha está indefinida!")
-    } else {
-
-        usuarioModel.autenticar(email, senha)
-            .then(
-                function (resultadoAutenticar) {
-                    console.log(`\nResultados encontrados: ${resultadoAutenticar.length}`)
-                    console.log(`Resultados: ${JSON.stringify(resultadoAutenticar)}`)
-
-                    if (resultadoAutenticar.length == 1) {
-                        const cargo = resultadoAutenticar[0].cargo
-                        if (!cargos.includes(cargo)) {
-                            return res.status(403).send("Cargo inválido para acessar o sistema.")
-                        }
-                        console.log(resultadoAutenticar)
-
-                        res.json({
-                            id: resultadoAutenticar[0].id,
-                            email: resultadoAutenticar[0].email,
-                            nome: resultadoAutenticar[0].nome,
-                            cargo,
-                            empresaId: resultadoAutenticar[0].empresaId,
-                        })
-                    } else if (resultadoAutenticar.length == 0) {
-                        res.status(403).send("Email e/ou senha inválido(s)")
-                    } else {
-                        res.status(403).send("Mais de um usuário com o mesmo login e senha!")
-                    }
-                }
-            ).catch(
-                function (erro) {
-                    console.log(erro)
-                    console.log("\nHouve um erro ao realizar o login! Erro: ", erro.sqlMessage)
-                    res.status(500).json(erro.sqlMessage)
-                }
-            )
+async function autenticar(req, res) {
+    const { emailServer: email, senhaServer: senha, cliente, hostname } = req.body || {}
+    if (typeof email !== "string" || !email) {
+        return res.status(400).send("Informe seu email.")
+    }
+    if (typeof senha !== "string" || !senha) {
+        return res.status(400).send("Informe sua senha.")
     }
 
+    const agente = cliente === "agente"
+    const host = typeof hostname === "string" ? hostname.trim().toLowerCase() : ""
+    if (agente && !/^[a-z0-9_][a-z0-9._-]{0,254}$/.test(host)) {
+        return res.status(400).json({ mensagem: "Informe um hostname válido." })
+    }
+
+    try {
+        const resultados = await usuarioModel.autenticar(email, senha)
+        if (resultados.length !== 1) {
+            return res.status(403).send(resultados.length === 0
+                ? "Email e/ou senha inválido(s)"
+                : "Mais de um usuário com o mesmo login e senha!")
+        }
+
+        const { id, email: emailUsuario, nome, cargo, empresaId } = resultados[0]
+        if (!cargos.includes(cargo)) {
+            return res.status(403).send("Cargo inválido para acessar o sistema.")
+        }
+        if (agente) {
+            const linhas = await computadorModel.buscarPlacasDoAgente(host, id)
+            return res.set("Cache-Control", "no-store").json({ placas: linhas.map(linha => linha.nome) })
+        }
+        return res.json({ id, email: emailUsuario, nome, cargo, empresaId })
+    } catch (erro) {
+        console.error("Falha ao autenticar usuário:", erro.code || "indisponível")
+        return res.status(500).json("Não foi possível realizar o login.")
+    }
 }
 
 function cadastrar(req, res) {

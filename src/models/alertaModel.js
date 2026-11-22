@@ -12,7 +12,7 @@ function listar(computadores, cliente) {
         secretAccessKey: process.env.aws_secret_access_key,
         sessionToken: process.env.aws_session_token
     } : undefined
-    var conexao = cliente || new s3.S3Client({ region: regiao, credentials: credenciais, maxAttempts: 2 })
+    var conexao = cliente || new s3.S3Client({ region: regiao, maxAttempts: 2 })
     var prefixo = (process.env.aws_s3_alertas_prefix || process.env.AWS_S3_ALERTAS_PREFIX || "03-gold/").replace(/\/?$/, "/")
     var hostnames = [...new Set(computadores.map(function (computador) { return computador.hostname }))]
     var eventos = []

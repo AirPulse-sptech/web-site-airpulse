@@ -1,7 +1,12 @@
 node_modules
-
 .github
 .git
+.gitattributes
 .env
 .env.dev
+.env.compose.*
 .venv/
+src/database/*.sql
+src/database/*.mwb
+deploy.sh
+airpulse_deploy_guia_rapido.docx

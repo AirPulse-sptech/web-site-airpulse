@@ -2,7 +2,7 @@
 set -e
 
 cd "$(dirname "$0")"
-trap 'rm -f "$ENV_FILE"' EXIT   
+trap 'rm -f "$ENV_FILE" "$KEY_TMP"' EXIT
 
 if [ -z "$1" ]; then
   echo "Uso: ./deploy.sh <ip_publico_ec2>"
@@ -16,41 +16,85 @@ SQL_FILE="src/database/scriptBd.sql"
 RESET_DB="$2"
 IMAGE="mateusloualmeida/airpulse_deploy:airpulse"
 ENV_FILE="deploy.env"
+ENV_LOCAL=".env"
 COMPOSE_FILE="docker-compose.yml"
+KEY_WIN='C:\Users\loure\OneDrive\Documentos\Sptech\SO\key-par.pem'
 
-echo "== Credenciais do deploy AirPulse =="
-read -p "DB_USER: " DB_USER
-read -s -p "DB_PASSWORD: " DB_PASSWORD; echo
-read -s -p "GEMINI_API_KEY: " GEMINI_API_KEY; echo
-read -p "aws_access_key_id: " AWS_ACCESS_KEY_ID
-read -s -p "aws_secret_access_key: " AWS_SECRET_ACCESS_KEY; echo
-read -s -p "aws_session_token: " AWS_SESSION_TOKEN; echo
+echo "== Chave SSH =="
+if command -v cygpath >/dev/null 2>&1; then
+  KEY_SRC=$(cygpath -u "$KEY_WIN")
+elif command -v wslpath >/dev/null 2>&1; then
+  KEY_SRC=$(wslpath -u "$KEY_WIN")
+else
+  KEY_SRC="$KEY_WIN"
+fi
+KEY_SRC="${KEY_PATH:-$KEY_SRC}"
+[ -f "$KEY_SRC" ] || { echo "Chave não encontrada: $KEY_SRC"; exit 1; }
+KEY_TMP=$(mktemp)
+cp "$KEY_SRC" "$KEY_TMP"
+chmod 600 "$KEY_TMP"
+SSH_OPTS=(-i "$KEY_TMP" -o StrictHostKeyChecking=accept-new)
+
+ler_env() {
+  [ -f "$ENV_LOCAL" ] || return 0
+  grep -E "^[[:space:]]*$1=" "$ENV_LOCAL" | tail -n1 \
+    | sed -E "s/^[^=]*=//; s/\r$//; s/^'(.*)'$/\1/; s/^\"(.*)\"$/\1/"
+}
+
+pedir() {
+  local valor
+  valor=$(ler_env "$1")
+  if [ -n "$valor" ]; then
+    echo "$1: usando valor do $ENV_LOCAL"
+  elif [ "$2" = "s" ]; then
+    read -s -p "$1: " valor; echo
+  else
+    read -p "$1: " valor
+  fi
+  printf -v "$1" '%s' "$valor"
+}
+
+echo "== Configuração do deploy AirPulse =="
+pedir DB_USER
+pedir DB_PASSWORD s
+pedir GEMINI_API_KEY s
+pedir aws_s3_bucket
+if [ -z "$aws_s3_bucket" ]; then
+  echo "Informe aws_s3_bucket no .env com o nome do bucket Gold." >&2
+  exit 1
+fi
+aws_region=$(ler_env aws_region)
+aws_s3_alertas_prefix=$(ler_env aws_s3_alertas_prefix)
 
 cat > "$ENV_FILE" <<EOF
 DB_USER=$DB_USER
 DB_PASSWORD=$DB_PASSWORD
 GEMINI_API_KEY=$GEMINI_API_KEY
-aws_access_key_id=$AWS_ACCESS_KEY_ID
-aws_secret_access_key=$AWS_SECRET_ACCESS_KEY
-aws_session_token=$AWS_SESSION_TOKEN
+aws_s3_bucket=$aws_s3_bucket
+aws_region=${aws_region:-us-east-1}
+aws_s3_alertas_prefix=${aws_s3_alertas_prefix:-03-gold/}
 EOF
 chmod 600 "$ENV_FILE"
 
+echo "== Garantindo Docker na EC2 (instala via apt se faltar) =="
+ssh "${SSH_OPTS[@]}" "$EC2_HOST" "(command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1) || { sudo apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker.io docker-compose-v2 && sudo systemctl enable --now docker; }; sudo usermod -aG docker ubuntu"
+
 echo "== Garantindo pasta remota =="
-ssh "$EC2_HOST" "mkdir -p $EC2_PATH/src/database"
+ssh "${SSH_OPTS[@]}" "$EC2_HOST" "mkdir -p $EC2_PATH/src/database"
 
 echo "== Enviando compose + sql + credenciais para a EC2 =="
-scp "$COMPOSE_FILE" "$ENV_FILE" "$EC2_HOST:$EC2_PATH/"
-scp "$SQL_FILE" "$EC2_HOST:$EC2_PATH/$SQL_FILE"
+scp "${SSH_OPTS[@]}" "$COMPOSE_FILE" "$ENV_FILE" "$EC2_HOST:$EC2_PATH/"
+scp "${SSH_OPTS[@]}" "$SQL_FILE" "$EC2_HOST:$EC2_PATH/$SQL_FILE"
 
 if [ "$RESET_DB" = "--reset-db" ]; then
   read -p "Isso APAGA o banco da EC2. Digite 'apagar' para confirmar: " CONF
   [ "$CONF" = "apagar" ] || { echo "Cancelado."; exit 1; }
-  ssh "$EC2_HOST" "cd $EC2_PATH && docker compose --env-file $ENV_FILE down || true; docker volume rm mysql_volume || true"
+  ssh "${SSH_OPTS[@]}" "$EC2_HOST" "cd $EC2_PATH && docker compose --env-file $ENV_FILE down || true; docker volume rm mysql_volume || true"
 fi
 
 echo "== Criando network/volume (se não existirem) + pull + subida do compose =="
-ssh "$EC2_HOST" "docker network create airpulse_net 2>/dev/null; docker volume create mysql_volume 2>/dev/null; cd $EC2_PATH && docker pull $IMAGE && docker compose --env-file $ENV_FILE up -d && rm -f $ENV_FILE"
+ssh "${SSH_OPTS[@]}" "$EC2_HOST" "docker network create airpulse_net 2>/dev/null; docker volume create mysql_volume 2>/dev/null; cd $EC2_PATH && docker pull $IMAGE && docker compose --env-file $ENV_FILE up -d && rm -f $ENV_FILE" \
+  || { echo "ERRO no deploy remoto (código $?)"; exit 1; }
 
 
 rm -f "$ENV_FILE"
