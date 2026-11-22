@@ -1,53 +1,91 @@
-#!/usr/bin/env bash
-set -euo pipefail
-cd -- "$(dirname -- "${BASH_SOURCE[0]}")"
+#!/bin/bash
+set -e
 
-if [[ $# -gt 1 || ( $# -eq 1 && "$1" != --ec2 ) ]]; then
-  echo "Uso: bash deploy.sh [--ec2]" >&2
-  exit 2
-fi
+cd "$(dirname "$0")"
+trap 'rm -f "$ENV_FILE" "$KEY_TMP"' EXIT
 
-if ! docker compose version >/dev/null 2>&1; then
-  echo "Instale o Docker Engine e o plugin Docker Compose antes de executar este script." >&2
+if [ -z "$1" ]; then
+  echo "Uso: ./deploy.sh <ip_publico_ec2>"
   exit 1
 fi
 
-compose=(docker compose --env-file .env.compose)
 
-if [[ ${1:-} == --ec2 ]]; then
-  metadata=http://169.254.169.254/latest
-  if ! token=$(curl --noproxy '*' -fsS --max-time 4 -X PUT "$metadata/api/token" \
-    -H 'X-aws-ec2-metadata-token-ttl-seconds: 60') ||
-    ! AIRPULSE_DB_BIND_IP=$(curl --noproxy '*' -fsS --max-time 4 \
-      -H "X-aws-ec2-metadata-token: $token" "$metadata/meta-data/local-ipv4") ||
-    [[ ! $AIRPULSE_DB_BIND_IP =~ ^([0-9]{1,3}\.){3}[0-9]{1,3}$ || $AIRPULSE_DB_BIND_IP == 0.0.0.0 ]]; then
-    echo "Não foi possível descobrir o IPv4 privado da EC2. Confira se o IMDSv2 está acessível." >&2
-    exit 1
+EC2_HOST="ubuntu@$1"
+EC2_PATH="/home/ubuntu/airpulse"
+SQL_FILE="src/database/scriptBd.sql"
+RESET_DB="$2"
+IMAGE="mateusloualmeida/airpulse_deploy:airpulse"
+ENV_FILE="deploy.env"
+ENV_LOCAL=".env"
+COMPOSE_FILE="docker-compose.yml"
+KEY_WIN='C:\Users\loure\OneDrive\Documentos\Sptech\SO\key-par.pem'
+
+echo "== Chave SSH =="
+if command -v cygpath >/dev/null 2>&1; then
+  KEY_SRC=$(cygpath -u "$KEY_WIN")
+elif command -v wslpath >/dev/null 2>&1; then
+  KEY_SRC=$(wslpath -u "$KEY_WIN")
+else
+  KEY_SRC="$KEY_WIN"
+fi
+KEY_SRC="${KEY_PATH:-$KEY_SRC}"
+[ -f "$KEY_SRC" ] || { echo "Chave não encontrada: $KEY_SRC"; exit 1; }
+KEY_TMP=$(mktemp)
+cp "$KEY_SRC" "$KEY_TMP"
+chmod 600 "$KEY_TMP"
+SSH_OPTS=(-i "$KEY_TMP" -o StrictHostKeyChecking=accept-new)
+
+ler_env() {
+  [ -f "$ENV_LOCAL" ] || return 0
+  grep -E "^[[:space:]]*$1=" "$ENV_LOCAL" | tail -n1 \
+    | sed -E "s/^[^=]*=//; s/\r$//; s/^'(.*)'$/\1/; s/^\"(.*)\"$/\1/"
+}
+
+pedir() {
+  local valor
+  valor=$(ler_env "$1")
+  if [ -n "$valor" ]; then
+    echo "$1: usando valor do $ENV_LOCAL"
+  elif [ "$2" = "s" ]; then
+    read -s -p "$1: " valor; echo
+  else
+    read -p "$1: " valor
   fi
+  printf -v "$1" '%s' "$valor"
+}
 
-  export AIRPULSE_DB_BIND_IP
-  compose+=(-f compose.yaml -f compose.ec2.yaml)
+echo "== Credenciais do deploy AirPulse =="
+pedir DB_USER
+pedir DB_PASSWORD s
+pedir GEMINI_API_KEY s
+
+cat > "$ENV_FILE" <<EOF
+DB_USER=$DB_USER
+DB_PASSWORD=$DB_PASSWORD
+GEMINI_API_KEY=$GEMINI_API_KEY
+EOF
+chmod 600 "$ENV_FILE"
+
+echo "== Garantindo Docker na EC2 (instala via apt se faltar) =="
+ssh "${SSH_OPTS[@]}" "$EC2_HOST" "(command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1) || { sudo apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker.io docker-compose-v2 && sudo systemctl enable --now docker; }; sudo usermod -aG docker ubuntu"
+
+echo "== Garantindo pasta remota =="
+ssh "${SSH_OPTS[@]}" "$EC2_HOST" "mkdir -p $EC2_PATH/src/database"
+
+echo "== Enviando compose + sql + credenciais para a EC2 =="
+scp "${SSH_OPTS[@]}" "$COMPOSE_FILE" "$ENV_FILE" "$EC2_HOST:$EC2_PATH/"
+scp "${SSH_OPTS[@]}" "$SQL_FILE" "$EC2_HOST:$EC2_PATH/$SQL_FILE"
+
+if [ "$RESET_DB" = "--reset-db" ]; then
+  read -p "Isso APAGA o banco da EC2. Digite 'apagar' para confirmar: " CONF
+  [ "$CONF" = "apagar" ] || { echo "Cancelado."; exit 1; }
+  ssh "${SSH_OPTS[@]}" "$EC2_HOST" "cd $EC2_PATH && docker compose --env-file $ENV_FILE down || true; docker volume rm mysql_volume || true"
 fi
 
-if [[ ! -f .env.compose ]]; then
-  umask 077
-  credentials=$(mktemp .env.compose.XXXXXX)
-  trap 'rm -f -- "$credentials"' EXIT
-  {
-    printf '%s\n' 'AIRPULSE_DB_PASSWORD=teste1234'
-    printf 'AIRPULSE_MYSQL_ROOT_PASSWORD=%s\n' "$(od -An -N32 -tx1 /dev/urandom | tr -d ' \n')"
-  } > "$credentials"
-  # Publica o arquivo completo sem substituir as credenciais de outra execução.
-  if ! ln -T -- "$credentials" .env.compose 2>/dev/null && [[ ! -f .env.compose ]]; then
-    echo "Não foi possível criar .env.compose." >&2
-    exit 1
-  fi
-fi
+echo "== Criando network/volume (se não existirem) + pull + subida do compose =="
+ssh "${SSH_OPTS[@]}" "$EC2_HOST" "docker network create airpulse_net 2>/dev/null; docker volume create mysql_volume 2>/dev/null; cd $EC2_PATH && docker pull $IMAGE && docker compose --env-file $ENV_FILE up -d && rm -f $ENV_FILE" \
+  || { echo "ERRO no deploy remoto (código $?)"; exit 1; }
 
-"${compose[@]}" config --quiet
-"${compose[@]}" up -d
-"${compose[@]}" ps
 
-if [[ ${1:-} == --ec2 ]]; then
-  printf 'Conexão MySQL da Lambda: DB_HOST=%s DB_PORT=3306\n' "$AIRPULSE_DB_BIND_IP"
-fi
+rm -f "$ENV_FILE"
+echo "== Deploy concluído =="

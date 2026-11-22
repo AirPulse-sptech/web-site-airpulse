@@ -8,5 +8,6 @@ package-lock.json
 .env.dev
 .env.compose
 .env.compose.*
+deploy.env
 
 .venv/

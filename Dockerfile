@@ -7,4 +7,4 @@ COPY public ./public
 COPY src ./src
 COPY .env.example .env
 EXPOSE 3333
-CMD ["node", "app"]
+CMD ["node", "app.js"]
