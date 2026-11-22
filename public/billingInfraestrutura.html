@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/dashboardPrincipalAnalista.css">
+    <link rel="stylesheet" href="css/dashboard.css">
+    <link rel="stylesheet" href="css/dashboardRelatorios.css">
+    <link rel="stylesheet" href="css/billingInfraestrutura.css">
+    <link rel="stylesheet" href="css/painel.css">
+    <title>AirPulse - Billing & Infraestrutura</title>
+</head>
+
+<body>
+    <div class="appLayout">
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="dashboardGeral.html">
+                    <img class="brandLogoFull"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebarNav" aria-label="Menu principal"></nav>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
+                    </div>
+                </div>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+        <div class="mainWrapper">
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Billing & Infraestrutura</span>
+                </div>
+            </header>
+
+            <main class="conteudoPrincipal dashboard paginaBilling">
+                <header class="cabecalhoDashboard">
+                    <div>
+                        <h1>Billing & Infraestrutura</h1>
+                        <p>Acompanhe os custos de nuvem, a projeção de fechamento e as oportunidades de economia.</p>
+                    </div>
+                    <div class="dataDashboard">
+                        <span id="periodoFaturamento">--</span>
+                        <span>Dados demonstrativos</span>
+                    </div>
+                </header>
+
+                <section class="indicadores indicadoresBilling" aria-label="Indicadores de billing">
+                    <article class="cartaoIndicador">
+                        <div class="caixaIcone azul">
+                            <i class="bi bi-cash-stack icone" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h2>Custo acumulado</h2>
+                            <strong class="valorIndicador" id="custoAcumulado">--</strong>
+                            <p>
+                                <span class="variacao" id="custoAcumuladoVariacao">--</span>
+                                <span>vs. mês passado</span>
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="cartaoIndicador">
+                        <div class="caixaIcone laranja">
+                            <i class="bi bi-calculator icone" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h2>Previsão de fechamento</h2>
+                            <strong class="valorIndicador" id="previsaoFechamento">--</strong>
+                            <p>
+                                <span class="variacao neutra" id="previsaoFechamentoData">--</span>
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="cartaoIndicador">
+                        <div class="caixaIcone verde">
+                            <i class="bi bi-pie-chart-fill icone" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h2>Orçamento consumido</h2>
+                            <div class="linhaValor">
+                                <strong class="valorIndicador" id="orcamentoConsumido">--</strong>
+                                <div class="barraOrcamento" id="barraOrcamento" role="progressbar"
+                                    aria-label="Orçamento consumido" aria-valuemin="0" aria-valuemax="100"
+                                    aria-valuenow="0">
+                                    <span id="preenchimentoOrcamento"></span>
+                                </div>
+                            </div>
+                            <p id="orcamentoConsumidoDescricao">--</p>
+                        </div>
+                    </article>
+
+                    <article class="cartaoIndicador">
+                        <div class="caixaIcone vermelho">
+                            <i class="bi bi-graph-up-arrow icone" aria-hidden="true"></i>
+                        </div>
+                        <div>
+                            <h2>Média diária</h2>
+                            <strong class="valorIndicador" id="mediaDiaria">--</strong>
+                            <p>
+                                <span class="variacao" id="mediaDiariaVariacao">--</span>
+                                <span>vs. mês passado</span>
+                            </p>
+                        </div>
+                    </article>
+                </section>
+
+                <section class="graficosBilling" aria-label="Análise de custos">
+                    <article class="cartaoSituacao cartaoGrafico" aria-labelledby="tituloEvolucaoCustos">
+                        <div class="cabecalhoSecao cabecalhoComLegenda">
+                            <div>
+                                <h2 id="tituloEvolucaoCustos">Evolução dos Custos</h2>
+                                <p>Gasto acumulado no mês e projeção até o fechamento.</p>
+                            </div>
+                            <ul class="legendaSerie" aria-hidden="true">
+                                <li><span class="amostraSerie amostraLinha"></span>Realizado</li>
+                                <li><span class="amostraSerie amostraTracejada"></span>Projeção</li>
+                            </ul>
+                        </div>
+                        <div class="areaGrafico">
+                            <canvas id="graficoEvolucaoCustos" role="img"
+                                aria-label="Gráfico de linha com o gasto acumulado e a projeção de custos até o fim do mês"></canvas>
+                        </div>
+                    </article>
+
+                    <article class="cartaoSituacao cartaoGrafico cartaoComposicao" aria-labelledby="tituloComposicaoServico">
+                        <div class="cabecalhoSecao">
+                            <h2 id="tituloComposicaoServico">Composição por Serviço</h2>
+                            <p>Distribuição do custo acumulado entre os serviços.</p>
+                        </div>
+                        <div class="corpoComposicao">
+                            <div class="areaRosca">
+                                <canvas id="graficoComposicaoServico" role="img"
+                                    aria-label="Gráfico de rosca com a composição dos custos por serviço"></canvas>
+                                <div class="centroComposicao">
+                                    <strong id="totalComposicao">--</strong>
+                                    <span>custo do mês</span>
+                                </div>
+                            </div>
+                            <ul class="legendaComposicao" id="legendaComposicao"></ul>
+                        </div>
+                    </article>
+                </section>
+
+                <section class="gradeInferior" aria-label="Detalhamento de custos">
+                    <article class="cartaoSituacao cartaoGrafico" aria-labelledby="tituloOtimizacaoRecursos">
+                        <div class="cabecalhoSecao cabecalhoComLegenda">
+                            <div>
+                                <h2 id="tituloOtimizacaoRecursos">Otimização de Recursos</h2>
+                                <p>Oportunidades para reduzir o custo mensal.</p>
+                            </div>
+                            <span class="seloEconomia">
+                                Economia potencial <strong id="economiaTotal">--</strong>/mês
+                            </span>
+                        </div>
+                        <div class="listaOtimizacao" id="listaOtimizacao"></div>
+                    </article>
+
+                    <article class="cartaoSituacao cartaoGrafico" aria-labelledby="tituloComparativoCustos">
+                        <div class="cabecalhoSecao cabecalhoComLegenda">
+                            <div>
+                                <h2 id="tituloComparativoCustos">Comparativo de Custos</h2>
+                                <p>Despesa por serviço, mesmo período.</p>
+                            </div>
+                            <ul class="legendaSerie" aria-hidden="true">
+                                <li><span class="amostraSerie amostraBarra amostraAnterior"></span>Mês passado</li>
+                                <li><span class="amostraSerie amostraBarra amostraAtual"></span>Este mês</li>
+                            </ul>
+                        </div>
+                        <div class="areaGrafico">
+                            <canvas id="graficoComparativoCustos" role="img"
+                                aria-label="Gráfico de barras comparando os custos deste mês com o mesmo período do mês passado"></canvas>
+                        </div>
+                    </article>
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="js/sessao.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+    <script src="js/billingInfraestrutura.js"></script>
+</body>
+
+</html>
