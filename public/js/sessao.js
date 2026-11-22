@@ -47,7 +47,6 @@ function podeAcessarPagina(pagina) {
         case "dashboardGeral.html": return cargo === "GESTOR"
         case "cadastroRelatorio.html": return cargo === "ANALISTA"
         case "dashboardPrincipalAnalista.html":
-        case "dashboardAnaliseFmcAnalista.html":
         case "telaAnalista.html": return cargo === "ANALISTA"
         case "alertas.html": return cargo === "GESTOR" || cargo === "ANALISTA"
         default: return false
