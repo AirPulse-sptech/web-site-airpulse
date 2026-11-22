@@ -54,15 +54,25 @@ pedir() {
   printf -v "$1" '%s' "$valor"
 }
 
-echo "== Credenciais do deploy AirPulse =="
+echo "== Configuração do deploy AirPulse =="
 pedir DB_USER
 pedir DB_PASSWORD s
 pedir GEMINI_API_KEY s
+pedir aws_s3_bucket
+if [ -z "$aws_s3_bucket" ]; then
+  echo "Informe aws_s3_bucket no .env com o nome do bucket Gold." >&2
+  exit 1
+fi
+aws_region=$(ler_env aws_region)
+aws_s3_alertas_prefix=$(ler_env aws_s3_alertas_prefix)
 
 cat > "$ENV_FILE" <<EOF
 DB_USER=$DB_USER
 DB_PASSWORD=$DB_PASSWORD
 GEMINI_API_KEY=$GEMINI_API_KEY
+aws_s3_bucket=$aws_s3_bucket
+aws_region=${aws_region:-us-east-1}
+aws_s3_alertas_prefix=${aws_s3_alertas_prefix:-03-gold/}
 EOF
 chmod 600 "$ENV_FILE"
 
