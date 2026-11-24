@@ -174,7 +174,7 @@ function montarCardFmc(aeronave, fmc) {
         <ul class="vgListaPlacas">
             ${fmc.placas.length ? fmc.placas.map(placa => `
                 <li>
-                    <a class="vgPlacaMonitorada ${placa.status}" href="telaAnalista.html"
++                    <a class="vgPlacaMonitorada ${placa.status}" href="telaAnalista.html?idComputador=${fmc.idComputador}"
                         aria-label="Ver detalhes da placa ${escaparHtml(placa.nome)} do ${escaparHtml(fmc.nome)} da aeronave ${escaparHtml(aeronave.nome)}, estado atual ${NOMES_STATUS[placa.status]}">
                         <span class="vgPontoStatus" aria-hidden="true"></span>
                         <div class="vgDadosPlaca">

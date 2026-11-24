@@ -18,6 +18,9 @@ var relatorioGestorRouter = require("./src/routes/relatorioGestor")
 var dashboardRelatorioRouter = require("./src/routes/dashboardRelatorio")
 var gerenciarAeronaveRouter = require("./src/routes/gerenciarAeronave")
 var dashboardAnalistaRouter = require("./src/routes/dashboardAnalista")
+var alertasDashRouter = require("./src/routes/alertasDash")
+
+
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -35,6 +38,7 @@ app.use("/relatorio", relatorioGestorRouter)
 app.use("/dashboardRelatorio", dashboardRelatorioRouter)
 app.use("/gerenciarAeronave", gerenciarAeronaveRouter)
 app.use("/dashboardAnalista", dashboardAnalistaRouter)
+app.use("/alertasDash", alertasDashRouter)
 
 app.listen(portaApp, function () {
     console.log(`

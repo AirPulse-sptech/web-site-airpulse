@@ -1,3 +1,5 @@
+const idComputador = new URLSearchParams(window.location.search).get("idComputador")
+
 const estadoTelaAnalista = { componente: "cpu", periodo: 24 }
 
 function obterJanelaLeituras(componente) {
@@ -200,7 +202,10 @@ function desenharGrafico(chave) {
 }
 
 function inicializarTelaAnalista() {
-    if (!verificarSessao() || !podeAcessarPagina("telaAnalista.html")) return
+     if (!verificarSessao() || !podeAcessarPagina("telaAnalista.html")) return
+    const linkHistorico = document.querySelector(".btnHistoricoAlertas")
+    if (idComputador) linkHistorico.href = `alertas.html?idComputador=${idComputador}`
+    montarIndicadores()
     montarIndicadores()
     montarDetalhes()
     montarAlertas()
