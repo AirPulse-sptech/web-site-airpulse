@@ -1,0 +1,988 @@
+/*vg -> para cada tela ter os proprios nomes e ninguem quebrar a pagina*/
+
+:root {
+    --vgFundo: #eef4ff;
+    --vgCard: #ffffff;
+    --vgBordaCard: #e1e1ef;
+    --vgDivisor: #e5e5f0;
+    --vgSombraCard: 0 4px 18px rgba(36, 37, 128, 0.02);
+    --vgTitulo: #242580;
+    --vgTexto: #0c103b;
+    --vgTextoCard: #2d3959;
+    --vgTextoSuave: #5a6aa3;
+    --vgTextoRodape: #637089;
+    --vgAzul: #0755ff;
+
+    --vgCriticoPonto: #ff354f;
+    --vgCriticoTexto: #c8102e;
+    --vgCriticoFundo: #ffecef;
+    --vgCriticoTinta: #fff1f3;
+    --vgAtencaoPonto: #ffa000;
+    --vgAtencaoTexto: #a35f00;
+    --vgAtencaoFundo: #fff4e8;
+    --vgAtencaoTinta: #fff7ec;
+    --vgNormalPonto: #18be70;
+    --vgNormalTexto: #067a45;
+    --vgNormalFundo: #e5fbef;
+    --vgNormalTinta: #effaf4;
+    --vgSemDadosPonto: #9aa3bf;
+    --vgSemDadosTexto: #5a6380;
+    --vgSemDadosFundo: #eef0f6;
+    --vgKpiCritico: #e11d48;
+    --vgKpiCriticoFundo: #fff1f2;
+    --vgKpiAtencao: #f97316;
+    --vgKpiAtencaoFundo: #fff7ed;
+}
+
+
+.mainWrapper:has(> .vgConteudo) {
+    background: var(--vgFundo);
+}
+
+.mainWrapper > main.vgConteudo {
+    width: min(94%, 1180px);
+    padding: 32px 0 48px;
+    gap: 32px;
+    color: var(--vgTexto);
+    font-family: var(--fontBody);
+}
+
+.vgConteudo :is(h1, h2, h3, h4, p, ul, figure) {
+    margin: 0;
+}
+
+.vgConteudo ul {
+    padding: 0;
+    list-style: none;
+}
+
+.vgConteudo button {
+    font-family: inherit;
+    cursor: pointer;
+}
+
+.vgConteudo :is(button, a, input):focus-visible {
+    outline: 2px solid var(--vgAzul);
+    outline-offset: 2px;
+}
+
+.vgConteudo [hidden] {
+    display: none !important;
+}
+
+.vgTextoAcessivel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.vgCabecalho h1 {
+    font-family: var(--fontHeading);
+    font-size: 34px;
+    font-weight: 700;
+    line-height: 1.1;
+    color: var(--vgTexto);
+}
+
+.vgCabecalho p {
+    margin-top: 8px;
+    font-size: 15px;
+    color: var(--vgTextoSuave);
+}
+
+.vgTituloSecao {
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.2;
+    color: var(--vgTitulo);
+}
+
+.vgSecao > .vgTituloSecao {
+    margin-bottom: 18px;
+}
+
+.vgSubtitulo {
+    margin-top: 6px !important;
+    font-size: 14px;
+    color: var(--vgTextoSuave);
+}
+
+
+.vgGradeKpi {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px;
+}
+
+.vgCardKpi {
+    display: flex;
+    flex-direction: column;
+    padding: 22px 20px;
+    border: 1px solid var(--vgBordaCard);
+    border-radius: 12px;
+    background: var(--vgCard);
+    box-shadow: var(--vgSombraCard);
+}
+
+.vgCardKpiTopo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.vgCardKpiTopo h3 {
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: var(--vgTextoCard);
+}
+
+.vgIconeKpi {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid;
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+.vgIconeKpi.critico {
+    color: var(--vgKpiCritico);
+    border-color: var(--vgKpiCritico);
+    background: var(--vgKpiCriticoFundo);
+}
+
+.vgIconeKpi.atencao {
+    color: var(--vgKpiAtencao);
+    border-color: var(--vgKpiAtencao);
+    background: var(--vgKpiAtencaoFundo);
+}
+
+.vgValorKpi {
+    display: block;
+    padding: 12px 0 6px;
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1;
+}
+
+.vgValorKpi.critico {
+    color: var(--vgKpiCritico);
+}
+
+.vgValorKpi.atencao {
+    color: var(--vgKpiAtencao);
+}
+
+.vgDescricaoKpi {
+    margin: 3px 0 15px !important;
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--vgTextoCard);
+}
+
+.vgRodapeKpi {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 8px;
+    margin-top: auto;
+    padding-top: 12px;
+    border-top: 1px solid var(--vgDivisor);
+    font-size: 13px;
+    color: var(--vgTextoRodape);
+}
+
+.vgRodapeKpi strong {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--vgTextoRodape);
+}
+
+.vgRodapeKpi strong.critico {
+    color: var(--vgKpiCritico);
+}
+
+.vgRodapeKpi strong.atencao {
+    color: #c2410c;
+}
+
+
+.vgCardEstado {
+    padding: 22px 24px;
+    border: 1px solid var(--vgBordaCard);
+    border-radius: 12px;
+    background: var(--vgCard);
+    box-shadow: var(--vgSombraCard);
+}
+
+.vgCabecalhoEstado {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px 20px;
+}
+
+.vgSeletorUnidade {
+    display: inline-flex;
+    gap: 4px;
+    padding: 4px;
+    border-radius: 12px;
+    background: #eef2ff;
+}
+
+.vgSeletorUnidade button {
+    min-height: 40px;
+    padding: 0 16px;
+    border: 0;
+    border-radius: 9px;
+    background: transparent;
+    color: var(--vgTextoSuave);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.vgSeletorUnidade button.selecionado {
+    background: var(--vgCard);
+    color: var(--vgTitulo);
+    box-shadow: 0 1px 4px rgba(36, 37, 128, 0.12);
+}
+
+.vgCorpoEstado {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    gap: 24px 40px;
+    margin-top: 22px;
+}
+
+.vgGrafico {
+    flex: 2 1 420px;
+    min-width: 0;
+    display: flex;
+    gap: 12px;
+}
+
+.vgEixoY {
+    position: relative;
+    flex: none;
+    width: 28px;
+    height: 240px;
+}
+
+.vgEixoY span {
+    position: absolute;
+    right: 0;
+    transform: translateY(50%);
+    font-size: 12px;
+    color: var(--vgTextoRodape);
+}
+
+.vgAreaGrafico {
+    flex: 1;
+    min-width: 0;
+}
+
+.vgPlot {
+    position: relative;
+    height: 240px;
+}
+
+.vgLinhaGrade {
+    position: absolute;
+    left: 0;
+    right: 0;
+    border-top: 1px dashed #dfe5f5;
+}
+
+.vgBarras,
+.vgEixoX {
+    display: flex;
+    justify-content: space-around;
+    gap: 16px;
+    padding: 0 4%;
+}
+
+.vgBarras {
+    position: absolute;
+    inset: 0;
+    align-items: flex-end;
+}
+
+.vgColunaBarra {
+    flex: 0 1 112px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.vgColunaBarra strong {
+    margin-bottom: 6px;
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.vgBarra {
+    min-height: 3px;
+    border-radius: 8px 8px 0 0;
+    transition: height .3s;
+}
+
+.vgEixoX {
+    padding-top: 10px;
+    border-top: 1px solid #c9d2ea;
+}
+
+.vgEixoX > span {
+    flex: 0 1 112px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--vgTextoCard);
+}
+
+.vgResumoEstado {
+    flex: 1 1 240px;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+    padding-left: 28px;
+    border-left: 1px solid var(--vgDivisor);
+    font-size: 14px;
+    color: var(--vgTextoRodape);
+}
+
+.vgResumoEstado > strong {
+    font-size: 42px;
+    font-weight: 600;
+    line-height: 1.1;
+    color: var(--vgTitulo);
+}
+
+.vgResumoEstado small {
+    font-size: 16px;
+    font-weight: 500;
+    color: var(--vgTextoRodape);
+}
+
+.vgResumoEstado ul {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 14px;
+}
+
+.vgResumoEstado li {
+    display: grid;
+    grid-template-columns: 12px minmax(0, 1fr) auto 48px;
+    align-items: center;
+    gap: 10px;
+    color: var(--vgTextoCard);
+}
+
+.vgResumoEstado li strong {
+    color: var(--vgTexto);
+}
+
+.vgResumoEstado li span:last-child {
+    text-align: right;
+    color: var(--vgTextoRodape);
+}
+
+
+.vgPonto {
+    flex: none;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+}
+
+.vgPonto.critico { background: var(--vgCriticoPonto); }
+.vgPonto.atencao { background: var(--vgAtencaoPonto); }
+.vgPonto.normal { background: var(--vgNormalPonto); }
+.vgPonto.semDados { background: var(--vgSemDadosPonto); }
+
+.vgBarra.critico { background: var(--vgCriticoPonto); }
+.vgBarra.atencao { background: var(--vgAtencaoPonto); }
+.vgBarra.normal { background: var(--vgNormalPonto); }
+.vgBarra.semDados { background: var(--vgSemDadosPonto); }
+
+.vgColunaBarra.critico strong { color: var(--vgCriticoTexto); }
+.vgColunaBarra.atencao strong { color: var(--vgAtencaoTexto); }
+.vgColunaBarra.normal strong { color: var(--vgNormalTexto); }
+.vgColunaBarra.semDados strong { color: var(--vgSemDadosTexto); }
+
+.vgEtiqueta {
+    display: inline-flex;
+    align-self: flex-start;
+    align-items: center;
+    gap: 8px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.vgEtiqueta .vgPonto {
+    width: 8px;
+    height: 8px;
+}
+
+.vgEtiqueta.critico { color: var(--vgCriticoTexto); background: var(--vgCriticoFundo); }
+.vgEtiqueta.atencao { color: var(--vgAtencaoTexto); background: var(--vgAtencaoFundo); }
+.vgEtiqueta.normal { color: var(--vgNormalTexto); background: var(--vgNormalFundo); }
+.vgEtiqueta.semDados { color: var(--vgSemDadosTexto); background: var(--vgSemDadosFundo); }
+
+
+.vgSecaoAeronaves {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.vgCabecalhoAeronaves {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.vgFiltros {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.vgFiltro {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 0 16px;
+    border: 1px solid transparent;
+    border-radius: 22px;
+    background: var(--vgCard);
+    color: #3b4777;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.vgFiltro.critico { color: var(--vgCriticoTexto); background: var(--vgCriticoFundo); }
+.vgFiltro.atencao { color: var(--vgAtencaoTexto); background: var(--vgAtencaoFundo); }
+.vgFiltro.normal { color: var(--vgNormalTexto); background: var(--vgNormalFundo); }
+
+.vgFiltro.selecionado {
+    color: #ffffff;
+    background: var(--vgAzul);
+    border-color: var(--vgAzul);
+}
+
+.vgFiltro .vgPonto {
+    width: 8px;
+    height: 8px;
+}
+
+.vgBusca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 44px;
+    margin: 0;
+    padding: 0 16px;
+    border: 1px solid #e1ecff;
+    border-radius: 10px;
+    background: var(--vgCard);
+    color: var(--vgTextoSuave);
+}
+
+.vgBusca input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    border: 0;
+    outline: none;
+    background: transparent;
+    font-size: 15px;
+    color: var(--vgTexto);
+}
+
+.vgBusca input::placeholder {
+    color: #7785bd;
+}
+
+.vgListaAeronaves {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.vgCardAeronave {
+    border: 1px solid var(--vgBordaCard);
+    border-radius: 12px;
+    background: var(--vgCard);
+    box-shadow: var(--vgSombraCard);
+}
+
+.vgLinhaAeronave {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px 24px;
+    padding: 14px 20px;
+}
+
+.vgIdentificacao {
+    flex: 1 1 260px;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.vgIconeAeronave {
+    flex: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    background: #eaf1ff;
+    color: var(--vgAzul);
+    font-size: 20px;
+}
+
+.vgIdentificacao h3 {
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.vgIdentificacao p {
+    margin-top: 3px;
+    font-size: 13px;
+    color: var(--vgTextoSuave);
+}
+
+.vgFmcs {
+    flex: 0 1 auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.vgBotaoFmc {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 44px;
+    padding: 0 12px 0 10px;
+    border: 1px solid #dbe5ff;
+    border-radius: 10px;
+    background: var(--vgCard);
+    color: var(--vgTexto);
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.vgBotaoFmc.critico { border-color: var(--vgCriticoPonto); background: var(--vgCriticoTinta); }
+.vgBotaoFmc.atencao { border-color: var(--vgAtencaoPonto); background: var(--vgAtencaoTinta); }
+
+.vgBotaoFmc[aria-expanded="true"] {
+    border-color: var(--vgAzul);
+    background: #f0f5ff;
+}
+
+.vgTextoFmc {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.2;
+}
+
+.vgTextoFmc small {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--vgTextoSuave);
+}
+
+.vgBotaoFmc.critico .vgTextoFmc small { color: var(--vgCriticoTexto); }
+.vgBotaoFmc.atencao .vgTextoFmc small { color: var(--vgAtencaoTexto); }
+
+.vgBotaoFmc .bi-chevron-down {
+    font-size: 12px;
+    color: var(--vgTextoSuave);
+    transition: transform .2s;
+}
+
+.vgBotaoFmc[aria-expanded="true"] .bi-chevron-down {
+    transform: rotate(180deg);
+}
+
+.vgSituacaoAeronave {
+    flex: 0 0 150px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    font-size: 12px;
+    color: var(--vgTextoSuave);
+}
+
+
+.vgPainelFmcs {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr));
+    gap: 14px;
+    padding: 16px 20px 20px;
+    border-top: 1px solid #eef0f8;
+}
+
+.vgSemFmc {
+    font-size: 13px;
+    color: var(--vgTextoSuave);
+}
+
+.vgCartaoFmc {
+    min-width: 0;
+    padding: 12px 16px 16px;
+    border: 1px solid #f3f7ff;
+    border-radius: 10px;
+    background: #ffffff;
+    color: #101044;
+}
+
+.vgCabecalhoFmc {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #e8efff;
+}
+
+.vgIconeFmc {
+    display: grid;
+    place-items: center;
+    width: 42px;
+    height: 42px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: #eff3ff;
+    color: #1400ff;
+    font-size: 22px;
+}
+
+.vgCabecalhoFmc h4 {
+    margin-bottom: 4px !important;
+    font-size: 16px;
+    font-weight: 800;
+}
+
+.vgCabecalhoFmc p {
+    font-size: 11px;
+    line-height: 1.4;
+    color: #6e80c6;
+}
+
+.vgSeloFmc {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    margin-left: auto;
+    padding: 7px 11px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.vgSeloFmc.comAlertas {
+    color: #ff003c;
+    background: #fff1f5;
+}
+
+.vgSeloFmc.semAlertas {
+    color: #00a66a;
+    background: #edf9f4;
+}
+
+.vgSeloFmc.semDados {
+    color: var(--vgSemDadosTexto);
+    background: var(--vgSemDadosFundo);
+}
+
+.vgPontoStatus {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: currentColor;
+}
+
+.vgMetricasFmc {
+    display: grid;
+    grid-template-columns: 1fr 1.12fr;
+    gap: 10px;
+    margin: 0;
+    padding: 12px 4px;
+}
+
+.vgMetricaFmc {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    min-width: 0;
+}
+
+.vgMetricaFmc + .vgMetricaFmc {
+    padding-left: 10px;
+    border-left: 1px solid #e8efff;
+}
+
+.vgIconeMetrica {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: 9px;
+    background: #f1f5ff;
+    color: #1400ff;
+    font-size: 20px;
+}
+
+.vgMetricaFmc dl {
+    margin: 0;
+}
+
+.vgMetricaFmc dt {
+    margin-bottom: 4px;
+    font-size: 10px;
+    font-weight: 400;
+    line-height: 1.3;
+    color: #6e80c6;
+}
+
+.vgMetricaFmc dd {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 800;
+}
+
+.vgColetaAtualizada {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 10px;
+    font-weight: 700;
+    line-height: 1.4;
+    color: #00a66a;
+}
+
+.vgColetaAtualizada.semDados {
+    color: var(--vgSemDadosTexto);
+}
+
+.vgMetricaFmc time {
+    display: block;
+    margin-top: 2px;
+    font-size: 10px;
+    font-weight: 400;
+    color: #6e80c6;
+}
+
+.vgTituloPlacas {
+    margin: 1px 0 6px !important;
+    font-size: 13px;
+    font-weight: 800;
+}
+
+.vgListaPlacas {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.vgPlacaMonitorada {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    min-height: 62px;
+    padding: 10px 14px;
+    border: 1px solid transparent;
+    border-radius: 9px;
+    background: #effaf6;
+    color: #00a66a;
+    text-decoration: none;
+}
+
+.vgPlacaMonitorada:hover {
+    border-color: currentColor;
+}
+
+.vgPlacaMonitorada.critico {
+    color: #ff003c;
+    background: #fff3f6;
+}
+
+.vgPlacaMonitorada.atencao {
+    color: #ff8000;
+    background: #fff7ed;
+}
+
+.vgPlacaMonitorada.semDados {
+    color: var(--vgSemDadosPonto);
+    background: #f4f5f9;
+}
+
+.vgPlacaMonitorada > .vgPontoStatus {
+    width: 15px;
+    height: 15px;
+}
+
+.vgDadosPlaca {
+    min-width: 0;
+}
+
+.vgCabecalhoPlaca {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 4px;
+}
+
+.vgCabecalhoPlaca h5 {
+    margin: 0;
+    font-size: 12px;
+    font-weight: 800;
+    color: #101044;
+}
+
+.critico .vgCabecalhoPlaca h5,
+.atencao .vgCabecalhoPlaca h5 {
+    color: #ff003c;
+}
+
+.vgSeloPlaca {
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    color: #00a66a;
+    background: #ddf5eb;
+}
+
+.critico .vgSeloPlaca {
+    color: #ff003c;
+    background: #ffe1e9;
+}
+
+.atencao .vgSeloPlaca {
+    color: #ff8000;
+    background: #ffeddb;
+}
+
+.semDados .vgSeloPlaca {
+    color: var(--vgSemDadosTexto);
+    background: var(--vgSemDadosFundo);
+}
+
+.vgRecursosPlaca {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    margin: 0;
+    font-size: 11px;
+    line-height: 1.4;
+    color: #6e80c6;
+}
+
+.vgRecursosPlaca span + span {
+    margin-left: 12px;
+    padding-left: 12px;
+    border-left: 1px solid #b8c6e5;
+}
+
+.vgPlacaMonitorada > .bi-chevron-right {
+    margin-left: auto;
+    font-size: 16px;
+    color: #1488ff;
+}
+
+.vgMensagemVazia {
+    padding: 18px;
+    border-radius: 12px;
+    background: var(--vgCard);
+    text-align: center;
+    font-size: 14px;
+    color: var(--vgTextoSuave);
+}
+
+
+@media (max-width: 900px) {
+    .mainWrapper > main.vgConteudo {
+        padding-top: 24px;
+        gap: 24px;
+    }
+}
+
+@media (max-width: 600px) {
+    .vgMetricasFmc {
+        grid-template-columns: 1fr;
+    }
+
+    .vgMetricaFmc + .vgMetricaFmc {
+        padding-left: 0;
+        border-left: 0;
+    }
+
+    .vgPlacaMonitorada {
+        gap: 12px;
+    }
+
+    .vgCabecalho h1 {
+        font-size: 26px;
+    }
+
+    .vgResumoEstado {
+        padding-left: 0;
+        padding-top: 18px;
+        border-left: 0;
+        border-top: 1px solid var(--vgDivisor);
+    }
+
+    .vgSituacaoAeronave {
+        flex-basis: 100%;
+    }
+
+    .vgBotaoFmc {
+        flex: 1 1 100%;
+    }
+
+    .vgBotaoFmc .bi-chevron-down {
+        margin-left: auto;
+    }
+
+    .vgColunaBarra strong {
+        font-size: 18px;
+    }
+}

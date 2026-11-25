@@ -77,7 +77,7 @@
                     <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
                         <i class="bi bi-list" aria-hidden="true"></i>
                     </button>
-                    <span class="topbarTitle">Monitoramento da placa</span>
+                            <span class="topbarTitle">Monitoramento da placa</span>
                 </div>
             </header>
 
@@ -102,12 +102,12 @@
                         <div class="graficoTopo">
                             <div>
                                 <span class="tituloCard">Consumo de recursos</span>
-                                <p class="subtitulo" id="descricaoPeriodoGrafico">Leituras a cada minuto · Picos por período</p>
+                                <p class="subtitulo" id="descricaoPeriodoGrafico">Picos observados por período</p>
                             </div>
                             <div class="abas" id="abasComponentes" aria-label="Componente do gráfico">
                                 <button class="ativa" type="button" data-componente="cpu" aria-pressed="true">CPU</button>
                                 <button type="button" data-componente="ram" aria-pressed="false">RAM</button>
-                                <button type="button" data-componente="disco" aria-pressed="false">Armazenamento</button>
+                                <button type="button" data-componente="flash" aria-pressed="false">Armazenamento</button>
                             </div>
                         </div>
                         <div class="periodosGrafico" role="group" aria-label="Período dos dados">
@@ -118,9 +118,8 @@
                         </div>
                         <div class="graficoArea">
                             <div class="legendaPrevisao" aria-label="Legenda do gráfico">
-                                <span><i class="legendaReal"></i>Real</span>
-                                <span><i class="legendaLinhaPrevista"></i>Previsão</span>
-                                <span><i class="legendaFaixa"></i>Faixa de incerteza</span>
+                                <span><i class="legendaReal"></i>Pico observado</span>
+                                <span><i class="legendaLinhaPrevista"></i>Limites cadastrados</span>
                             </div>
                             <svg id="graficoComponente" viewBox="0 0 620 280" font-size="8.5" fill="#6b7280" role="img" aria-labelledby="tituloGrafico descricaoGrafico"></svg>
                         </div>
@@ -136,7 +135,6 @@
     <script src="js/sessao.js"></script>
     <script>validarSessao();</script>
     <script src="js/menuLateral.js"></script>
-    <script src="js/dadosPlaca.js"></script>
     <script src="js/telaAnalista.js"></script>
 </body>
 

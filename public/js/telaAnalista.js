@@ -1,237 +1,240 @@
-const estadoTelaAnalista = { componente: "cpu", periodo: 24 }
+const tela = { componente: "cpu", periodo: 24, dados: null }
+const metricas = { cpu: "cpu", ram: "ram", flash: "flash" }
 
-function obterJanelaLeituras(componente) {
-    const originais = obterLeiturasMinuto(componente)
-    const inicio = Math.max(0, originais.length - estadoTelaAnalista.periodo * 60)
-    return { inicio, leituras: originais.slice(inicio) }
+function escaparHtml(valor) {
+    return String(valor ?? "").replace(/[&<>"']/g, caractere => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[caractere])
 }
 
-function agruparPicosGrafico(componente) {
-    const { inicio, leituras } = obterJanelaLeituras(componente)
-    const intervalo = { 1: 1, 6: 5, 24: 15 }[estadoTelaAnalista.periodo]
-    const pontos = []
-    for (let indice = 0; indice < leituras.length; indice += intervalo) {
-        const bloco = leituras.slice(indice, indice + intervalo)
-        const valor = Math.max(...bloco)
-        pontos.push({ valor, minuto: inicio + indice + bloco.indexOf(valor), inicio: inicio + indice, fim: inicio + indice + bloco.length - 1 })
-    }
-    return { pontos, intervalo, inicio, quantidadeLeituras: leituras.length }
+function numero(valor, casas = 1) {
+    return valor == null || !Number.isFinite(Number(valor)) ? "—" : Number(valor).toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas })
 }
 
-function descreverPeriodo() {
-    return estadoTelaAnalista.periodo === 1 ? "Última hora" : `Últimas ${estadoTelaAnalista.periodo} horas`
+function dataLocal(valor) {
+    if (!valor) return "—"
+    const data = new Date(valor)
+    return Number.isFinite(data.getTime()) ? new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "short" }).format(data) : "—"
 }
 
-function calcularEstatisticas(leituras) {
-    const media = leituras.reduce((total, valor) => total + valor, 0) / leituras.length
-    const variancia = leituras.reduce((total, valor) => total + (valor - media) ** 2, 0) / leituras.length
-    return { media, pico: Math.max(...leituras), desvioPadrao: Math.sqrt(variancia) }
+function horaLocal(valor) {
+    if (!valor) return "—"
+    const data = new Date(valor)
+    return Number.isFinite(data.getTime()) ? new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", hour: "2-digit", minute: "2-digit" }).format(data) : "—"
 }
 
-function montarComparacao(variacao, periodo) {
-    if (Math.abs(variacao) < 0.05) {
-        return `<div class="indicadorComparacao"><i class="bi bi-arrow-right" aria-hidden="true"></i><strong>0,0 p.p.</strong><span>Em relação ${periodo}</span></div>`
-    }
-    const aumentou = variacao > 0
-    return `<div class="indicadorComparacao">
-        <i class="bi bi-graph-${aumentou ? "up-arrow" : "down-arrow"}" aria-hidden="true"></i>
-        <strong>${aumentou ? "+" : "−"}${formatarNumero(Math.abs(variacao))} p.p.</strong>
-        <span>Em relação ${periodo}</span>
-    </div>`
+function statusClasse(valor) {
+    return ({ NORMAL: "normal", ATENCAO: "moderado", CRITICO: "critico", SEM_DADOS: "semDados" })[valor] || "semDados"
+}
+
+function nomeStatus(valor) {
+    return ({ NORMAL: "Normal", ATENCAO: "Atenção", CRITICO: "Crítico", SEM_DADOS: "Sem dados" })[valor] || "Sem dados"
 }
 
 function montarIndicadores() {
-    const indicadoresComponentes = Object.values(dadosPlaca.componentes).map(componente => {
-        const leituras = obterLeiturasMinuto(componente)
-        const atual = leituras[leituras.length - 1]
-        const status = obterStatus(atual, componente)
-        const armazenamento = componente.usoDiaAnterior !== undefined
-        const anterior = armazenamento ? componente.usoDiaAnterior : leituras[leituras.length - 61]
-        const variacao = atual - anterior
-        let previsao = ""
-
-        if (armazenamento && atual < componente.limiteAtencao && variacao > 0) {
-            const dias = Math.ceil((componente.limiteAtencao - atual) / variacao)
-            previsao = `<div class="indicadorPrevisao" title="Estimativa considerando que o crescimento diário permaneça constante.">
-                Previsão: cerca de ${dias} dias até ${componente.limiteAtencao}%
-            </div>`
-        }
-
-        const icones = { cpu: "bi-cpu", ram: "bi-memory", disco: "bi-hdd" }
+    const { monitoramento: m, componentes: cadastro } = tela.dados
+    const icones = { cpu: "bi-cpu", ram: "bi-memory", flash: "bi-hdd" }
+    const cards = Object.entries(metricas).map(([chave, campo]) => {
+        const componente = cadastro[chave] || {}
+        const nivel = m ? m[`${campo}_nivel`] : "SEM_DADOS"
+        const valor = m ? m[`${campo}_pct`] : null
+        const delta = m ? m[`${campo}_delta_pp`] : null
+        const limiteAtencao = m?.[`${campo}_limite_atencao`] ?? componente.limiteAtencao
+        const limiteCritico = m?.[`${campo}_limite_critico`] ?? componente.limiteCritico
+        const data = m?.[`${campo}_ts`]
+        const previsaoDias = chave === "flash" ? m?.flash_dias_ate_atencao : null
+        const previsao = previsaoDias == null ? "" : `<div class="indicadorPrevisao">Previsão: cerca de ${numero(previsaoDias, 0)} dias até ${numero(limiteAtencao, 0)}%</div>`
+        const comparacao = delta == null ? "Variação indisponível" : `${delta > 0 ? "+" : "−"}${numero(Math.abs(delta))} p.p. ${chave === "flash" ? "ao dia anterior" : "na última hora"}`
         return `<div class="cartao">
-            <div class="indicadorTopo"><span>${componente.titulo}</span><span class="indicadorIcone ${status.classe}" aria-hidden="true"><i class="bi ${icones[componente.nome === "Armazenamento" ? "disco" : componente.nome.toLowerCase()]}"></i></span></div>
-            <div class="indicadorValor ${status.classe}">${formatarNumero(atual)}%</div>
-            <div class="indicadorTexto"><span class="statusIndicador ${status.classe}">${status.nome}</span> · Leitura às <time datetime="${formatarHora((leituras.length - 1) / 60)}">${formatarHora((leituras.length - 1) / 60)}</time></div>
-            <div class="indicadorTexto limitesIndicador">Atenção: ${componente.limiteAtencao}% · Crítico: ${componente.limiteCritico}%</div>
-            ${previsao}
-            <div class="indicadorRodape">
-            ${montarComparacao(variacao, armazenamento ? "ao dia anterior" : "à última hora")}
-            </div>
+            <div class="indicadorTopo"><span>Uso da ${chave === "flash" ? "Armazenamento" : chave.toUpperCase()}</span><span class="indicadorIcone ${statusClasse(nivel)}" aria-hidden="true"><i class="bi ${icones[chave]}"></i></span></div>
+            <div class="indicadorValor ${statusClasse(nivel)}">${numero(valor)}${valor == null ? "" : "%"}</div>
+            <div class="indicadorTexto"><span class="statusIndicador ${statusClasse(nivel)}">${nomeStatus(nivel)}</span> · Leitura às ${horaLocal(data)}</div>
+            <div class="indicadorTexto limitesIndicador">Atenção: ${numero(limiteAtencao, 0)}% · Crítico: ${numero(limiteCritico, 0)}%</div>
+            ${previsao}<div class="indicadorRodape"><div class="indicadorComparacao"><i class="bi bi-activity" aria-hidden="true"></i><strong>${comparacao}</strong></div></div>
         </div>`
     }).join("")
 
-    const saude = dadosPlaca.saude
-    const statusSaude = saude.atual < saude.limiteCritico
-        ? { classe: "critico", nome: "Crítico" }
-        : saude.atual < saude.limiteAtencao
-            ? { classe: "moderado", nome: "Atenção" }
-            : { classe: "normal", nome: "Normal" }
-    const variacaoSaude = saude.atual - saude.anterior
-    const comparacaoSaude = `${variacaoSaude < 0 ? "Diminuiu" : "Aumentou"} ${formatarNumero(Math.abs(variacaoSaude), 0)} pts em relação à última hora`
-    const horarioSaude = formatarHora(horarioUltimaLeitura())
-    const cartaoSaude = `<div class="cartao cartaoSaude">
-        <div class="indicadorTopo"><span>Saúde da Placa</span><span class="indicadorIcone ${statusSaude.classe}" aria-hidden="true"><i class="bi bi-heart-pulse"></i></span></div>
-        <div class="indicadorValor ${statusSaude.classe}">${formatarNumero(saude.atual, 0)}<small>/100</small></div>
-        <div class="indicadorTexto"><span class="statusIndicador ${statusSaude.classe}">${statusSaude.nome}</span> · Leitura às <time datetime="${horarioSaude}">${horarioSaude}</time></div>
-        <div class="indicadorTexto limitesIndicador">Atenção: abaixo de ${saude.limiteAtencao} · Crítico: abaixo de ${saude.limiteCritico}</div>
-        <div class="indicadorRodape">
-            <div class="indicadorComparacao"><i class="bi bi-arrow-${variacaoSaude < 0 ? "down" : "up"}" aria-hidden="true"></i><strong>${comparacaoSaude}</strong></div>
-            <div class="barra"><div class="${statusSaude.classe}Fundo" style="width:${saude.atual}%"></div></div>
-        </div>
+    const score = m?.health_score
+    const estado = m?.estado_saude || "SEM_DADOS"
+    const deltaSaude = m?.health_delta_pontos
+    const cardSaude = `<div class="cartao cartaoSaude">
+        <div class="indicadorTopo"><span>Saúde da Placa</span><span class="indicadorIcone ${statusClasse(estado)}" aria-hidden="true"><i class="bi bi-heart-pulse"></i></span></div>
+        <div class="indicadorValor ${statusClasse(estado)}">${numero(score, 0)}${score == null ? "" : "<small>/100</small>"}</div>
+        <div class="indicadorTexto"><span class="statusIndicador ${statusClasse(estado)}">${nomeStatus(estado)}</span> · Leitura às ${horaLocal(m?.ultima_amostra_utc)}</div>
+        <div class="indicadorTexto limitesIndicador">Atenção: abaixo de ${numero(m?.health_limite_atencao, 0)} · Crítico: abaixo de ${numero(m?.health_limite_critico, 0)}</div>
+        <div class="indicadorRodape"><div class="indicadorComparacao"><i class="bi bi-arrow-${deltaSaude != null && deltaSaude < 0 ? "down" : "up"}" aria-hidden="true"></i><strong>${deltaSaude == null ? "Variação indisponível" : `${deltaSaude > 0 ? "+" : "−"}${numero(Math.abs(deltaSaude), 0)} pts na última hora`}</strong></div>
+        ${score == null ? "" : `<div class="barra"><div class="${statusClasse(estado)}Fundo" style="width:${Math.max(0, Math.min(100, score))}%"></div></div>`}</div>
     </div>`
-    document.getElementById("indicadoresPlaca").innerHTML = indicadoresComponentes + cartaoSaude
+    document.getElementById("indicadoresPlaca").innerHTML = cards + cardSaude
+}
+
+function diagnosticoSemDados() {
+    const dados = tela.dados
+    const d = dados.diagnosticoGold || {}
+    const partes = []
+    if (d.objetosNaPasta === 0) {
+        partes.push(`Não há objetos Gold na pasta hostname=${dados.placa.hostname}. Confira se o hostname cadastrado no FMC corresponde ao hostname da pasta S3; os dados Gold são associados por hostname e número de série.`)
+    } else if (d.arquivosMonitoramento === 0) {
+        partes.push("A pasta Gold foi encontrada, mas não tem JSON de monitoramento da placa.")
+    } else if (!dados.monitoramento && d.correspondenciasHostMonitoramento === 0) {
+        partes.push("O hostname do cadastro não aparece nas linhas do JSON de monitoramento.")
+    } else if (!dados.monitoramento && d.tipoCorrespondencia === "EXATA") {
+        partes.push(`A série do cadastro (${dados.placa.serie}) não corresponde a uma placa única no monitoramento Gold.`)
+    }
+    if (d.arquivosSerieNoTotal > 0 && d.arquivosSerieRecentes === 0) {
+        partes.push("Há arquivos de série, mas nenhum foi atualizado nas últimas 26 horas.")
+    } else if (d.arquivosSerieNoTotal === 0) {
+        partes.push("Não há arquivos Gold de série por minuto nessa pasta.")
+    }
+    if (d.tipoCorrespondencia && d.tipoCorrespondencia !== "EXATA") {
+        partes.push(`A série foi associada por identidade única do hostname (${d.serieGold}).`)
+    }
+    return partes.join(" ")
 }
 
 function montarDetalhes() {
-    const pouso = [...dadosPlaca.ciclosVoo].reverse().find(ciclo => ciclo.fase === "Pouso")
-    const decolagem = [...dadosPlaca.ciclosVoo].reverse().find(ciclo => ciclo.fase === "Decolagem" && ciclo.inicio <= pouso.inicio)
-    document.getElementById("detalhesPlaca").setAttribute("aria-label", `Estatísticas do último voo, das ${formatarHora(decolagem.inicio)} às ${formatarHora(pouso.fim + 59 / 60)}`)
-    document.getElementById("detalhesPlaca").innerHTML = Object.values(dadosPlaca.componentes).map(componente => {
-        const leiturasVoo = obterLeiturasMinuto(componente).slice(decolagem.inicio * 60, (pouso.fim + 1) * 60)
-        const estatisticas = calcularEstatisticas(leiturasVoo)
-        const detalhes = componente.detalhesVoo || {
-            pico: estatisticas.pico,
-            horarioPico: formatarHora(decolagem.inicio + leiturasVoo.indexOf(estatisticas.pico) / 60),
-            fasePico: "Último voo",
-            percentil95: [...leiturasVoo].sort((a, b) => a - b)[Math.ceil(leiturasVoo.length * .95) - 1],
-            minutosAcimaCritico: leiturasVoo.filter(valor => valor >= componente.limiteCritico).length
-        }
-        return `<details class="cartao detalhe" open>
-            <summary><span>${componente.detalhe}</span><i class="bi bi-chevron-down" aria-hidden="true"></i></summary>
+    const sessoes = tela.dados.monitoramento?.sessoes || []
+    const sessao = [...sessoes].sort((a, b) => Date.parse(b.fim) - Date.parse(a.fim))[0]
+    const el = document.getElementById("detalhesPlaca")
+    if (!sessao) {
+        el.innerHTML = '<div class="cartao detalhe"><summary>Dados da sessão</summary><p class="subtitulo">Nenhuma sessão disponível na coleta.</p></div>'
+        return
+    }
+    const labels = { cpu: "CPU", ram: "RAM", flash: "Armazenamento" }
+    el.setAttribute("aria-label", `Indicadores da sessão ${sessao.sessao_id}`)
+    el.innerHTML = Object.entries(labels).map(([chave, nome]) => {
+        const pico = sessao[`${chave}_pico`]
+        return `<details class="cartao detalhe" open><summary><span>Detalhes de ${nome}</span><i class="bi bi-chevron-down" aria-hidden="true"></i></summary>
             <div class="detalheLista">
-                <div class="detalhePico"><span>Pico do último voo<small>às ${detalhes.horarioPico} · ${detalhes.fasePico}</small></span><b>${formatarNumero(detalhes.pico, 2)}%</b></div>
-                <div><span>Percentil 95 do último voo</span><b>${formatarNumero(detalhes.percentil95, 2)}%</b></div>
-                <div><span>Tempo acima do limite crítico</span><b>${detalhes.minutosAcimaCritico} min</b></div>
-            </div>
+                <div class="detalhePico"><span>Pico da sessão<small>${horaLocal(sessao[`${chave}_ts_pico`])} · ${escaparHtml(sessao[`${chave}_fase_pico`] || "Fase indisponível")}</small></span><b>${numero(pico, 2)}${pico == null ? "" : "%"}</b></div>
+                <div><span>Percentil 95</span><b>${numero(sessao[`${chave}_p95`], 2)}${sessao[`${chave}_p95`] == null ? "" : "%"}</b></div>
+                <div><span>Tempo acima do limite crítico</span><b>${numero(sessao[`${chave}_minutos_acima_critico`])} min</b></div>
+                <div><span>Variação do pico para sessão anterior</span><b>${sessao[`${chave}_delta_pico_pp`] == null ? "—" : `${numero(sessao[`${chave}_delta_pico_pp`])} p.p.`}</b></div>
+            </div><small class="subtitulo">${dataLocal(sessao.inicio)} – ${dataLocal(sessao.fim)} · ${escaparHtml(sessao.sessao_id)}</small>
         </details>`
     }).join("")
 }
 
 function montarAlertas() {
-    const inicio = obterJanelaLeituras(dadosPlaca.componentes.cpu).inicio
-    const prioridadeSeveridade = { critico: 0, moderado: 1 }
-    const alertas = listarAlertasPlaca()
-        .filter(alerta => alerta.minuto >= inicio)
-        .sort((a, b) => prioridadeSeveridade[a.status.classe] - prioridadeSeveridade[b.status.classe] || b.minuto - a.minuto)
-    document.getElementById("tituloAlertasPeriodo").textContent = `Alertas · ${descreverPeriodo()}`
-    document.getElementById("alertasPlaca").innerHTML = alertas.length ? alertas.map(alerta => `
-        <a class="alerta ${alerta.status.classe}" href="alertas.html">
-            <div>${alerta.componente.nome}: limite ${alerta.status.classe === "critico" ? "crítico" : "de atenção"} atingido
-                <small>Às ${formatarHora(alerta.hora)} · ${formatarNumero(alerta.valor)}% · ${alerta.ativo ? "Ativo na última coleta" : "Ocorrência encerrada"}</small>
-            </div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span>
-        </a>`).join("") : '<p class="subtitulo">Nenhum limite atingido no período selecionado.</p>'
+    const inicio = Date.now() - tela.periodo * 60 * 60 * 1000
+    const prioridade = { CRITICO: 0, ATENCAO: 1 }
+    const alertas = tela.dados.alertas.filter(a => Date.parse(a.ts_abertura) >= inicio)
+        .sort((a, b) => prioridade[b.maior_nivel] - prioridade[a.maior_nivel] || Date.parse(b.ts_abertura) - Date.parse(a.ts_abertura))
+    document.getElementById("tituloAlertasPeriodo").textContent = `Alertas · últimas ${tela.periodo} ${tela.periodo === 1 ? "hora" : "horas"}`
+    document.getElementById("alertasPlaca").innerHTML = alertas.length ? alertas.map(alerta => {
+        const critico = alerta.maior_nivel === "CRITICO"
+        const classe = critico ? "critico" : "moderado"
+        const nome = ({ cpu_pct: "CPU", ram_pct: "RAM", flash_pct: "Armazenamento" })[alerta.metrica] || alerta.metrica
+        return `<a class="alerta ${classe}" href="alertas.html"><div>${nome}: limite ${critico ? "crítico" : "de atenção"} atingido
+            <small>Às ${dataLocal(alerta.ts_abertura)} · ${numero(alerta.valor_abertura_pct ?? alerta.valor)}% · ${alerta.em_aberto_apos_evento ? "Ativo na última coleta" : "Ocorrência encerrada"}</small>
+            </div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span></a>`
+    }).join("") : '<p class="subtitulo">Nenhum alerta no período selecionado.</p>'
+}
+
+function montarPontos(chave) {
+    const campo = metricas[chave]
+    const limite = Date.now() - tela.periodo * 60 * 60 * 1000
+    const registros = tela.dados.serie.filter(p => Date.parse(p.ts) >= limite)
+    const blocoMs = ({ 1: 60_000, 6: 5 * 60_000, 24: 15 * 60_000 })[tela.periodo]
+    const blocos = new Map()
+    registros.forEach(p => {
+        const ts = Date.parse(p.ts)
+        const chaveBloco = Math.floor(ts / blocoMs)
+        const valor = p[`${campo}_pico`]
+        if (valor == null || !Number.isFinite(Number(valor))) return
+        const anterior = blocos.get(chaveBloco)
+        if (!anterior || Number(valor) > anterior.valor) blocos.set(chaveBloco, { valor: Number(valor), ts, nivel: p[`${campo}_nivel`] })
+    })
+    return Array.from(blocos.values()).sort((a, b) => a.ts - b.ts)
 }
 
 function desenharGrafico(chave) {
-    const componente = dadosPlaca.componentes[chave]
-    const grafico = document.getElementById("graficoComponente")
-    const { pontos, intervalo, inicio, quantidadeLeituras } = agruparPicosGrafico(componente)
-    const horizonteHoras = 3
-    const pontosPrevistos = 12
-    const totalIntervalos = Math.max(1, pontos.length - 1 + pontosPrevistos)
-    const x = indice => Number((46 + indice * (556 / totalIntervalos)).toFixed(2))
-    const y = valor => Number((230 - valor * 2.2).toFixed(2))
-    const coordenadas = pontos.map((ponto, indice) => `${x(indice)},${y(ponto.valor)}`).join(" ")
-    const pico = Math.max(...pontos.map(ponto => ponto.valor))
-    const indicePico = pontos.findIndex(ponto => ponto.valor === pico)
-    const minutoPico = pontos[indicePico].minuto
-    const fim = inicio + quantidadeLeituras - 1
-    const alinhamentoPico = indicePico === 0 ? "start" : indicePico === pontos.length - 1 ? "end" : "middle"
-    const agrupamento = intervalo === 1 ? "uma leitura por minuto" : `pico de cada ${intervalo} minutos`
-    const passoRotulos = estadoTelaAnalista.periodo === 24 ? 60 / intervalo : { 1: 5, 6: 6 }[estadoTelaAnalista.periodo]
-    const atual = pontos[pontos.length - 1].valor
-    const previsoes = Array.from({ length: pontosPrevistos }, (_, indice) => {
-        const horasAdiante = (indice + 1) * horizonteHoras / pontosPrevistos
-        let valor
-        if (componente.usoDiaAnterior !== undefined) {
-            valor = atual + ((componente.leituras[23] - componente.leituras[0]) / 23) * horasAdiante
-        } else {
-            const horaInteira = Math.floor(horasAdiante)
-            const fracao = horasAdiante - horaInteira
-            const base = horaInteira === 0 ? atual : componente.leituras[(horaInteira + 23) % 24]
-            const destino = componente.leituras[(horaInteira + 24) % 24]
-            valor = base + (destino - base) * fracao
-        }
-        return { valor: Math.max(0, Math.min(100, valor)), horasAdiante }
-    })
-    const coordenadasPrevistas = [`${x(pontos.length - 1)},${y(atual)}`, ...previsoes.map((ponto, indice) => `${x(pontos.length + indice)},${y(ponto.valor)}`)].join(" ")
-    const xPrevisao = x(pontos.length - 1)
-    const xFimPrevisao = x(pontos.length - 1 + pontosPrevistos)
-    const superior = previsoes.map((ponto, indice) => `${x(pontos.length + indice)},${y(Math.min(100, ponto.valor + 4.5 * ponto.horasAdiante))}`)
-    const inferior = previsoes.map((ponto, indice) => `${x(pontos.length + indice)},${y(Math.max(0, ponto.valor - 4.5 * ponto.horasAdiante))}`).reverse()
-    document.getElementById("descricaoPeriodoGrafico").textContent = `${descreverPeriodo()} · ${formatarHora(inicio / 60)}–${formatarHora(fim / 60)} · ${pontos.length} pontos · ${agrupamento}`
-
-    grafico.innerHTML = `<title id="tituloGrafico">Uso de ${componente.nome} · ${descreverPeriodo()}</title>
-        <desc id="descricaoGrafico">${quantidadeLeituras} leituras reais por minuto, exibidas em ${pontos.length} pontos. Previsão para as próximas ${horizonteHoras} horas com faixa de incerteza. Atenção em ${componente.limiteAtencao}% e crítico em ${componente.limiteCritico}%. Pico de ${formatarNumero(pico, 2)}% às ${formatarHora(minutoPico / 60)}.</desc>
-        <rect x="${xPrevisao}" y="10" width="${xFimPrevisao - xPrevisao}" height="220" fill="#4F46E5" opacity=".055" />
-        ${[100, 75, 50, 25, 0].map(valor => `
-            <line x1="46" y1="${y(valor)}" x2="${xFimPrevisao}" y2="${y(valor)}" stroke="#e5e7eb" />
-            <text x="36" y="${y(valor) + 4}" text-anchor="end">${valor}%</text>`).join("")}
-        <polyline fill="none" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${coordenadas}" />
-        ${pontos.map((ponto, indice) => `<circle cx="${x(indice)}" cy="${y(ponto.valor)}" r="1.6" fill="#4F46E5" data-minuto="${ponto.minuto}"><title>${intervalo === 1 ? "Leitura" : "Pico"}: ${formatarNumero(ponto.valor, 2)}% às ${formatarHora(ponto.minuto / 60)}${intervalo === 1 ? "" : ` · Intervalo ${formatarHora(ponto.inicio / 60)}–${formatarHora(ponto.fim / 60)}`}</title></circle>`).join("")}
-        <polygon points="${superior.concat(inferior).join(" ")}" fill="#4F46E5" opacity=".14" />
-        <polyline fill="none" stroke="#4F46E5" stroke-width="2" stroke-dasharray="4 3" stroke-linecap="round" stroke-linejoin="round" points="${coordenadasPrevistas}" />
-        ${previsoes.map((ponto, indice) => `<circle cx="${x(pontos.length + indice)}" cy="${y(ponto.valor)}" r="1.7" fill="#fff" stroke="#4F46E5"><title>Previsão em ${formatarNumero(ponto.horasAdiante, 2)} h: ${formatarNumero(ponto.valor, 2)}%</title></circle>`).join("")}
-        <line x1="${xPrevisao}" y1="${y(100)}" x2="${xPrevisao}" y2="${y(0)}" stroke="#818cf8" stroke-dasharray="2 3" />
-        <text x="${xFimPrevisao}" y="12" text-anchor="end" fill="#4F46E5" font-weight="700">Previsão · próximas ${horizonteHoras} horas</text>
-        <line x1="46" y1="${y(componente.limiteAtencao)}" x2="${xFimPrevisao}" y2="${y(componente.limiteAtencao)}" stroke="#f97316" stroke-width="1" stroke-dasharray="4 3" />
-        <text x="52" y="${y(componente.limiteAtencao) - 6}" fill="#f97316">Atenção (${componente.limiteAtencao}%)</text>
-        <line x1="46" y1="${y(componente.limiteCritico)}" x2="${xFimPrevisao}" y2="${y(componente.limiteCritico)}" stroke="#e11d48" stroke-width="1" stroke-dasharray="4 3" />
-        <text x="52" y="${y(componente.limiteCritico) - 6}" fill="#e11d48">Crítico (${componente.limiteCritico}%)</text>
-        <circle cx="${x(indicePico)}" cy="${y(pico)}" r="3" fill="#4F46E5" />
-        <text x="${x(indicePico)}" y="${y(pico) + (pico >= 85 ? 20 : -12)}" text-anchor="${alinhamentoPico}" fill="#1a1f5c" font-weight="700">${formatarNumero(pico, 2)}% · ${formatarHora(minutoPico / 60)}</text>
-        ${pontos.map((ponto, indice) => indice % passoRotulos === 0 || (estadoTelaAnalista.periodo !== 24 && indice === pontos.length - 1)
-        ? `<text x="${x(indice)}" y="246" text-anchor="end" transform="rotate(-55 ${x(indice)} 246)">${formatarHora((estadoTelaAnalista.periodo !== 24 && indice === pontos.length - 1 ? ponto.fim : ponto.inicio) / 60)}</text>` : "").join("")}
-        ${[1, 2, 3].map(hora => {
-            const horaPrevista = (Math.floor(fim / 60) + hora) % 24
-            const indicePrevisto = pontos.length - 1 + hora * 4
-            return `<text x="${x(indicePrevisto)}" y="246" text-anchor="end" transform="rotate(-55 ${x(indicePrevisto)} 246)" fill="#4F46E5">${String(horaPrevista).padStart(2, "0")}:00</text>`
-        }).join("")}`
+    const svg = document.getElementById("graficoComponente")
+    const pontos = montarPontos(chave)
+    const componente = tela.dados.componentes[chave] || {}
+    const monitoramento = tela.dados.monitoramento
+    const campo = metricas[chave]
+    const atencao = monitoramento?.[`${campo}_limite_atencao`] ?? componente.limiteAtencao
+    const critico = monitoramento?.[`${campo}_limite_critico`] ?? componente.limiteCritico
+    const inicio = Date.now() - tela.periodo * 60 * 60 * 1000
+    const maxX = 602
+    const x = indice => pontos.length < 2 ? 46 : 46 + indice * (maxX - 46) / (pontos.length - 1)
+    const y = valor => 230 - valor * 2.2
+    const valores = pontos.map((p, i) => `${x(i)},${y(p.valor)}`).join(" ")
+    const pico = pontos.length ? Math.max(...pontos.map(p => p.valor)) : null
+    const indicePico = pontos.findIndex(p => p.valor === pico)
+    const titulo = chave === "flash" ? "Armazenamento" : chave.toUpperCase()
+    document.getElementById("descricaoPeriodoGrafico").textContent = `${tela.periodo}h · picos por intervalo · ${pontos.length} pontos com leitura`
+    if (!pontos.length) {
+        svg.innerHTML = `<title id="tituloGrafico">Uso de ${titulo}</title><desc id="descricaoGrafico">Sem leituras no período selecionado.</desc>
+            ${[100, 75, 50, 25, 0].map(v => `<line x1="46" y1="${y(v)}" x2="602" y2="${y(v)}" stroke="#e5e7eb"/><text x="36" y="${y(v) + 4}" text-anchor="end">${v}%</text>`).join("")}
+            <text x="324" y="125" text-anchor="middle">Sem leituras para este período</text>`
+        return
+    }
+    const linhas = [100, 75, 50, 25, 0].map(v => `<line x1="46" y1="${y(v)}" x2="602" y2="${y(v)}" stroke="#e5e7eb"/><text x="36" y="${y(v) + 4}" text-anchor="end">${v}%</text>`).join("")
+    const linhaLimite = (valor, nome, cor) => valor == null ? "" : `<line x1="46" y1="${y(valor)}" x2="602" y2="${y(valor)}" stroke="${cor}" stroke-width="1" stroke-dasharray="4 3"/><text x="52" y="${y(valor) - 6}" fill="${cor}">${nome} (${numero(valor, 0)}%)</text>`
+    const rotulos = pontos.map((p, i) => i % Math.max(1, Math.ceil(pontos.length / 8)) === 0 || i === pontos.length - 1
+        ? `<text x="${x(i)}" y="246" text-anchor="end" transform="rotate(-55 ${x(i)} 246)">${horaLocal(new Date(p.ts).toISOString())}</text>` : "").join("")
+    svg.innerHTML = `<title id="tituloGrafico">Picos de uso de ${titulo} · ${tela.periodo} horas</title>
+        <desc id="descricaoGrafico">${pontos.length} picos observados. Maior pico ${numero(pico, 2)}% às ${dataLocal(new Date(pontos[indicePico].ts).toISOString())}.</desc>
+        ${linhas}<polyline fill="none" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${valores}"/>
+        ${pontos.map((p, i) => `<circle cx="${x(i)}" cy="${y(p.valor)}" r="1.8" fill="#4F46E5"><title>${numero(p.valor, 2)}% · ${dataLocal(new Date(p.ts).toISOString())} · ${p.nivel || "Nível indisponível"}</title></circle>`).join("")}
+        ${linhaLimite(atencao, "Atenção", "#f97316")}${linhaLimite(critico, "Crítico", "#e11d48")}
+        <circle cx="${x(indicePico)}" cy="${y(pico)}" r="3" fill="#4F46E5"/><text x="${x(indicePico)}" y="${y(pico) + (pico >= 85 ? 20 : -12)}" text-anchor="middle" fill="#1a1f5c" font-weight="700">${numero(pico, 2)}%</text>${rotulos}`
 }
 
-function inicializarTelaAnalista() {
-    if (!verificarSessao() || !podeAcessarPagina("telaAnalista.html")) return
+function iniciarTela(dados) {
+    tela.dados = dados
+    document.title = `AirPulse - ${dados.placa.nome}`
+    document.querySelector("main h1").textContent = `Monitoramento de recursos · ${dados.placa.nome}`
     montarIndicadores()
+    const diagnostico = diagnosticoSemDados()
+    if (diagnostico) {
+        const aviso = document.createElement("p")
+        aviso.className = "subtitulo"
+        aviso.style.gridColumn = "1 / -1"
+        aviso.textContent = diagnostico
+        document.getElementById("indicadoresPlaca").append(aviso)
+    }
     montarDetalhes()
     montarAlertas()
-    desenharGrafico("cpu")
-
+    desenharGrafico(tela.componente)
     const botoes = document.querySelectorAll("#abasComponentes button")
-    for (const botao of botoes) {
-        botao.addEventListener("click", () => {
-            for (const item of botoes) {
-                const ativo = item === botao
-                item.classList.toggle("ativa", ativo)
-                item.setAttribute("aria-pressed", String(ativo))
-            }
-            estadoTelaAnalista.componente = botao.dataset.componente
-            desenharGrafico(estadoTelaAnalista.componente)
-        })
-    }
-
+    botoes.forEach(botao => botao.addEventListener("click", () => {
+        botoes.forEach(item => { item.classList.toggle("ativa", item === botao); item.setAttribute("aria-pressed", String(item === botao)) })
+        tela.componente = botao.dataset.componente
+        desenharGrafico(tela.componente)
+    }))
     const periodos = document.querySelectorAll(".periodosGrafico button")
-    for (const botao of periodos) {
-        botao.addEventListener("click", () => {
-            estadoTelaAnalista.periodo = Number(botao.dataset.periodo)
-            for (const item of periodos) {
-                const ativo = item === botao
-                item.classList.toggle("selecionado", ativo)
-                item.setAttribute("aria-pressed", String(ativo))
-            }
-            montarAlertas()
-            desenharGrafico(estadoTelaAnalista.componente)
-        })
-    }
+    periodos.forEach(botao => botao.addEventListener("click", () => {
+        tela.periodo = Number(botao.dataset.periodo)
+        periodos.forEach(item => { item.classList.toggle("selecionado", item === botao); item.setAttribute("aria-pressed", String(item === botao)) })
+        montarAlertas()
+        desenharGrafico(tela.componente)
+    }))
 }
 
-inicializarTelaAnalista()
+function carregarTelaAnalista() {
+    if (!verificarSessao() || !podeAcessarPagina("telaAnalista.html")) return
+    const idPlaca = new URLSearchParams(location.search).get("placa")
+    if (!idPlaca || !/^\d+$/.test(idPlaca)) {
+        document.getElementById("indicadoresPlaca").innerHTML = '<div class="cartao">Selecione uma placa na visão geral do analista.</div>'
+        return
+    }
+    fetch(`/dashboardAnalista/placa/${encodeURIComponent(idPlaca)}/${sessionStorage.idUsuario}`)
+        .then(resposta => resposta.json().catch(() => ({})).then(dados => {
+            if (!resposta.ok) {
+                const mensagem = dados.mensagem || `A API retornou HTTP ${resposta.status} sem uma mensagem válida. Confirme se a página está aberta pelo servidor AirPulse na porta 3333.`
+                throw new Error(mensagem)
+            }
+            return dados
+        }))
+        .then(iniciarTela)
+        .catch(erro => {
+            const mensagem = document.createElement("div")
+            mensagem.className = "cartao"
+            mensagem.textContent = erro.message
+            document.getElementById("indicadoresPlaca").replaceChildren(mensagem)
+            console.error("Erro ao carregar detalhe da placa:", erro)
+        })
+}
+
+carregarTelaAnalista()

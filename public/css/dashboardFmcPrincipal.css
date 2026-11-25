@@ -252,6 +252,14 @@
     background: #16a34a;
 }
 
+.semDados {
+    color: #6b7280;
+}
+
+.semDadosFundo {
+    background: #9ca3af;
+}
+
 .graficoTopo {
     display: flex;
     justify-content: space-between;

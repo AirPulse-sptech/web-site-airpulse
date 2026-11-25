@@ -9,7 +9,6 @@ if [ -z "$1" ]; then
   exit 1
 fi
 
-
 EC2_HOST="ubuntu@$1"
 EC2_PATH="/home/ubuntu/airpulse"
 SQL_FILE="src/database/scriptBd.sql"
@@ -19,6 +18,15 @@ ENV_FILE="deploy.env"
 ENV_LOCAL=".env"
 COMPOSE_FILE="docker-compose.yml"
 KEY_WIN='C:\Users\loure\OneDrive\Documentos\Sptech\SO\key-par.pem'
+
+echo "== Atualizando repositório local (git pull) =="
+git pull --ff-only || { echo "git pull falhou."; exit 1; }
+
+echo "== Rebuild da imagem Docker =="
+docker build -t "$IMAGE" . || { echo "Build falhou."; exit 1; }
+
+echo "== Enviando imagem para o Docker Hub =="
+docker push "$IMAGE" || { echo "Push falhou."; exit 1; }
 
 echo "== Chave SSH =="
 if command -v cygpath >/dev/null 2>&1; then
