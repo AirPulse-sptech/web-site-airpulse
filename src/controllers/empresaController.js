@@ -1,6 +1,6 @@
 var empresaModel = require("../models/empresaModel")
 const cargos = ["ADMIN", "GESTOR", "ANALISTA"]
-const cargosOrcamento = ["ADMIN", "GESTOR"]
+const cargosOrcamento = ["ADMIN"]
 const statusListagem = ["ATIVO", "INATIVO", "TODAS"]
 const statusEmpresa = ["ATIVO", "INATIVO"]
 const cnpjAirPulse = "00000000000100"

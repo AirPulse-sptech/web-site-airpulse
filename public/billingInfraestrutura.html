@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
     <link rel="stylesheet" href="css/painel.css">
     <title>AirPulse - Billing & Infraestrutura</title>
 </head>
+
 <body>
     <div class="appLayout">
         <aside id="sidebar">
@@ -22,7 +24,34 @@
                         src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
                 </a>
             </div>
-            <nav class="sidebarNav" aria-label="Menu principal"></nav>
+            <nav class="sidebarNav" aria-label="Menu principal">
+
+                <div class="navItem disabled">
+                    <i class="bi bi-grid-1x2 navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Visão Geral</span>
+                </div>
+
+                <a href="cadastroEmpresa.html" class="navItem">
+                    <i class="bi bi-building-add navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Cadastrar Empresa</span>
+                </a>
+
+                <a href="empresasCadastradas.html" class="navItem">
+                    <i class="bi bi-buildings navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Empresas Cadastradas</span>
+                </a>
+
+                <a href="billingInfraestrutura.html" class="navItem active" aria-current="page">
+                    <i class="bi bi-cash-stack navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Billing & Infraestrutura</span>
+                </a>
+
+                <div class="navItem disabled">
+                    <i class="bi bi-question-circle navIcon" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Chamados & Suporte</span>
+                </div>
+
+            </nav>
             <div class="sidebarFooter">
                 <div class="userProfile">
                     <div class="userAvatar" id="userAvatar">--</div>
@@ -182,15 +211,13 @@
         </div>
     </div>
     <div class="modalOrcamento" id="modalOrcamento" aria-hidden="true">
-        <div class="conteudoModalOrcamento" role="dialog" aria-modal="true"
-            aria-labelledby="tituloModalOrcamento">
+        <div class="conteudoModalOrcamento" role="dialog" aria-modal="true" aria-labelledby="tituloModalOrcamento">
             <div class="cabecalhoModalOrcamento">
                 <div>
                     <h2 id="tituloModalOrcamento">Editar orçamento</h2>
                     <p>Defina o limite de gastos da sua empresa.</p>
                 </div>
-                <button class="fecharModalOrcamento" id="fecharModalOrcamento" type="button"
-                    aria-label="Fechar modal">
+                <button class="fecharModalOrcamento" id="fecharModalOrcamento" type="button" aria-label="Fechar modal">
                     <i class="bi bi-x-lg" aria-hidden="true"></i>
                 </button>
             </div>
@@ -216,4 +243,5 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
     <script src="js/billingInfraestrutura.js"></script>
 </body>
+
 </html>
