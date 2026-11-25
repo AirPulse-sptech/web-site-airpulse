@@ -4,12 +4,14 @@
     width: 100%;
     container-type: inline-size;
 }
+
 .indicadoresBilling .cartaoIndicador {
     min-width: 0;
     min-height: 0;
     gap: 14px;
     align-items: center;
 }
+
 .indicadoresBilling .cartaoIndicador > div:last-child {
     display: grid;
     grid-template-rows: 22px 34px 22px 22px;
@@ -19,6 +21,7 @@
     align-self: stretch;
     min-width: 0;
 }
+
 .indicadoresBilling .cartaoIndicador h2 {
     width: 100%;
     min-height: 0;
@@ -26,6 +29,7 @@
     align-self: stretch;
     text-align: left;
 }
+
 .indicadoresBilling .valorIndicador {
     display: flex;
     align-items: center;
@@ -34,6 +38,7 @@
     line-height: 1.2;
     white-space: nowrap;
 }
+
 .indicadoresBilling .cartaoIndicador p {
     display: flex;
     align-items: center;
@@ -44,14 +49,17 @@
     font-size: 11px;
     line-height: 1.4;
 }
+
 .linhaValor {
     display: flex;
     align-items: center;
     gap: 10px;
 }
+
 .linhaValor .valorIndicador {
     flex-shrink: 0;
 }
+
 .barraOrcamento {
     flex: 1;
     min-width: 24px;
@@ -60,6 +68,7 @@
     border-radius: 999px;
     background: #e4efff;
 }
+
 .barraOrcamento span {
     display: block;
     width: 0;
@@ -68,12 +77,15 @@
     background: var(--azulPainel);
     transition: width 0.4s ease;
 }
+
 .barraOrcamento.atencao span {
     background: var(--laranjaSituacao);
 }
+
 .barraOrcamento.critico span {
     background: var(--vermelhoSituacao);
 }
+
 .variacao {
     display: inline-flex;
     align-items: center;
@@ -84,37 +96,45 @@
     line-height: 1.4;
     white-space: nowrap;
 }
+
 .variacao .bi {
     font-size: 16px;
 }
+
 .variacao.positiva {
     color: #0b9a5b;
     background: #e2f8ee;
 }
+
 .variacao.negativa {
     color: #ff2549;
     background: #ffe9ee;
 }
+
 .variacao.neutra {
     padding-left: 8px;
     color: #0860ff;
     background: #e4efff;
 }
+
 .dataDashboard {
     text-align: right;
 }
+
 .graficosBilling,
 .gradeInferior {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 16px;
 }
+
 .cartaoGrafico {
     display: flex;
     flex-direction: column;
     min-width: 0;
     min-height: 0;
 }
+
 .cabecalhoComLegenda {
     display: flex;
     align-items: flex-start;
@@ -122,15 +142,18 @@
     flex-wrap: wrap;
     gap: 6px 16px;
 }
+
 .areaGrafico {
     flex: none;
     height: 260px;
     margin-top: 12px;
 }
+
 .areaGrafico canvas {
     position: absolute;
     inset: 0;
 }
+
 .legendaSerie {
     display: flex;
     flex-shrink: 0;
@@ -140,6 +163,7 @@
     margin: 0;
     list-style: none;
 }
+
 .legendaSerie li {
     display: flex;
     align-items: center;
@@ -149,32 +173,39 @@
     font-weight: 600;
     white-space: nowrap;
 }
+
 .amostraSerie {
     display: block;
     flex-shrink: 0;
 }
+
 .amostraLinha {
     width: 16px;
     height: 3px;
     border-radius: 2px;
     background: #0755ff;
 }
+
 .amostraTracejada {
     width: 16px;
     height: 0;
     border-top: 3px dashed #7b5cff;
 }
+
 .amostraBarra {
     width: 9px;
     height: 9px;
     border-radius: 3px;
 }
+
 .amostraAnterior {
     background: #c7bef5;
 }
+
 .amostraAtual {
     background: #0755ff;
 }
+
 .corpoComposicao {
     display: flex;
     align-items: center;
@@ -182,6 +213,7 @@
     min-height: 0;
     margin-top: 12px;
 }
+
 .areaRosca {
     --tamanhoRosca: 170px;
     position: relative;
@@ -189,6 +221,7 @@
     width: var(--tamanhoRosca);
     height: var(--tamanhoRosca);
 }
+
 .legendaComposicao {
     display: grid;
     flex: 1;
@@ -199,6 +232,7 @@
     margin: 0;
     list-style: none;
 }
+
 .itemLegenda {
     display: grid;
     grid-template-columns: 8px minmax(0, 1fr) auto auto;
@@ -208,17 +242,20 @@
     font-size: 11px;
     line-height: 1.3;
 }
+
 .pontoLegenda {
     width: 8px;
     height: 8px;
     border-radius: 50%;
 }
+
 .nomeLegenda {
     overflow: hidden;
     font-weight: 600;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 .itemLegenda strong {
     min-width: 28px;
     color: var(--textoPainel);
@@ -226,11 +263,13 @@
     font-weight: 700;
     text-align: right;
 }
+
 .valorLegenda {
     min-width: 54px;
     color: var(--textoSuave);
     text-align: right;
 }
+
 .seloEconomia {
     flex-shrink: 0;
     padding: 7px 14px;
@@ -241,10 +280,12 @@
     font-weight: 600;
     white-space: nowrap;
 }
+
 .seloEconomia strong {
     font-size: 12px;
     font-weight: 800;
 }
+
 .listaOtimizacao {
     display: block;
     flex: 1 1 0;
@@ -259,16 +300,20 @@
     scrollbar-width: thin;
     scrollbar-color: #c7d5ef transparent;
 }
+
 .listaOtimizacao::-webkit-scrollbar {
     width: 5px;
 }
+
 .listaOtimizacao::-webkit-scrollbar-track {
     background: transparent;
 }
+
 .listaOtimizacao::-webkit-scrollbar-thumb {
     border-radius: 10px;
     background: #c7d5ef;
 }
+
 .tabelaOtimizacao {
     width: 100%;
     min-width: 850px;
@@ -277,6 +322,7 @@
     table-layout: auto;
     font-size: 11px;
 }
+
 .tabelaOtimizacao th {
     position: sticky;
     top: 0;
@@ -289,6 +335,7 @@
     text-align: left;
     white-space: nowrap;
 }
+
 .tabelaOtimizacao td {
     padding: 8px;
     border-top: 1px solid var(--bordaPainel);
@@ -296,12 +343,78 @@
     vertical-align: middle;
     overflow-wrap: anywhere;
 }
+
+.tabelaOtimizacao.tabelaGeradores {
+    min-width: 560px;
+}
+
+.tabelaGeradores .alinharDireita {
+    text-align: right;
+}
+
+.tabelaGeradores td:nth-child(3) {
+    width: 24%;
+}
+
+.tabelaGeradores .recursoTabelaOtimizacao small {
+    font-size: 10px;
+    white-space: normal;
+}
+
+.itemGerador {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+
+.posicaoGerador {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    color: #0860ff;
+    background: #e4efff;
+    font-size: 10px;
+    font-weight: 700;
+}
+
+.seloServicoTabela {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 9px;
+    border-radius: 999px;
+    color: #495989;
+    background: #f4f6fb;
+    font-size: 10px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.seloServicoTabela i {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+}
+
+.custoTabelaGeradores {
+    color: var(--textoPainel);
+    font-size: 11px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
 .recursoTabelaOtimizacao {
     display: flex;
     flex-direction: column;
     min-width: 0;
     gap: 2px;
 }
+
 .recursoTabelaOtimizacao strong {
     overflow: hidden;
     color: var(--textoPainel);
@@ -310,6 +423,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 .recursoTabelaOtimizacao span {
     overflow: hidden;
     color: var(--textoSuave);
@@ -317,6 +431,7 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 .recursoTabelaOtimizacao small {
     overflow: hidden;
     color: var(--textoSuave);
@@ -325,17 +440,20 @@
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+
 .utilizacaoTabelaOtimizacao {
     display: flex;
     flex-direction: column;
     gap: 5px;
     min-width: 0;
 }
+
 .utilizacaoTabelaOtimizacao strong {
     color: var(--textoPainel);
     font-size: 11px;
     font-weight: 700;
 }
+
 .barraTabelaOtimizacao {
     width: 100%;
     height: 5px;
@@ -343,18 +461,21 @@
     border-radius: 999px;
     background: #e4efff;
 }
+
 .barraTabelaOtimizacao span {
     display: block;
     height: 100%;
     border-radius: inherit;
     background: #0755ff;
 }
+
 .capacidadeTabelaOtimizacao {
     color: var(--textoPainel);
     font-size: 10px;
     font-weight: 600;
     white-space: normal;
 }
+
 .statusTabelaOtimizacao {
     display: inline-flex;
     align-items: center;
@@ -365,121 +486,151 @@
     font-weight: 700;
     white-space: nowrap;
 }
+
 .statusTabelaOtimizacao.downscale {
     color: #087b4b;
     background: #e2f8ee;
 }
+
 .statusTabelaOtimizacao.upscale {
     color: #c47700;
     background: #fff3dc;
 }
+
 .statusTabelaOtimizacao.adequado {
     color: #0860ff;
     background: #e4efff;
 }
+
 @media (min-width: 1280px) {
     .dashboard .indicadoresBilling {
         grid-template-columns: repeat(4, minmax(0, 1fr));
     }
+
     .indicadoresBilling .valorIndicador {
         font-size: clamp(20px, calc((100cqw - 400px) / 24), 26px);
     }
+
     .mainWrapper > main.paginaBilling {
         min-height: 100vh;
         padding-bottom: 24px;
         gap: 16px;
     }
+
     .paginaBilling .graficosBilling {
         flex: 1.15 1 245px;
         grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
     }
+
     .paginaBilling .gradeInferior {
         flex: 1 1 235px;
         grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
     }
+
     .paginaBilling :is(.areaGrafico, .corpoComposicao, .listaOtimizacao) {
         flex: 1;
         min-height: 0;
     }
+
     .paginaBilling .areaGrafico {
         height: auto;
     }
+
     .paginaBilling .areaRosca {
         --tamanhoRosca: clamp(110px, 20vh, 170px);
     }
 }
+
 @media (min-width: 1280px) and (max-width: 1439px) {
     .paginaBilling .indicadoresBilling .cartaoIndicador {
         gap: 12px;
         padding-inline: 16px;
     }
+
     .paginaBilling .indicadoresBilling .caixaIcone {
         width: 40px;
         height: 40px;
     }
+
     .paginaBilling .indicadoresBilling .icone {
         width: 22px;
         height: 22px;
         font-size: 22px;
     }
 }
+
 @media (min-width: 1280px) and (max-height: 820px) {
     .mainWrapper > main.paginaBilling {
         padding-top: 18px;
         padding-bottom: 18px;
         gap: 12px;
     }
+
     .paginaBilling .cabecalhoDashboard h1 {
         font-size: 24px;
     }
+
     .paginaBilling .cabecalhoDashboard p {
         margin-top: 2px;
     }
+
     .paginaBilling :is(.cartaoSituacao, .cartaoIndicador) {
         padding: 12px 16px;
     }
+
     .paginaBilling .indicadoresBilling .caixaIcone {
         width: 40px;
         height: 40px;
     }
+
     .paginaBilling .indicadoresBilling .icone {
         width: 22px;
         height: 22px;
         font-size: 22px;
     }
+
     .paginaBilling .areaGrafico,
     .paginaBilling .corpoComposicao,
     .paginaBilling .listaOtimizacao {
         margin-top: 8px;
     }
+
     .paginaBilling .listaOtimizacao {
         gap: 6px;
     }
 }
+
 @media (max-width: 600px) {
     .dashboard .indicadoresBilling {
         grid-template-columns: minmax(0, 1fr);
     }
+
     .dataDashboard {
         text-align: left;
     }
+
     .areaGrafico {
         height: 240px;
     }
+
     .corpoComposicao {
         flex-direction: column;
         align-items: stretch;
     }
+
     .areaRosca {
         align-self: center;
     }
+
     .listaOtimizacao {
         max-height: 260px;
     }
+
     .tabelaOtimizacao {
         min-width: 680px;
     }
 }
+
 @media (min-width: 1280px) {
     .mainWrapper > main.paginaBilling {
         height: 100vh;
@@ -487,18 +638,22 @@
         overflow: hidden;
         box-sizing: border-box;
     }
+
     .paginaBilling .gradeInferior {
         min-height: 0;
         overflow: hidden;
     }
+
     .paginaBilling .gradeInferior > .cartaoGrafico {
         min-height: 0;
         overflow: hidden;
     }
-    .paginaBilling .gradeInferior > article[aria-labelledby="tituloOtimizacaoRecursos"] {
+
+    .paginaBilling .gradeInferior > article[aria-labelledby="tituloGeradoresCusto"] {
         min-height: 0;
         overflow: hidden;
     }
+
     .paginaBilling #listaOtimizacao {
         flex: 0 0 194px;
         height: 194px;
@@ -506,16 +661,20 @@
         max-height: 194px;
         overflow: auto;
     }
+
     .paginaBilling .tabelaOtimizacao tbody tr {
-        height: 76px;
+        height: 52px;
     }
 }
+
 .cartaoOrcamento {
     position: relative;
 }
+
 .cartaoOrcamento h2 {
     padding-right: 26px;
 }
+
 .botaoEditarOrcamento {
     position: absolute;
     top: 12px;
@@ -534,23 +693,28 @@
     cursor: pointer;
     transition: 0.2s ease;
 }
+
 .botaoEditarOrcamento:hover {
     color: #0755ff;
     border-color: #0755ff;
     background: #f2f6ff;
 }
+
 .botaoEditarOrcamento:disabled {
     opacity: 0.5;
     cursor: not-allowed;
 }
+
 .valoresOrcamento {
     color: var(--textoPainel);
     font-size: 11px;
     font-weight: 600;
 }
+
 .valoresOrcamento span {
     white-space: nowrap;
 }
+
 .modalOrcamento {
     position: fixed;
     inset: 0;
@@ -561,6 +725,7 @@
     padding: 20px;
     background: rgba(17, 27, 56, 0.42);
 }
+
 .conteudoModalOrcamento {
     position: relative;
     width: 100%;
@@ -571,6 +736,7 @@
     background: #ffffff;
     box-shadow: 0 18px 50px rgba(22, 37, 75, 0.18);
 }
+
 .cabecalhoModalOrcamento {
     display: flex;
     align-items: flex-start;
@@ -578,17 +744,20 @@
     gap: 16px;
     margin-bottom: 22px;
 }
+
 .cabecalhoModalOrcamento h2 {
     margin: 0;
     color: var(--textoPainel);
     font-size: 18px;
     font-weight: 700;
 }
+
 .cabecalhoModalOrcamento p {
     margin: 5px 0 0;
     color: var(--textoSuave);
     font-size: 12px;
 }
+
 .fecharModalOrcamento {
     display: flex;
     align-items: center;
@@ -603,6 +772,7 @@
     background: #f4f6fb;
     cursor: pointer;
 }
+
 .conteudoModalOrcamento > label {
     display: block;
     margin-bottom: 8px;
@@ -610,6 +780,7 @@
     font-size: 12px;
     font-weight: 600;
 }
+
 .campoOrcamento {
     display: flex;
     align-items: center;
@@ -621,14 +792,17 @@
     color: var(--textoSuave);
     background: #ffffff;
 }
+
 .campoOrcamento:focus-within {
     border-color: #0755ff;
     box-shadow: 0 0 0 3px rgba(7, 85, 255, 0.08);
 }
+
 .campoOrcamento span {
     font-size: 13px;
     font-weight: 600;
 }
+
 .campoOrcamento input {
     width: 100%;
     min-width: 0;
@@ -640,18 +814,21 @@
     font-family: inherit;
     font-size: 14px;
 }
+
 .statusModalOrcamento {
     min-height: 18px;
     margin: 8px 0 0;
     color: #d04b4b;
     font-size: 11px;
 }
+
 .acoesModalOrcamento {
     display: flex;
     justify-content: flex-end;
     gap: 9px;
     margin-top: 16px;
 }
+
 .botaoCancelarOrcamento,
 .botaoSalvarOrcamento {
     min-height: 36px;
@@ -662,19 +839,23 @@
     font-weight: 600;
     cursor: pointer;
 }
+
 .botaoCancelarOrcamento {
     border: 1px solid var(--bordaPainel);
     color: var(--textoSuave);
     background: #ffffff;
 }
+
 .botaoSalvarOrcamento {
     border: 1px solid #0755ff;
     color: #ffffff;
     background: #0755ff;
 }
+
 .botaoSalvarOrcamento:hover {
     background: #0648d9;
 }
+
 .botaoSalvarOrcamento:disabled {
     opacity: 0.6;
     cursor: not-allowed;

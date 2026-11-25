@@ -1,51 +1,44 @@
-const servicosBilling = [
-    { nome: "EC2", percentual: 0.36, cor: "#0755ff" },
-    { nome: "RDS", percentual: 0.24, cor: "#7b5cff" },
-    { nome: "S3", percentual: 0.17, cor: "#12b5cb" },
-    { nome: "CloudFront", percentual: 0.13, cor: "#18be70" },
-    { nome: "Outros", percentual: 0.10, cor: "#ffa000" }
-]
+const coresServicos = ["#0755ff", "#7b5cff", "#12b5cb", "#18be70", "#ffa000"]
 
-const otimizacoesBilling = [
-    {
-        titulo: "CPU",
-        utilizacao: 18,
-        capacidadeAtual: "8 vCPUs",
-        capacidadeRecomendada: "4 vCPUs",
-        recomendacao: "Downscale",
-        prioridade: 82,
-        descricao: "A capacidade de processamento está acima da utilização observada."
-    },
-    {
-        titulo: "RAM",
-        utilizacao: 91,
-        capacidadeAtual: "16 GB",
-        capacidadeRecomendada: "32 GB",
-        recomendacao: "Upscale",
-        prioridade: 91,
-        descricao: "A memória apresenta utilização elevada e pode comprometer o desempenho."
-    },
-    {
-        titulo: "DISCO",
-        utilizacao: 94,
-        capacidadeAtual: "100 GB",
-        capacidadeRecomendada: "150 GB",
-        recomendacao: "Upscale",
-        prioridade: 94,
-        descricao: "O armazenamento está próximo da capacidade máxima disponível."
-    }
-]
+const limiteGeradoresCusto = 8
 
 const corTexto = "#7785bd"
 const corGrade = "#edf1fb"
 
+function arredondar(valor) {
+    return Math.round(valor * 100) / 100
+}
+
 function formatarMoedaBilling(valor) {
-    return new Intl.NumberFormat("pt-BR", {
-        style: "currency",
-        currency: "BRL",
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    }).format(valor)
+    return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+}
+
+function escaparHtml(texto) {
+    return String(texto)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+}
+
+function criarCustosVazios() {
+    const hoje = new Date()
+    const totalDias = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).getDate()
+
+    return { diaAtual: 0, totalDias: totalDias, dias: [], servicos: [], tiposUso: [] }
+}
+
+function prepararServicos(servicos) {
+    let total = 0
+
+    for (let i = 0; i < servicos.length; i++) {
+        total += servicos[i].atual
+    }
+
+    for (let i = 0; i < servicos.length; i++) {
+        servicos[i].cor = servicos[i].nome == "Outros" ? coresServicos[4] : coresServicos[i]
+        servicos[i].percentual = total > 0 ? servicos[i].atual / total : 0
+    }
 }
 
 function regressaoLinear(xs, ys) {
@@ -56,14 +49,19 @@ function regressaoLinear(xs, ys) {
     }
 
     if (quantidade == 1) {
-        return {
-            inclinacao: ys[0] / xs[0],
-            intercepto: 0
-        }
+        return { inclinacao: ys[0] / xs[0], intercepto: 0 }
     }
 
-    const mediaX = xs.reduce((total, valor) => total + valor, 0) / quantidade
-    const mediaY = ys.reduce((total, valor) => total + valor, 0) / quantidade
+    let somaX = 0
+    let somaY = 0
+
+    for (let i = 0; i < quantidade; i++) {
+        somaX += xs[i]
+        somaY += ys[i]
+    }
+
+    const mediaX = somaX / quantidade
+    const mediaY = somaY / quantidade
 
     let numerador = 0
     let denominador = 0
@@ -73,18 +71,15 @@ function regressaoLinear(xs, ys) {
         denominador += Math.pow(xs[i] - mediaX, 2)
     }
 
-    const inclinacao = denominador == 0 ? 0 : numerador / denominador
+    const inclinacao = numerador / denominador
 
-    return {
-        inclinacao,
-        intercepto: mediaY - inclinacao * mediaX
-    }
+    return { inclinacao: inclinacao, intercepto: mediaY - inclinacao * mediaX }
 }
 
-function criarDadosBilling(orcamento) {
+function criarDadosBilling(orcamento, custos) {
     const hoje = new Date()
-    const totalDias = new Date(hoje.getFullYear(), hoje.getMonth() + 1, 0).getDate()
-    const diaAtual = hoje.getDate()
+    const diaAtual = custos.diaAtual
+    const totalDias = custos.totalDias
 
     const diasObservados = []
     const acumuladoObservado = []
@@ -92,22 +87,12 @@ function criarDadosBilling(orcamento) {
     let acumulado = 0
 
     for (let dia = 1; dia <= diaAtual; dia++) {
-        const valor = Math.round(
-            (
-                1.35
-                + Math.sin(dia / 2.2) * 0.18
-                + (dia % 7 == 0 ? 0.25 : 0)
-                + (dia % 5 == 0 ? 0.12 : 0)
-            ) * 100
-        ) / 100
-
-        acumulado = Math.round((acumulado + valor) * 100) / 100
+        acumulado = arredondar(acumulado + custos.dias[dia - 1])
 
         diasObservados.push(dia)
         acumuladoObservado.push(acumulado)
     }
 
-    const custoAcumulado = acumulado
     const regressao = regressaoLinear(diasObservados, acumuladoObservado)
     const inclinacao = Math.max(regressao.inclinacao, 0)
 
@@ -118,43 +103,31 @@ function criarDadosBilling(orcamento) {
     for (let dia = 1; dia <= totalDias; dia++) {
         dias.push(String(dia).padStart(2, "0"))
 
-        acumuladoReal.push(
-            dia <= diaAtual ? acumuladoObservado[dia - 1] : null
-        )
+        if (dia <= diaAtual) {
+            acumuladoReal.push(acumuladoObservado[dia - 1])
+        } else {
+            acumuladoReal.push(null)
+        }
 
-        acumuladoProjetado.push(
-            dia >= diaAtual
-                ? Math.round((regressao.intercepto + inclinacao * dia) * 100) / 100
-                : null
-        )
+        if (dia >= diaAtual) {
+            acumuladoProjetado.push(arredondar(regressao.intercepto + inclinacao * dia))
+        } else {
+            acumuladoProjetado.push(null)
+        }
     }
 
     return {
-        dias,
-        acumuladoReal,
-        acumuladoProjetado,
-        custoAcumulado,
-        previsaoFechamento: Math.round(
-            (custoAcumulado + inclinacao * (totalDias - diaAtual)) * 100
-        ) / 100,
-        orcamento,
+        dias: dias,
+        acumuladoReal: acumuladoReal,
+        acumuladoProjetado: acumuladoProjetado,
+        custoAcumulado: acumulado,
+        previsaoFechamento: arredondar(acumulado + inclinacao * (totalDias - diaAtual)),
+        orcamento: orcamento,
         tendenciaDiaria: inclinacao,
-        diaAtual,
-        totalDias,
+        diaAtual: diaAtual,
+        totalDias: totalDias,
         mes: String(hoje.getMonth() + 1).padStart(2, "0")
     }
-}
-
-function criarComparativoBilling(custoAcumulado) {
-    const atual = servicosBilling.map(function (servico) {
-        return Math.round(custoAcumulado * servico.percentual * 100) / 100
-    })
-
-    const anterior = atual.map(function (valor, indice) {
-        return Math.round(valor * (1.09 - indice * 0.02) * 100) / 100
-    })
-
-    return { atual, anterior }
 }
 
 function preencherIndicadoresBilling(dados) {
@@ -169,8 +142,12 @@ function preencherIndicadoresBilling(dados) {
     document.getElementById("custoAcumulado").textContent =
         formatarMoedaBilling(dados.custoAcumulado)
 
-    document.getElementById("custoAcumuladoPeriodo").textContent =
-        `Até o dia ${dados.diaAtual}/${dados.mes}`
+    if (dados.diaAtual > 0) {
+        document.getElementById("custoAcumuladoPeriodo").textContent =
+            `Até o dia ${dados.diaAtual}/${dados.mes}`
+    } else {
+        document.getElementById("custoAcumuladoPeriodo").textContent = "Sem dados ainda"
+    }
 
     document.getElementById("previsaoFechamento").textContent =
         formatarMoedaBilling(dados.previsaoFechamento)
@@ -187,11 +164,12 @@ function preencherIndicadoresBilling(dados) {
     document.getElementById("valorOrcamentoTotal").textContent =
         formatarMoedaBilling(dados.orcamento)
 
-    if (dados.orcamento > 0) {
+    if (dados.orcamento > 0 && disponivel >= 0) {
         document.getElementById("orcamentoConsumidoDescricao").textContent =
-            disponivel >= 0
-                ? `${formatarMoedaBilling(disponivel)} disponíveis`
-                : `${formatarMoedaBilling(-disponivel)} acima do orçamento`
+            `${formatarMoedaBilling(disponivel)} disponíveis`
+    } else if (dados.orcamento > 0) {
+        document.getElementById("orcamentoConsumidoDescricao").textContent =
+            `${formatarMoedaBilling(-disponivel)} acima do orçamento`
     } else {
         document.getElementById("orcamentoConsumidoDescricao").textContent =
             "Defina um orçamento para acompanhar o consumo"
@@ -206,6 +184,9 @@ function preencherIndicadoresBilling(dados) {
 
     document.getElementById("tendenciaDiaria").textContent =
         formatarMoedaBilling(dados.tendenciaDiaria)
+
+    document.getElementById("tendenciaDiariaData").textContent =
+        `Iniciado em 01/${dados.mes}`
 }
 
 function desenharEvolucaoCustos(dados) {
@@ -220,8 +201,9 @@ function desenharEvolucaoCustos(dados) {
                     borderColor: "#0755ff",
                     backgroundColor: "rgba(7, 85, 255, 0.12)",
                     pointBackgroundColor: "#0755ff",
-                    pointRadius: contexto =>
-                        contexto.dataIndex == dados.diaAtual - 1 ? 4 : 0,
+                    pointRadius: function (contexto) {
+                        return contexto.dataIndex == dados.diaAtual - 1 ? 4 : 0
+                    },
                     pointHoverRadius: 4,
                     borderWidth: 2,
                     tension: 0.3,
@@ -254,12 +236,16 @@ function desenharEvolucaoCustos(dados) {
                     display: false
                 },
                 tooltip: {
-                    filter: item =>
-                        item.datasetIndex == 0 || item.dataIndex >= dados.diaAtual,
+                    filter: function (item) {
+                        return item.datasetIndex == 0 || item.dataIndex >= dados.diaAtual
+                    },
                     callbacks: {
-                        title: itens => `Dia ${itens[0].label}`,
-                        label: contexto =>
-                            `${contexto.dataset.label}: ${formatarMoedaBilling(contexto.parsed.y)}`
+                        title: function (itens) {
+                            return `Dia ${itens[0].label}`
+                        },
+                        label: function (contexto) {
+                            return `${contexto.dataset.label}: ${formatarMoedaBilling(contexto.parsed.y)}`
+                        }
                     }
                 }
             },
@@ -284,7 +270,9 @@ function desenharEvolucaoCustos(dados) {
                         color: corTexto,
                         maxTicksLimit: 6,
                         font: { size: 11 },
-                        callback: valor => formatarMoedaBilling(valor)
+                        callback: function (valor) {
+                            return formatarMoedaBilling(valor)
+                        }
                     }
                 }
             }
@@ -292,18 +280,44 @@ function desenharEvolucaoCustos(dados) {
     })
 }
 
-function desenharComposicaoServico(custoAcumulado) {
-    const valores = servicosBilling.map(function (servico) {
-        return Math.round(custoAcumulado * servico.percentual * 100) / 100
-    })
+function desenharComposicaoServico(servicos) {
+    const nomes = []
+    const valores = []
+    const cores = []
+    let legenda = ""
+
+    for (let i = 0; i < servicos.length; i++) {
+        const servico = servicos[i]
+
+        nomes.push(servico.nome)
+        valores.push(servico.atual)
+        cores.push(servico.cor)
+
+        legenda += `
+            <li class="itemLegenda">
+                <span class="pontoLegenda" style="background: ${servico.cor}"></span>
+                <span class="nomeLegenda">${escaparHtml(servico.nome)}</span>
+                <strong>${Math.round(servico.percentual * 100)}%</strong>
+                <span class="valorLegenda">${formatarMoedaBilling(servico.atual)}</span>
+            </li>
+        `
+    }
+
+    if (servicos.length == 0) {
+        legenda = `
+            <li class="itemLegenda">
+                <span class="nomeLegenda">Sem dados no período</span>
+            </li>
+        `
+    }
 
     new Chart(document.getElementById("graficoComposicaoServico"), {
         type: "pie",
         data: {
-            labels: servicosBilling.map(servico => servico.nome),
+            labels: nomes,
             datasets: [{
                 data: valores,
-                backgroundColor: servicosBilling.map(servico => servico.cor),
+                backgroundColor: cores,
                 borderWidth: 0,
                 hoverOffset: 4
             }]
@@ -320,8 +334,8 @@ function desenharComposicaoServico(custoAcumulado) {
                 },
                 tooltip: {
                     callbacks: {
-                        label: contexto => {
-                            const servico = servicosBilling[contexto.dataIndex]
+                        label: function (contexto) {
+                            const servico = servicos[contexto.dataIndex]
 
                             return `${servico.nome}: ${formatarMoedaBilling(contexto.parsed)} (${Math.round(servico.percentual * 100)}%)`
                         }
@@ -331,107 +345,220 @@ function desenharComposicaoServico(custoAcumulado) {
         }
     })
 
-    document.getElementById("legendaComposicao").innerHTML =
-        servicosBilling.map(function (servico, indice) {
-            return `
-                <li class="itemLegenda">
-                    <span class="pontoLegenda" style="background: ${servico.cor}"></span>
-                    <span class="nomeLegenda">${servico.nome}</span>
-                    <strong>${Math.round(servico.percentual * 100)}%</strong>
-                    <span class="valorLegenda">${formatarMoedaBilling(valores[indice])}</span>
-                </li>
-            `
-        }).join("")
+    document.getElementById("legendaComposicao").innerHTML = legenda
 }
 
-function preencherOtimizacoesBilling() {
+function corDoServico(nome, servicos) {
+    for (let i = 0; i < servicos.length; i++) {
+        if (servicos[i].nome == nome) {
+            return servicos[i].cor
+        }
+    }
+
+    return coresServicos[4]
+}
+
+function descreverTipoDeUso(tipoUso) {
+    const detalhe = tipoUso.split(":")[1] || ""
+
+    if (tipoUso.includes("BoxUsage")) {
+        return {
+            nome: "Servidores virtuais",
+            descricao: detalhe
+                ? `Horas de funcionamento das máquinas ${detalhe}`
+                : "Horas de funcionamento das máquinas"
+        }
+    }
+
+    if (tipoUso.includes("EBS:")) {
+        return {
+            nome: "Discos dos servidores",
+            descricao: "Espaço de armazenamento ligado às máquinas"
+        }
+    }
+
+    if (tipoUso.includes("PublicIPv4")) {
+        return {
+            nome: "Endereços IP públicos",
+            descricao: "Cobrança pelos IPs públicos usados pelos servidores"
+        }
+    }
+
+    if (tipoUso.includes("NatGateway")) {
+        return {
+            nome: "Saída de rede privada",
+            descricao: "Acesso à internet para recursos que ficam em rede privada"
+        }
+    }
+
+    if (tipoUso.includes("RDS:") && tipoUso.includes("Storage")) {
+        return {
+            nome: "Armazenamento do banco de dados",
+            descricao: "Espaço ocupado pelos dados do banco"
+        }
+    }
+
+    if (tipoUso.includes("InstanceUsage")) {
+        return {
+            nome: "Banco de dados",
+            descricao: detalhe
+                ? `Horas de funcionamento do banco ${detalhe}`
+                : "Horas de funcionamento do banco de dados"
+        }
+    }
+
+    if (tipoUso.includes("TimedStorage")) {
+        return {
+            nome: "Armazenamento de arquivos",
+            descricao: "Espaço ocupado pelos arquivos guardados"
+        }
+    }
+
+    if (tipoUso.includes("DataTransfer-Out")) {
+        return {
+            nome: "Envio de dados para a internet",
+            descricao: "Dados entregues aos seus usuários e clientes"
+        }
+    }
+
+    if (tipoUso.includes("DataTransfer")) {
+        return {
+            nome: "Transferência de dados",
+            descricao: "Dados trafegados entre regiões e serviços"
+        }
+    }
+
+    if (tipoUso.includes("Requests-Tier")) {
+        return {
+            nome: "Requisições de acesso",
+            descricao: "Chamadas de leitura e gravação feitas nos serviços"
+        }
+    }
+
+    if (tipoUso.includes("Lambda")) {
+        return {
+            nome: "Funções sob demanda",
+            descricao: "Código executado sem servidor dedicado"
+        }
+    }
+
+    if (tipoUso.includes("CW:") || tipoUso.includes("MetricMonitor")) {
+        return {
+            nome: "Monitoramento",
+            descricao: "Métricas e alertas acompanhados no CloudWatch"
+        }
+    }
+
+    return { nome: tipoUso, descricao: "Outros usos do serviço" }
+}
+
+function preencherGeradoresCusto(itens, servicos) {
     const lista = document.getElementById("listaOtimizacao")
-    const resumo = document.querySelector(".paginaBilling .seloEconomia")
+    const selo = document.getElementById("seloGeradoresCusto")
 
-    const totalDownscale = otimizacoesBilling.filter(
-        otimizacao => otimizacao.recomendacao == "Downscale"
-    ).length
+    if (itens.length == 0) {
+        selo.textContent = "Sem dados no período"
+        lista.innerHTML = ""
+        return
+    }
 
-    const totalUpscale = otimizacoesBilling.filter(
-        otimizacao => otimizacao.recomendacao == "Upscale"
-    ).length
+    let total = 0
+    let somaTop5 = 0
 
-    resumo.textContent = `${totalDownscale} Downscale · ${totalUpscale} Upscale`
+    for (let i = 0; i < itens.length; i++) {
+        total += itens[i].valor
 
-    const recomendacoesOrdenadas = [...otimizacoesBilling].sort(
-        (a, b) => b.prioridade - a.prioridade
-    )
+        if (i < 5) {
+            somaTop5 += itens[i].valor
+        }
+    }
+
+    selo.innerHTML =
+        `Os 5 maiores somam <strong>${Math.round(somaTop5 / total * 100)}%</strong> do gasto`
+
+    let linhas = ""
+
+    for (let i = 0; i < itens.length && i < limiteGeradoresCusto; i++) {
+        const item = itens[i]
+        const percentual = Math.round(item.valor / total * 100)
+        const cor = corDoServico(item.servico, servicos)
+        const descricao = descreverTipoDeUso(item.tipoUso)
+
+        linhas += `
+            <tr>
+                <td>
+                    <div class="itemGerador" title="Tipo de uso na AWS: ${escaparHtml(item.tipoUso)}">
+                        <span class="posicaoGerador">${i + 1}</span>
+                        <div class="recursoTabelaOtimizacao">
+                            <strong>${escaparHtml(descricao.nome)}</strong>
+                            <small>${escaparHtml(descricao.descricao)}</small>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <span class="seloServicoTabela">
+                        <i style="background: ${cor}"></i>
+                        ${escaparHtml(item.servico)}
+                    </span>
+                </td>
+                <td>
+                    <div class="utilizacaoTabelaOtimizacao">
+                        <strong>${percentual}%</strong>
+                        <div class="barraTabelaOtimizacao">
+                            <span style="width: ${percentual}%; background: ${cor}"></span>
+                        </div>
+                    </div>
+                </td>
+                <td class="alinharDireita">
+                    <span class="custoTabelaGeradores">
+                        ${formatarMoedaBilling(item.valor)}
+                    </span>
+                </td>
+            </tr>
+        `
+    }
 
     lista.innerHTML = `
-        <table class="tabelaOtimizacao">
+        <table class="tabelaOtimizacao tabelaGeradores">
             <thead>
                 <tr>
-                    <th>Recurso</th>
-                    <th>Utilização</th>
-                    <th>Capacidade atual</th>
-                    <th>Capacidade recomendada</th>
-                    <th>Recomendação</th>
+                    <th>O que está sendo cobrado</th>
+                    <th>Serviço</th>
+                    <th>Quanto pesa</th>
+                    <th class="alinharDireita">Valor no mês</th>
                 </tr>
             </thead>
-            <tbody>
-                ${recomendacoesOrdenadas.map(function (otimizacao) {
-                    const classeStatus = otimizacao.recomendacao.toLowerCase()
-
-                    return `
-                        <tr>
-                            <td>
-                                <div class="recursoTabelaOtimizacao">
-                                    <strong>${otimizacao.titulo}</strong>
-                                    <small>${otimizacao.descricao}</small>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="utilizacaoTabelaOtimizacao">
-                                    <strong>${otimizacao.utilizacao}%</strong>
-                                    <div class="barraTabelaOtimizacao">
-                                        <span style="width: ${otimizacao.utilizacao}%"></span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span class="capacidadeTabelaOtimizacao">
-                                    ${otimizacao.capacidadeAtual}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="capacidadeTabelaOtimizacao">
-                                    ${otimizacao.capacidadeRecomendada}
-                                </span>
-                            </td>
-                            <td>
-                                <span class="statusTabelaOtimizacao ${classeStatus}">
-                                    ${otimizacao.recomendacao}
-                                </span>
-                            </td>
-                        </tr>
-                    `
-                }).join("")}
-            </tbody>
+            <tbody>${linhas}</tbody>
         </table>
     `
 }
 
-function desenharComparativoCustos(comparativo) {
+function desenharComparativoCustos(servicos) {
+    const nomes = []
+    const atual = []
+    const anterior = []
+
+    for (let i = 0; i < servicos.length; i++) {
+        nomes.push(servicos[i].nome)
+        atual.push(servicos[i].atual)
+        anterior.push(servicos[i].anterior)
+    }
+
     new Chart(document.getElementById("graficoComparativoCustos"), {
         type: "bar",
         data: {
-            labels: servicosBilling.map(servico => servico.nome),
+            labels: nomes,
             datasets: [
                 {
                     label: "Mês passado",
-                    data: comparativo.anterior,
+                    data: anterior,
                     backgroundColor: "#c7bef5",
                     borderRadius: 5,
                     maxBarThickness: 26
                 },
                 {
                     label: "Este mês",
-                    data: comparativo.atual,
+                    data: atual,
                     backgroundColor: "#0755ff",
                     borderRadius: 5,
                     maxBarThickness: 26
@@ -447,8 +574,9 @@ function desenharComparativoCustos(comparativo) {
                 },
                 tooltip: {
                     callbacks: {
-                        label: contexto =>
-                            `${contexto.dataset.label}: ${formatarMoedaBilling(contexto.parsed.y)}`
+                        label: function (contexto) {
+                            return `${contexto.dataset.label}: ${formatarMoedaBilling(contexto.parsed.y)}`
+                        }
                     }
                 }
             },
@@ -472,7 +600,9 @@ function desenharComparativoCustos(comparativo) {
                         color: corTexto,
                         maxTicksLimit: 5,
                         font: { size: 11 },
-                        callback: valor => formatarMoedaBilling(valor)
+                        callback: function (valor) {
+                            return formatarMoedaBilling(valor)
+                        }
                     }
                 }
             }
@@ -570,15 +700,39 @@ function configurarModalOrcamento(idFuncionario, dados) {
     })
 }
 
-function renderizarDashboardBilling(dados) {
-    preencherIndicadoresBilling(dados)
-    desenharEvolucaoCustos(dados)
-    desenharComposicaoServico(dados.custoAcumulado)
-    preencherOtimizacoesBilling()
-    desenharComparativoCustos(criarComparativoBilling(dados.custoAcumulado))
+async function carregarOrcamento(idFuncionario) {
+    const resposta = await fetch(`/empresas/orcamento/funcionario/${idFuncionario}`)
+    const resultado = await resposta.json()
+
+    if (!resposta.ok) {
+        throw new Error(
+            resultado.mensagem || "Não foi possível carregar o orçamento."
+        )
+    }
+
+    const orcamento = Number(resultado.valorOrcamento)
+
+    if (!Number.isFinite(orcamento) || orcamento < 0) {
+        throw new Error("O orçamento recebido do servidor é inválido.")
+    }
+
+    return orcamento
 }
 
-function carregarBillingInfraestrutura() {
+async function carregarCustosAws() {
+    const resposta = await fetch("/custos/aws")
+    const resultado = await resposta.json()
+
+    if (!resposta.ok) {
+        throw new Error(
+            resultado.mensagem || "Não foi possível carregar os custos da AWS."
+        )
+    }
+
+    return resultado
+}
+
+async function carregarBillingInfraestrutura() {
     if (!verificarSessao() || !podeAcessarPagina("billingInfraestrutura.html")) {
         return
     }
@@ -587,46 +741,57 @@ function carregarBillingInfraestrutura() {
 
     const idFuncionario = sessionStorage.getItem("idUsuario")
 
-    fetch(`/empresas/orcamento/funcionario/${idFuncionario}`)
-        .then(async function (resposta) {
-            const resultado = await resposta.json()
+    let orcamento = 0
+    let orcamentoDisponivel = true
+    let custos = criarCustosVazios()
+    let mensagemCustos = ""
 
-            if (!resposta.ok) {
-                throw new Error(
-                    resultado.mensagem || "Não foi possível carregar o orçamento."
-                )
-            }
+    try {
+        orcamento = await carregarOrcamento(idFuncionario)
+    } catch (erro) {
+        console.log(erro)
+        orcamentoDisponivel = false
+    }
 
-            return resultado
-        })
-        .then(function (resultado) {
-            const orcamento = Number(resultado.valorOrcamento)
+    try {
+        custos = await carregarCustosAws()
+    } catch (erro) {
+        console.log(erro)
+        mensagemCustos = erro.message
+    }
 
-            if (!Number.isFinite(orcamento) || orcamento < 0) {
-                throw new Error("O orçamento recebido do servidor é inválido.")
-            }
+    prepararServicos(custos.servicos)
 
-            const dados = criarDadosBilling(orcamento)
+    const dados = criarDadosBilling(orcamento, custos)
 
-            renderizarDashboardBilling(dados)
-            configurarModalOrcamento(idFuncionario, dados)
-        })
-        .catch(function (erro) {
-            console.log(erro)
+    preencherIndicadoresBilling(dados)
+    desenharEvolucaoCustos(dados)
+    desenharComposicaoServico(custos.servicos)
+    preencherGeradoresCusto(custos.tiposUso, custos.servicos)
+    desenharComparativoCustos(custos.servicos)
 
-            const dados = criarDadosBilling(0)
+    if (orcamentoDisponivel) {
+        configurarModalOrcamento(idFuncionario, dados)
+    } else {
+        document.getElementById("orcamentoConsumido").textContent = "--"
+        document.getElementById("valorOrcamentoConsumido").textContent = "--"
+        document.getElementById("valorOrcamentoTotal").textContent = "Indisponível"
 
-            renderizarDashboardBilling(dados)
+        document.getElementById("orcamentoConsumidoDescricao").textContent =
+            "Não foi possível carregar o orçamento."
 
-            document.getElementById("orcamentoConsumido").textContent = "--"
-            document.getElementById("valorOrcamentoConsumido").textContent = "--"
-            document.getElementById("valorOrcamentoTotal").textContent = "Indisponível"
+        document.getElementById("abrirModalOrcamento").disabled = true
+    }
 
-            document.getElementById("orcamentoConsumidoDescricao").textContent =
-                "Não foi possível carregar o orçamento."
+    if (mensagemCustos != "") {
+        document.getElementById("custoAcumulado").textContent = "--"
+        document.getElementById("previsaoFechamento").textContent = "--"
+        document.getElementById("tendenciaDiaria").textContent = "--"
+        document.getElementById("seloGeradoresCusto").textContent = "Indisponível"
 
-            document.getElementById("abrirModalOrcamento").disabled = true
-        })
+        document.getElementById("listaOtimizacao").innerHTML =
+            `<p class="statusModalOrcamento">${escaparHtml(mensagemCustos)}</p>`
+    }
 }
 
 carregarBillingInfraestrutura()
