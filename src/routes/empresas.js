@@ -3,13 +3,12 @@ var router = express.Router()
 
 var empresaController = require("../controllers/empresaController")
 
-
 router.post("/cadastrar", function (req, res) {
-    empresaController.cadastrar(req, res)
+  empresaController.cadastrar(req, res)
 })
 
 router.get("/buscar", function (req, res) {
-    empresaController.buscarPorCnpj(req, res)
+  empresaController.buscarPorCnpj(req, res)
 })
 
 router.get("/buscar/:id", function (req, res) {
@@ -21,15 +20,23 @@ router.get("/listar", function (req, res) {
 })
 
 router.get("/empresasCadastradas", function (req, res) {
-    empresaController.carregarEmpresas(req, res);
-});
+  empresaController.carregarEmpresas(req, res)
+})
 
 router.put("/atualizar/:id", function (req, res) {
-    empresaController.atualizar(req, res)
+  empresaController.atualizar(req, res)
 })
 
 router.put("/status/:id", function (req, res) {
-    empresaController.alterarStatus(req, res)
+  empresaController.alterarStatus(req, res)
+})
+
+router.get("/orcamento/funcionario/:idFuncionario", function (req, res) {
+  empresaController.buscarOrcamento(req, res)
+})
+
+router.put("/orcamento/funcionario/:idFuncionario", function (req, res) {
+  empresaController.atualizarOrcamento(req, res)
 })
 
 module.exports = router

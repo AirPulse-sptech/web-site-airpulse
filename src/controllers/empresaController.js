@@ -1,5 +1,6 @@
 var empresaModel = require("../models/empresaModel")
 const cargos = ["ADMIN", "GESTOR", "ANALISTA"]
+const cargosOrcamento = ["ADMIN", "GESTOR"]
 const statusListagem = ["ATIVO", "INATIVO", "TODAS"]
 const statusEmpresa = ["ATIVO", "INATIVO"]
 const cnpjAirPulse = "00000000000100"
@@ -139,20 +140,20 @@ function cadastrar(req, res) {
 }
 
 function carregarEmpresas(req, res) {
-    var status = req.query.status || "TODAS"
+  var status = req.query.status || "TODAS"
 
-    if (!statusListagem.includes(status)) {
-        res.status(400).send("Status inválido. Use ATIVO, INATIVO ou TODAS.")
-    } else {
-        empresaModel.carregarEmpresas(status)
-            .then(function (resultado) {
-                res.status(200).json(resultado);
-            })
-            .catch(function (erro) {
-                console.log(erro);
-                res.status(500).json(erro.sqlMessage);
-            });
-    }
+  if (!statusListagem.includes(status)) {
+    res.status(400).send("Status inválido. Use ATIVO, INATIVO ou TODAS.")
+  } else {
+    empresaModel.carregarEmpresas(status)
+      .then(function (resultado) {
+        res.status(200).json(resultado)
+      })
+      .catch(function (erro) {
+        console.log(erro)
+        res.status(500).json(erro.sqlMessage)
+      })
+  }
 }
 
 function atualizar(req, res) {
@@ -274,6 +275,71 @@ function alterarStatus(req, res) {
   }
 }
 
+function buscarOrcamento(req, res) {
+  var idFuncionario = Number(req.params.idFuncionario)
+
+  if (!Number.isSafeInteger(idFuncionario) || idFuncionario <= 0) {
+    return res.status(400).json({ mensagem: "ID do funcionário inválido." })
+  }
+
+  empresaModel.buscarOrcamentoPorFuncionario(idFuncionario)
+    .then((resultado) => {
+      if (resultado.length == 0) {
+        return res.status(404).json({ mensagem: "Empresa vinculada ao funcionário não encontrada." })
+      }
+
+      res.status(200).json({
+        valorOrcamento: resultado[0].valorOrcamento
+      })
+    })
+    .catch((erro) => {
+      console.log(erro)
+      res.status(500).json({ mensagem: "Não foi possível consultar o orçamento." })
+    })
+}
+
+function atualizarOrcamento(req, res) {
+  var idFuncionario = Number(req.params.idFuncionario)
+  var valorOrcamento = Number(req.body.valorOrcamentoServer)
+
+  if (!Number.isSafeInteger(idFuncionario) || idFuncionario <= 0) {
+    return res.status(400).json({ mensagem: "ID do funcionário inválido." })
+  }
+
+  if (!Number.isFinite(valorOrcamento) || valorOrcamento <= 0) {
+    return res.status(400).json({ mensagem: "Informe um orçamento maior que zero." })
+  }
+
+  valorOrcamento = Math.round(valorOrcamento * 100) / 100
+
+  empresaModel.buscarOrcamentoPorFuncionario(idFuncionario)
+    .then((resultado) => {
+      if (resultado.length == 0) {
+        return res.status(404).json({ mensagem: "Empresa vinculada ao funcionário não encontrada." })
+      }
+
+      if (!cargosOrcamento.includes(resultado[0].cargo)) {
+        return res.status(403).json({ mensagem: "Você não possui permissão para alterar o orçamento." })
+      }
+
+      empresaModel.atualizarOrcamentoPorFuncionario(idFuncionario, valorOrcamento)
+        .then(() => {
+          res.status(200).json({
+            mensagem: "Orçamento atualizado com sucesso!",
+            valorOrcamento: valorOrcamento
+          })
+        })
+        .catch((erro) => {
+          console.log(erro)
+          res.status(500).json({ mensagem: "Não foi possível atualizar o orçamento." })
+        })
+    })
+    .catch((erro) => {
+      console.log(erro)
+      res.status(500).json({ mensagem: "Não foi possível consultar os dados da empresa." })
+    })
+}
+
 module.exports = {
   buscarPorCnpj,
   buscarPorId,
@@ -281,5 +347,7 @@ module.exports = {
   listar,
   carregarEmpresas,
   atualizar,
-  alterarStatus
+  alterarStatus,
+  buscarOrcamento,
+  atualizarOrcamento
 }

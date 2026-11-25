@@ -45,21 +45,21 @@ function cadastrarRepresentante(nome, dataNascimento, email, telefone, cpf, carg
 }
 
 function carregarEmpresas(status) {
-    var filtroStatus = ""
+  var filtroStatus = ""
 
-    if (status != "TODAS") {
-        filtroStatus = `AND statusSistema = '${status}'`
-    }
+  if (status != "TODAS") {
+    filtroStatus = `AND statusSistema = '${status}'`
+  }
 
-    var instrucaoSql = `
-        SELECT idEmpresaFabricante AS id, razaoSocial, nomeFantasia, cnpj, segmentoAtuacao, statusSistema
-        FROM empresaFabricante
-        WHERE cnpj <> '00000000000100' ${filtroStatus}
-        ORDER BY CASE WHEN statusSistema = 'ATIVO' THEN 0 ELSE 1 END, razaoSocial;
-    `;
+  var instrucaoSql = `
+    SELECT idEmpresaFabricante AS id, razaoSocial, nomeFantasia, cnpj, segmentoAtuacao, statusSistema
+    FROM empresaFabricante
+    WHERE cnpj <> '00000000000100' ${filtroStatus}
+    ORDER BY CASE WHEN statusSistema = 'ATIVO' THEN 0 ELSE 1 END, razaoSocial;
+  `
 
-    console.log("Executando a instrução SQL: \n" + instrucaoSql);
-    return database.executar(instrucaoSql);
+  console.log("Executando a instrução SQL: \n" + instrucaoSql)
+  return database.executar(instrucaoSql)
 }
 
 function atualizarEndereco(idEndereco, cep, logradouro, bairro, numero, complemento, estado, cidade) {
@@ -95,6 +95,29 @@ function atualizarStatus(id, status) {
   return database.executar(instrucaoSql)
 }
 
+function buscarOrcamentoPorFuncionario(idFuncionario) {
+  var instrucaoSql = `
+    SELECT e.valorOrcamento, f.cargo
+    FROM empresaFabricante e
+    INNER JOIN funcionario f ON f.fkEmpresaFabricante = e.idEmpresaFabricante
+    WHERE f.idFuncionario = ${idFuncionario}
+    AND f.statusSistema = '1';
+  `
+  return database.executar(instrucaoSql)
+}
+
+function atualizarOrcamentoPorFuncionario(idFuncionario, valorOrcamento) {
+  var instrucaoSql = `
+    UPDATE empresaFabricante e
+    INNER JOIN funcionario f ON f.fkEmpresaFabricante = e.idEmpresaFabricante
+    SET e.valorOrcamento = ${valorOrcamento}
+    WHERE f.idFuncionario = ${idFuncionario}
+    AND f.statusSistema = '1'
+    AND f.cargo IN ('ADMIN', 'GESTOR');
+  `
+  return database.executar(instrucaoSql)
+}
+
 module.exports = {
   buscarPorCnpj,
   buscarPorId,
@@ -102,9 +125,10 @@ module.exports = {
   cadastrarEndereco,
   cadastrarEmpresa,
   cadastrarRepresentante,
-  cadastrarEmpresa,
   carregarEmpresas,
   atualizarEndereco,
   atualizarEmpresa,
-  atualizarStatus
+  atualizarStatus,
+  buscarOrcamentoPorFuncionario,
+  atualizarOrcamentoPorFuncionario
 }

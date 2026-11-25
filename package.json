@@ -11,6 +11,7 @@
   "author": "Feito pelos desenvolvedores @ São Paulo Tech School / Bandtec Digital School",
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-cost-explorer": "^3.1178.0",
     "@aws-sdk/client-s3": "^3.1166.0",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",

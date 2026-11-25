@@ -17,6 +17,7 @@ var relatorioRouter = require("./src/routes/relatorio")
 var relatorioGestorRouter = require("./src/routes/relatorioGestor")
 var dashboardRelatorioRouter = require("./src/routes/dashboardRelatorio")
 var gerenciarAeronaveRouter = require("./src/routes/gerenciarAeronave")
+var custosAwsRouter = require("./src/routes/custosAws")
 var dashboardAnalistaRouter = require("./src/routes/dashboardAnalista")
 
 app.use(express.json())
@@ -34,6 +35,7 @@ app.use("/relatorio", relatorioRouter)
 app.use("/relatorio", relatorioGestorRouter)
 app.use("/dashboardRelatorio", dashboardRelatorioRouter)
 app.use("/gerenciarAeronave", gerenciarAeronaveRouter)
+app.use("/custos", custosAwsRouter)
 app.use("/dashboardAnalista", dashboardAnalistaRouter)
 
 app.listen(portaApp, function () {
