@@ -18,6 +18,7 @@ USE airpulse;
         nomeFantasia VARCHAR(100),
         cnpj CHAR(14),
         segmentoAtuacao VARCHAR(80),
+        valorOrcamento DECIMAL(12,2) DEFAULT 50.00,
         telefone VARCHAR(20) NOT NULL,
         statusSistema VARCHAR(80) NOT NULL,
         entradaSistema DATETIME NOT NULL,
