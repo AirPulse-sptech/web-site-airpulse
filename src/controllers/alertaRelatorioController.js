@@ -66,6 +66,12 @@ function buscarAlertas(computadores) {
     })
 }
 
+function buscarIdsCobertos(empresaId, idAeronave) {
+    return alertaRelatorioModel.listarCobertos(empresaId, idAeronave).then(function (vinculos) {
+        return new Set(vinculos.map(function (vinculo) { return vinculo.alertaIdAws }))
+    })
+}
+
 function calcularCobertura(alertas, idsCobertos, inicio, fim) {
     var unicos = new Map()
     alertas.forEach(function (alerta) {
@@ -92,9 +98,13 @@ function listar(req, res) {
         return res.status(400).json({ mensagem: "Informe aeronave, funcionário e período válidos." })
     }
     return alertaRelatorioModel.contexto(idFuncionario, "ANALISTA", idAeronave)
-        .then(function (contexto) { return buscarAlertas(contexto.computadores) })
-        .then(function (alertas) {
-            res.status(200).json(alertas.filter(function (alerta) { return noPeriodo(alerta, inicio, fim) }))
+        .then(function (contexto) {
+            return Promise.all([buscarAlertas(contexto.computadores), buscarIdsCobertos(contexto.empresaId, idAeronave)])
+        })
+        .then(function ([alertas, idsCobertos]) {
+            res.status(200).json(alertas.filter(function (alerta) {
+                return !idsCobertos.has(alerta.alerta_id) && noPeriodo(alerta, inicio, fim)
+            }))
         })
         .catch(function (erro) { responderErro(res, erro) })
 }
@@ -108,8 +118,8 @@ function cobertura(req, res) {
     }
     return alertaRelatorioModel.contexto(idFuncionario, "GESTOR", idAeronave)
         .then(function (contexto) {
-            return Promise.all([buscarAlertas(contexto.computadores), alertaRelatorioModel.listarCobertos(contexto.empresaId, idAeronave)])
-                .then(function (resultados) {
+            return Promise.all([buscarAlertas(contexto.computadores), buscarIdsCobertos(contexto.empresaId, idAeronave)])
+                .then(function ([alertas, idsCobertos]) {
                     var fim = diaLocal(new Date())
                     var inicio = null
                     if (dias != "TODOS") {
@@ -117,8 +127,7 @@ function cobertura(req, res) {
                         dataInicio.setUTCDate(dataInicio.getUTCDate() - Number(dias) + 1)
                         inicio = dataInicio.toISOString().slice(0, 10)
                     }
-                    var idsCobertos = new Set(resultados[1].map(function (vinculo) { return vinculo.alertaIdAws }))
-                    var resumo = calcularCobertura(resultados[0], idsCobertos, inicio, dias == "TODOS" ? null : fim)
+                    var resumo = calcularCobertura(alertas, idsCobertos, inicio, dias == "TODOS" ? null : fim)
                     resumo.aeronaves = contexto.aeronaves
                     res.status(200).json(resumo)
                 })
@@ -148,10 +157,18 @@ function validarSelecao(dados, idRelatorio) {
                     if (alerta.aeronave_id == dados.fkAeronave && alerta.empresa_id == contexto.empresaId) porId.set(alerta.alerta_id, alerta)
                 })
                 var disponiveis = Promise.resolve([])
-                if (ids.some(function (id) { return !porId.has(id) })) {
-                    disponiveis = buscarAlertas(contexto.computadores).catch(function () {
+                var novosIds = ids.filter(function (id) { return !porId.has(id) })
+                if (novosIds.length) {
+                    var alertasAws = buscarAlertas(contexto.computadores).catch(function () {
                         throw Object.assign(new Error("Não foi possível validar os alertas na AWS. Tente novamente."), { status: 503 })
                     })
+                    disponiveis = Promise.all([alertasAws, buscarIdsCobertos(contexto.empresaId, dados.fkAeronave)])
+                        .then(function ([alertas, idsCobertos]) {
+                            if (novosIds.some(function (id) { return idsCobertos.has(id) })) {
+                                throw Object.assign(new Error("Um alerta selecionado j\u00e1 foi coberto por outro relat\u00f3rio. Atualize a lista de alertas."), { status: 409 })
+                            }
+                            return alertas
+                        })
                 }
                 return disponiveis.then(function (alertas) {
                     alertas.forEach(function (alerta) { porId.set(alerta.alerta_id, alerta) })

@@ -45,10 +45,13 @@ function alertaNoContexto(alerta) {
   return String(alerta.aeronave_id) === selectAeronave.value && dia >= campoInicio.value && dia <= campoFim.value
 }
 
-function mostrarAlertasRelatorio() {
+function mostrarAlertasRelatorio(preservarSelecao) {
   const lista = document.querySelector("#listaAlertasRelatorio")
   lista.replaceChildren()
   const alertas = new Map([...alertasDisponiveis, ...alertasSalvos].filter(alertaNoContexto).map(a => [a.alerta_id, a]))
+  if (!somenteLeitura && !preservarSelecao) {
+    alertasSelecionados = new Set([...alertasSelecionados].filter(id => alertas.has(id)))
+  }
   for (const alerta of alertas.values()) {
     const linha = document.createElement("label")
     linha.className = "alertaRelatorio"
@@ -82,17 +85,13 @@ function atualizarContagemAlertas() {
 function carregarAlertasRelatorio() {
   const consulta = ++consultaAlertas
   const estado = document.querySelector("#estadoAlertasRelatorio")
-  const preservados = [...new Map([...alertasDisponiveis, ...alertasSalvos].map(a => [a.alerta_id, a])).values()].filter(alertaNoContexto)
-  alertasDisponiveis = preservados
-  if (!somenteLeitura) {
-    const idsNoContexto = new Set(preservados.map(a => a.alerta_id))
-    alertasSelecionados = new Set([...alertasSelecionados].filter(id => idsNoContexto.has(id)))
-  }
-  mostrarAlertasRelatorio()
+  alertasDisponiveis = []
   if (!selectAeronave.value || !campoInicio.value || !campoFim.value || campoFim.value < campoInicio.value) {
+    mostrarAlertasRelatorio()
     estado.textContent = "Escolha uma aeronave e um período válido."
     return Promise.resolve()
   }
+  mostrarAlertasRelatorio(true)
   if (somenteLeitura) return Promise.resolve()
   estado.textContent = "Carregando alertas…"
   const parametros = new URLSearchParams({ inicio: campoInicio.value, fim: campoFim.value })
@@ -101,10 +100,11 @@ function carregarAlertasRelatorio() {
       if (consulta !== consultaAlertas) return
       alertasDisponiveis = alertas
       mostrarAlertasRelatorio()
-      if (!alertas.length && !preservados.length) estado.textContent = "Nenhum alerta disponível para esta aeronave no período."
+      if (!alertas.length && !alertasSalvos.some(alertaNoContexto)) estado.textContent = "Nenhum alerta disponível para esta aeronave no período."
     })
     .catch(() => {
       if (consulta !== consultaAlertas) return
+      mostrarAlertasRelatorio()
       estado.textContent = "Não foi possível carregar os alertas. Tente atualizar. Os vínculos já salvos foram preservados."
     })
 }
@@ -654,6 +654,7 @@ function salvarRelatorio(status) {
         })
       }
 
+      if (resposta.status === 409) carregarAlertasRelatorio()
       return resposta.text().then(function (textoErro) {
         try {
           const erroJson = JSON.parse(textoErro)
