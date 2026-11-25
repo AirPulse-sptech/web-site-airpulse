@@ -9,5 +9,6 @@ package-lock.json
 .env.compose
 .env.compose.*
 deploy.env
+deploy.sh
 
 .venv/
