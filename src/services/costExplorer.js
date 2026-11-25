@@ -3,7 +3,6 @@ const { CostExplorerClient, GetCostAndUsageCommand } = require("@aws-sdk/client-
 const cliente = new CostExplorerClient({ region: "us-east-1" })
 
 const duracaoCache = 60 * 60 * 1000
-const cotacaoDolar = Number(process.env.COTACAO_DOLAR) || 1
 
 let cache = null
 let cacheEm = 0
@@ -45,15 +44,8 @@ function nomeCurtoDoServico(nome) {
 
 function converterValor(grupo) {
     const metrica = grupo.Metrics.UnblendedCost
-    const valor = Number(metrica.Amount)
-
-    if (metrica.Unit == "USD") {
-        return valor * cotacaoDolar
-    }
-
-    return valor
+    return Number(metrica.Amount)
 }
-
 async function consultar(inicio, fim, granularidade, agrupamento) {
     const periodos = []
     let token = undefined

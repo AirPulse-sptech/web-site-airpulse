@@ -10,7 +10,10 @@ function arredondar(valor) {
 }
 
 function formatarMoedaBilling(valor) {
-    return valor.toLocaleString("pt-BR", { style: "currency", currency: "BRL" })
+    return valor.toLocaleString("pt-BR", {
+        style: "currency",
+        currency: "USD"
+    })
 }
 
 function escaparHtml(texto) {
