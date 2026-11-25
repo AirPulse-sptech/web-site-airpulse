@@ -3,6 +3,7 @@ var metricaModel = require("../models/metricaModel")
 var alertaRelatorioModel = require("../models/alertaRelatorioModel")
 var dashboardAnalistaModel = require("../models/dashboardAnalistaModel")
 var alertaRelatorioController = require("./alertaRelatorioController")
+var detalheGoldModel = require("../models/detalheGoldModel")
 
 var colunaPorTipo = { CPU: "cpu_media", RAM: "ram_media", DISCO: "flash_media", FLASH: "flash_media" }
 var nomePorTipo = { CPU: "CPU", RAM: "RAM", DISCO: "Armazenamento", FLASH: "Armazenamento" }
@@ -218,8 +219,55 @@ function buscarVisaoGeral(req, res) {
         .catch(function (erro) { responderErro(res, erro) })
 }
 
+function buscarDetalhePlaca(req, res) {
+    var idFuncionario = Number(req.params.idFuncionario)
+    var idPlaca = Number(req.params.idPlaca)
+    if (!idValido(idFuncionario) || !idValido(idPlaca)) {
+        return res.status(400).json({ mensagem: "Informe uma placa e um funcionário válidos." })
+    }
+    return alertaRelatorioModel.contexto(idFuncionario, "ANALISTA", null)
+        .then(function (contexto) {
+            return dashboardAnalistaModel.buscarDetalhePlaca(idPlaca, contexto.empresaId).then(function (linhas) {
+                if (!linhas.length) throw Object.assign(new Error("Placa não encontrada ou sem acesso."), { status: 404 })
+                var placa = linhas[0]
+                var computador = contexto.computadores.find(function (item) { return item.idComputador == placa.idComputador })
+                if (!computador) throw Object.assign(new Error("Placa não encontrada ou sem acesso."), { status: 404 })
+                return Promise.all([
+                    detalheGoldModel.buscar(placa.hostname, String(placa.numeroSerie)),
+                    alertaModel.listar([computador]).then(function (eventos) {
+                        return alertaRelatorioController.consolidar(eventos, [computador])
+                    })
+                ]).then(function (resultados) {
+                    var componentes = {}
+                    linhas.forEach(function (linha) {
+                        var tipo = String(linha.tipo || "").toUpperCase()
+                        var chave = tipo == "DISCO" || tipo == "FLASH" ? "flash" : tipo.toLowerCase()
+                        if (linha.idComponente) componentes[chave] = {
+                            id: linha.idComponente, nome: chave == "flash" ? "Armazenamento" : tipo,
+                            limiteAtencao: linha.limiteAtencao == null ? null : Number(linha.limiteAtencao),
+                            limiteCritico: linha.limiteCritico == null ? null : Number(linha.limiteCritico)
+                        }
+                    })
+                    var serieGold = String(resultados[0].serieGold || placa.numeroSerie).trim()
+                    var alertas = resultados[1].filter(function (alerta) {
+                        return String(alerta.placa_serie).trim().toLowerCase() === serieGold.toLowerCase()
+                    })
+                    res.status(200).json({
+                        placa: { id: placa.idPlaca, nome: placa.placa, serie: String(placa.numeroSerie), hostname: placa.hostname,
+                            computador: placa.computador, aeronave: placa.aeronave, modeloAeronave: placa.modelo },
+                        componentes: componentes, monitoramento: resultados[0].monitoramento,
+                        serie: resultados[0].serie, alertas: alertas,
+                        diagnosticoGold: resultados[0].diagnostico
+                    })
+                })
+            })
+        })
+        .catch(function (erro) { responderErro(res, erro) })
+}
+
 module.exports = {
     buscarVisaoGeral,
+    buscarDetalhePlaca,
     montarFrota,
     classificar,
     explicarErroAws
