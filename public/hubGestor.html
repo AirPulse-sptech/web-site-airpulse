@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="assets/icon/logo-icon.png">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="css/global.css">
+    <link rel="stylesheet" href="css/painel.css">
+    <link rel="stylesheet" href="css/hubGestor.css">
+    <title>AirPulse - Hub do Gestor</title>
+</head>
+
+<body>
+
+    <div class="appLayout">
+        <aside id="sidebar">
+            <div class="sidebarHeader">
+                <a class="sidebarBrand" href="hubGestor.html">
+                    <img class="brandLogoFull"
+                        src="assets/AirPulse_Logo_Pack/Fundo transparente/07_Principal_Branco.svg" alt="AirPulse">
+                </a>
+            </div>
+
+            <nav class="sidebarNav"></nav>
+
+            <div class="sidebarFooter">
+                <div class="userProfile">
+                    <div class="userAvatar" id="userAvatar">--</div>
+                    <div class="userDetails">
+                        <span class="userName" id="userNameDisplay">Usuário</span>
+                        <span class="userRole" id="userRoleDisplay"></span>
+                    </div>
+                </div>
+
+                <button class="btnLogout" type="button" onclick="limparSessao()" title="Encerrar sessão no sistema">
+                    <i class="bi bi-box-arrow-right" style="font-size: 18px" aria-hidden="true"></i>
+                    <span>Deslogar</span>
+                </button>
+            </div>
+        </aside>
+
+        <div class="sidebarBackdrop" id="sidebarBackdrop"></div>
+
+        <div class="mainWrapper">
+            <header class="topbar">
+                <div class="topbarLeft">
+                    <button class="mobileToggle" id="mobileToggle" type="button" aria-label="Abrir menu">
+                        <i class="bi bi-list" aria-hidden="true"></i>
+                    </button>
+                    <span class="topbarTitle">Hub</span>
+                </div>
+            </header>
+
+            <main class="hbConteudo paginaInterna">
+                <header class="hbCabecalho">
+                    <div>
+                        <h1>Olá, <span id="hbNomeGestor">gestor</span></h1>
+                        <p>Escolha um painel para acompanhar a frota, os alertas e a sua equipe.</p>
+                    </div>
+                    <div class="hbColeta">
+                        <span class="hbPonto" aria-hidden="true"></span>
+                        Última coleta às <time id="hbHoraColeta">--:--</time>
+                    </div>
+                </header>
+
+                <section class="hbSecao" aria-labelledby="hbTituloPaineis">
+                    <div class="hbTituloSecao">
+                        <h2 id="hbTituloPaineis">Dashboards</h2>
+                        <p>Os painéis do perfil de gestor. Clique em um card para abrir.</p>
+                    </div>
+
+                    <div class="hbGradePaineis">
+                        <a class="hbCard" href="dashboardGeral.html" aria-label="Abrir Visão geral da frota">
+                            <div class="hbCardTopo">
+                                <span class="hbIconeCard azul"><i class="bi bi-grid-1x2" aria-hidden="true"></i></span>
+                                <div>
+                                    <h3>Visão geral da frota</h3>
+                                    <p>Status atual das aeronaves.</p>
+                                </div>
+                            </div>
+
+                            <div class="hbPrevia hbPreviaStatus">
+                                <div class="hbRosca" id="hbRosca" role="img" aria-label="Status das aeronaves">
+                                    <div class="hbRoscaCentro">
+                                        <strong id="hbTotalAeronaves">—</strong>
+                                        <span>aeronaves</span>
+                                    </div>
+                                </div>
+                                <ul class="hbLegenda" id="hbLegendaStatus" aria-label="Status das aeronaves"></ul>
+                            </div>
+
+                            <div class="hbRodape">
+                                <div class="hbNumeros">
+                                    <span>Status na última coleta · <strong id="hbHoraStatus">--:--</strong></span>
+                                </div>
+                                <span class="hbAbrir">Abrir painel <i class="bi bi-arrow-right" aria-hidden="true"></i></span>
+                            </div>
+                        </a>
+
+                        <a class="hbCard" href="gerenciarAeronave.html" aria-label="Abrir Gestão da frota">
+                            <div class="hbCardTopo">
+                                <span class="hbIconeCard roxo"><i class="bi bi-airplane" aria-hidden="true"></i></span>
+                                <div>
+                                    <h3>Gestão da frota</h3>
+                                    <p>Aeronaves e FMCs cadastrados.</p>
+                                </div>
+                            </div>
+
+                            <ul class="hbPrevia hbListaPrevia" id="hbListaAeronaves" aria-label="Últimas 3 aeronaves cadastradas">
+                                <li class="hbItemVazio">Carregando aeronaves...</li>
+                            </ul>
+
+                            <div class="hbRodape">
+                                <div class="hbNumeros">
+                                    <span><strong class="roxo" id="hbFmcsAtivos">—</strong> FMCs ativos</span>
+                                    <span><strong class="cinza" id="hbFmcsInativos">—</strong> inativos</span>
+                                </div>
+                                <span class="hbAbrir">Abrir painel <i class="bi bi-arrow-right" aria-hidden="true"></i></span>
+                            </div>
+                        </a>
+
+                        <a class="hbCard" href="relatorioGestor.html" aria-label="Abrir Relatórios de análise">
+                            <div class="hbCardTopo">
+                                <span class="hbIconeCard roxo"><i class="bi bi-file-earmark-text" aria-hidden="true"></i></span>
+                                <div>
+                                    <h3>Relatórios de análise</h3>
+                                    <p>Relatórios da equipe.</p>
+                                </div>
+                            </div>
+
+                            <ul class="hbPrevia hbListaPrevia" id="hbListaRelatorios" aria-label="Últimos 3 relatórios">
+                                <li class="hbItemVazio">Carregando relatórios...</li>
+                            </ul>
+
+                            <div class="hbRodape">
+                                <div class="hbNumeros">
+                                    <span><strong class="critico" id="hbRelatoriosCriticos">—</strong> <span id="hbRotuloCriticos">relatórios críticos</span></span>
+                                    <span><strong class="atencao" id="hbRelatoriosAtencao">—</strong> em atenção</span>
+                                </div>
+                                <span class="hbAbrir">Abrir painel <i class="bi bi-arrow-right" aria-hidden="true"></i></span>
+                            </div>
+                        </a>
+                    </div>
+                </section>
+
+                <section class="hbSecao" aria-labelledby="hbTituloGestao">
+                    <div class="hbTituloSecao">
+                        <h2 id="hbTituloGestao">Gestão da operação</h2>
+                        <p>Cadastros e manutenção da frota e da equipe.</p>
+                    </div>
+
+                    <div class="hbGradeAtalhos">
+                        <a class="hbAtalho" href="cadastroAeronave.html">
+                            <span class="hbIconeAtalho azul"><i class="bi bi-airplane" aria-hidden="true"></i></span>
+                            <span>Cadastrar aeronave</span>
+                        </a>
+                        <a class="hbAtalho" href="cadastroFmc.html">
+                            <span class="hbIconeAtalho roxo"><i class="bi bi-box" aria-hidden="true"></i></span>
+                            <span>Cadastrar FMC</span>
+                        </a>
+                        <a class="hbAtalho" href="cadastroFuncionario.html">
+                            <span class="hbIconeAtalho verde"><i class="bi bi-person-plus" aria-hidden="true"></i></span>
+                            <span>Cadastrar funcionário</span>
+                        </a>
+                        <a class="hbAtalho" href="gerenciarFuncionario.html">
+                            <span class="hbIconeAtalho verde"><i class="bi bi-people" aria-hidden="true"></i></span>
+                            <span>Gerenciar funcionários</span>
+                        </a>
+                    </div>
+                </section>
+            </main>
+        </div>
+    </div>
+    <script src="js/sessao.js"></script>
+    <script>validarSessao();</script>
+    <script src="js/menuLateral.js"></script>
+    <script src="js/dadosPlaca.js"></script>
+    <script src="js/hubGestor.js"></script>
+</body>
+
+</html>
