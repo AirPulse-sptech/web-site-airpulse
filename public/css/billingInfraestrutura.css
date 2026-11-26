@@ -6,37 +6,67 @@
 }
 
 .indicadoresBilling .cartaoIndicador {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
     min-width: 0;
-    min-height: 0;
-    gap: 14px;
-    align-items: center;
+    min-height: 132px;
+    padding: 13px 14px 11px;
+    gap: 0;
+    border: 1px solid #e6e9f2;
+    border-radius: 9px;
+    background: #ffffff;
+    box-shadow: 0 2px 8px rgba(25, 40, 80, 0.035);
 }
 
 .indicadoresBilling .cartaoIndicador > div:last-child {
-    display: grid;
-    grid-template-rows: 22px 34px 22px 22px;
-    align-content: center;
-    gap: 2px;
+    display: flex;
+    flex-direction: column;
     flex: 1;
     align-self: stretch;
     min-width: 0;
+    gap: 0;
 }
 
 .indicadoresBilling .cartaoIndicador h2 {
     width: 100%;
     min-height: 0;
-    margin: 0;
+    margin: 0 0 7px;
+    padding-right: 30px;
     align-self: stretch;
+    color: #303957;
+    font-size: 11px;
+    font-weight: 600;
+    line-height: 1.3;
     text-align: left;
 }
 
 .indicadoresBilling .valorIndicador {
-    display: flex;
-    align-items: center;
-    height: 34px;
-    font-size: 26px;
-    line-height: 1.2;
+    display: block;
+    height: auto;
+    min-height: 28px;
+    margin: 0 0 4px;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 1.12;
     white-space: nowrap;
+}
+
+.indicadoresBilling .cartaoIndicador:nth-child(1) .valorIndicador {
+    color: #6750e8;
+}
+
+.indicadoresBilling .cartaoIndicador:nth-child(2) .valorIndicador {
+    color: #ed7928;
+}
+
+.indicadoresBilling .cartaoIndicador:nth-child(3) .valorIndicador {
+    color: #26834e;
+}
+
+.indicadoresBilling .cartaoIndicador:nth-child(4) .valorIndicador {
+    color: #d72e55;
 }
 
 .indicadoresBilling .cartaoIndicador p {
@@ -44,10 +74,61 @@
     align-items: center;
     flex-wrap: wrap;
     gap: 2px 6px;
-    min-height: 22px;
+    min-height: 0;
     margin: 0;
-    font-size: 11px;
+    color: #56617d;
+    font-size: 10px;
     line-height: 1.4;
+}
+
+.indicadoresBilling .cartaoIndicador > div:last-child > p:last-child {
+    margin-top: auto;
+    padding-top: 8px;
+    border-top: 1px solid #edf0f6;
+}
+
+.indicadoresBilling .caixaIcone {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.indicadoresBilling .caixaIcone.azul {
+    color: #7658df;
+    border-color: #d9cefa;
+    background: #f4f0ff;
+}
+
+.indicadoresBilling .caixaIcone.laranja {
+    color: #ed913e;
+    border-color: #f6d6b7;
+    background: #fff6ed;
+}
+
+.indicadoresBilling .caixaIcone.verde {
+    color: #269b62;
+    border-color: #bce5ce;
+    background: #effaf3;
+}
+
+.indicadoresBilling .caixaIcone.vermelho {
+    color: #d94b6a;
+    border-color: #f2c4d0;
+    background: #fff1f4;
+}
+
+.indicadoresBilling .caixaIcone .icone {
+    width: auto;
+    height: auto;
+    font-size: 12px;
 }
 
 .linhaValor {
@@ -89,32 +170,33 @@
 .variacao {
     display: inline-flex;
     align-items: center;
-    padding: 2px 8px 2px 4px;
-    border-radius: 999px;
-    font-size: 11px;
-    font-weight: 700;
+    padding: 0;
+    border-radius: 0;
+    font-size: 10px;
+    font-weight: 600;
     line-height: 1.4;
-    white-space: nowrap;
+    white-space: normal;
+    background: transparent;
 }
 
 .variacao .bi {
-    font-size: 16px;
+    font-size: 12px;
 }
 
 .variacao.positiva {
-    color: #0b9a5b;
-    background: #e2f8ee;
+    color: #168653;
+    background: transparent;
 }
 
 .variacao.negativa {
-    color: #ff2549;
-    background: #ffe9ee;
+    color: #d94b6a;
+    background: transparent;
 }
 
 .variacao.neutra {
-    padding-left: 8px;
-    color: #0860ff;
-    background: #e4efff;
+    padding-left: 0;
+    color: #68738e;
+    background: transparent;
 }
 
 .dataDashboard {
@@ -508,7 +590,7 @@
     }
 
     .indicadoresBilling .valorIndicador {
-        font-size: clamp(20px, calc((100cqw - 400px) / 24), 26px);
+        font-size: 25px;
     }
 
     .mainWrapper > main.paginaBilling {
@@ -543,19 +625,19 @@
 
 @media (min-width: 1280px) and (max-width: 1439px) {
     .paginaBilling .indicadoresBilling .cartaoIndicador {
-        gap: 12px;
-        padding-inline: 16px;
+        gap: 0;
+        padding-inline: 14px;
     }
 
     .paginaBilling .indicadoresBilling .caixaIcone {
-        width: 40px;
-        height: 40px;
+        width: 22px;
+        height: 22px;
     }
 
     .paginaBilling .indicadoresBilling .icone {
-        width: 22px;
-        height: 22px;
-        font-size: 22px;
+        width: auto;
+        height: auto;
+        font-size: 12px;
     }
 }
 
@@ -578,15 +660,19 @@
         padding: 12px 16px;
     }
 
+    .paginaBilling .indicadoresBilling .cartaoIndicador {
+        padding: 12px 14px 10px;
+    }
+
     .paginaBilling .indicadoresBilling .caixaIcone {
-        width: 40px;
-        height: 40px;
+        width: 22px;
+        height: 22px;
     }
 
     .paginaBilling .indicadoresBilling .icone {
-        width: 22px;
-        height: 22px;
-        font-size: 22px;
+        width: auto;
+        height: auto;
+        font-size: 12px;
     }
 
     .paginaBilling .areaGrafico,
@@ -671,8 +757,12 @@
     position: relative;
 }
 
-.cartaoOrcamento h2 {
-    padding-right: 26px;
+.indicadoresBilling .cartaoOrcamento h2 {
+    padding-right: 58px;
+}
+
+.cartaoOrcamento .caixaIcone {
+    right: 46px;
 }
 
 .botaoEditarOrcamento {
