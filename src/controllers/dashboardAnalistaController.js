@@ -181,38 +181,40 @@ function responderErro(res, erro) {
     return res.status(erro.code && erro.code.startsWith("ER_") ? 500 : 503).json({ mensagem: mensagem })
 }
 
+function montarVisaoGeral(contexto) {
+    var avisos = new Set()
+    function semGold(origem) {
+        return function (erro) {
+            console.log(`Erro ao ler ${origem} no S3:`, erro.name || erro.code, erro.message)
+            avisos.add(explicarErroAws(erro))
+            return []
+        }
+    }
+    return Promise.all([
+        dashboardAnalistaModel.buscarEstrutura(contexto.empresaId),
+        metricaModel.listarUltimaColeta(contexto.computadores).catch(semGold("métricas")),
+        alertaModel.listar(contexto.computadores).then(function (eventos) {
+            return alertaRelatorioController.consolidar(eventos, contexto.computadores)
+        }).catch(semGold("alertas"))
+    ]).then(function (resultados) {
+        if (avisos.size == 0 && contexto.computadores.length > 0 && resultados[1].length == 0) {
+            avisos.add("Nenhuma métrica foi encontrada no bucket gold para os hostnames cadastrados ("
+                + contexto.computadores.map(function (computador) { return computador.hostname }).join(", ")
+                + "). Confira se o hostname de cada FMC no banco é igual ao das pastas hostname= do S3.")
+        }
+        var visaoGeral = montarFrota(resultados[0], resultados[1], resultados[2])
+        visaoGeral.avisos = Array.from(avisos)
+        return visaoGeral
+    })
+}
+
 function buscarVisaoGeral(req, res) {
     var idFuncionario = Number(req.params.idFuncionario)
     if (!idValido(idFuncionario)) {
         return res.status(400).json({ mensagem: "O id do funcionário está inválido!" })
     }
     return alertaRelatorioModel.contexto(idFuncionario, "ANALISTA", null)
-        .then(function (contexto) {
-            var avisos = new Set()
-            function semGold(origem) {
-                return function (erro) {
-                    console.log(`Erro ao ler ${origem} no S3:`, erro.name || erro.code, erro.message)
-                    avisos.add(explicarErroAws(erro))
-                    return []
-                }
-            }
-            return Promise.all([
-                dashboardAnalistaModel.buscarEstrutura(contexto.empresaId),
-                metricaModel.listarUltimaColeta(contexto.computadores).catch(semGold("métricas")),
-                alertaModel.listar(contexto.computadores).then(function (eventos) {
-                    return alertaRelatorioController.consolidar(eventos, contexto.computadores)
-                }).catch(semGold("alertas"))
-            ]).then(function (resultados) {
-                if (avisos.size == 0 && contexto.computadores.length > 0 && resultados[1].length == 0) {
-                    avisos.add("Nenhuma métrica foi encontrada no bucket gold para os hostnames cadastrados ("
-                        + contexto.computadores.map(function (computador) { return computador.hostname }).join(", ")
-                        + "). Confira se o hostname de cada FMC no banco é igual ao das pastas hostname= do S3.")
-                }
-                var visaoGeral = montarFrota(resultados[0], resultados[1], resultados[2])
-                visaoGeral.avisos = Array.from(avisos)
-                return visaoGeral
-            })
-        })
+        .then(montarVisaoGeral)
         .then(function (visaoGeral) {
             res.status(200).json(visaoGeral)
         })
@@ -267,6 +269,8 @@ function buscarDetalhePlaca(req, res) {
 
 module.exports = {
     buscarVisaoGeral,
+    montarVisaoGeral,
+    responderErro,
     buscarDetalhePlaca,
     montarFrota,
     classificar,

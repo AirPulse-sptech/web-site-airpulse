@@ -1,7 +1,7 @@
 /*vg -> para cada tela ter os proprios nomes e ninguem quebrar a pagina*/
 
 :root {
-    --vgFundo: #eef4ff;
+    --vgFundo: ##F7F8FF;
     --vgCard: #ffffff;
     --vgBordaCard: #e1e1ef;
     --vgDivisor: #e5e5f0;
@@ -12,7 +12,6 @@
     --vgTextoSuave: #5a6aa3;
     --vgTextoRodape: #637089;
     --vgAzul: #0755ff;
-
     --vgCriticoPonto: #ff354f;
     --vgCriticoTexto: #c8102e;
     --vgCriticoFundo: #ffecef;
