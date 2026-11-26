@@ -45,6 +45,7 @@ function podeAcessarPagina(pagina) {
         case "relatorioGestor.html": return cargo === "GESTOR"
         case "verRelatorioGestor.html": return cargo === "GESTOR"
         case "dashboardGeral.html": return cargo === "GESTOR"
+        case "hubGestor.html": return cargo === "GESTOR"
         case "cadastroRelatorio.html": return cargo === "ANALISTA"
         case "dashboardPrincipalAnalista.html":
         case "telaAnalista.html": return cargo === "ANALISTA"
@@ -85,6 +86,7 @@ function atualizarMenu() {
         const paginaAtiva = paginasRelacionadas[pagina] || pagina
         const itens = [
             { pagina: "dashboardGeral.html", nome: "Dashboard", icone: "bi-grid-1x2" },
+            { pagina: "hubGestor.html", nome: "Hub", icone: "bi-house" },
             { pagina: "cadastroFmc.html", nome: "Cadastrar FMC", icone: "bi-hdd-rack", id: "itemCadastrarFmc" },
             { pagina: "cadastroFuncionario.html", nome: "Cadastrar Funcionário", icone: "bi-people", id: "itemCadastrarFuncionario" },
             { pagina: "gerenciarFuncionario.html", nome: "Gerenciar Funcionário", icone: "bi-gear", id: "itemGerenciarFuncionario" },
