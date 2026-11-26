@@ -19,6 +19,7 @@ var dashboardRelatorioRouter = require("./src/routes/dashboardRelatorio")
 var gerenciarAeronaveRouter = require("./src/routes/gerenciarAeronave")
 var custosAwsRouter = require("./src/routes/custosAws")
 var dashboardAnalistaRouter = require("./src/routes/dashboardAnalista")
+var hubGestorRouter = require("./src/routes/hubGestor")
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
@@ -37,6 +38,7 @@ app.use("/dashboardRelatorio", dashboardRelatorioRouter)
 app.use("/gerenciarAeronave", gerenciarAeronaveRouter)
 app.use("/custos", custosAwsRouter)
 app.use("/dashboardAnalista", dashboardAnalistaRouter)
+app.use("/hubGestor", hubGestorRouter)
 
 app.listen(portaApp, function () {
     console.log(`
