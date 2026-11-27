@@ -9,10 +9,10 @@ function numero(valor, casas = 1) {
     return valor == null || !Number.isFinite(Number(valor)) ? "—" : Number(valor).toLocaleString("pt-BR", { minimumFractionDigits: casas, maximumFractionDigits: casas })
 }
 
-function dataLocal(valor) {
+function dataLocal(valor, timeStyle = "short") {
     if (!valor) return "—"
     const data = new Date(valor)
-    return Number.isFinite(data.getTime()) ? new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle: "short" }).format(data) : "—"
+    return Number.isFinite(data.getTime()) ? new Intl.DateTimeFormat("pt-BR", { timeZone: "America/Sao_Paulo", dateStyle: "short", timeStyle }).format(data) : "—"
 }
 
 function horaLocal(valor) {
@@ -157,56 +157,55 @@ function montarAlertas() {
     }).join("") : '<p class="subtitulo">Nenhum alerta no período selecionado.</p>'
 }
 
-function montarPontos(chave) {
+function montarPontos(chave, inicio, fim) {
     const campo = metricas[chave]
-    const limite = Date.now() - tela.periodo * 60 * 60 * 1000
-    const registros = tela.dados.serie.filter(p => Date.parse(p.ts) >= limite)
-    const blocoMs = ({ 1: 60_000, 6: 5 * 60_000, 24: 15 * 60_000 })[tela.periodo]
-    const blocos = new Map()
-    registros.forEach(p => {
-        const ts = Date.parse(p.ts)
-        const chaveBloco = Math.floor(ts / blocoMs)
-        const valor = p[`${campo}_pico`]
-        if (valor == null || !Number.isFinite(Number(valor))) return
-        const anterior = blocos.get(chaveBloco)
-        if (!anterior || Number(valor) > anterior.valor) blocos.set(chaveBloco, { valor: Number(valor), ts, nivel: p[`${campo}_nivel`] })
-    })
-    return Array.from(blocos.values()).sort((a, b) => a.ts - b.ts)
+    return tela.dados.serie.map(p => ({
+        ts: Date.parse(p.ts), media: p[`${campo}_media`], pico: p[`${campo}_pico`]
+    })).filter(p => p.ts >= inicio && p.ts <= fim && p.media != null && Number.isFinite(Number(p.media)))
+        .sort((a, b) => a.ts - b.ts)
 }
 
 function desenharGrafico(chave) {
     const svg = document.getElementById("graficoComponente")
-    const pontos = montarPontos(chave)
+    const fim = Date.now()
+    const duracao = tela.periodo * 60 * 60 * 1000
+    const inicio = fim - duracao
+    const pontos = montarPontos(chave, inicio, fim)
     const componente = tela.dados.componentes[chave] || {}
     const monitoramento = tela.dados.monitoramento
     const campo = metricas[chave]
     const atencao = monitoramento?.[`${campo}_limite_atencao`] ?? componente.limiteAtencao
     const critico = monitoramento?.[`${campo}_limite_critico`] ?? componente.limiteCritico
-    const inicio = Date.now() - tela.periodo * 60 * 60 * 1000
-    const maxX = 602
-    const x = indice => pontos.length < 2 ? 46 : 46 + indice * (maxX - 46) / (pontos.length - 1)
+    const x = ts => 46 + (ts - inicio) * (602 - 46) / duracao
     const y = valor => 230 - valor * 2.2
-    const valores = pontos.map((p, i) => `${x(i)},${y(p.valor)}`).join(" ")
-    const pico = pontos.length ? Math.max(...pontos.map(p => p.valor)) : null
-    const indicePico = pontos.findIndex(p => p.valor === pico)
+    const caminho = pontos.map((p, i) => {
+        const comando = i > 0 && p.ts - pontos[i - 1].ts <= 60_000 ? "L" : "M"
+        return `${comando}${x(p.ts)},${y(p.media)}`
+    }).join(" ")
+    const alertas = (tela.dados.alertasConfirmados || []).filter(a => a.metrica === `${campo}_pct`)
+        .map(a => ({ ...a, ts: Date.parse(a.ts_evento) }))
+        .filter(a => a.ts >= inicio && a.ts <= fim && a.valor != null && Number.isFinite(Number(a.valor)))
     const titulo = chave === "flash" ? "Armazenamento" : chave.toUpperCase()
-    document.getElementById("descricaoPeriodoGrafico").textContent = `${tela.periodo}h · picos por intervalo · ${pontos.length} pontos com leitura`
-    if (!pontos.length) {
-        svg.innerHTML = `<title id="tituloGrafico">Uso de ${titulo}</title><desc id="descricaoGrafico">Sem leituras no período selecionado.</desc>
-            ${[100, 75, 50, 25, 0].map(v => `<line x1="46" y1="${y(v)}" x2="602" y2="${y(v)}" stroke="#e5e7eb"/><text x="36" y="${y(v) + 4}" text-anchor="end">${v}%</text>`).join("")}
-            <text x="324" y="125" text-anchor="middle">Sem leituras para este período</text>`
-        return
-    }
+    document.getElementById("descricaoPeriodoGrafico").textContent = `${tela.periodo}h · média por minuto · ${pontos.length} ${pontos.length === 1 ? "minuto com leitura" : "minutos com leitura"}`
     const linhas = [100, 75, 50, 25, 0].map(v => `<line x1="46" y1="${y(v)}" x2="602" y2="${y(v)}" stroke="#e5e7eb"/><text x="36" y="${y(v) + 4}" text-anchor="end">${v}%</text>`).join("")
     const linhaLimite = (valor, nome, cor) => valor == null ? "" : `<line x1="46" y1="${y(valor)}" x2="602" y2="${y(valor)}" stroke="${cor}" stroke-width="1" stroke-dasharray="4 3"/><text x="52" y="${y(valor) - 6}" fill="${cor}">${nome} (${numero(valor, 0)}%)</text>`
-    const rotulos = pontos.map((p, i) => i % Math.max(1, Math.ceil(pontos.length / 8)) === 0 || i === pontos.length - 1
-        ? `<text x="${x(i)}" y="246" text-anchor="end" transform="rotate(-55 ${x(i)} 246)">${horaLocal(new Date(p.ts).toISOString())}</text>` : "").join("")
-    svg.innerHTML = `<title id="tituloGrafico">Picos de uso de ${titulo} · ${tela.periodo} horas</title>
-        <desc id="descricaoGrafico">${pontos.length} picos observados. Maior pico ${numero(pico, 2)}% às ${dataLocal(new Date(pontos[indicePico].ts).toISOString())}.</desc>
-        ${linhas}<polyline fill="none" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" points="${valores}"/>
-        ${pontos.map((p, i) => `<circle cx="${x(i)}" cy="${y(p.valor)}" r="1.8" fill="#4F46E5"><title>${numero(p.valor, 2)}% · ${dataLocal(new Date(p.ts).toISOString())} · ${p.nivel || "Nível indisponível"}</title></circle>`).join("")}
+    const rotulos = Array.from({ length: 7 }, (_, indice) => {
+        const ts = inicio + indice * duracao / 6
+        return `<text x="${x(ts)}" y="246" text-anchor="middle">${horaLocal(ts)}</text>`
+    }).join("")
+    const marcadores = alertas.map(a => {
+        const evento = a.tipo_evento === "ESCALONAMENTO" ? "Escalonamento confirmado" : "Abertura confirmada"
+        const cor = a.nivel === "CRITICO" ? "#e11d48" : "#f97316"
+        const cx = x(a.ts)
+        const cy = y(a.valor)
+        return `<path d="M${cx},${cy - 5} l5,5 -5,5 -5,-5 Z" fill="${cor}" stroke="white" stroke-width="1"><title>${evento} · ${nomeStatus(a.nivel)} · ${numero(a.valor, 2)}% · ${dataLocal(a.ts, "medium")}</title></path>`
+    }).join("")
+    svg.innerHTML = `<title id="tituloGrafico">Média de uso de ${titulo} por minuto · ${tela.periodo} horas</title>
+        <desc id="descricaoGrafico">${pontos.length} médias por minuto e ${alertas.length} confirmações de alerta. A linha é interrompida quando faltam leituras.</desc>
+        ${linhas}<path fill="none" stroke="#4F46E5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="${caminho}"/>
+        ${pontos.map(p => `<circle cx="${x(p.ts)}" cy="${y(p.media)}" r="2.2" fill="#4F46E5"><title>${dataLocal(p.ts)} · Média ${numero(p.media, 2)}% · Pico ${p.pico == null ? "—" : `${numero(p.pico, 2)}%`}</title></circle>`).join("")}
         ${linhaLimite(atencao, "Atenção", "#f97316")}${linhaLimite(critico, "Crítico", "#e11d48")}
-        <circle cx="${x(indicePico)}" cy="${y(pico)}" r="3" fill="#4F46E5"/><text x="${x(indicePico)}" y="${y(pico) + (pico >= 85 ? 20 : -12)}" text-anchor="middle" fill="#1a1f5c" font-weight="700">${numero(pico, 2)}%</text>${rotulos}`
+        ${marcadores}${rotulos}${pontos.length ? "" : '<text x="324" y="125" text-anchor="middle">Sem leituras para este período</text>'}`
 }
 
 function iniciarTela(dados) {

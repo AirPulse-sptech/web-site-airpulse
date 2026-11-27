@@ -281,7 +281,7 @@ function buscarDetalhePlaca(req, res) {
                 return Promise.all([
                     detalheGoldModel.buscar(placa.hostname, String(placa.numeroSerie)),
                     alertaModel.listar([computador]).then(function (eventos) {
-                        return alertaRelatorioController.consolidar(eventos, [computador])
+                        return { eventos: eventos, ocorrencias: alertaRelatorioController.consolidar(eventos, [computador]) }
                     }),
                     jiraAlertaModel.buscarMapaIssues().catch(function () {
                         return { disponivel: false, mapa: new Map() }
@@ -299,7 +299,7 @@ function buscarDetalhePlaca(req, res) {
                     })
                     var serieGold = String(resultados[0].serieGold || placa.numeroSerie).trim()
                     var jiraResultado = resultados[2] || { disponivel: false, mapa: new Map() }
-                    var alertas = resultados[1].filter(function (alerta) {
+                    var alertas = resultados[1].ocorrencias.filter(function (alerta) {
                         return String(alerta.placa_serie).trim().toLowerCase() === serieGold.toLowerCase()
                     }).map(function (alerta) {
                         var jiraInfo
@@ -322,11 +322,22 @@ function buscarDetalhePlaca(req, res) {
                         }
                         return Object.assign({}, alerta, { jira: jiraInfo })
                     })
+                    var idsDaPlaca = new Set(alertas.map(function (alerta) { return alerta.alerta_id }))
+                    var alertasConfirmados = resultados[1].eventos.filter(function (evento) {
+                        return idsDaPlaca.has(evento.alerta_id)
+                            && evento.hostname === computador.hostname && Number(evento.computador_id) === Number(computador.idComputador)
+                            && Number(evento.aeronave_id) === Number(computador.idAeronave) && Number(evento.empresa_id) === Number(computador.empresaId)
+                            && String(evento.placa_serie).trim().toLowerCase() === serieGold.toLowerCase()
+                            && ["ABERTURA", "ESCALONAMENTO"].includes(evento.tipo_evento)
+                    }).map(function (evento) {
+                        return { metrica: evento.metrica, tipo_evento: evento.tipo_evento,
+                            ts_evento: evento.ts_evento, nivel: evento.nivel, valor: evento.valor }
+                    })
                     res.status(200).json({
                         placa: { id: placa.idPlaca, nome: placa.placa, serie: String(placa.numeroSerie), hostname: placa.hostname,
                             computador: placa.computador, aeronave: placa.aeronave, modeloAeronave: placa.modelo },
                         componentes: componentes, monitoramento: resultados[0].monitoramento,
-                        serie: resultados[0].serie, alertas: alertas,
+                        serie: resultados[0].serie, alertas: alertas, alertasConfirmados: alertasConfirmados,
                         diagnosticoGold: resultados[0].diagnostico
                     })
                 })

@@ -102,7 +102,7 @@
                         <div class="graficoTopo">
                             <div>
                                 <span class="tituloCard">Consumo de recursos</span>
-                                <p class="subtitulo" id="descricaoPeriodoGrafico">Picos observados por período</p>
+                                <p class="subtitulo" id="descricaoPeriodoGrafico">Média por minuto</p>
                             </div>
                             <div class="abas" id="abasComponentes" aria-label="Componente do gráfico">
                                 <button class="ativa" type="button" data-componente="cpu" aria-pressed="true">CPU</button>
@@ -118,8 +118,9 @@
                         </div>
                         <div class="graficoArea">
                             <div class="legendaPrevisao" aria-label="Legenda do gráfico">
-                                <span><i class="legendaReal"></i>Pico observado</span>
+                                <span><i class="legendaReal"></i>Média por minuto</span>
                                 <span><i class="legendaLinhaPrevista"></i>Limites cadastrados</span>
+                                <span>◆ Alerta confirmado</span>
                             </div>
                             <svg id="graficoComponente" viewBox="0 0 620 280" font-size="8.5" fill="#6b7280" role="img" aria-labelledby="tituloGrafico descricaoGrafico"></svg>
                         </div>
