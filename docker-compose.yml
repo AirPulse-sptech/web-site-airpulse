@@ -22,7 +22,7 @@ services:
       - airpulse_net
 
   node:
-    image: mateusloualmeida/airpulse_deploy:airpulse
+    image: mateusloualmeida/airpulse_deploy:${NODE_IMAGE_TAG:-airpulse}
     container_name: airpulse_node_prod
     restart: unless-stopped
     ports:
@@ -50,7 +50,7 @@ services:
       - airpulse_net
 
   alertas-java:
-    build: ./alertas-java
+    image: mateusloualmeida/airpulse-alertas:${JAVA_IMAGE_TAG:-latest}
     container_name: airpulse_java_alertas
     restart: unless-stopped
     environment:
