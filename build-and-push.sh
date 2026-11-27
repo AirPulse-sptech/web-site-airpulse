@@ -4,7 +4,12 @@ cd "$(dirname "$0")"
 
 echo "=== BUILD & PUSH DOCKER HUB (airpulse_deploy) ==="
 
-IMAGE="mateusloualmeida/airpulse_deploy"
+IMAGE="${NODE_IMAGE:-}"
+if [ -z "$IMAGE" ] && [ -f .env ]; then
+  IMAGE=$(grep -E '^[[:space:]]*NODE_IMAGE=' .env | tail -n1 \
+    | sed -E "s/^[^=]*=//; s/\r$//; s/^'(.*)'$/\1/; s/^\"(.*)\"$/\1/")
+fi
+: "${IMAGE:?Defina NODE_IMAGE no .env com o repositorio da imagem Node.}"
 
 echo "[1/4] Verificando alterações locais em app.js/src/public"
 # Deploy é pull-based: a imagem publicada deve refletir o código COMITADO.
@@ -31,21 +36,13 @@ else
 fi
 docker build -t "${IMAGE}:${TAG}" -t "${IMAGE}:airpulse" .
 
-echo "[3/4] Sanity check: Jira presente na imagem?"
-# O deploy Jira depende de src/models/jiraAlertaModel.js. Se a imagem não o
-# tiver, o site sobe "ok" mas sem o link do Jira (falso negativo).
-if docker run --rm --entrypoint ls "${IMAGE}:${TAG}" /app/src/models/jiraAlertaModel.js >/dev/null 2>&1; then
-  echo "src/models/jiraAlertaModel.js encontrado na imagem."
-else
-  echo " jiraAlertaModel.js AUSENTE na imagem. Push abortado."
+echo "[3/4] Verificando os arquivos da imagem"
+# Caminhos relativos ao WORKDIR /app evitam a conversao de argumentos do Git Bash.
+if ! docker run --rm --entrypoint ls "${IMAGE}:${TAG}" src/models/jiraAlertaModel.js app.js >/dev/null; then
+  echo "Falha ao verificar os arquivos da imagem. Push abortado." >&2
   exit 1
 fi
-if docker run --rm --entrypoint ls "${IMAGE}:${TAG}" /app/app.js >/dev/null 2>&1; then
-  echo " /app/app.js encontrado na imagem."
-else
-  echo " /app/app.js AUSENTE na imagem. Push abortado."
-  exit 1
-fi
+echo "src/models/jiraAlertaModel.js e app.js encontrados na imagem."
 
 echo "[4/4] docker push ${IMAGE}:${TAG} e :airpulse"
 docker push "${IMAGE}:${TAG}"

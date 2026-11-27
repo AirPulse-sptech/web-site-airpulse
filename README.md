@@ -17,6 +17,7 @@ bash deployjava.sh <IP_EC2>            # + --run-backfill para backfill único
 
 - Build/publish das imagens é exclusivo do mantenedor: `bash build-and-push.sh`
   (faz sanity check antes do push, inclusive do `jiraAlertaModel.js`).
+- Defina `NODE_IMAGE` no `.env` com o reposit?rio da imagem Node, sem a tag. O build e o Compose usam esse valor.
 - Ambiente de deploy: `.env` (ver `.env.example`) → os scripts geram
   `deploy.env` (Node) e `deploy-java.env` (Java), separados.
 - **Rollback por tag**: fixe `NODE_IMAGE_TAG` (node) e/ou `JAVA_IMAGE_TAG`

@@ -22,7 +22,7 @@ services:
       - airpulse_net
 
   node:
-    image: mateusloualmeida/airpulse_deploy:${NODE_IMAGE_TAG:-airpulse}
+    image: ${NODE_IMAGE:?Defina NODE_IMAGE no .env}:${NODE_IMAGE_TAG:-airpulse}
     container_name: airpulse_node_prod
     restart: unless-stopped
     ports:
