@@ -70,7 +70,7 @@ echo "== Configuração do deploy AirPulse =="
 pedir DB_USER
 pedir DB_PASSWORD s
 pedir GEMINI_API_KEY s
-pedir aws_s3_bucketgit 
+pedir aws_s3_bucket
 if [ -z "$aws_s3_bucket" ]; then
   echo "Informe aws_s3_bucket no .env com o nome do bucket Gold." >&2
   exit 1
