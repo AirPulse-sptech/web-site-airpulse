@@ -62,6 +62,7 @@ function listar(req, res) {
                             idComputador: linha.idComputador,
                             nome: linha.nomeFmc,
                             tipoFmc: linha.tipoFmc,
+                            hostname: linha.hostname,
                             modelo: linha.modeloFmc,
                             numeroSerie: linha.numeroSerieFmc,
                             statusComputador: linha.statusComputador,
@@ -123,7 +124,7 @@ function validarEdicao(dados) {
 
     for (var computador of dados.computadores) {
         if (!Number(computador.idComputador)) return "O id do FMC está undefined!"
-        if (!textoPreenchido(computador.nome) || !textoPreenchido(computador.modelo)) {
+        if (!textoPreenchido(computador.nome) || !textoPreenchido(computador.modelo) || !textoPreenchido(computador.hostname)) {
             return "Preencha todos os campos dos FMCs."
         }
         if (!statusComputadorPermitidos.includes(computador.statusComputador)) return "Status do FMC inválido. Use ATIVO, INATIVO ou MANUTENCAO."
@@ -243,6 +244,7 @@ function editar(req, res) {
                                         idAeronave,
                                         limparTexto(computador.nome),
                                         limparTexto(computador.modelo),
+                                        limparTexto(computador.hostname),
                                         computador.statusComputador,
                                         computador.dataInstalacao
                                     ).then(function () {

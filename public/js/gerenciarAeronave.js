@@ -255,6 +255,11 @@ function montarCamposFmc(computador, posicao) {
             </div>
 
             <div class="inputGroup">
+                <label for="fmcHostname${computador.idComputador}">Hostname</label>
+                <input type="text" id="fmcHostname${computador.idComputador}" value="${escapar(computador.hostname)}">
+            </div>
+
+            <div class="inputGroup">
                 <label for="fmcDataInstalacao${computador.idComputador}">Data de instalação</label>
                 <input type="date" id="fmcDataInstalacao${computador.idComputador}" value="${escapar(computador.dataInstalacao)}">
             </div>
@@ -319,6 +324,7 @@ function salvarEdicao() {
         var placas = []
 
         if (valorCampo(`fmcNome${id}`).trim() == "" || valorCampo(`fmcModelo${id}`).trim() == ""
+            || valorCampo(`fmcHostname${id}`).trim() == ""
             || valorCampo(`fmcDataInstalacao${id}`) == "") {
             vazio = true
         }
@@ -370,6 +376,7 @@ function salvarEdicao() {
             idComputador: id,
             nome: valorCampo(`fmcNome${id}`),
             modelo: valorCampo(`fmcModelo${id}`),
+            hostname: valorCampo(`fmcHostname${id}`),
             dataInstalacao: valorCampo(`fmcDataInstalacao${id}`),
             statusComputador: valorCampo(`fmcStatus${id}`),
             placas: placas
