@@ -93,8 +93,7 @@ function atualizarMenu() {
             { pagina: "gerenciarFuncionario.html", nome: "Gerenciar Funcionário", icone: "bi-gear", id: "itemGerenciarFuncionario" },
             { pagina: "cadastroAeronave.html", nome: "Cadastrar Aeronave", icone: "bi-airplane" },
             { pagina: "gerenciarAeronave.html", nome: "Gerenciar Aeronave", icone: "bi-airplane", id: "itemGerenciarAeronave" },
-            { pagina: "relatorioGestor.html", nome: "Relatórios", icone: "bi-file-earmark-text", id: "itemRelatorios" },
-            { pagina: "dashboardRelatorios.html", nome: "Produtividade dos funcionários", icone: "bi-file-earmark-bar-graph", id: "itemProdutividadeFuncionarios" }
+            { pagina: "relatorioGestor.html", nome: "Relatórios", icone: "bi-file-earmark-text", id: "itemRelatorios" }
         ]
 
         menu.setAttribute("aria-label", "Menu principal")

@@ -3,6 +3,21 @@ const emailInput = document.getElementById("emailInput")
 const passwordInput = document.getElementById("passwordInput")
 const loginSubmitButton = document.getElementById("loginSubmitButton")
 
+const togglePasswordButton = document.getElementById("togglePasswordButton")
+const togglePasswordIcon = document.getElementById("togglePasswordIcon")
+
+togglePasswordButton.addEventListener("click", () => {
+    const isHidden = passwordInput.type === "password"
+
+    passwordInput.type = isHidden ? "text" : "password"
+    togglePasswordIcon.classList.toggle("bi-eye", !isHidden)
+    togglePasswordIcon.classList.toggle("bi-eye-slash", isHidden)
+    togglePasswordButton.setAttribute("aria-pressed", String(isHidden))
+    togglePasswordButton.setAttribute("aria-label", isHidden ? "Ocultar senha" : "Mostrar senha")
+
+    passwordInput.focus()
+})
+
 emailInput.addEventListener('input', () => {
     document.getElementById('emailError').style.display = 'none'
     emailInput.classList.remove('inputError')

@@ -78,6 +78,43 @@ button {
     }
 }
 
+.loginPasswordWrapper {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    input {
+        width: 100%;
+        padding-right: 2.75rem;
+    }
+}
+
+.loginTogglePassword {
+    position: absolute;
+    top: 50%;
+    right: .5rem;
+    transform: translateY(-50%);
+    background: transparent;
+    color: var(--textSecondary);
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: color .2s ease-in-out;
+
+    i {
+        font-size: 16px;
+    }
+}
+
+.loginTogglePassword:hover,
+.loginTogglePassword:focus-visible {
+    color: var(--colorPrimary);
+}
+
 .loginLeftPanelContent {
     display: flex;
     flex-direction: column;
