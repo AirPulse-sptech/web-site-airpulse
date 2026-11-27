@@ -1,10 +1,11 @@
-# docker-compose.yml
+﻿# docker-compose.yml
 services:
 
   mysql:
     image: mysql:8.0.37
     container_name: airpulse_bd
     restart: "no"
+    command: --performance-schema=OFF --innodb-buffer-pool-size=64M
     environment:
       - MYSQL_ROOT_PASSWORD=Urubu100
       - MYSQL_DATABASE=airpulse
@@ -39,8 +40,31 @@ services:
       - aws_s3_bucket=${aws_s3_bucket:?Informe aws_s3_bucket no .env local e execute deploy.sh}
       - aws_region=${aws_region:-us-east-1}
       - aws_s3_alertas_prefix=${aws_s3_alertas_prefix:-03-gold/}
+      - JIRA_BASE_URL=${JIRA_BASE_URL:-}
+      - JIRA_EMAIL=${JIRA_EMAIL:-}
+      - JIRA_API_TOKEN=${JIRA_API_TOKEN:-}
+      - JIRA_ALERT_PROJECT_KEY=${JIRA_ALERT_PROJECT_KEY:-}
     depends_on:
       - mysql
+    networks:
+      - airpulse_net
+
+  alertas-java:
+    build: ./alertas-java
+    container_name: airpulse_java_alertas
+    restart: unless-stopped
+    environment:
+      - aws_s3_bucket=${aws_s3_bucket:?Informe aws_s3_bucket no .env local e execute deploy.sh}
+      - aws_region=${aws_region:-us-east-1}
+      - aws_s3_alertas_prefix=${aws_s3_alertas_prefix:-03-gold/}
+      - JIRA_BASE_URL=${JIRA_BASE_URL:-}
+      - JIRA_EMAIL=${JIRA_EMAIL:-}
+      - JIRA_API_TOKEN=${JIRA_API_TOKEN:-}
+      - JIRA_ALERT_PROJECT_KEY=${JIRA_ALERT_PROJECT_KEY:-}
+      - JIRA_ALERT_ISSUE_TYPE=${JIRA_ALERT_ISSUE_TYPE:-Task}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID:-}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY:-}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN:-}
     networks:
       - airpulse_net
 

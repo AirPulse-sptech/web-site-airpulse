@@ -50,7 +50,10 @@ function consolidar(eventos, computadores) {
                 computador_id: computador.idComputador, aeronave_id: computador.idAeronave,
                 empresa_id: computador.empresaId, aeronave_nome: computador.aeronave,
                 tipo_fmc: computador.tipoFmc, placa_serie: String(item.placa_serie || ""),
-                metrica: item.metrica, nivel: item.nivel, valor: item.valor,
+                metrica: item.metrica, tipo_evento: item.tipo_evento || null,
+                nivel: item.nivel, maior_nivel: item.maior_nivel ?? null,
+                valor: item.valor, valor_abertura_pct: item.valor_abertura_pct ?? null,
+                limiar_violado: item.limiar_violado ?? null,
                 ts_abertura: new Date(item.ts_abertura).toISOString(), ts_evento: item.ts_evento,
                 ts_encerramento: item.ts_encerramento || null,
                 em_aberto_apos_evento: item.em_aberto_apos_evento === true
