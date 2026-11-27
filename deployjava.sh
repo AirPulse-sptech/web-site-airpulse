@@ -1,6 +1,15 @@
 #!/bin/bash
 set -e
 
+# Deploy Java (pull-based): não builda na EC2 (evita OOM no t2.micro).
+# A imagem é construída localmente e publicada no Docker Hub pelo
+# script-java/alertas/airpulse-alertas/build-and-push.sh.
+#
+# Uso: ./deployjava.sh <ip_publico_ec2> [--run-backfill]
+#
+# Variável opcional JAVA_IMAGE_TAG fixa uma versão específica da imagem
+# (default: latest). Ex.: JAVA_IMAGE_TAG=v20261127-0300-abc1234 ./deployjava.sh 1.2.3.4
+
 cd "$(dirname "$0")"
 trap 'rm -f "$ENV_FILE" "$KEY_TMP"' EXIT
 
@@ -12,7 +21,8 @@ fi
 EC2_HOST="ubuntu@$1"
 EC2_PATH="/home/ubuntu/airpulse"
 RUN_BACKFILL="$2"
-ENV_FILE="deploy.env"
+# Arquivo próprio do deploy Java — NÃO sobrescreve o deploy.env do Node.
+ENV_FILE="deploy-java.env"
 ENV_LOCAL=".env"
 COMPOSE_FILE="docker-compose.yml"
 KEY_WIN='C:\Users\loure\OneDrive\Documentos\Sptech\SO\key-par.pem'
@@ -66,12 +76,12 @@ JIRA_EMAIL=$(ler_env JIRA_EMAIL)
 JIRA_API_TOKEN=$(ler_env JIRA_API_TOKEN)
 JIRA_ALERT_PROJECT_KEY=$(ler_env JIRA_ALERT_PROJECT_KEY)
 JIRA_ALERT_ISSUE_TYPE=$(ler_env JIRA_ALERT_ISSUE_TYPE)
+# Lido do .env: sem isso, ${JAVA_IMAGE_TAG:-latest} cairia sempre em latest
+# e o rollback por tag não funcionaria.
+JAVA_IMAGE_TAG=$(ler_env JAVA_IMAGE_TAG)
 AWS_ACCESS_KEY_ID=$(ler_env AWS_ACCESS_KEY_ID)
 AWS_SECRET_ACCESS_KEY=$(ler_env AWS_SECRET_ACCESS_KEY)
 AWS_SESSION_TOKEN=$(ler_env AWS_SESSION_TOKEN)
-
-JAVA_ALERTAS_DIR="${JAVA_ALERTAS_DIR:-../script-java/alertas/airpulse-alertas}"
-[ -d "$JAVA_ALERTAS_DIR" ] || { echo "Diretório Java não encontrado: $JAVA_ALERTAS_DIR" >&2; exit 1; }
 
 cat > "$ENV_FILE" <<EOF
 aws_s3_bucket=$aws_s3_bucket
@@ -85,6 +95,7 @@ JIRA_ALERT_ISSUE_TYPE=${JIRA_ALERT_ISSUE_TYPE:-Task}
 AWS_ACCESS_KEY_ID=$AWS_ACCESS_KEY_ID
 AWS_SECRET_ACCESS_KEY=$AWS_SECRET_ACCESS_KEY
 AWS_SESSION_TOKEN=$AWS_SESSION_TOKEN
+JAVA_IMAGE_TAG=${JAVA_IMAGE_TAG:-latest}
 EOF
 chmod 600 "$ENV_FILE"
 
@@ -92,15 +103,15 @@ echo "== Garantindo Docker na EC2 =="
 ssh "${SSH_OPTS[@]}" "$EC2_HOST" "(command -v docker >/dev/null 2>&1 && docker compose version >/dev/null 2>&1) || { sudo apt-get update -y && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y docker.io docker-compose-v2 && sudo systemctl enable --now docker; }; sudo usermod -aG docker ubuntu"
 
 echo "== Garantindo pasta remota =="
-ssh "${SSH_OPTS[@]}" "$EC2_HOST" "mkdir -p $EC2_PATH/alertas-java"
+ssh "${SSH_OPTS[@]}" "$EC2_HOST" "mkdir -p $EC2_PATH"
 
-echo "== Enviando código Java, Dockerfile, pom.xml, compose + credenciais =="
-tar -czf - -C "$JAVA_ALERTAS_DIR" pom.xml Dockerfile .dockerignore src | ssh "${SSH_OPTS[@]}" "$EC2_HOST" "tar -xzf - -C $EC2_PATH/alertas-java"
-scp "${SSH_OPTS[@]}" "$ENV_FILE" "$EC2_HOST:$EC2_PATH/"
+echo "== Enviando compose atualizado + credenciais do Java =="
+# Nada de código-fonte: a imagem vem pronta do Docker Hub.
 scp "${SSH_OPTS[@]}" "$COMPOSE_FILE" "$EC2_HOST:$EC2_PATH/"
+scp "${SSH_OPTS[@]}" "$ENV_FILE" "$EC2_HOST:$EC2_PATH/"
 
-echo "== Build na EC2 + Subida do container alertas-java =="
-ssh "${SSH_OPTS[@]}" "$EC2_HOST" "cd $EC2_PATH && docker compose --env-file $ENV_FILE up -d --build alertas-java" \
+echo "== Pull da imagem + subida do container alertas-java =="
+ssh "${SSH_OPTS[@]}" "$EC2_HOST" "cd $EC2_PATH && docker compose --env-file $ENV_FILE pull alertas-java && docker compose --env-file $ENV_FILE up -d alertas-java" \
   || { echo "ERRO no deploy Java (código $?)"; exit 1; }
 
 if [ "$RUN_BACKFILL" = "--run-backfill" ]; then
@@ -108,12 +119,13 @@ if [ "$RUN_BACKFILL" = "--run-backfill" ]; then
   sleep 10
 
   echo "== Executando BACKFILL (uma vez) =="
+  # O Dockerfile copia o fat JAR para /app/app.jar (WORKDIR /app).
+  # --entrypoint "" bypassa o ENTRYPOINT de produção (school.sptech.Main).
   ssh "${SSH_OPTS[@]}" "$EC2_HOST" "cd $EC2_PATH && docker compose --env-file $ENV_FILE run --rm --entrypoint \"\" alertas-java \
-    java -cp /app/airpulse-alertas-1.0-SNAPSHOT-jar-with-dependencies.jar \
+    java -cp /app/app.jar \
     br.com.antigravity.airpulse.alertas.backfill.BackfillMain" \
     || { echo "ERRO no backfill (código $?)"; exit 1; }
   echo "== Backfill concluído =="
 fi
 
-rm -f "$ENV_FILE"
 echo "== Deploy Java concluído =="
