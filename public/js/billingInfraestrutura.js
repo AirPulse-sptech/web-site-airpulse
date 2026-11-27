@@ -112,19 +112,25 @@ function criarDadosBilling(orcamento, custos) {
             acumuladoReal.push(null)
         }
 
-        if (dia >= diaAtual) {
-            acumuladoProjetado.push(arredondar(regressao.intercepto + inclinacao * dia))
+        if (diaAtual > 0) {
+            acumuladoProjetado.push(
+                Math.max(0, arredondar(regressao.intercepto + inclinacao * dia))
+            )
         } else {
             acumuladoProjetado.push(null)
         }
     }
+
+    const previsaoFechamento = diaAtual > 0
+        ? acumuladoProjetado[totalDias - 1]
+        : 0
 
     return {
         dias: dias,
         acumuladoReal: acumuladoReal,
         acumuladoProjetado: acumuladoProjetado,
         custoAcumulado: acumulado,
-        previsaoFechamento: arredondar(acumulado + inclinacao * (totalDias - diaAtual)),
+        previsaoFechamento: previsaoFechamento,
         orcamento: orcamento,
         tendenciaDiaria: inclinacao,
         diaAtual: diaAtual,
@@ -216,14 +222,13 @@ function desenharEvolucaoCustos(dados) {
                     label: "Projeção",
                     data: dados.acumuladoProjetado,
                     borderColor: "#7b5cff",
-                    backgroundColor: "rgba(123, 92, 255, 0.08)",
                     pointBackgroundColor: "#7b5cff",
                     pointRadius: 0,
                     pointHoverRadius: 4,
                     borderWidth: 2,
                     borderDash: [6, 4],
                     tension: 0,
-                    fill: true
+                    fill: false
                 }
             ]
         },
@@ -239,9 +244,6 @@ function desenharEvolucaoCustos(dados) {
                     display: false
                 },
                 tooltip: {
-                    filter: function (item) {
-                        return item.datasetIndex == 0 || item.dataIndex >= dados.diaAtual
-                    },
                     callbacks: {
                         title: function (itens) {
                             return `Dia ${itens[0].label}`

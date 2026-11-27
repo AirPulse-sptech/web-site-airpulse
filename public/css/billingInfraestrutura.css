@@ -225,8 +225,14 @@
     gap: 6px 16px;
 }
 
+/* CORREÇÃO: o contêiner do canvas precisa ser "relative",
+   senão o canvas (position: absolute) escapa do card e
+   se posiciona em relação à página inteira. */
 .areaGrafico {
+    position: relative;
     flex: none;
+    width: 100%;
+    min-width: 0;
     height: 260px;
     margin-top: 12px;
 }
@@ -234,6 +240,8 @@
 .areaGrafico canvas {
     position: absolute;
     inset: 0;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .legendaSerie {
@@ -302,6 +310,13 @@
     flex-shrink: 0;
     width: var(--tamanhoRosca);
     height: var(--tamanhoRosca);
+}
+
+.areaRosca canvas {
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
 }
 
 .legendaComposicao {
