@@ -1,18 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AirPulse - Entrar na conta</title>
     <link rel="icon" type="image/png" href="assets/icon/logo-icon.png">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
     <link rel="stylesheet" href="css/global.css">
     <link rel="stylesheet" href="css/login.css">
     <script src="js/sessao.js" defer></script>
     <script src="js/login.js" type="module" defer></script>
 </head>
+
 <body>
     <div class="loginPageContainer">
         <div class="loginLeftPanel">
@@ -22,11 +27,13 @@
             </div>
             <div class="loginLeftPanelContent">
                 <div class="loginBrand">
-                    <img src="assets/AirPulse_Logo_Pack/Fundo%20transparente/07_Principal_Branco.svg" alt="AirPulse Logo" class="airpulseLogo">
+                    <img src="assets/AirPulse_Logo_Pack/Fundo%20transparente/07_Principal_Branco.svg"
+                        alt="AirPulse Logo" class="airpulseLogo">
                 </div>
                 <div class="loginLeftPanelMiddle">
                     <h1 class="loginWelcomeTitle">Bem-vindo de<br>volta à plataforma</h1>
-                    <p class="loginWelcomeDescription">Acesse o painel de monitoramento dos seus computadores embarcados e acompanhe tudo em tempo real.</p>
+                    <p class="loginWelcomeDescription">Acesse o painel de monitoramento dos seus computadores embarcados
+                        e acompanhe tudo em tempo real.</p>
                     <div class="loginFeaturesList">
                         <div class="loginFeatureItem">
                             <div class="loginFeatureIcon">
@@ -54,7 +61,8 @@
         <div class="loginRightPanel">
             <div class="loginRightPanelContent">
                 <div class="loginBrand loginBrandDark">
-                    <img src="assets/AirPulse_Logo_Pack/Fundo%20transparente/05_Principal_Azul_Profundo.svg" alt="AirPulse Logo" class="airpulseLogo">
+                    <img src="assets/AirPulse_Logo_Pack/Fundo%20transparente/05_Principal_Azul_Profundo.svg"
+                        alt="AirPulse Logo" class="airpulseLogo">
                 </div>
                 <div class="loginFormHeader">
                     <h2>Entrar na conta</h2>
@@ -70,15 +78,23 @@
                         <div class="loginFormGroupLabelRow">
                             <label for="passwordInput">Senha</label>
                         </div>
-                        <input type="password" id="passwordInput" placeholder="••••••••" required>
+                        <div class="loginPasswordWrapper">
+                            <input type="password" id="passwordInput" placeholder="••••••••" required>
+                            <button type="button" class="loginTogglePassword" id="togglePasswordButton"
+                                aria-label="Mostrar senha" aria-pressed="false">
+                                <i class="bi bi-eye" id="togglePasswordIcon" aria-hidden="true"></i>
+                            </button>
+                        </div>
                         <span class="loginErrorMessage" id="passwordError"></span>
                     </div>
                     <button type="submit" class="loginSubmitButton" id="loginSubmitButton">Entrar na plataforma</button>
                 </form>
                 <div class="loginDivider"></div>
-                <a href="index.html" class="loginBackLink"><i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar ao site</a>
+                <a href="index.html" class="loginBackLink"><i class="bi bi-arrow-left" aria-hidden="true"></i> Voltar ao
+                    site</a>
             </div>
         </div>
     </div>
 </body>
+
 </html>
