@@ -113,6 +113,29 @@ function montarDetalhes() {
     }).join("")
 }
 
+function urlJiraSegura(url) {
+    if (typeof url !== "string") return null
+    const limpa = url.trim()
+    return /^https?:\/\//i.test(limpa) ? limpa : null
+}
+
+function montarEstadoJira(alerta) {
+    const jira = alerta.jira
+    if (jira && jira.indisponivel === true) {
+        return { texto: "Jira indisponível", url: null }
+    }
+    if (jira && jira.key) {
+        const url = urlJiraSegura(jira.url)
+        if (url) {
+            return { texto: `Jira: ${escaparHtml(jira.key)}`, url }
+        }
+    }
+    if (alerta.em_aberto_apos_evento) {
+        return { texto: "Aguardando Jira...", url: null }
+    }
+    return { texto: "Sem issue Jira", url: null }
+}
+
 function montarAlertas() {
     const inicio = Date.now() - tela.periodo * 60 * 60 * 1000
     const prioridade = { CRITICO: 0, ATENCAO: 1 }
@@ -123,9 +146,14 @@ function montarAlertas() {
         const critico = alerta.maior_nivel === "CRITICO"
         const classe = critico ? "critico" : "moderado"
         const nome = ({ cpu_pct: "CPU", ram_pct: "RAM", flash_pct: "Armazenamento" })[alerta.metrica] || alerta.metrica
-        return `<a class="alerta ${classe}" href="alertas.html"><div>${nome}: limite ${critico ? "crítico" : "de atenção"} atingido
-            <small>Às ${dataLocal(alerta.ts_abertura)} · ${numero(alerta.valor_abertura_pct ?? alerta.valor)}% · ${alerta.em_aberto_apos_evento ? "Ativo na última coleta" : "Ocorrência encerrada"}</small>
-            </div><span><i class="bi bi-chevron-right" aria-hidden="true"></i></span></a>`
+        const estadoJira = montarEstadoJira(alerta)
+        const conteudo = `<div>${nome}: limite ${critico ? "crítico" : "de atenção"} atingido
+            <small>Às ${dataLocal(alerta.ts_abertura)} · ${numero(alerta.valor_abertura_pct ?? alerta.valor)}% · ${alerta.em_aberto_apos_evento ? "Ativo na última coleta" : "Ocorrência encerrada"} · ${estadoJira.texto}</small>
+            </div>`
+        if (estadoJira.url) {
+            return `<a class="alerta ${classe}" href="${escaparHtml(estadoJira.url)}" target="_blank" rel="noopener noreferrer">${conteudo}<span><i class="bi bi-box-arrow-up-right" aria-hidden="true"></i></span></a>`
+        }
+        return `<div class="alerta ${classe}">${conteudo}</div>`
     }).join("") : '<p class="subtitulo">Nenhum alerta no período selecionado.</p>'
 }
 

@@ -4,6 +4,7 @@ var alertaRelatorioModel = require("../models/alertaRelatorioModel")
 var dashboardAnalistaModel = require("../models/dashboardAnalistaModel")
 var alertaRelatorioController = require("./alertaRelatorioController")
 var detalheGoldModel = require("../models/detalheGoldModel")
+var jiraAlertaModel = require("../models/jiraAlertaModel")
 
 var campoPorTipo = { CPU: "cpu", RAM: "ram", DISCO: "flash", FLASH: "flash" }
 var statusPorNivel = { NORMAL: "normal", ATENCAO: "atencao", CRITICO: "critico" }
@@ -281,6 +282,9 @@ function buscarDetalhePlaca(req, res) {
                     detalheGoldModel.buscar(placa.hostname, String(placa.numeroSerie)),
                     alertaModel.listar([computador]).then(function (eventos) {
                         return alertaRelatorioController.consolidar(eventos, [computador])
+                    }),
+                    jiraAlertaModel.buscarMapaIssues().catch(function () {
+                        return { disponivel: false, mapa: new Map() }
                     })
                 ]).then(function (resultados) {
                     var componentes = {}
@@ -294,8 +298,29 @@ function buscarDetalhePlaca(req, res) {
                         }
                     })
                     var serieGold = String(resultados[0].serieGold || placa.numeroSerie).trim()
+                    var jiraResultado = resultados[2] || { disponivel: false, mapa: new Map() }
                     var alertas = resultados[1].filter(function (alerta) {
                         return String(alerta.placa_serie).trim().toLowerCase() === serieGold.toLowerCase()
+                    }).map(function (alerta) {
+                        var jiraInfo
+                        if (!jiraResultado.disponivel) {
+                            jiraInfo = { indisponivel: true }
+                        } else {
+                            var label = jiraAlertaModel.sanitizarLabelAlerta(alerta.alerta_id)
+                            var issue = jiraResultado.mapa.get(label)
+                            if (issue) {
+                                jiraInfo = {
+                                    key: issue.key,
+                                    url: jiraAlertaModel.montarUrlIssue(issue.key),
+                                    status: issue.status
+                                }
+                            } else if (alerta.em_aberto_apos_evento === true) {
+                                jiraInfo = { aguardando: true }
+                            } else {
+                                jiraInfo = { semIssue: true }
+                            }
+                        }
+                        return Object.assign({}, alerta, { jira: jiraInfo })
                     })
                     res.status(200).json({
                         placa: { id: placa.idPlaca, nome: placa.placa, serie: String(placa.numeroSerie), hostname: placa.hostname,
