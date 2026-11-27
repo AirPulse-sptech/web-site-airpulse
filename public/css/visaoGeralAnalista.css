@@ -1,7 +1,7 @@
 /*vg -> para cada tela ter os proprios nomes e ninguem quebrar a pagina*/
 
 :root {
-    --vgFundo: ##F7F8FF;
+    --vgFundo: #F7F8FF;
     --vgCard: #ffffff;
     --vgBordaCard: #e1e1ef;
     --vgDivisor: #e5e5f0;
@@ -31,6 +31,7 @@
     --vgKpiCriticoFundo: #fff1f2;
     --vgKpiAtencao: #f97316;
     --vgKpiAtencaoFundo: #fff7ed;
+    --vgKpiEscuroFundo: #eef0ff;
 }
 
 
@@ -164,6 +165,12 @@
     background: var(--vgKpiAtencaoFundo);
 }
 
+.vgIconeKpi.escuro {
+    color: var(--vgTitulo);
+    border-color: var(--vgTitulo);
+    background: var(--vgKpiEscuroFundo);
+}
+
 .vgValorKpi {
     display: block;
     padding: 12px 0 6px;
@@ -178,6 +185,10 @@
 
 .vgValorKpi.atencao {
     color: var(--vgKpiAtencao);
+}
+
+.vgValorKpi.escuro {
+    color: var(--vgTitulo);
 }
 
 .vgDescricaoKpi {

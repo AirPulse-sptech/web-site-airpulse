@@ -37,26 +37,34 @@ function estaEmAlerta(item) {
 function preencherKpis(frota) {
     const fmcs = frota.flatMap(aeronave => aeronave.fmcs)
     const placas = fmcs.flatMap(fmc => fmc.placas)
-    const fmcsEmAlerta = fmcs.filter(estaEmAlerta)
-    const placasEmAlerta = placas.filter(estaEmAlerta)
 
-    document.getElementById("vgFmcsAlerta").textContent = fmcsEmAlerta.length
-    document.getElementById("vgFmcsTotal").textContent = `De ${fmcs.length} FMCs monitorados`
-    document.getElementById("vgFmcsCriticos").textContent =
-        plural(fmcsEmAlerta.filter(fmc => fmc.status === "critico").length, "crítico", "críticos")
-    document.getElementById("vgFmcsAtencao").textContent =
-        `· ${fmcsEmAlerta.filter(fmc => fmc.status === "atencao").length} em atenção`
+    const ocorrenciasFmcs = fmcs.reduce((total, fmc) => total + fmc.ocorrencias, 0)
+    const criticasFmcs = fmcs.reduce((total, fmc) => total + fmc.criticas, 0)
+    const fmcsComOcorrencia = fmcs.filter(fmc => fmc.ocorrencias > 0).length
 
-    document.getElementById("vgPlacasAlerta").textContent = placasEmAlerta.length
-    document.getElementById("vgPlacasTotal").textContent = `De ${placas.length} placas monitoradas`
+    document.getElementById("vgFmcsOcorrencias").textContent = ocorrenciasFmcs
+    document.getElementById("vgFmcsTotal").textContent = `Em ${fmcsComOcorrencia} de ${fmcs.length} FMCs monitorados`
+    document.getElementById("vgFmcsCriticos").textContent = plural(criticasFmcs, "crítica", "críticas")
+    document.getElementById("vgFmcsAtencao").textContent = `· ${ocorrenciasFmcs - criticasFmcs} em atenção`
 
     const porComponente = {}
+    let ocorrenciasPlacas = 0
+    let placasComOcorrencia = 0
     for (const placa of placas) {
+        let temOcorrencia = false
         for (const componente of placa.componentes) {
             porComponente[componente.nome] ??= 0
-            if (estaEmAlerta(componente)) porComponente[componente.nome]++
+            if (estaEmAlerta(componente)) {
+                porComponente[componente.nome]++
+                ocorrenciasPlacas++
+                temOcorrencia = true
+            }
         }
+        if (temOcorrencia) placasComOcorrencia++
     }
+
+    document.getElementById("vgPlacasOcorrencias").textContent = ocorrenciasPlacas
+    document.getElementById("vgPlacasTotal").textContent = `Em ${placasComOcorrencia} de ${placas.length} placas monitoradas`
     const resumo = Object.entries(porComponente).map(([nome, quantidade]) => `${nome} ${quantidade}`).join(" · ")
     document.getElementById("vgPlacasPorComponente").textContent = resumo || "Nenhum componente cadastrado"
 }
@@ -70,10 +78,8 @@ function desenharGraficoEstado(frota, unidade) {
     }
     const base = bases[unidade]
     const contagem = contarPorStatus(base.lista)
-    const total = base.lista.length
-
     const status = ["critico", "atencao", "normal"]
-    if (contagem.semDados > 0) status.push("semDados")
+    const total = status.reduce((soma, chave) => soma + contagem[chave], 0)
 
     const maior = Math.max(...status.map(chave => contagem[chave]), 1)
     const passo = maior <= 4 ? 1 : maior <= 10 ? 2 : 5
@@ -139,8 +145,8 @@ function montarRecursosPlaca(placa) {
 
 function montarOcorrenciasPlaca(placa) {
     const texto = placa.ocorrencias
-        ? `${plural(placa.ocorrencias, "ocorrência", "ocorrências")} nas últimas 24h · ${plural(placa.criticas, "crítica", "críticas")}`
-        : "Sem alertas nas últimas 24 horas"
+        ? `${plural(placa.ocorrencias, "alerta ativo", "alertas ativos")} na última coleta · ${plural(placa.criticas, "crítico", "críticos")}`
+        : "Sem alertas ativos na última coleta"
     return `<p class="vgRecursosPlaca"><span>${texto}</span></p>`
 }
 
@@ -163,7 +169,7 @@ function montarCardFmc(aeronave, fmc) {
         <div class="vgMetricasFmc">
             <div class="vgMetricaFmc">
                 <div class="vgIconeMetrica"><i class="bi bi-bell" aria-hidden="true"></i></div>
-                <dl><dt>Ocorrências nas últimas 24h</dt><dd>${fmc.ocorrencias}</dd></dl>
+                <dl><dt>Alertas ativos na última coleta</dt><dd>${fmc.ocorrencias}</dd></dl>
             </div>
             <div class="vgMetricaFmc">
                 <div class="vgIconeMetrica"><i class="bi bi-database" aria-hidden="true"></i></div>

@@ -1,6 +1,6 @@
 var s3 = require("@aws-sdk/client-s3")
 
-function listarUltimaColeta(computadores, cliente) {
+function listarMonitoramento(computadores, cliente) {
     if (computadores.length == 0) return Promise.resolve([])
     var bucket = process.env.aws_s3_bucket || process.env.AWS_S3_BUCKET
     var regiao = process.env.aws_region || process.env.AWS_REGION
@@ -22,10 +22,10 @@ function listarUltimaColeta(computadores, cliente) {
         return conexao.send(new s3.ListObjectsV2Command({ Bucket: bucket, Prefix: pasta, ContinuationToken: token }), { abortSignal: sinal })
             .then(function (pagina) {
                 (pagina.Contents || []).forEach(function (objeto) {
-                    if (objeto.Key.startsWith(pasta) && objeto.Key.endsWith("_gold_serie_1min.json")) encontrados.push(objeto)
+                    if (objeto.Key.startsWith(pasta) && objeto.Key.endsWith("_gold_monitoramento_placa.json")) encontrados.push(objeto)
                 })
                 if (!pagina.IsTruncated) return encontrados
-                if (!pagina.NextContinuationToken) throw new Error("Listagem incompleta de métricas no S3.")
+                if (!pagina.NextContinuationToken) throw new Error("Listagem incompleta do monitoramento no S3.")
                 return listarArquivos(pasta, pagina.NextContinuationToken, encontrados)
             })
     }
@@ -35,7 +35,7 @@ function listarUltimaColeta(computadores, cliente) {
             .then(function (resposta) { return resposta.Body.transformToString() })
             .then(function (texto) {
                 var dados = JSON.parse(texto)
-                if (!Array.isArray(dados)) throw new Error("O JSON de métricas deve conter uma lista.")
+                if (!Array.isArray(dados)) throw new Error("O JSON de monitoramento deve conter uma lista.")
                 return dados
             })
     }
@@ -50,7 +50,7 @@ function listarUltimaColeta(computadores, cliente) {
                 })
                 return lerArquivo(maisRecente.Key).then(function (dados) {
                     dados.forEach(function (linha) {
-                        if (linha && linha.hostname == hostname) leituras.push(linha)
+                        if (linha && String(linha.hostname || "").trim().toLowerCase() == hostname.trim().toLowerCase()) leituras.push(linha)
                     })
                 })
             })
@@ -60,4 +60,4 @@ function listarUltimaColeta(computadores, cliente) {
         .finally(function () { if (!cliente) conexao.destroy() })
 }
 
-module.exports = { listarUltimaColeta }
+module.exports = { listarMonitoramento }

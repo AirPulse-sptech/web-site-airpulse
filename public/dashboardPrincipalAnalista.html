@@ -86,7 +86,7 @@
                 <header class="vgCabecalho">
                     <h1>Dashboard - Visão Geral</h1>
                     <p>Quais FMCs precisam da sua análise agora · Estado atual às <time id="vgHoraColeta">--:--</time>
-                        e ocorrências nas últimas 24 horas</p>
+                        e alertas ativos na última coleta</p>
                 </header>
 
                 <p class="vgAviso" id="vgAviso" role="alert" hidden></p>
@@ -96,10 +96,10 @@
                     <div class="vgGradeKpi">
                         <article class="vgCardKpi">
                             <div class="vgCardKpiTopo">
-                                <h3>FMCs em alerta</h3>
-                                <span class="vgIconeKpi critico"><i class="bi bi-box" aria-hidden="true"></i></span>
+                                <h3>Total de ocorrências dos FMCs</h3>
+                                <span class="vgIconeKpi escuro"><i class="bi bi-box" aria-hidden="true"></i></span>
                             </div>
-                            <strong class="vgValorKpi critico" id="vgFmcsAlerta">—</strong>
+                            <strong class="vgValorKpi escuro" id="vgFmcsOcorrencias">—</strong>
                             <p class="vgDescricaoKpi" id="vgFmcsTotal">—</p>
                             <div class="vgRodapeKpi">
                                 <strong class="critico" id="vgFmcsCriticos">—</strong>
@@ -110,10 +110,10 @@
 
                         <article class="vgCardKpi">
                             <div class="vgCardKpiTopo">
-                                <h3>Placas em alerta agora</h3>
-                                <span class="vgIconeKpi atencao"><i class="bi bi-pci-card" aria-hidden="true"></i></span>
+                                <h3>Total de ocorrências das placas</h3>
+                                <span class="vgIconeKpi escuro"><i class="bi bi-pci-card" aria-hidden="true"></i></span>
                             </div>
-                            <strong class="vgValorKpi atencao" id="vgPlacasAlerta">—</strong>
+                            <strong class="vgValorKpi escuro" id="vgPlacasOcorrencias">—</strong>
                             <p class="vgDescricaoKpi" id="vgPlacasTotal">—</p>
                             <div class="vgRodapeKpi">
                                 <strong id="vgPlacasPorComponente">—</strong>

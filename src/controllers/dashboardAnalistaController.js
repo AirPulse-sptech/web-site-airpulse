@@ -5,10 +5,10 @@ var dashboardAnalistaModel = require("../models/dashboardAnalistaModel")
 var alertaRelatorioController = require("./alertaRelatorioController")
 var detalheGoldModel = require("../models/detalheGoldModel")
 
-var colunaPorTipo = { CPU: "cpu_media", RAM: "ram_media", DISCO: "flash_media", FLASH: "flash_media" }
+var campoPorTipo = { CPU: "cpu", RAM: "ram", DISCO: "flash", FLASH: "flash" }
+var statusPorNivel = { NORMAL: "normal", ATENCAO: "atencao", CRITICO: "critico" }
 var nomePorTipo = { CPU: "CPU", RAM: "RAM", DISCO: "Armazenamento", FLASH: "Armazenamento" }
 var pesoStatus = { semDados: -1, normal: 0, atencao: 1, critico: 2 }
-var umDiaMs = 24 * 60 * 60 * 1000
 
 function idValido(id) {
     return Number.isSafeInteger(id) && id > 0
@@ -39,43 +39,75 @@ function maisRecente(datas) {
     }, null)
 }
 
-function indexarUltimaLeitura(leituras) {
-    var porPlaca = new Map()
-    leituras.forEach(function (linha) {
-        var ts = typeof linha.ts == "string" && Number.isFinite(Date.parse(linha.ts)) ? new Date(linha.ts).toISOString() : null
-        if (!ts || linha.placa_serie === null || linha.placa_serie === undefined) return
-        var chave = `${linha.hostname}|${linha.placa_serie}`
-        var anterior = porPlaca.get(chave)
-        if (!anterior || ts > anterior.ts) porPlaca.set(chave, Object.assign({}, linha, { ts: ts }))
-    })
-    return porPlaca
+function normalizar(valor) {
+    return String(valor ?? "").trim().toLowerCase()
 }
 
-function contarAlertas(alertas, inicio, fim) {
+function indexarMonitoramento(linhas) {
+    var porPlaca = new Map()
+    var porHost = new Map()
+    linhas.forEach(function (linha) {
+        var ts = Number.isFinite(Date.parse(linha.ultima_amostra_utc)) ? new Date(linha.ultima_amostra_utc).toISOString() : null
+        if (!ts || linha.placa_serie === null || linha.placa_serie === undefined) return
+        var monitoramento = Object.assign({}, linha, { ts: ts })
+        var chave = `${normalizar(linha.hostname)}|${normalizar(linha.placa_serie)}`
+        var anterior = porPlaca.get(chave)
+        if (!anterior || ts > anterior.ts) porPlaca.set(chave, monitoramento)
+        var host = normalizar(linha.hostname)
+        porHost.set(host, (porHost.get(host) || []).concat(monitoramento))
+    })
+    return {
+        buscar: function (hostname, numeroSerie) {
+            var exato = porPlaca.get(`${normalizar(hostname)}|${normalizar(numeroSerie)}`)
+            if (exato) return exato
+            var doHost = porHost.get(normalizar(hostname)) || []
+            return doHost.length == 1 ? doHost[0] : null
+        },
+        datas: function () {
+            return Array.from(porPlaca.values()).map(function (linha) { return linha.ts })
+        }
+    }
+}
+
+function statusComponente(monitoramento, campo, valor, limiteAtencao, limiteCritico) {
+    if (valor === null) return "semDados"
+    return statusPorNivel[monitoramento[`${campo}_nivel`]] || classificar(valor, limiteAtencao, limiteCritico)
+}
+
+function janelaUltimaColeta(leitura) {
+    var fim = Date.parse(leitura.ts)
+    var inicios = (Array.isArray(leitura.sessoes) ? leitura.sessoes : [])
+        .map(function (sessao) { return Date.parse(sessao.inicio) })
+        .filter(Number.isFinite)
+    return { inicio: inicios.length ? Math.min.apply(null, inicios) : fim, fim: fim }
+}
+
+function contarAlertasAtivos(alertas, monitoramento) {
     var porPlaca = new Map()
     var abertosPorAeronave = new Map()
+    var toleranciaMs = 60 * 1000
     alertas.forEach(function (alerta) {
-        if (alerta.em_aberto_apos_evento) {
-            var desde = abertosPorAeronave.get(alerta.aeronave_id)
-            if (!desde || alerta.ts_abertura < desde) abertosPorAeronave.set(alerta.aeronave_id, alerta.ts_abertura)
-        }
-        var abertura = Date.parse(alerta.ts_abertura)
-        if (abertura < inicio || abertura > fim) return
-        var chave = `${alerta.hostname}|${alerta.placa_serie}`
+        if (!alerta.em_aberto_apos_evento) return
+        var leitura = monitoramento.buscar(alerta.hostname, alerta.placa_serie)
+        if (!leitura) return
+        var janela = janelaUltimaColeta(leitura)
+        var evento = Date.parse(alerta.ts_evento || alerta.ts_abertura)
+        if (!(evento >= janela.inicio - toleranciaMs && evento <= janela.fim + toleranciaMs)) return
+        var chave = `${normalizar(leitura.hostname)}|${normalizar(leitura.placa_serie)}`
         var contagem = porPlaca.get(chave) || { ocorrencias: 0, criticas: 0 }
         contagem.ocorrencias++
         if (alerta.nivel == "CRITICO") contagem.criticas++
         porPlaca.set(chave, contagem)
+        var desde = abertosPorAeronave.get(alerta.aeronave_id)
+        if (!desde || alerta.ts_abertura < desde) abertosPorAeronave.set(alerta.aeronave_id, alerta.ts_abertura)
     })
     return { porPlaca: porPlaca, abertosPorAeronave: abertosPorAeronave }
 }
 
-function montarFrota(linhas, leituras, alertas) {
-    var ultimasLeituras = indexarUltimaLeitura(leituras)
-    var ultimaColeta = maisRecente(Array.from(ultimasLeituras.values()).map(function (linha) { return linha.ts }))
-    var fim = ultimaColeta ? Date.parse(ultimaColeta) : Date.now()
-    var inicio = fim - umDiaMs
-    var contagem = contarAlertas(alertas, inicio, fim)
+function montarFrota(linhas, monitoramentos, alertas) {
+    var monitoramento = indexarMonitoramento(monitoramentos)
+    var ultimaColeta = maisRecente(monitoramento.datas())
+    var contagem = contarAlertasAtivos(alertas, monitoramento)
 
     var aeronaves = new Map()
     linhas.forEach(function (linha) {
@@ -97,26 +129,30 @@ function montarFrota(linhas, leituras, alertas) {
         var fmc = aeronave.fmcs.get(linha.idComputador)
         if (linha.idPlaca === null) return
         if (!fmc.placas.has(linha.idPlaca)) {
-            var chavePlaca = `${linha.hostname}|${linha.numeroSerie}`
+            var leitura = monitoramento.buscar(linha.hostname, linha.numeroSerie)
+            var chavePlaca = `${normalizar(linha.hostname)}|${normalizar(leitura ? leitura.placa_serie : linha.numeroSerie)}`
             var alertasPlaca = contagem.porPlaca.get(chavePlaca) || { ocorrencias: 0, criticas: 0 }
             fmc.placas.set(linha.idPlaca, {
                 idPlaca: linha.idPlaca, nome: linha.placa, numeroSerie: linha.numeroSerie,
-                leitura: ultimasLeituras.get(chavePlaca) || null,
+                leitura: leitura,
                 ocorrencias: alertasPlaca.ocorrencias, criticas: alertasPlaca.criticas, componentes: []
             })
         }
         var placa = fmc.placas.get(linha.idPlaca)
         if (linha.idComponente === null) return
         var tipo = String(linha.tipo || "").toUpperCase()
-        var coluna = colunaPorTipo[tipo]
-        var valor = placa.leitura && coluna ? numeroOuNulo(placa.leitura[coluna]) : null
-        var limiteAtencao = numeroOuNulo(linha.limiteAtencao)
-        var limiteCritico = numeroOuNulo(linha.limiteCritico)
+        var campo = campoPorTipo[tipo]
+        var leituraPlaca = placa.leitura && campo ? placa.leitura : null
+        var valor = leituraPlaca ? numeroOuNulo(leituraPlaca[`${campo}_pct`]) : null
+        var limiteAtencao = leituraPlaca && numeroOuNulo(leituraPlaca[`${campo}_limite_atencao`]) !== null
+            ? numeroOuNulo(leituraPlaca[`${campo}_limite_atencao`]) : numeroOuNulo(linha.limiteAtencao)
+        var limiteCritico = leituraPlaca && numeroOuNulo(leituraPlaca[`${campo}_limite_critico`]) !== null
+            ? numeroOuNulo(leituraPlaca[`${campo}_limite_critico`]) : numeroOuNulo(linha.limiteCritico)
         placa.componentes.push({
             idComponente: linha.idComponente, tipo: tipo, nome: nomePorTipo[tipo] || tipo,
             valor: valor === null ? null : Math.round(valor * 10) / 10,
             limiteAtencao: limiteAtencao, limiteCritico: limiteCritico,
-            status: classificar(valor, limiteAtencao, limiteCritico)
+            status: leituraPlaca ? statusComponente(leituraPlaca, campo, valor, limiteAtencao, limiteCritico) : "semDados"
         })
     })
 
@@ -152,7 +188,6 @@ function montarFrota(linhas, leituras, alertas) {
 
     return {
         ultimaColeta: ultimaColeta,
-        janelaAlertas: { inicio: new Date(inicio).toISOString(), fim: new Date(fim).toISOString() },
         aeronaves: frota
     }
 }
@@ -181,7 +216,7 @@ function responderErro(res, erro) {
     return res.status(erro.code && erro.code.startsWith("ER_") ? 500 : 503).json({ mensagem: mensagem })
 }
 
-function montarVisaoGeral(contexto) {
+function montarVisaoGeral(contexto, idFuncionario) {
     var avisos = new Set()
     function semGold(origem) {
         return function (erro) {
@@ -190,21 +225,29 @@ function montarVisaoGeral(contexto) {
             return []
         }
     }
-    return Promise.all([
-        dashboardAnalistaModel.buscarEstrutura(contexto.empresaId),
-        metricaModel.listarUltimaColeta(contexto.computadores).catch(semGold("métricas")),
-        alertaModel.listar(contexto.computadores).then(function (eventos) {
-            return alertaRelatorioController.consolidar(eventos, contexto.computadores)
-        }).catch(semGold("alertas"))
-    ]).then(function (resultados) {
-        if (avisos.size == 0 && contexto.computadores.length > 0 && resultados[1].length == 0) {
-            avisos.add("Nenhuma métrica foi encontrada no bucket gold para os hostnames cadastrados ("
-                + contexto.computadores.map(function (computador) { return computador.hostname }).join(", ")
-                + "). Confira se o hostname de cada FMC no banco é igual ao das pastas hostname= do S3.")
-        }
-        var visaoGeral = montarFrota(resultados[0], resultados[1], resultados[2])
-        visaoGeral.avisos = Array.from(avisos)
-        return visaoGeral
+    var buscarEstrutura = idFuncionario
+        ? dashboardAnalistaModel.buscarEstruturaFuncionario(idFuncionario, contexto.empresaId)
+        : dashboardAnalistaModel.buscarEstrutura(contexto.empresaId)
+    return buscarEstrutura.then(function (estrutura) {
+        var idsAeronaves = new Set(estrutura.map(function (linha) { return linha.idAeronave }))
+        var computadores = contexto.computadores.filter(function (computador) {
+            return idsAeronaves.has(computador.idAeronave)
+        })
+        return Promise.all([
+            metricaModel.listarMonitoramento(computadores).catch(semGold("monitoramento")),
+            alertaModel.listar(computadores).then(function (eventos) {
+                return alertaRelatorioController.consolidar(eventos, computadores)
+            }).catch(semGold("alertas"))
+        ]).then(function (resultados) {
+            if (avisos.size == 0 && computadores.length > 0 && resultados[0].length == 0) {
+                avisos.add("Nenhum monitoramento de placa foi encontrado no bucket gold para os hostnames cadastrados ("
+                    + computadores.map(function (computador) { return computador.hostname }).join(", ")
+                    + "). Confira se o hostname de cada FMC no banco é igual ao das pastas hostname= do S3.")
+            }
+            var visaoGeral = montarFrota(estrutura, resultados[0], resultados[1])
+            visaoGeral.avisos = Array.from(avisos)
+            return visaoGeral
+        })
     })
 }
 
@@ -214,7 +257,7 @@ function buscarVisaoGeral(req, res) {
         return res.status(400).json({ mensagem: "O id do funcionário está inválido!" })
     }
     return alertaRelatorioModel.contexto(idFuncionario, "ANALISTA", null)
-        .then(montarVisaoGeral)
+        .then(function (contexto) { return montarVisaoGeral(contexto, idFuncionario) })
         .then(function (visaoGeral) {
             res.status(200).json(visaoGeral)
         })
@@ -229,7 +272,7 @@ function buscarDetalhePlaca(req, res) {
     }
     return alertaRelatorioModel.contexto(idFuncionario, "ANALISTA", null)
         .then(function (contexto) {
-            return dashboardAnalistaModel.buscarDetalhePlaca(idPlaca, contexto.empresaId).then(function (linhas) {
+            return dashboardAnalistaModel.buscarDetalhePlaca(idPlaca, contexto.empresaId, idFuncionario).then(function (linhas) {
                 if (!linhas.length) throw Object.assign(new Error("Placa não encontrada ou sem acesso."), { status: 404 })
                 var placa = linhas[0]
                 var computador = contexto.computadores.find(function (item) { return item.idComputador == placa.idComputador })
